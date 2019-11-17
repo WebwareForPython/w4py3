@@ -6,4 +6,6 @@ Webware for Python 3 is the latest version of the suite, which has been adapted 
 
 You can still find the legacy version of Webware for Python at: <https://cito.github.io/w4py/>
 
-The current homepage is at: <https://github.com/Cito/w4py3>
+The current project homepage is at: <https://github.com/Cito/w4py3>
+
+The current documentation is hosted at: <https://webware-for-python-3.readthedocs.io/>
