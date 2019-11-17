@@ -7,6 +7,7 @@ from .TestSessionMemoryStore import TestSessionMemoryStore
 class SessionFileStoreTest(TestSessionMemoryStore):
 
     _storeClass = SessionFileStore
+    _storeIsOrdered = False
 
     def testMemoryStoreRestoreFiles(self):
         app = self._app

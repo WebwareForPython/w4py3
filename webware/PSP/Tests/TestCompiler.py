@@ -11,6 +11,7 @@ import tempfile
 import unittest
 
 from io import StringIO
+from time import sleep
 
 from PSP import Context, PSPCompiler
 
@@ -26,6 +27,15 @@ class TestCompiler(unittest.TestCase):
     def tearDownClass(cls):
         sys.path.remove(cls.testDir)
         shutil.rmtree(cls.testDir)
+
+    @staticmethod
+    def sync():
+        """Make sure everything is written to disk."""
+        try:
+            os.sync()
+        except AttributeError:
+            pass  # not Unix
+        sleep(0.05)
 
     def compileString(self, pspSource, classname):
         """Compile a string to an object.
@@ -48,10 +58,7 @@ class TestCompiler(unittest.TestCase):
         context.setPythonFileName(tmpOutName)
         clc = PSPCompiler.Compiler(context)
         clc.compile()
-        try:
-            os.sync()  # make sure the file is written
-        except AttributeError:
-            pass  # if not under Unix
+        self.sync()
         self.assertTrue(os.path.isfile(tmpOutName))
         # Have Python import the .py file.
         theModule = importlib.__import__(moduleName)
