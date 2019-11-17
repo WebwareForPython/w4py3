@@ -1,0 +1,74 @@
+[MASTER]
+
+ignore =
+ .git, .tox, .venv, .idea,
+ build, dist,
+ Cache, ErrorMsgs, Logs, Sessions,
+ CGITraceback.py, FieldStorage.py, WSGIScript.py
+
+init-hook = sys.path.insert(0, 'webware')
+
+[MESSAGES CONTROL]
+
+disable =
+ attribute-defined-outside-init,
+ broad-except,
+ cyclic-import,
+ similarities,
+ eval-used,
+ exec-used,
+ fixme,
+ global-statement,
+ inconsistent-return-statements,
+ missing-docstring,
+ no-self-use,
+ protected-access,
+ redefined-argument-from-local,
+ redefined-outer-name
+
+[REFACTORING]
+
+max-nested-blocks = 7
+
+[BASIC]
+
+attr-naming-style = camelCase
+argument-naming-style = camelCase
+class-attribute-naming-style = camelCase
+class-naming-style = PascalCase
+const-naming-style = any
+function-naming-style = camelCase
+inlinevar-naming-style = camelCase
+method-naming-style = camelCase
+module-naming-style = PascalCase
+variable-naming-style = camelCase
+
+good-names =
+ b, c, d, e, f, g, h, i, j, k, m, n, p, q, r, s, t, ,v, w, x, y,
+ dt, fd, fp, fs, ip, tm, ts, wr,
+ dir_, id_, input_, type_,
+ allow_none, entry_point, has_key, start_response, ssl_ctx,
+ memcache, redis,
+ index, webware, MixIn,
+ simple, test1, test2, test3, test4, test5, test5join1, test5join2,
+ url1, url2, url3, util, vhosts
+
+bad-names = l, o
+
+[FORMAT]
+
+indent-after-paren = 4
+
+[DESIGN]
+
+max-attributes = 35
+max-args = 10
+max-branches = 40
+max-line-length = 79
+max-locals = 30
+max-module-lines = 1500
+max-parents = 10
+max-public-methods = 100
+max-returns = 10
+max-statements = 150
+min-public-methods = 0

@@ -1,0 +1,4 @@
+HTTPStatusCodes
+---------------
+
+.. automodule:: WebUtils.HTTPStatusCodes

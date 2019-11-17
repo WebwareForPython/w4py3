@@ -1,0 +1,4 @@
+HTTPResponse
+------------
+
+.. automodule:: HTTPResponse

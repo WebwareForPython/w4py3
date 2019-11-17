@@ -1,0 +1,4 @@
+BraceConverter
+--------------
+
+.. automodule:: PSP.BraceConverter

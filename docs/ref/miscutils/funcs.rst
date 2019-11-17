@@ -1,0 +1,4 @@
+Funcs
+-----
+
+.. automodule:: MiscUtils.Funcs

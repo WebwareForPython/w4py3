@@ -1,0 +1,4 @@
+Error
+-----
+
+.. automodule:: MiscUtils.Error

@@ -1,0 +1,5 @@
+
+<%@ page imports="time"%>
+<p style="color:purple">The current time is: <%= time.ctime() %></p>
+
+<hr>

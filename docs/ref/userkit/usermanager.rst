@@ -1,0 +1,4 @@
+UserManager
+-----------
+
+.. automodule:: UserKit.UserManager

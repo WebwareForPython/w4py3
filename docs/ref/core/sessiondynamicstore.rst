@@ -1,0 +1,4 @@
+SessionDynamicStore
+-------------------
+
+.. automodule:: SessionDynamicStore

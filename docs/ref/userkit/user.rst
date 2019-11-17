@@ -1,0 +1,4 @@
+User
+----
+
+.. automodule:: UserKit.User

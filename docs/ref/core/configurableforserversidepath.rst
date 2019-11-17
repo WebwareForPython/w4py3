@@ -1,0 +1,4 @@
+ConfigurableForServerSidePath
+-----------------------------
+
+.. automodule:: ConfigurableForServerSidePath

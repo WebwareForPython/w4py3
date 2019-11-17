@@ -1,0 +1,4 @@
+RoleUserManagerMixIn
+--------------------
+
+.. automodule:: UserKit.RoleUserManagerMixIn
