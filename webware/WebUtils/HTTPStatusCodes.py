@@ -8,6 +8,7 @@ from http import HTTPStatus
 __all__ = [
     'HTTPStatusCodeList', 'HTTPStatusCodes', 'htmlTableOfHTTPStatusCodes']
 
+# pylint: disable=not-an-iterable
 HTTPStatusCodeList = [
     (code.value, code.name, code.description) for code in HTTPStatus]
 

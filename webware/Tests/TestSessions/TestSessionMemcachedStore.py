@@ -28,11 +28,11 @@ class SessionMemcachedStoreTest(TestSessionMemoryStore):
             len(self._store)
 
     def testIter(self):
-        keys = [key for key in self._store]
+        keys = list(iter(self._store))
         self.assertEqual(keys, [])
         self.setOnIteration('Error')
         with self.assertRaises(NotImplementedError):
-            [key for key in self._store]  # pylint: disable=pointless-statement
+            list(iter(self._store))
 
     def testKeys(self):
         keys = self._store.keys()  # pylint: disable=assignment-from-no-return
@@ -49,12 +49,11 @@ class SessionMemcachedStoreTest(TestSessionMemoryStore):
             self._store.items()
 
     def testIterItems(self):
-        items = [key for key in self._store.iteritems()]
+        items = list(self._store.iteritems())
         self.assertEqual(items, [])
         self.setOnIteration('Error')
         with self.assertRaises(NotImplementedError):
-            # pylint: disable=expression-not-assigned
-            [key for key in self._store.iteritems()]
+            list(self._store.iteritems())
 
     def testValues(self):
         values = self._store.values()
@@ -64,7 +63,7 @@ class SessionMemcachedStoreTest(TestSessionMemoryStore):
             self._store.values()
 
     def testIterValues(self):
-        values = [key for key in self._store.values()]
+        values = list(self._store.values())
         self.assertEqual(values, [])
         self.setOnIteration('Error')
         with self.assertRaises(NotImplementedError):

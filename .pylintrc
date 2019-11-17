@@ -19,6 +19,7 @@ disable =
  exec-used,
  fixme,
  global-statement,
+ import-outside-toplevel,
  inconsistent-return-statements,
  missing-docstring,
  no-self-use,

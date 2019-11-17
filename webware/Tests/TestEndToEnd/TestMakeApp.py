@@ -24,7 +24,7 @@ class TestMakeApp(unittest.TestCase):
             args += opts
         result = subprocess.run(
             args, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
-            universal_newlines=True)
+            check=False, universal_newlines=True)
         self.assertEqual(result.returncode, 0)
         self.assertEqual(result.stderr, '')
         return result.stdout.splitlines()

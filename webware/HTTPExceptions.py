@@ -73,7 +73,7 @@ class HTTPException(Exception):
     def htBody(self):
         """The HTML body of the page."""
         body = self.htDescription()
-        if self.args:
+        if self.args:  # pylint: disable=using-constant-test
             # pylint: disable=not-an-iterable
             body += ''.join(
                 '<p>{}</p>\n'.format(htmlEncode(str(p)) for p in self.args))

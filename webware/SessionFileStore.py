@@ -125,7 +125,7 @@ class SessionFileStore(SessionStore):
 
     def keys(self):
         """Return a list with the keys of all the stored sessions."""
-        return [key for key in self]
+        return list(iter(self))
 
     def clear(self):
         """Clear the session file store, removing all of the session files."""

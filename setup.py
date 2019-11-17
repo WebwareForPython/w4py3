@@ -17,7 +17,8 @@ requireExamples = [
     'Pygments>=2,<3', 'Pillow>=6,<7', 'dominate>=2,<3', 'yattag>=1,<2'
 ]
 requireTest = [
-    'psutil>=5,<6', 'flake8>=3.7,<4', 'pylint>=2.4,<3', 'tox>=3.14,<4'
+    'psutil>=5,<6', 'flake8>=3.7,<4', 'pylint>=2.4,<3', 'tox>=3.14,<4',
+    'pywin32>=227,<300;platform_system=="Windows"'
 ] + requireDev + requireExamples
 
 

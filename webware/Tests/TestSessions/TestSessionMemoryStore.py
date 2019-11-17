@@ -64,7 +64,7 @@ class TestSessionMemoryStore(TestSessionStore):
         self.assertFalse('foo-7' in store)
 
     def testIter(self):
-        keys = [key for key in self._store]
+        keys = list(iter(self._store))
         expectedKeys = [f'foo-{n}' for n in range(7)]
         if not self._storeIsOrdered:
             keys = set(keys)

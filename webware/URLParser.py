@@ -116,8 +116,7 @@ class ContextParser(URLParser):
                 if defaultContext:
                     defaultContext = None
                     break
-                else:
-                    defaultContext = name
+                defaultContext = name
             if not defaultContext:
                 # otherwise, try using the following contexts if available
                 for defaultContext in ('Default', 'Examples'):
@@ -432,7 +431,7 @@ class _FileParser(URLParser):
         for filename in os.listdir(dirName):
             if filename.startswith('.'):
                 continue
-            elif filename == fileStart:
+            if filename == fileStart:
                 if self.shouldServeFile(filename):
                     return [os.path.join(dirName, filename)]
             elif (filename.startswith(fileStart)

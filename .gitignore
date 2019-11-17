@@ -1,6 +1,7 @@
 *~
 *.address
 *.bak
+*.cache
 *.default
 *.egg-info
 *.log

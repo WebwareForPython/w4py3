@@ -171,7 +171,7 @@ class SessionMemcachedStore(SessionStore):
         """
         if debug:
             print(">> keys()")
-        return [key for key in self]
+        return list(iter(self))
 
     def clear(self):
         """Clear the session store, removing all of its items.
