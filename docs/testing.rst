@@ -21,23 +21,23 @@ Next, change into the directory containing the main Webware package::
 
 To test everything, run::
 
-    python -m unittest discover
+    python -m unittest discover -p Test*.py
 
 To test everything, and stop on the first failing test::
 
-    python -m unittest discover -f
+    python -m unittest discover -p Test*.py -f
 
 To test everything, and print verbose output::
 
-    python -m unittest discover -v
+    python -m unittest discover -p Test*.py -v
 
 To test only UserKit::
 
-    python -m unittest discover -vs UserKit
+    python -m unittest discover -p Test*.py -vs UserKit
 
 To test only the example servlets in the default context::
 
-    python -m unittest discover -vs Tests.TestEndToEnd.TestExamples
+    python -m unittest discover -p Test*.py -vs Tests.TestEndToEnd.TestExamples
 
 You can also use tox_ as a test runner. The Webware source package already contains a suitable tox.ini configuration file for running the unit tests with all supported Python versions, and also running a few additional code quality checks.
 
