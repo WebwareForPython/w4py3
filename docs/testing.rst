@@ -37,7 +37,7 @@ To test only UserKit::
 
 To test only the example servlets in the default context::
 
-    python -m unittest discover -p Test*.py -vs Tests.TestEndToEnd.TestExamples
+    python -m unittest discover -p TestExamples.py -vs Tests.TestEndToEnd
 
 You can also use tox_ as a test runner. The Webware source package already contains a suitable tox.ini configuration file for running the unit tests with all supported Python versions, and also running a few additional code quality checks.
 
