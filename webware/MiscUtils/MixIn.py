@@ -1,4 +1,4 @@
-from types import MethodType
+from types import FunctionType, MethodType
 
 
 def MixIn(pyClass, mixInClass, makeAncestor=False, mixInSuperMethods=False):
@@ -33,12 +33,15 @@ def MixIn(pyClass, mixInClass, makeAncestor=False, mixInSuperMethods=False):
     MiddleKit.Core.ModelUser.py, which install mix-ins for SQL interfaces.
     Search for "MixIn(".
 
-    If makeAncestor is 1, then a different technique is employed:
-    the mixInClass is made the first base class of the pyClass.
+    If makeAncestor is True, then a different technique is employed:
+    a new class is created and returned that is the same as the given pyClass,
+    but will have the mixInClass added as its first base class.
+    Note that this is different from the behavior in legacy Webware
+    versions, where the __bases__ attribute of the pyClass was changed.
     You probably don't need to use this and if you do, be aware that your
     mix-in can no longer override attributes/methods in pyClass.
 
-    If mixInSuperMethods is 1, then support will be enabled for you to
+    If mixInSuperMethods is True, then support will be enabled for you to
     be able to call the original or "parent" method from the mixed-in method.
     This is done like so::
 
@@ -51,12 +54,15 @@ def MixIn(pyClass, mixInClass, makeAncestor=False, mixInSuperMethods=False):
         raise TypeError('mixInClass is the same as pyClass')
     if makeAncestor:
         if mixInClass not in pyClass.__bases__:
-            pyClass.__bases__ = (mixInClass,) + pyClass.__bases__
+            return type(pyClass.__name__,
+                        (mixInClass,) + pyClass.__bases__,
+                        dict(pyClass.__dict__))
     else:
         # Recursively traverse the mix-in ancestor classes in order
         # to support inheritance
         for baseClass in reversed(mixInClass.__bases__):
-            MixIn(pyClass, baseClass)
+            if baseClass is not object:
+                MixIn(pyClass, baseClass)
 
         # Track the mix-ins made for a particular class
         attrName = 'mixInsFor' + pyClass.__name__
@@ -79,11 +85,10 @@ def MixIn(pyClass, mixInClass, makeAncestor=False, mixInSuperMethods=False):
                     continue  # built in or descriptor
             else:
                 member = getattr(mixInClass, name)
-            if isinstance(member, MethodType):
+            if isinstance(member, (FunctionType, MethodType)):
                 if mixInSuperMethods:
                     if hasattr(pyClass, name):
                         origMember = getattr(pyClass, name)
                         setattr(mixInClass, 'mixInSuper' +
                                 name[0].upper() + name[1:], origMember)
-                member = member.__func__
             setattr(pyClass, name, member)
