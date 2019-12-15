@@ -13,6 +13,8 @@
 *.ses
 *.swp
 
+__pycache__
+
 build/
 dist/
 _build/
