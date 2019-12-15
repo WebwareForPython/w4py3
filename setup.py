@@ -25,7 +25,7 @@ requireTest = [
 setuptools.setup(
     name='Webware-for-Python',
     version=version,
-    author='Christoph Zwerschke',
+    author='Christoph Zwerschke et al.',
     author_email='cito@online.de',
     description=description,
     long_description=long_description,
