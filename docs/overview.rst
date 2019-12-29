@@ -52,6 +52,12 @@ Download and Installation
 See the chapter on :ref:`installation` for instructions how to download and install Webware for Python 3.
 
 
+Documentation
+-------------
+
+This documentation is available online via `GitHub Pages`_ and via `Read the Docs`_.
+
+
 Feedback, Contributing and Support
 ----------------------------------
 
@@ -73,6 +79,8 @@ You can keep up on new releases through the very low traffic `announcement maili
 .. _discussion mailing list: https://sourceforge.net/projects/webware/lists/webware-discuss
 .. _announcement mailing list: https://sourceforge.net/projects/webware/lists/webware-announce
 .. _GitHub project page: https://github.com/Cito/w4py3/
+.. _GitHub pages: https://cito.github.io/w4py3/
+.. _Read the Docs: https://webware-for-python-3.readthedocs.io/
 .. _issues: https://github.com/Cito/w4py3/issues
 .. _pull requests: https://github.com/Cito/w4py3/pulls
 .. _releases: https://github.com/Cito/w4py3/releases
