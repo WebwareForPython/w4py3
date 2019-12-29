@@ -4,8 +4,8 @@ Webware for Python is a well proven and platform-independent suite of Python pac
 
 Webware for Python 3 is the latest version of the suite, which has been adapted to use Python 3 instead of Python 2 and the WSGI standard instead of the custom Webware threaded application server and various adapters, but otherwise kept compatible with the legacy version.
 
-You can still find the legacy version of Webware for Python at: <https://cito.github.io/w4py/>
+The current project **homepage** is at: <https://github.com/Cito/w4py3>
 
-The current project homepage is at: <https://github.com/Cito/w4py3>
+The current **documentation** is hosted at: <https://webware-for-python-3.readthedocs.io/>
 
-The current documentation is hosted at: <https://webware-for-python-3.readthedocs.io/>
+You can still find the **legacy version** of Webware for Python at: <https://cito.github.io/w4py/>

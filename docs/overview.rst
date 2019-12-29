@@ -72,7 +72,7 @@ You can keep up on new releases through the very low traffic `announcement maili
 .. _Python 2 to Python 3: https://docs.python.org/3/howto/pyporting.html
 .. _discussion mailing list: https://sourceforge.net/projects/webware/lists/webware-discuss
 .. _announcement mailing list: https://sourceforge.net/projects/webware/lists/webware-announce
-.. _GitHub project page: https://cito.github.io/w4py3/
+.. _GitHub project page: https://github.com/Cito/w4py3/
 .. _issues: https://github.com/Cito/w4py3/issues
 .. _pull requests: https://github.com/Cito/w4py3/pulls
 .. _releases: https://github.com/Cito/w4py3/releases
