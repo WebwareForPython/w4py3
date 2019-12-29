@@ -13,13 +13,16 @@ with open('README.md') as fh:
 requireDev = [
     'Pygments>=2,<3', 'waitress>=1.3,<2', 'hupper>=1.9,<2', 'WebTest>=2,<3'
 ]
+requireDocs = [
+    'Sphinx>=2.2,<3', 'sphinx_rtd_theme>=0.4'
+]
 requireExamples = [
     'Pygments>=2,<3', 'Pillow>=6,<7', 'dominate>=2,<3', 'yattag>=1,<2'
 ]
 requireTest = [
     'psutil>=5,<6', 'flake8>=3.7,<4', 'pylint>=2.4,<3', 'tox>=3.14,<4',
     'pywin32>=227,<300;platform_system=="Windows"'
-] + requireDev + requireExamples
+] + requireDev + requireDocs + requireExamples
 
 
 setuptools.setup(
@@ -49,6 +52,7 @@ setuptools.setup(
     ],
     extras_require={
         'dev': requireDev,
+        'docs': requireDocs,
         'examples': requireExamples,
         'test': requireTest,
     },
