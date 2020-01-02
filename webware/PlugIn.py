@@ -81,13 +81,14 @@ class PlugIn:
         self._cacheDir = os.path.join(self._app._cacheDir, self._name)
         self._examplePages = self._examplePagesContext = None
 
-    def load(self):
+    def load(self, verbose=True):
         """Loads the plug-in into memory, but does not yet install it.
 
         Will return None on success, otherwise a message (string) that says
         why the plug-in could not be loaded.
         """
-        print(f'Loading plug-in: {self._name} at {self._path}')
+        if verbose:
+            print(f'Loading plug-in: {self._name} at {self._path}')
 
         # Grab the Properties.py
         self._properties = PropertiesObject(

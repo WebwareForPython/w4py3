@@ -19,8 +19,6 @@ import sys
 
 from time import time, localtime
 
-import pkg_resources
-
 from MiscUtils import NoDefault
 from MiscUtils.Funcs import asclocaltime
 from MiscUtils.NamedValueAccess import valueForName
@@ -32,9 +30,9 @@ from ImportManager import ImportManager
 from ExceptionHandler import ExceptionHandler
 from HTTPRequest import HTTPRequest
 from HTTPExceptions import HTTPException, HTTPSessionExpired
-from PlugIn import PlugIn
 from Transaction import Transaction
 from WSGIStreamOut import WSGIStreamOut
+from PlugInLoader import PlugInLoader
 
 import URLParser
 
@@ -237,6 +235,7 @@ class Application(ConfigurableForServerSidePath):
         if self.setting('UseSessionSweeper'):
             self.startSessionSweeper()
 
+        self._plugInLoader = None
         self.loadPlugIns()
 
         self._wasShutDown = False
@@ -1093,19 +1092,7 @@ class Application(ConfigurableForServerSidePath):
         May return None if loading was unsuccessful (in which case this method
         prints a message saying so). Used by `loadPlugIns` (note the **s**).
         """
-        try:
-            plugIn = PlugIn(self, name, module)
-            willNotLoadReason = plugIn.load()
-            if willNotLoadReason:
-                print(f'    Plug-in {name} cannot be loaded because:\n'
-                      f'    {willNotLoadReason}')
-                return None
-            plugIn.install()
-        except Exception:
-            print()
-            print(f'Plug-in {name} raised exception.')
-            raise
-        return plugIn
+        return self._plugInLoader(name, module)
 
     def loadPlugIns(self):
         """Load all plug-ins.
@@ -1115,24 +1102,8 @@ class Application(ConfigurableForServerSidePath):
         Application at startup time, just before listening for requests.
         See the docs in `PlugIn` for more info.
         """
-        plugInNames = set(self.setting('PlugIns'))
-        plugInNames.add('Webware')
-        plugIns = [
-            (entry_point.name, entry_point.load())
-            for entry_point
-            in pkg_resources.iter_entry_points('webware.plugins')
-            if entry_point.name in plugInNames
-        ]
-
-        print('Plug-ins list:', ', '.join(
-            name for name, _module in plugIns if name != 'Webware'))
-
-        # Now that we have our plug-in list, load them...
-        for name, module in plugIns:
-            plugIn = self.loadPlugIn(name, module)
-            if plugIn:
-                self._plugIns[name] = plugIn
-        print()
+        self._plugInLoader = loader = PlugInLoader(self)
+        self._plugIns = loader.loadPlugIns(self.setting('PlugIns'))
 
     # endregion Plug-in loading
 
