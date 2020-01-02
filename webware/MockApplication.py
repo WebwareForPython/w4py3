@@ -16,6 +16,10 @@ defaultConfig = dict(
 
 
 class MockApplication(ConfigurableForServerSidePath):
+    """
+    A minimal implementation which is compatible with Application
+    and which is sufficient to load plugins.
+    """
 
     def __init__(self, path=None, settings=None, development=None):
         ConfigurableForServerSidePath.__init__(self)
