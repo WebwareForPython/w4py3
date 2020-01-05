@@ -99,6 +99,7 @@ defaultConfig = dict(
     OutputEncoding='utf-8',
     PlugIns=['MiscUtils', 'WebUtils', 'TaskKit', 'UserKit', 'PSP'],
     PrintConfigAtStartUp=True,
+    PrintPlugIns=True,
     ReloadServletClasses=False,
     ReportRPCExceptionsInWebware=True,
     ResponseBufferSize=8 * 1024,  # 8 kBytes

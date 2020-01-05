@@ -33,13 +33,13 @@ WebwarePath                     = '.+'
 Loading context: Examples at .+Examples
 Loading context: Admin at .+Admin
 Loading context: Testing at .+Testing
-Plug-ins list: MiscUtils, PSP, TaskKit, UserKit, WebUtils
+Plug-ins list: MiscUtils, WebUtils, TaskKit, UserKit, PSP
 Loading plug-in: MiscUtils at .+MiscUtils
-Loading plug-in: PSP at .+PSP
-Loading context: PSP/Examples at .+Examples
+Loading plug-in: WebUtils at .+WebUtils
 Loading plug-in: TaskKit at .+TaskKit
 Loading plug-in: UserKit at .+UserKit
-Loading plug-in: WebUtils at .+WebUtils
+Loading plug-in: PSP at .+PSP
+Loading context: PSP/Examples at .+Examples
 
 Waitress serving Webware application...
 Serving on http://.+:8080

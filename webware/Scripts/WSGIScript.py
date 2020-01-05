@@ -21,9 +21,7 @@ if workDir:
     os.chdir(workDir)
 
 import webware
-webwarePath = webware.__path__[0]
-if webwarePath not in sys.path:
-    sys.path.insert(0, webwarePath)
+webware.addToSearchPath()
 
 from Application import Application
 
