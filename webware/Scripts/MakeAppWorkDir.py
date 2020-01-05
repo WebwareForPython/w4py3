@@ -163,7 +163,7 @@ class MakeAppWorkDir:
                 self.msg(f'\tWarning: Unexpected WSGI script')
             else:
                 script = script.replace(
-                    'libDirs = []', f'libDirs={self._libraryDirs!r}')
+                    'libDirs = []', f'libDirs = {self._libraryDirs!r}')
                 with open(wsgiScript, 'w') as f:
                     f.write(script)
         else:
