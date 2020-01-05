@@ -363,6 +363,25 @@ Now run this file in your IDE in debug mode. For instance, in PyCharm, right-cli
 Some IDEs like PyCharm can also debug remote processes. This could be useful to debug a test or production server.
 
 
+Bootstrap Webware from Command line
+-----------------------------------
+
+You may be in a situation where you want to execute some part of your Webware app from the command line, for example to implement a cron job or 
+maintenance script.  In these situations you probably don't want to instantiate a full-fledged `Application` -- some of the downsides are that doing so
+would cause standard output and standard error to be redirected to the log file, and that it sets up the session sweeper, task manager, etc. 
+But you may still need access to plugins such as MiscUtils, MiddleKit, which you may not be able to import directly.
+
+Here is a lightweight approach which allows you to bootstrap Webware and plugins::
+
+   import webware
+   webware.add_to_python_path()
+   webware.load_plugins('/your/app/directory')
+
+   # now plugins are available...
+   import MiscUtils
+   import MiddleKit
+
+
 How do I Develop an App?
 ------------------------
 
@@ -381,3 +400,5 @@ The answer to that question might not seem clear after being deluged with all th
 * With this additional knowledge, create more sophisticated pages.
 
 * If you need to secure your pages using a login screen, you'll want to look at the SecurePage, LoginPage, and SecureCountVisits examples in ``Examples``. You'll need to modify them to suit your particular needs.
+
+
