@@ -184,7 +184,6 @@ class ContextParser(URLParser):
             try:
                 localDir, packageName = os.path.split(path)
                 spec = self._imp.findSpec(packageName, localDir or '.')
-                spec.name = name.rpartition('/')[2]
                 try:
                     module = self._imp.moduleFromSpec(spec)
                 except ImportError as e:
