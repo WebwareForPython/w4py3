@@ -17,7 +17,7 @@ class AppTest:
     settings = dict(
         PrintConfigAtStartUp=False
     )
-    capture = False  # set to False if you want to run an individual test and use pdb interactively.
+    capture = True  # set to False if you want to run an individual test and use pdb interactively.
 
     @classmethod
     def setUpClass(cls):
