@@ -258,6 +258,16 @@ class TestTesting(AppTest, unittest.TestCase):
         self.assertEqual(r.headers.get('Last-Modified'), lastMod)
         self.assertEqual(len(r.body), size)
 
+    def testCase18(self):
+        url = self.getTestCaseUrl(18, 'Servlet imported as part of package')
+        r = self.testApp.get(url)
+        self.assertEqual(r.status, '200 OK')
+        r.mustcontain(
+            '<title>Test of import details.</title>',
+            '<p>mod_name = <code>Testing.ServletImport</code></p>',
+            '<p>mod_name_from_class = <code>Testing.ServletImport</code></p>',
+            f"<p>servlet_in_sys_modules = <code>True</code></p>",
+        )
 
 class TestTestingWithExtraPathInfo(TestTesting):
 
