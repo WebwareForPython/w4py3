@@ -30,23 +30,23 @@ class AppTest:
             app = Application(settings=cls.settings, development=True)
             cls.app = app
             cls.testApp = TestApp(app)
-        except Exception:
-            error = True
+        except Exception as e:
+            error = str(e) or 'Could not create application'
         else:
-            error = False
+            error = None
         finally:
             output = sys.stdout.getvalue().rstrip()
             sys.stdout, sys.stderr = stdout, stderr
         if error:
             raise RuntimeError(
-                'Error setting up application. Output was:\n'
-                + output)
+                'Error setting up application:\n' + error +
+                '\nOutput was:\n' + output)
         if (not output.startswith('Webware for Python')
                 or 'Running in development mode' not in output
                 or 'Loading context' not in output):
             raise AssertionError(
-                'Application was not properly started. Output was:\n'
-                + output)
+                'Application was not properly started.'
+                ' Output was:\n' + output)
 
     @classmethod
     def tearDownClass(cls):

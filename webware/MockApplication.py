@@ -3,7 +3,7 @@ import os
 from ConfigurableForServerSidePath import ConfigurableForServerSidePath
 
 
-class MockImportManager(object):
+class MockImportManager:
 
     def recordFile(self, filename, isfile=None):
         pass
@@ -12,6 +12,7 @@ class MockImportManager(object):
 defaultConfig = dict(
     CacheDir='Cache',
     PlugIns=['MiscUtils', 'WebUtils', 'TaskKit', 'UserKit', 'PSP'],
+    PrintPlugIns=False
 )
 
 
@@ -30,11 +31,11 @@ class MockApplication(ConfigurableForServerSidePath):
         if development is None:
             development = bool(os.environ.get('WEBWARE_DEVELOPMENT'))
         self._development = development
-
-        appConfig = self.config()  # get and cache the configuration
+        appConfig = self.config()
         if settings:
             appConfig.update(settings)
-        self._cacheDir = self.serverSidePath(self.setting('CacheDir') or 'Cache')
+        self._cacheDir = self.serverSidePath(
+            self.setting('CacheDir') or 'Cache')
         from MiscUtils.PropertiesObject import PropertiesObject
         props = PropertiesObject(os.path.join(
             self._webwarePath, 'Properties.py'))
@@ -64,7 +65,7 @@ class MockApplication(ConfigurableForServerSidePath):
                 os.path.join(self._serverSidePath, path))
         return self._serverSidePath
 
-    def hasContext(self, context):
+    def hasContext(self, _name):
         return False
 
     def addServletFactory(self, factory):
