@@ -310,7 +310,16 @@ When creating the Application instance, it takes a ``development`` flag as argum
 print
 ~~~~~
 
-The most common technique is the infamous ``print`` statement which has been replaced with a ``print()`` function in Python 3. The results of ``print()`` calls go to the console where the WSGI server was started (not to the HTML page as would happen with CGI). In production mode, you can specify an ``AppLogFilename`` in ``Application.config``, which will cause the standard output and error to be redirected to this file.
+The most common technique is the infamous ``print`` statement which has been replaced with a ``print()`` function in Python 3. The results of ``print()`` calls go to the console where the WSGI server was started (not to the HTML page as would happen with CGI). If you specify ``AppLogFilename`` in ``Application.config``, this will cause the standard output and error to be redirected to this file.
+
+For convenient debugging, we recommend you use a clause like this in your ``Application.config`` file::
+
+    if Development:
+        AppLogFilename = None
+    else:
+        AppLogFilename = 'Logs/Application.log'
+
+This will prevent standard output and error from being redirected to the log file in development mode, which makes it easier to find debugging output, and also makes it possible to use ```pdb``` (see below).
 
 Prefixing the debugging output with a special tag (such as ``>>``) is useful because it stands out on the console and you can search for the tag in source code to remove the print statements after they are no longer useful. For example::
 
@@ -331,7 +340,7 @@ While this is totally useful during development, giving away too much internal i
 Reloading the Development Server
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-When a servlet's source code changes, it is reloaded. However, ancestor classes of servlets, library modules and configuration files are not. You may wish to enable the auto-reloading feature when running the development server, by adding the ``-r`` or ``--reload`` option to the ``webware seve command`` in order to mitigate this problem.
+When a servlet's source code changes, it is reloaded. However, ancestor classes of servlets, library modules and configuration files are not. You may wish to enable the auto-reloading feature when running the development server, by adding the ``-r`` or ``--reload`` option to the ``webware serve command`` in order to mitigate this problem.
 
 In any case, when having problems, consider restarting the development server (or the WSGI server you are running in production).
 
@@ -344,6 +353,19 @@ Assertions are used to ensure that the internal conditions of the application ar
 
     assert shoppingCart.total() >= 0, \
         f'shopping cart total is {shoppingCart.total()}'
+
+Debugging using PDB
+~~~~~~~~~~~~~~~~~~~
+To use python's built-in debugger ```pdb```, see the tip above about setting ```AppLogFilename``` for convenient debugging.
+
+To have Webware automatically put you into pdb when an exception occurs, set this in your ``Application.config`` file::
+
+    EnterDebuggerOnException = Development      
+
+A quick and easy way to debug a particular section of code is to add these lines at that point in the code::
+
+    import pdb
+    pdb.set_trace()
 
 Debugging in an IDE
 ~~~~~~~~~~~~~~~~~~~
