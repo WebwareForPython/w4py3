@@ -3,11 +3,10 @@ import pkg_resources
 from PlugIn import PlugIn
 
 
-class PlugInLoader(object):
+class PlugInLoader:
 
     def __init__(self, app):
         self.app = app
-        self._plugIns = {}
 
     def loadPlugIn(self, name, module, verbose=True):
         """Load and return the given plug-in.
@@ -29,7 +28,7 @@ class PlugInLoader(object):
             raise
         return plugIn
 
-    def loadPlugIns(self, plugInNames, verbose=True):
+    def loadPlugIns(self, plugInNames=None, verbose=None):
         """Load all plug-ins.
 
         A plug-in allows you to extend the functionality of Webware without
@@ -37,24 +36,35 @@ class PlugInLoader(object):
         Application at startup time, just before listening for requests.
         See the docs in `PlugIn` for more info.
         """
-        plugInNames = set(plugInNames)
-        plugInNames.add('Webware')
-        plugIns = [
-            (entry_point.name, entry_point.load())
-            for entry_point
-            in pkg_resources.iter_entry_points('webware.plugins')
-            if entry_point.name in plugInNames
-        ]
+        if plugInNames is None:
+            plugInNames = self.app.setting('PlugIns')
+        if verbose is None:
+            verbose = self.app.setting('PrintPlugIns')
 
         if verbose:
-            print('Plug-ins list:', ', '.join(
-                name for name, _module in plugIns if name != 'Webware'))
+            print('Plug-ins list:', ', '.join(plugInNames))
 
-        # Now that we have our plug-in list, load them...
-        for name, module in plugIns:
+        entryPoints = {
+            entry_point.name: entry_point for entry_point
+            in pkg_resources.iter_entry_points('webware.plugins')}
+
+        plugIns = {}
+        for name in plugInNames:
+            if name in plugIns:
+                if verbose:
+                    print(f'Plug-in {name} has already been loaded.')
+                    continue
+            entry_point = entryPoints.get(name)
+            if not entry_point:
+                if verbose:
+                    print(f'Plug-in {name} has not entry point.')
+                    continue
+            module = entry_point.load()
             plugIn = self.loadPlugIn(name, module, verbose=verbose)
             if plugIn:
-                self._plugIns[name] = plugIn
+                plugIns[name] = plugIn
+
         if verbose:
             print()
-        return self._plugIns
+
+        return plugIns
