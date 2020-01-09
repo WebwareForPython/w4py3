@@ -17,11 +17,13 @@ class AppTest:
     settings = dict(
         PrintConfigAtStartUp=False
     )
+    bufferOutput = True   # set to False if you want to run pdb inside a test to debug it.
 
     @classmethod
     def setUpClass(cls):
         stdout, stderr = sys.stdout, sys.stderr
-        sys.stdout = sys.stderr = StringIO()
+        if cls.bufferOutput:
+            sys.stdout = sys.stderr = StringIO()
         cls.currentDir = getcwd()
         import webware
         webwareDir = webware.__path__[0]
@@ -35,43 +37,55 @@ class AppTest:
         else:
             error = None
         finally:
-            output = sys.stdout.getvalue().rstrip()
-            sys.stdout, sys.stderr = stdout, stderr
+            if cls.bufferOutput:
+                output = sys.stdout.getvalue().rstrip()
+                sys.stdout, sys.stderr = stdout, stderr
+            else:
+                output = ''
         if error:
             raise RuntimeError(
                 'Error setting up application:\n' + error +
                 '\nOutput was:\n' + output)
-        if (not output.startswith('Webware for Python')
-                or 'Running in development mode' not in output
-                or 'Loading context' not in output):
-            raise AssertionError(
-                'Application was not properly started.'
-                ' Output was:\n' + output)
+        if cls.bufferOutput:
+            if (not output.startswith('Webware for Python')
+                    or 'Running in development mode' not in output
+                    or 'Loading context' not in output):
+                raise AssertionError(
+                    'Application was not properly started.'
+                    ' Output was:\n' + output)
 
     @classmethod
     def tearDownClass(cls):
         stdout, stderr = sys.stdout, sys.stderr
-        sys.stdout = sys.stderr = StringIO()
+        if cls.bufferOutput:
+            sys.stdout = sys.stderr = StringIO()
         cls.app.shutDown()
-        output = sys.stdout.getvalue().rstrip()
-        sys.stdout, sys.stderr = stdout, stderr
+        if cls.bufferOutput:
+            output = sys.stdout.getvalue().rstrip()
+            sys.stdout, sys.stderr = stdout, stderr
+        else:
+            output = ''
         chdir(cls.currentDir)
-        if output != ('Application is shutting down...\n'
-                      'Application has been successfully shutdown.'):
+        if cls.bufferOutput and output != ('Application is shutting down...\n'
+                                           'Application has been successfully shutdown.'):
             raise AssertionError(
                 'Application was not properly shut down. Output was:\n'
                 + output)
 
     def setUp(self):
         self.stdout, self.stderr = sys.stdout, sys.stderr
-        sys.stdout = sys.stderr = StringIO()
+        if self.bufferOutput:
+            sys.stdout = sys.stderr = StringIO()
 
     def tearDown(self):
-        self.output = sys.stdout.getvalue().rstrip()
-        sys.stdout, sys.stderr = self.stdout, self.stderr
+        if self.bufferOutput:
+            self.output = sys.stdout.getvalue().rstrip()
+            sys.stdout, sys.stderr = self.stdout, self.stderr
+        else:
+            self.output = ''
 
     def run(self, result=None):
         result = super().run(result)  # pylint: disable=no-member
-        if not result.wasSuccessful() and self.output:
+        if not result.wasSuccessful() and self.bufferOutput and self.output:
             print("Application output was:")
             print(self.output)

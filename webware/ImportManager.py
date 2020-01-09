@@ -61,12 +61,10 @@ class ImportManager:
             print()
         return reloader
 
-    def moduleFromSpec(self, spec, name=None):
+    def moduleFromSpec(self, spec):
         """Load the module with the given module spec."""
         if not spec or not isinstance(spec, ModuleSpec):
             raise TypeError(f'Invalid spec: {spec!r}')
-        if name and not isinstance(name, str):
-            raise TypeError(f'Invalid name: {name!r}')
         try:
             module = module_from_spec(spec)
         except Exception:
@@ -76,14 +74,11 @@ class ImportManager:
             if spec.origin:
                 self.recordFile(spec.origin)
             raise
-        if name:
-            spec.name = name
-            module.__package__ = spec.parent
         self.recordModule(module)
         spec.loader.exec_module(module)
         return module
 
-    def findSpec(self, name, path):
+    def findSpec(self, name, path, fullModuleName=None):
         """Find the module spec for the given name at the given path."""
         if not name or not isinstance(name, str):
             raise TypeError(f'Invalid name: {name!r}')
@@ -106,6 +101,8 @@ class ImportManager:
         fileName = f'{name}.py'
         filePath = join(path, fileName)
         if isfile(filePath):
+            if fullModuleName:
+                name = fullModuleName
             loader = SourceFileLoader(name, filePath)
             return spec_from_file_location(name, filePath, loader=loader)
 
