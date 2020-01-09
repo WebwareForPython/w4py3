@@ -62,9 +62,9 @@ This will create a directory ``WorkDir`` that will contain a directory structure
 ``-c Context``:
     Use ``Context`` as the name for the application default context. A subdirectory with the same name will be created in the work dir (you can change that with the ``-d`` option). If you do not use the ``-c`` option, the context name will be ``MyContext``. You may simply want to call it ``App`` or ``Context``, particularly if you are using only one context. If you want to add more than one context, you need to create a subdirectory and a corresponding ``Contexts`` dictionary entry in the ``Application.config`` file manually.
 ``-l Lib``:
-    Create a ``Lib`` directory in the work dir which will be added to the Python path. You can use the ``-l`` option multiple times; and you can also add already existent library directories outside of the work dir.
+    Create a ``Lib`` directory in the work dir which will be added to the Python module search path. You can use the ``-l`` option multiple times; and you can also add already existent library directories outside of the work dir. If you want to add the work dir itself to the Python path, pass ``-l .``. In that case, you can import from any Python package placed directly in the working, including the Webware contexts. Note that the webware package will always be added to the Python module search path, so that you can and should import any Webware modules and sub packages directly from the top level.
 ``WorkDir``:
-    The files will be put here. Name if after your application, place it where it is convenient for you. It makes sense to put the working directory together with the virtual environment where you installed Webware for Python inside the same distinct base directory. Install any other requirements either into the virtual environment or provide them in the ``Lib`` directory.
+    The files will be put here. Name if after your application, place it where it is convenient for you. It makes sense to put the working directory together with the virtual environment where you installed Webware for Python inside the same distinct base directory. Install any other requirements either into the virtual environment or provide them in one of the directories specified with the ``-l`` option.
 
 You can see all available options if you run ``webware make --help``.
 

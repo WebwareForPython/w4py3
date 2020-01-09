@@ -5,14 +5,18 @@
 import os
 import sys
 
+import webware
+
 libDirs = []
 workDir = None
 development = None
 settings = {}
 
-for libDir in libDirs:
-    if libDir not in sys.path:
-        sys.path.append(libDir)
+webware.addToSearchPath()
+
+for libDir in reversed(libDirs):
+    if libDir != '.' and libDir not in sys.path:
+        sys.path.insert(0, libDir)
 
 if workDir is None:
     workDir = os.path.dirname(os.path.dirname(__file__))
@@ -20,8 +24,8 @@ if workDir is None:
 if workDir:
     os.chdir(workDir)
 
-import webware
-webware.addToSearchPath()
+if '.' in libDirs:
+    sys.path.insert(0, workDir)
 
 from Application import Application
 
