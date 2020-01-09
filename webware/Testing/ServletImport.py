@@ -1,26 +1,33 @@
-
-from Page import Page
 import sys
 
-mod_name = __name__  # we expect Testing.ServletImport
+from SidebarPage import SidebarPage
 
-class ServletImport(Page):
-    """Test of import details."""
+modName = __name__  # should be Testing.ServletImport
 
-    def title(self):
-        return self.__doc__
 
-    def writeBody(self):
-        self.writeln('<h2>Webware Servlet Import Test</h2>')
-        self.writeln(f'<h3>{self.title()}</h3>')
-        mod_name_from_class = ServletImport.__module__   # we expect Testing.ServletImport
-        mod_name_consistent = mod_name == mod_name_from_class  # we expect True
-        servlet_in_sys_modules = mod_name in sys.modules  # we expect True
-        servlet_file_watched = __file__ in self.transaction().application()._imp.fileList(update=False)  # we expect True
-        self.writeln(
-            f"<p>mod_name = <code>{mod_name}</code></p>"
-            f"<p>mod_name_from_class = <code>{mod_name_from_class}</code></p>"
-            f"<p>mod_name_consistent = <code>{mod_name_consistent}</code></p>"
-            f"<p>servlet_in_sys_modules = <code>{servlet_in_sys_modules}</code></p>"
-            f"<p>servlet_file_watched = <code>{servlet_file_watched}</code></p>"
+class ServletImport(SidebarPage):
+    """Test of servlet import details."""
+
+    def cornerTitle(self):
+        return 'Testing'
+
+    def writeContent(self):
+        wr = self.writeln
+        wr('<h2>Webware Servlet Import Test</h2>')
+        wr(f'<h3>{self.__doc__}</h3>')
+        modNameFromClass = ServletImport.__module__
+        modNameConsistent = modName == modNameFromClass
+        servletInSysModules = modName in sys.modules
+        app = self.transaction().application()
+        files = app._imp.fileList(update=False)
+        servletFileWatched = __file__ in files
+        wr(
+            f"<p>modName = <code>{modName}</code></p>"
+            f"<p>modNameFromClass = <code>{modNameFromClass}</code></p>"
+            f"<p>modNameConsistent = <code>{modNameConsistent}</code></p>"
+            f"<p>servletInSysModules = <code>{servletInSysModules}</code></p>"
+            f"<p>servletFileWatched = <code>{servletFileWatched}</code></p>"
         )
+        ok = modNameConsistent and servletInSysModules and servletInSysModules
+        wr('<p style="color:{}"><b>Servlet import test {}.</b></p>'.format(
+            'green' if ok else 'red', 'passed' if ok else 'failed'))

@@ -61,5 +61,5 @@
 # If-Modified-Since
 /Testing/TestIMS --> TestIMS passed
 
-# ServletImport
-/Testing/ServletImport --> Servlet imported as part of package
+# Servlet import details
+/Testing/ServletImport --> Servlet import test passed

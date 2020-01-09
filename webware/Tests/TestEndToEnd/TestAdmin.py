@@ -232,14 +232,13 @@ class TestAdmin(AppTest, unittest.TestCase):
             'Reload the selected Python modules. Be careful!',
             '<input type="checkbox" name="reloads"'
             ' value="Admin.AdminPage"> Admin.AdminPage<br>')
-
-        # things change, so don't hardcode the index of this checkbox.
-        for i, checkbox in enumerate(r.html.find_all('input', attrs={'name': 'reloads'})):
+        for i, checkbox in enumerate(
+                r.html.find_all('input', attrs={'name': 'reloads'})):
             if checkbox.attrs['value'] == 'Admin.AdminPage':
+                r.form.get('reloads', index=i).checked = True
                 break
         else:
-            assert False, 'Did not find expected checkbox for Admin.AdminPage'
-        r.form.get('reloads', index=i).checked = True
+            self.fail('Did not find expected checkbox for Admin.AdminPage')
         r = r.form.submit('action', index=1)
         self.assertEqual(r.status, '200 OK')
         r.mustcontain(

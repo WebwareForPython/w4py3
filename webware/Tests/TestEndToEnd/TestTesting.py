@@ -259,15 +259,17 @@ class TestTesting(AppTest, unittest.TestCase):
         self.assertEqual(len(r.body), size)
 
     def testCase18(self):
-        url = self.getTestCaseUrl(18, 'Servlet imported as part of package')
+        url = self.getTestCaseUrl(18, 'Servlet import test passed')
         r = self.testApp.get(url)
         self.assertEqual(r.status, '200 OK')
         r.mustcontain(
-            '<title>Test of import details.</title>',
-            '<p>mod_name = <code>Testing.ServletImport</code></p>',
-            '<p>mod_name_from_class = <code>Testing.ServletImport</code></p>',
-            f"<p>servlet_in_sys_modules = <code>True</code></p>",
-        )
+            '<title>ServletImport</title>',
+            '<h2>Webware Servlet Import Test</h2>',
+            '<h3>Test of servlet import details.</h3>',
+            '<p>modName = <code>Testing.ServletImport</code></p>',
+            '<p>modNameFromClass = <code>Testing.ServletImport</code></p>',
+            'passed', no='failed')
+
 
 class TestTestingWithExtraPathInfo(TestTesting):
 
