@@ -10,7 +10,9 @@ Regarding the API, we tried to stay compatible with Webware for Python 2 as much
 Check which Webware plug-ins you were using
 -------------------------------------------
 
-The first the you should check is if there your application is using a Webware plug-in that is not available in Webware for Python 3 any more. Among the built-in plug-ins, these are COMKit, CGIWrapper, KidKit, and, most prominently, MiddleKit. If your application is based on MiddleKit, you will need to migrate MiddleKit to Python 3 and the slightly changed plug-in system in Webware for Python 3, or wait for someone to publish a MiddleKit for Webware for Python 3 as an external plug-in. The same is true if you are using any other external plug-in. If your are using only PSP or one of the other built-in plug-ins, you will have no problem at this point, since they are still included in Webware for Python 3. See the section on :ref:`plug-ins` for details on how to write plug-ins for Webware for Python 3.
+First you should check whether the plug-ins your application is using are still available as built-ins plugin of Webware for Python 3 (`w4py3 <https://github.com/cito/w4py3>`_) or as externally provided plug-ins. PSP is still provided as a built-in plug-in. MiddleKit is now provided as an external plug-in on GitHub (`w4py3-middlekit <https://github.com/PeaceWorksTechnologySolutions/w4py3-middlekit>`_). The "COMKit", "CGIWrapper" and "KidKit" built-in plug-ins have been discontinued. Other external plug-ins that have been developed for Webware for Python 2 must first be ported to Webware for Python 3 before you can use them. See the section on :ref:`plug-ins` for details on how to write plug-ins for Webware for Python 3.
+
+.. _MiddleKit: https://github.com/PeaceWorksTechnologySolutions/w4py3-middlekit
 
 Migrate your application to Python 3
 ------------------------------------
