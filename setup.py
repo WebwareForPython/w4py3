@@ -11,7 +11,7 @@ with open('README.md') as fh:
     long_description = fh.read()
 
 requireDev = [
-    'Pygments>=2,<3', 'waitress>=1.3,<2', 'hupper>=1.9,<2', 'WebTest>=2,<3'
+    'Pygments>=2,<3', 'waitress>=1.4.2,<2', 'hupper>=1.9,<2', 'WebTest>=2,<3'
 ]
 requireDocs = [
     'Sphinx>=2.2,<3', 'sphinx_rtd_theme>=0.4'
