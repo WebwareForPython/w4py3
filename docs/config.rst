@@ -79,7 +79,7 @@ Sessions
 ``SessionModule``:
     Can be used to replace the standard Webware Session module with something else. Default: ``Session``
 ``SessionStore``:
-    This setting determines which of five possible session stores is used by the Application: ``Dynamic``, ``File``, ``Memcached``, ``Memory``, ``Redis`` or ```Shelve``. The ``File`` store always gets sessions from disk and puts them back when finished. ``Memory`` always keeps all sessions in memory, but will periodically back them up to disk. ``Dynamic`` is a good cross between the two, which pushes excessive or inactive sessions out to disk. ``Shelve`` stores the sessions in a database file using the Python ``shelve`` module, ``Memcached`` stores them on a Memcached system using the ``python-memcached`` interface, and ``Redis`` stores them on a Redis system using the ``redis-py`` client. You can use a custom session store module as well. Default: ``Dynamic``.
+    This setting determines which of five possible session stores is used by the Application: ``Dynamic``, ``File``, ``Memcached``, ``Memory``, ``Redis`` or ``Shelve``. The ``File`` store always gets sessions from disk and puts them back when finished. ``Memory`` always keeps all sessions in memory, but will periodically back them up to disk. ``Dynamic`` is a good cross between the two, which pushes excessive or inactive sessions out to disk. ``Shelve`` stores the sessions in a database file using the Python ``shelve`` module, ``Memcached`` stores them on a Memcached system using the ``python-memcached`` interface, and ``Redis`` stores them on a Redis system using the ``redis-py`` client. You can use a custom session store module as well. Default: ``Dynamic``.
 ``SessionStoreDir``:
     If ``SessionStore`` is set to ``File``, ``Dynamic`` or ``Shelve``, then this setting determines the directory where the files for the individual sessions or the shelve database will be stored. The path is interpreted as relative to the working directory (or Webware path, if you're not using a working directory), or you can specify an absolute path. Default: ``Sessions``.
 ``SessionTimeout``:
@@ -213,7 +213,7 @@ Logging
 ``ActivityLogColumns``:
     Specifies the columns that will be stored in the activity log. Each column can refer to an object from the set [application, transaction, request, response, servlet, session] and then refer to its attributes using "dot notation". The attributes can be methods or instance attributes and can be qualified arbitrarily deep. Default: ``['request.remoteAddress', 'request.method', 'request.uri', 'response.size', 'servlet.name', 'request.timeStamp', 'transaction.duration', 'transaction.errorOccurred']``.
 ``AppLogFilename``:
-    The Application redirects standard output and error to this file, if this is set in production mode. Default: ```'Logs/Application.log'``.
+    The Application redirects standard output and error to this file, if this is set in production mode. Default: ``'Logs/Application.log'``.
 ``Verbose``:
     If True, then additional messages are printed while the Application runs, most notably information about each request such as size and response time. Default: ``True``.
 ``SilentURIs``:

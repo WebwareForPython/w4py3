@@ -80,7 +80,7 @@ Here's what the files and directories are for:
 ``Configs``:
     Configuration files for the application. These files are copied from the ``Configs`` subdirectory in the ``webware`` package, but are specific to this application.
 ``Context``:
-    The directory for your default context. This is where you put your servlets. You can change its name and location with the ```-c`` and ``-d`` options. You can also change this subsequently in the ``Application.config`` file in the ``Configs`` directory, where you can also configure more than one context. You may also want to remove the other standard contexts that come with Webware from the config file.
+    The directory for your default context. This is where you put your servlets. You can change its name and location with the ``-c`` and ``-d`` options. You can also change this subsequently in the ``Application.config`` file in the ``Configs`` directory, where you can also configure more than one context. You may also want to remove the other standard contexts that come with Webware from the config file.
 ``error404.html``:
     The static HTML page to be displayed when a page is not found. You can remove this to display a standard error message, modify the page according to your preferences, or use a custom error servlet instead by setting ``ErrorPage`` in the ``Application.config`` file appropriately.
 ``ErrorMsgs``:
@@ -312,14 +312,11 @@ print
 
 The most common technique is the infamous ``print`` statement which has been replaced with a ``print()`` function in Python 3. The results of ``print()`` calls go to the console where the WSGI server was started (not to the HTML page as would happen with CGI). If you specify ``AppLogFilename`` in ``Application.config``, this will cause the standard output and error to be redirected to this file.
 
-For convenient debugging, we recommend you use a clause like this in your ``Application.config`` file::
+For convenient debugging, the default ``Application.config`` file already uses the following conditional setting::
 
-    if Development:
-        AppLogFilename = None
-    else:
-        AppLogFilename = 'Logs/Application.log'
+    AppLogFilename = None if Development else 'Logs/Application.log'
 
-This will prevent standard output and error from being redirected to the log file in development mode, which makes it easier to find debugging output, and also makes it possible to use ```pdb``` (see below).
+This will prevent standard output and error from being redirected to the log file in development mode, which makes it easier to find debugging output, and also makes it possible to use ``pdb`` (see below).
 
 Prefixing the debugging output with a special tag (such as ``>>``) is useful because it stands out on the console and you can search for the tag in source code to remove the print statements after they are no longer useful. For example::
 
@@ -356,11 +353,11 @@ Assertions are used to ensure that the internal conditions of the application ar
 
 Debugging using PDB
 ~~~~~~~~~~~~~~~~~~~
-To use python's built-in debugger ```pdb```, see the tip above about setting ```AppLogFilename``` for convenient debugging.
+To use Python's built-in debugger ``pdb``, see the tip above about setting ``AppLogFilename`` for convenient debugging.
 
 To have Webware automatically put you into pdb when an exception occurs, set this in your ``Application.config`` file::
 
-    EnterDebuggerOnException = Development      
+    EnterDebuggerOnException = Development
 
 A quick and easy way to debug a particular section of code is to add these lines at that point in the code::
 
