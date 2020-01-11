@@ -14,14 +14,14 @@ requireDev = [
     'Pygments>=2,<3', 'waitress>=1.4.2,<2', 'hupper>=1.9,<2', 'WebTest>=2,<3'
 ]
 requireDocs = [
-    'Sphinx>=2.2,<3', 'sphinx_rtd_theme>=0.4'
+    'Sphinx>=2.3,<3', 'sphinx_rtd_theme>=0.4'
 ]
 requireExamples = [
-    'Pygments>=2,<3', 'Pillow>=6,<7', 'dominate>=2,<3', 'yattag>=1,<2'
+    'Pygments>=2,<3', 'Pillow>=6,<8', 'dominate>=2,<3', 'yattag>=1,<2'
 ]
 requireTest = [
     'psutil>=5,<6', 'flake8>=3.7,<4', 'pylint>=2.4,<3', 'tox>=3.14,<4',
-    'pywin32>=227,<300;platform_system=="Windows"'
+    'pywin32>=227,<300;sys_platform=="win32"'
 ] + requireDev + requireDocs + requireExamples
 
 
