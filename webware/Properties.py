@@ -1,6 +1,6 @@
 name = 'Webware for Python'
 
-version = (3, 0, 0, 'a1')
+version = (3, 0, 0, 'a2')
 
 status = 'stable'
 
