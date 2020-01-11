@@ -242,9 +242,9 @@ class Application(ConfigurableForServerSidePath):
 
         self._needsShutDown = [True]
         atexit.register(self.shutDown)
-        signal.signal(signal.SIGTERM, self.sigTerm)
+        self._sigTerm = signal.signal(signal.SIGTERM, self.sigTerm)
         try:
-            signal.signal(signal.SIGHUP, self.sigTerm)
+            self._sigHup = signal.signal(signal.SIGHUP, self.sigTerm)
         except AttributeError:
             pass  # SIGHUP does not exist on Windows
 
@@ -386,10 +386,9 @@ class Application(ConfigurableForServerSidePath):
         if tm:
             tm.stop()
         # Call all registered shutdown handlers
-        shutDownHandlers = self._shutDownHandlers
-        while shutDownHandlers:
+        for shutDownHandler in self._shutDownHandlers:
             try:
-                shutDownHandlers.pop(0)()
+                shutDownHandler()
             except Exception:
                 pass
         print("Application has been successfully shut down.")
@@ -405,9 +404,9 @@ class Application(ConfigurableForServerSidePath):
 
     def sigTerm(self, _signum, _frame):
         """Signal handler for terminating the process."""
-        print("\nApplication has been signaled to terminate.")
-        self.shutDown()
-        sys.exit()
+        if self._needsShutDown:
+            print("\nApplication has been signaled to terminate.")
+            self.shutDown()
 
     # endregion Init
 

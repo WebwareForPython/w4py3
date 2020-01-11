@@ -73,7 +73,7 @@ We assume that you have already copied your application working directory to the
 
     [Service]
     Type=simple
-    Restart=always
+    Restart=on-failure
     RestartSec=1
     User=www-data
     Group=www-data
@@ -84,6 +84,8 @@ We assume that you have already copied your application working directory to the
     WantedBy=multi-user.target
 
 Adapt the options as needed. ``Description`` should be a meaningful description of your Webware application. With ``User`` and ``Group`` you specify under which user and group your Webware application shall run, see the remarks above. Adapt the ``EexecStart`` option so that it uses the path to your virtual environment, and specify the path to your application working directory as the ``WorkingDirectory`` option. You can change the host address, port and add other options to ``webware serve`` in the ``ExecStart`` option. By default, the server runs on port 8080, but you can specify a different port using the ``-p`` option. If you want to run waitress behind a reverse proxy, for instance because you want to run on port 80 which needs superuser privileges or you need TLS support which is not provided by waitress, then you you need to serve only on the local interface, using options such as ``-l 127.0.0.1 -p 8080``. The ``--prod`` option tells Webware to run in production mode.
+
+Note that if you use the ``--reload`` option with ``webware serve`` in ``ExecStart``, then you should also set ``KillMode=process`` and ``ExecStopPost=/bin/sleep 1`` in the service file to make sure that Webware can be shut down properly.
 
 After adding or changing the service file, you need to run the following command so that systemd refreshes its configuration::
 
