@@ -68,7 +68,7 @@ class AppTest:
         chdir(cls.currentDir)
         if cls.catchOutput and output != (
                 'Application is shutting down...\n'
-                'Application has been successfully shutdown.'):
+                'Application has been successfully shut down.'):
             raise AssertionError(
                 'Application was not properly shut down. Output was:\n'
                 + output)

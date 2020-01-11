@@ -15,6 +15,7 @@ to the Application object itself.
 
 import atexit
 import os
+import signal
 import sys
 
 from time import time, localtime
@@ -239,8 +240,13 @@ class Application(ConfigurableForServerSidePath):
         self._plugInLoader = None
         self.loadPlugIns()
 
-        self._wasShutDown = False
+        self._needsShutDown = [True]
         atexit.register(self.shutDown)
+        signal.signal(signal.SIGTERM, self.sigTerm)
+        try:
+            signal.signal(signal.SIGHUP, self.sigTerm)
+        except AttributeError:
+            pass  # SIGHUP does not exist on Windows
 
     def initErrorPage(self):
         """Initialize the error page related attributes."""
@@ -368,22 +374,25 @@ class Application(ConfigurableForServerSidePath):
 
         Called when the interpreter is terminated.
         """
-        if not self._wasShutDown:
-            print("Application is shutting down...")
-            atexit.unregister(self.shutDown)
-            if self._sessions:
-                self._sessions.storeAllSessions()
-            tm = self.taskManager()
-            if tm:
-                tm.stop()
-            # Call all registered shutdown handlers
-            shutDownHandlers = self._shutDownHandlers
-            while shutDownHandlers:
-                try:
-                    shutDownHandlers.pop(0)()
-                except Exception:
-                    pass
-            print("Application has been successfully shutdown.")
+        try:  # atomic safety check
+            self._needsShutDown.pop()
+        except IndexError:  # shut down already initiated
+            return
+        print("Application is shutting down...")
+        atexit.unregister(self.shutDown)
+        if self._sessions:
+            self._sessions.storeAllSessions()
+        tm = self.taskManager()
+        if tm:
+            tm.stop()
+        # Call all registered shutdown handlers
+        shutDownHandlers = self._shutDownHandlers
+        while shutDownHandlers:
+            try:
+                shutDownHandlers.pop(0)()
+            except Exception:
+                pass
+        print("Application has been successfully shut down.")
 
     def addShutDownHandler(self, func):
         """Add a shutdown handler.
@@ -393,6 +402,12 @@ class Application(ConfigurableForServerSidePath):
         database connections, clean up resources, save data to disk, etc.
         """
         self._shutDownHandlers.append(func)
+
+    def sigTerm(self, _signum, _frame):
+        """Signal handler for terminating the process."""
+        print("\nApplication has been signaled to terminate.")
+        self.shutDown()
+        sys.exit()
 
     # endregion Init
 
