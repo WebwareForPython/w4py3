@@ -57,7 +57,7 @@ When installing Webware for Python 3, the following "extras" can optionally be i
 
 On your development machine, we recommend installing the full "test" environment which also includes the other two environments. To do that, you need to specify the "Extras" name in square brackets when installing Webware for Python 3::
 
-    pip install "Webware-for-Python[test]>=3a"
+    pip install "Webware-for-Python[tests]>=3a"
 
 
 Installation from Source

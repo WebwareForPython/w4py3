@@ -13,7 +13,7 @@ The unit tests and end to end tests for Webware for Python can be found in the `
 
 Before running the test suite, install Webware for Python into a virtual environment and activate that environment. While developing and testing Webware, it is recommended to install Webware in editable mode. To do this, unpack the source installation package of Webware for Python 3, and run this command in the directory containing the ``setup.py`` file::
 
-    pip install -e .[test]
+    pip install -e .[tests]
 
 Next, change into the directory containing the main Webware package::
 

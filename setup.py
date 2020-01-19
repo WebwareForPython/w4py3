@@ -19,7 +19,7 @@ requireDocs = [
 requireExamples = [
     'Pygments>=2,<3', 'Pillow>=6,<8', 'dominate>=2,<3', 'yattag>=1,<2'
 ]
-requireTest = [
+requireTests = [
     'psutil>=5,<6', 'flake8>=3.7,<4', 'pylint>=2.4,<3', 'tox>=3.14,<4',
     'pywin32>=227,<300;sys_platform=="win32"'
 ] + requireDev + requireDocs + requireExamples
@@ -54,7 +54,7 @@ setuptools.setup(
         'dev': requireDev,
         'docs': requireDocs,
         'examples': requireExamples,
-        'test': requireTest,
+        'tests': requireTests,
     },
     entry_points={
         'console_scripts': [
