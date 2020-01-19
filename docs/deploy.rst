@@ -418,6 +418,7 @@ You can also define more than one process group, and use different process group
         user=www-data group=www-data \
         threads=$threads \
         display-name='%{GROUP}' \
+        python-home=path-to-common-virtual-env \
         lang='de_DE.UTF-8' locale='de_DE.UTF-8' \
         queue-timeout=45 socket-timeout=60 connect-timeout=15 \
         request-timeout=60 inactivity-timeout=0 startup-timeout=15 \
