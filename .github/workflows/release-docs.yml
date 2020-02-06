@@ -27,10 +27,9 @@ jobs:
         touch _build/html/.nojekyll
     - name: Deploy docs to GitHub pages
       uses: peaceiris/actions-gh-pages@v3
-      env:
-        ACTIONS_DEPLOY_KEY: ${{ secrets.ACTIONS_DEPLOY_KEY }}
-        PUBLISH_BRANCH: gh-pages
-        PUBLISH_DIR: docs/_build/html
       with:
+        deploy_key: ${{ secrets.ACTIONS_DEPLOY_KEY }}
+        publish_branch: gh-pages
+        publish_dir: docs/_build/html
         emptyCommits: false
         forceOrphan: true
