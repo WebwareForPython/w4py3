@@ -34,7 +34,7 @@ setuptools.setup(
     long_description=long_description,
     long_description_content_type='text/markdown',
     keywords='web framework servlets',
-    url='https://cito.github.io/w4py3/',
+    url='https://webwareforpython.github.io/w4py3/',
     packages=setuptools.find_packages(),
     include_package_data=True,
     classifiers=[

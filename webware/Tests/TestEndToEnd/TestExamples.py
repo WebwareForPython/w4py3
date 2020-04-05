@@ -37,7 +37,7 @@ class TestExamples(AppTest, unittest.TestCase):
             '<div class="MenuHeading">Contexts</div>',
             '<div class="MenuHeading">E-mail</div>', 'webware-discuss',
             '<div class="MenuHeading">Exits</div>',
-            '<a href="https://cito.github.io/w4py3/">Webware</a>',
+            '<a href="https://webwareforpython.github.io/w4py3/">Webware</a>',
             '<a href="https://www.python.org/">Python</a>',
             '<div class="MenuHeading">Versions</div>',
             f'>Webware {webwareVersion}<', f'>Python {pythonVersion}<',

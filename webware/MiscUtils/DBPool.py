@@ -30,7 +30,7 @@ several drawbacks. For instance, pooled database connections which have
 become invalid are not automatically recovered. For a more sophisticated
 solution, please have a look at the DBUtils_ package.
 
-.. _DBUtils: https://cito.github.io/dbutils/
+.. _DBUtils: https://webwareforpython.github.io/dbutils/
 
 
 CREDIT

@@ -67,8 +67,8 @@ You can also report issues_ and send in `pull requests`_ using the `GitHub proje
 
 You can keep up on new releases through the very low traffic `announcement mailing list`_ or subscribing to `releases`_ on GitHub.
 
-.. _Webware for Python 3: https://cito.github.io/w4py3/
-.. _original project: https://cito.github.io/w4py/
+.. _Webware for Python 3: https://webwareforpython.github.io/w4py3/
+.. _original project: https://webwareforpython.github.io/w4py/
 .. _waitress: https://docs.pylonsproject.org/projects/waitress/
 .. _gil: https://realpython.com/python-gil/
 .. _wsgi: https://www.fullstackpython.com/wsgi-servers.html
@@ -79,9 +79,9 @@ You can keep up on new releases through the very low traffic `announcement maili
 .. _Python 2 to Python 3: https://docs.python.org/3/howto/pyporting.html
 .. _discussion mailing list: https://sourceforge.net/projects/webware/lists/webware-discuss
 .. _announcement mailing list: https://sourceforge.net/projects/webware/lists/webware-announce
-.. _GitHub project page: https://github.com/Cito/w4py3/
-.. _GitHub pages: https://cito.github.io/w4py3/
+.. _GitHub project page: https://github.com/WebwareForPython/w4py3/
+.. _GitHub pages: https://webwareforpython.github.io/w4py3/
 .. _Read the Docs: https://webware-for-python-3.readthedocs.io/
-.. _issues: https://github.com/Cito/w4py3/issues
-.. _pull requests: https://github.com/Cito/w4py3/pulls
-.. _releases: https://github.com/Cito/w4py3/releases
+.. _issues: https://github.com/WebwareForPython/w4py3/issues
+.. _pull requests: https://github.com/WebwareForPython/w4py3/pulls
+.. _releases: https://github.com/WebwareForPython/w4py3/releases

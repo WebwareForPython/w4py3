@@ -205,7 +205,7 @@ table.NiceTable th a:link, table.NiceTable th a:visited {
 
     def writeWebwareExitsMenu(self):
         self.menuHeading('Exits')
-        self.menuItem('Webware', 'https://cito.github.io/w4py3/')
+        self.menuItem('Webware', 'https://webwareforpython.github.io/w4py3/')
         self.menuItem('Python', 'https://www.python.org/')
 
     def writeVersions(self):
