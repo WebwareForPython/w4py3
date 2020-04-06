@@ -74,7 +74,7 @@ You can keep up on new releases through the very low traffic `announcement maili
 .. _wsgi: https://www.fullstackpython.com/wsgi-servers.html
 .. _ORM: https://en.wikipedia.org/wiki/Object-relational_mapping
 .. _SQLAlchemy: https://www.sqlalchemy.org/
-.. _MiddleKit for Webware for Python 3: https://github.com/PeaceWorksTechnologySolutions/w4py3-middlekit
+.. _MiddleKit for Webware for Python 3: https://github.com/WebwareForPython/w4py3-middlekit
 .. _WebTest: https://docs.pylonsproject.org/projects/webtest/en/latest/
 .. _Python 2 to Python 3: https://docs.python.org/3/howto/pyporting.html
 .. _discussion mailing list: https://sourceforge.net/projects/webware/lists/webware-discuss

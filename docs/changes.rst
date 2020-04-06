@@ -18,7 +18,7 @@ This is the full list of changes in Webware for Python 3 (first version 3.0.0) c
 * Instead of the "AutoReloadingAppServer", you can use the "reload" option of the WaitressServer script which uses hupper to monitor the application files and reload the waitress server if necessary. The "ImportSpy" has been removed.
 * The classes of the core "WebKit" component are now available at the root level of Webware for Python 3, and the WebKit component ceased to exist as a separate plug-in.
 * Some built-in plug-ins are not supported any more: "CGIWrapper", "ComKit" and "KidKit".
-* "MiddleKit" is not a built-in plug-in any more, but is provided as an external project on GitHub now (PeaceWorksTechnologySolutions/w4py3-middlekit).
+* "MiddleKit" is not a built-in plug-in any more, but is provided as a separate project on GitHub now (WebwareForPython/w4py3-middlekit).
 * Webware now uses entry points for discovering plug-ins instead of the old plug-in system, and the plug-in API has slightly changed. Existing plug-ins must be adapted to Python 3 and the new plug-in API.
 * The documentation has been moved to a separate directory and is built using Sphinx, instead providing a "Docs" context for Webware and every plug-in, and using custom documentation builders in the install script. The existing content has been reformatted for Sphinx, adapted and supplemented.
 * The various examples have been slightly improved and updated. Demo servlets showing the use of Dominate abd Yattag for creating HTML in a Pythonic way have been added.
