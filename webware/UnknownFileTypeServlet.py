@@ -10,7 +10,7 @@ from HTTPServlet import HTTPServlet
 from MiscUtils.Configurable import Configurable
 from ServletFactory import ServletFactory
 
-debug = 0
+debug = False
 
 
 try:

@@ -15,11 +15,12 @@ import os
 import re
 import sys
 
+from collections import defaultdict
+from urllib.parse import unquote
 from warnings import warn
 
 from HTTPExceptions import HTTPNotFound, HTTPMovedPermanently
 from MiscUtils.ParamFactory import ParamFactory
-from WebUtils.Funcs import urlDecode
 
 debug = False
 
@@ -249,7 +250,7 @@ class ContextParser(URLParser):
         through `Request.serverSidePath` and `Request.contextName`).
         """
         # This is a hack... should probably go in the Transaction class:
-        trans._fileParserInitSeen = {}
+        trans._fileParserInitSeen = defaultdict(set)
         # If there is no path, redirect to the root path:
         req = trans.request()
         if not requestPath:
@@ -259,7 +260,7 @@ class ContextParser(URLParser):
                 p += "?" + q
             raise HTTPMovedPermanently(location=p)
         # Determine the context name:
-        context = [_f for _f in requestPath.split('/') if _f]
+        context = [p for p in requestPath.split('/') if p]
         if requestPath.endswith('/'):
             context.append('')
         parts = []
@@ -345,7 +346,9 @@ class _FileParser(URLParser):
         req = trans.request()
 
         # First decode the URL, since we are dealing with filenames here:
-        requestPath = urlDecode(requestPath)
+        # We must use unquote instead of unquote_plus, because decoding
+        # the plus sign should only happen for the query string.
+        requestPath = unquote(requestPath)
 
         result = self.parseInit(trans, requestPath)
         if result is not None:
@@ -620,7 +623,7 @@ class _FileParser(URLParser):
             self._initModule = self.initModule()
         mod = self._initModule
 
-        seen = trans._fileParserInitSeen.setdefault(self._path, set())
+        seen = trans._fileParserInitSeen[self._path]
 
         if ('urlTransactionHook' not in seen
                 and hasattr(mod, 'urlTransactionHook')):
