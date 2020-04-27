@@ -27,7 +27,7 @@ def quoteJs(what):
 
 
 class PyJs:
-    """Translate Python expressions to a JavaScript strings."""
+    """Translate Python expressions to JavaScript strings."""
 
     def __init__(self, name):
         self._name = name
@@ -39,7 +39,7 @@ class PyJs:
         return self._name
 
     def __call__(self, *args, **kw):
-        args = ','.join([quoteJs(i) for i in args])
+        args = ','.join(map(quoteJs, args))
         kwArgs = ','.join(f'{k}={quoteJs(v)}' for k, v in kw.items())
         if args and kwArgs:
             allArgs = f'{args},{kwArgs}'
