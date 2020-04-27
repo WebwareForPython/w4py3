@@ -93,7 +93,7 @@ class ImageDemo(ExamplePage):
                f' width="{w:d}" height="{h:d}">')
             wr(f'<p>This image has just been generated using the {lib}.</p>')
         else:
-            wr(f'<h4 style="color:red">Sorry: No imaging tool available.</h4>')
+            wr('<h4 style="color:red">Sorry: No imaging tool available.</h4>')
             src = 'https://pypi.org/project/Pillow/'
             wr(f'<p>This example requires the <a href="{src}">{lib}</a>.</p>')
 

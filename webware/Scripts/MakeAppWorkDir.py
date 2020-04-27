@@ -160,14 +160,14 @@ class MakeAppWorkDir:
             with open(wsgiScript) as f:
                 script = f.read()
             if 'libDirs = []' not in script:
-                self.msg(f'\tWarning: Unexpected WSGI script')
+                self.msg("\tWarning: Unexpected WSGI script")
             else:
                 script = script.replace(
                     'libDirs = []', f'libDirs = {self._libraryDirs!r}')
                 with open(wsgiScript, 'w') as f:
                     f.write(script)
         else:
-            self.msg(f'\tWarning: Cannot find WSGI script.')
+            self.msg("\tWarning: Cannot find WSGI script.")
 
     def makeDefaultContext(self):
         """Make a very simple context for the newbie user to play with."""
