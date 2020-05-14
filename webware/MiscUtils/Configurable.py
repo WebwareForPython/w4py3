@@ -141,9 +141,12 @@ class Configurable:
         if contents.lstrip().startswith('{'):
             raise ConfigurationError(
                 'Configuration via a dict literal is not supported anymore.')
-        imp = getattr(self, '_imp', None)
-        if imp:
-            imp.watchFile(filename)
+        try:
+            from ImportManager import ImportManager
+            ImportManager().watchFile(filename)
+        except Exception as e:
+            print('WARNING: Config file', filename, 'cannot be watched:', e)
+            print()
         config = self.configReplacementValues().copy()
         try:
             exec(contents, config)
