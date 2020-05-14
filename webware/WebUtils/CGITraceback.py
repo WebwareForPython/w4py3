@@ -48,7 +48,7 @@ def html(context=5, options=None):
     inspect_trace = inspect.trace(context)
 
     javascript = """
-    <script type="text/javascript" language="JavaScript"><!--
+    <script>
     function tag(s) { return '<'+s+'>'; }
     function popup_repr(title, value) {
         w = window.open('', '_blank',
@@ -66,7 +66,6 @@ def html(context=5, options=None):
         w.document.close();
         return false;
     }
-    // -->
     </script>
     """
 

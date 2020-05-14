@@ -89,7 +89,7 @@ class AjaxPage(BaseClass):
 
     def writeJavaScript(self):
         BaseClass.writeJavaScript(self)
-        s = '<script type="text/javascript" src="ajax{}.js"></script>'
+        s = '<script src="ajax{}.js"></script>'
         self.writeln(s.format('call'))
         if self._clientPolling:
             self.writeln(s.format('poll'))

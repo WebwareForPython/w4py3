@@ -24,7 +24,6 @@ class SidebarPage(Page):
     # region StyleSheet
 
     _styleSheet = '''
-<!--
 html {
   height: 100%;
 }
@@ -121,7 +120,6 @@ color: white;
 table.NiceTable th a:link, table.NiceTable th a:visited {
     color: #101040;
 }
--->
 '''
 
     def writeStyleSheet(self):
@@ -130,7 +128,7 @@ table.NiceTable th a:link, table.NiceTable th a:visited {
         This way we avoid having to care about where an external style
         sheet should be located when this class is used in another context.
         """
-        self.writeln(f'<style type="text/css">{self._styleSheet}</style>')
+        self.writeln(f'<style>{self._styleSheet}</style>')
 
     # endregion StyleSheet
 

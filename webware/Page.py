@@ -159,8 +159,7 @@ class Page(HTTPContent):
 
         A typical implementation is::
 
-            self.writeln('<link rel="stylesheet"'
-                         ' href="StyleSheet.css" type="text/css">')
+            self.writeln('<link rel="stylesheet" href="StyleSheet.css">')
         """
         # base method does nothing
 
@@ -172,8 +171,7 @@ class Page(HTTPContent):
 
         A typical implementation is::
 
-            self.writeln('<script type="text/javascript"'
-                        ' src="ajax.js"></script>')
+            self.writeln('<script src="ajax.js"></script>')
         """
         # base method does nothing
 

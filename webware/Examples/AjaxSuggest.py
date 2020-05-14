@@ -26,12 +26,12 @@ class AjaxSuggest(AjaxPage):
     def writeJavaScript(self):
         AjaxPage.writeJavaScript(self)
         self.writeln(
-            '<script type="text/javascript" src="ajaxsuggest.js"></script>')
+            '<script src="ajaxsuggest.js"></script>')
 
     def writeStyleSheet(self):
         AjaxPage.writeStyleSheet(self)
         self.writeln(
-            '<link rel="stylesheet" href="ajaxsuggest.css" type="text/css">')
+            '<link rel="stylesheet" href="ajaxsuggest.css">')
 
     def htBodyArgs(self):
         return AjaxPage.htBodyArgs(self) + ' onload="initPage();"'

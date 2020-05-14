@@ -108,7 +108,7 @@ border: 1px solid #cce;
 }
             """
             doc, tag, text = Doc().tagtext()
-            with tag('style', klass='text/css'):
+            with tag('style'):
                 text(style)
 
             self.writeln(doc.getvalue())

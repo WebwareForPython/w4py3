@@ -51,15 +51,13 @@ expectedStartPage = r'''
 <head>
 \s*<title>Welcome</title>
 \s*<meta charset="utf-8">
-<style type="text/css">
-<!--
+<style>
 html {
 }
 h1 { .+; }
 #Page {
 \s*display: table;
 }
--->
 </style>
 </head>
 <body style="color:black;background-color:white">

@@ -657,8 +657,7 @@ def docType():
 
 def htStyle():
     """Return the page style."""
-    return '''<style type="text/css">
-<!--
+    return '''<style>
 body {
     background-color: white;
     color: #080810;
@@ -699,7 +698,6 @@ table.NiceTable table.NiceTable th {
     color: black;
     font-weight: normal;
 }
--->
 </style>'''
 
 

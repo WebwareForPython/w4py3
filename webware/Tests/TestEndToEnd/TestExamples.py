@@ -28,7 +28,7 @@ class TestExamples(AppTest, unittest.TestCase):
         r.mustcontain(
             '<html lang="en">', '<head>', '</head>',
             '<title>Welcome</title>', '<meta charset="utf-8">',
-            '<style type="text/css">', 'table.NiceTable {', '</style>',
+            '<style>', 'table.NiceTable {', '</style>',
             '<body style="color:black;background-color:white">', '</body>',
             '<div id="Page">', '<div id="CornerTitle">Webware Examples</div>',
             '<div id="Banner">Welcome</div>', '<div id="Sidebar">',

@@ -9,8 +9,8 @@ class JSONRPCClient(ExamplePage):
     def writeJavaScript(self):
         ExamplePage.writeJavaScript(self)
         self.write('''\
-            <script type="text/javascript" src="jsonrpc.js"></script>
-            <script type="text/javascript">
+            <script src="jsonrpc.js"></script>
+            <script>
             jsonrpc = new JSONRpcClient("JSONRPCExample");
             methods = jsonrpc.system.listMethods();
             function dojsonrpc() {
@@ -47,7 +47,7 @@ class JSONRPCClient(ExamplePage):
             <input id="parameter" type="text" size="20" value="Hello, World!">
             </td><td>
             <select id="method" size="1">
-            <script type="text/javascript">
+            <script>
             for (m in methods)
                 document.writeln('<option>' + methods[m] + '</option>');
             </script>
