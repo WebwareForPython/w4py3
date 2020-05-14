@@ -140,7 +140,7 @@ class Configurable:
             return {}
         if contents.lstrip().startswith('{'):
             raise ConfigurationError(
-                'Configuration via a dict literal is not supported any more.')
+                'Configuration via a dict literal is not supported anymore.')
         imp = getattr(self, '_imp', None)
         if imp:
             imp.watchFile(filename)

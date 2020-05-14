@@ -4,7 +4,7 @@
 
 `Application` is the main class that sets up and dispatches requests.
 This is done using the WSGI protocol, so an `AppServer` class is not
-needed and not contained in Webware for Python any more.
+needed and not contained in Webware for Python anymore.
 `Application` receives the input via WSGI and turns it into `Transaction`,
 `HTTPRequest`, `HTTPResponse`, and `Session`.
 

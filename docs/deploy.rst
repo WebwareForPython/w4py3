@@ -613,7 +613,7 @@ By activating the virtual environment, you make sure that you compile the source
 
 If you want to serve contexts outside the application working directory, like the default Examples or Admin context, you need to compile these as well, in a similar way.
 
-You can now remove all the source files except the WSGI script and the ``__pycache__`` directories, they are not needed on the production system any more::
+You can now remove all the source files except the WSGI script and the ``__pycache__`` directories, they are not needed on the production system anymore::
 
     cd path-to-app-work-dir
     find . -type f -name '*.py' -delete -o \
@@ -645,7 +645,7 @@ This is totally doable, and may make sense in order to better utilize existing h
 - The Webware TaskManager will be started with every Application process. If this is not what you want, you can change the ``RunTasks`` configuration setting to False, and run the TaskManager in a dedicated process.
 - Some load balancers support "sticky sessions", identifying clients by their session cookies and dispatching them to the same server processes. But usually, in multiprocessing mode, you cannot guarantee that requests from the same client are served by the same process, and it would also partially defeat the whole purpose of running multiple processes. Therefore, the SessionMemoryStore, SessionFileStore and SessionDynamicStore are not suitable in that mode, since the session data that is created in the local memory of one process will not be available in a different process. Also, accessing session files from different processes simultaneously can be problematic. Instead, we recommend changing the ``SessionStore`` configuration setting to use the SessionRedisStore or the SessionMemcachedStore. Storing the session data in the database is also possible, but may degrade performance.
 - When caching frequently used data in local memory, this will become less effective and waste memory when running multiple processes. Consider using a distributed caching system such as Redis_ or Memcached_ instead. If you are using the SessionRedisStore or the SessionMemcachedStore, you will need to install one of these systems anyway.
-- Webware applications often store global, application wide state in class attributes of servlet classes or elsewhere in local memory. Again, be aware that this does not work any more if you are running the same application in multiple processes.
+- Webware applications often store global, application wide state in class attributes of servlet classes or elsewhere in local memory. Again, be aware that this does not work anymore if you are running the same application in multiple processes.
 - Redirecting standard error and output to the same log file is not supported when running multiple processes, so the ``LogFilename`` setting should be set to None, and a different logging mechanism should be used. When using mod_wsgi you may need to use the ``WSGIRestrictStdout`` directive and log on that level. Future versions of Webware for Python 3 will address this problem and provide proper logging mechanisms instead of just printing to stdout.
 
 .. _Redis: https://redis.io/

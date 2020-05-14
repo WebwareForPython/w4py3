@@ -296,7 +296,7 @@ class HTTPResponse(Response):
 
         Checks whether the response has already been partially or completely
         sent. If this method returns True, then no new headers/cookies can be
-        added to the response any more.
+        added to the response anymore.
         """
         return self._committed
 
