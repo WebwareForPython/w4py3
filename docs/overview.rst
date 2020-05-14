@@ -29,7 +29,7 @@ Design Points and Changes
 * Built-in plug-ins for **Task scheduling** and **User management**.
 * Excellent **documentation** and numerous **examples**.
 
-Another key goal of the original project was to provide a "Pythonic" API, instead of simply copying Java APIs. However, the project was created when Python 2 was still in its infancy, lacking many modern features and conventions such as PEP-8 were not yet available. Therefore, the Webware for Python API is a bit different from what is considered "Pythonic" nowadays. Particularly, it uses getters and setters instead of properties (but without the "get" prefix for getters), and camelCase method names instead of snake_case. In order to facilitate migration of existing projects, Webware for Python 3 kept this old API, even though it is not in line with PEP-8 and could be simplified by using properties. Modernizing the API will be a goal for a possible third edition of Webware for Python, as well as using the Python logging facility which did not yet exist when Webware for Python was created and is still done via printing to the standard output.
+Another key goal of the original project was to provide a "Pythonic" API, instead of simply copying Java APIs. However, the project was created when Python 2 was still in its infancy, lacking many modern features and conventions such as PEP-8. Therefore, the Webware for Python API is a bit different from what is considered "Pythonic" nowadays. Particularly, it uses getters and setters instead of properties (but without the "get" prefix for getters), and camelCase method names instead of snake_case. In order to facilitate migration of existing projects, Webware for Python 3 kept this old API, even though it is not in line with PEP-8 and could be simplified by using properties. Modernizing the API will be a goal for a possible third edition of Webware for Python, as well as using the Python logging facility which did not yet exist when Webware for Python was created and is still done via printing to the standard output.
 
 The plug-in architecture has also been kept in Webware for Python 3, but now implemented in a more modern way using entry points for discovering plug-ins. Old plug-ins are not compatible, but can be adapted quite easily. The old Webware for Python installer has been replaced by a standard setup.py based installation.
 
@@ -39,7 +39,7 @@ The second incisive change in Webware for Python 3 is the removal of the "Middle
 
 To facilitate web development with Webware for Python 3, a ``webware`` console script has been added that can be used to create working directories for new application and start the development server. This script replaces the old ``MakeAppWorkDir`` and ``AppServer`` scripts. When creating a new working directory, a WSGI script will also be created that can be used to attach the application to a web server.
 
-The documentation contexts of the various plug-ins have been replaced by a common Sphinx based documentation provided in the top level ``docs`` directory. The tests are still contained in ``Tests`` subdirectories at the top and plug-in levels, but the test suite has been expanded and is using the unittest framework consistently. The twill tests have also been replaced by unit tests based using WebTest_. They make sure that all servlets in the examples and testing contexts work as expected. Since Webware for Python 3 uses WSGI, WebTest can now also be used to test applications built with Webware for Python 3.
+The documentation contexts of the various plug-ins have been replaced by a common Sphinx based documentation provided in the top-level ``docs`` directory. The tests are still contained in ``Tests`` subdirectories at the top and plug-in levels, but the test suite has been expanded and is using the unittest framework consistently. The twill_ tests have also been replaced by unit tests based using WebTest_. They make sure that all servlets in the examples and testing contexts work as expected. Since Webware for Python 3 uses WSGI, WebTest can now also be used to test applications built with Webware for Python 3.
 
 Otherwise, not much has been changed, so that migrating existing Webware for Python applications to Webware for Python 3 should be straight forward. Of course, you still need to migrate your Webware applications from `Python 2 to Python 3`_, but meanwhile a lot of tools and guidelines have been provided that help making this process as painless as possible.
 
@@ -75,11 +75,12 @@ You can keep up on new releases through the very low traffic `announcement maili
 .. _ORM: https://en.wikipedia.org/wiki/Object-relational_mapping
 .. _SQLAlchemy: https://www.sqlalchemy.org/
 .. _MiddleKit for Webware for Python 3: https://github.com/WebwareForPython/w4py3-middlekit
+.. _twill: https://twill-tools.github.io/twill/
 .. _WebTest: https://docs.pylonsproject.org/projects/webtest/en/latest/
 .. _Python 2 to Python 3: https://docs.python.org/3/howto/pyporting.html
 .. _discussion mailing list: https://sourceforge.net/projects/webware/lists/webware-discuss
 .. _announcement mailing list: https://sourceforge.net/projects/webware/lists/webware-announce
-.. _GitHub project page: https://github.com/WebwareForPython/w4py3/
+.. _GitHub project page: https://github.com/WebwareForPython/w4py3
 .. _GitHub pages: https://webwareforpython.github.io/w4py3/
 .. _Read the Docs: https://webware-for-python-3.readthedocs.io/
 .. _issues: https://github.com/WebwareForPython/w4py3/issues

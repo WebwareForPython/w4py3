@@ -37,7 +37,7 @@ setuptools.setup(
     keywords='web framework servlets',
     url='https://webwareforpython.github.io/w4py3/',
     project_urls={
-        'Source': 'https://github.com/WebwareForPython/w4py3/',
+        'Source': 'https://github.com/WebwareForPython/w4py3',
         'Issues': 'https://github.com/WebwareForPython/w4py3/issues',
         'Documentation': 'https://webwareforpython.github.io/w4py3/',
     },
