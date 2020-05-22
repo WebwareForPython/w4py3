@@ -354,7 +354,7 @@ class DataTable:
 
     def __init__(
             self, filenameOrHeadings=None, delimiter=',',
-            allowComments=True, stripWhite=True,
+            allowComments=True, stripWhite=True, encoding=None,
             defaultType=None, usePickleCache=None):
         if usePickleCache is None:
             self._usePickleCache = self._usePickleCache
@@ -362,7 +362,7 @@ class DataTable:
             self._usePickleCache = usePickleCache
         if defaultType and defaultType not in _types:
             raise DataTableError(
-                'Unknown type for default type: %r' % defaultType)
+                f'Unknown type for default type: {defaultType!r}')
         self._defaultType = defaultType
         self._filename = None
         self._headings = []
@@ -370,7 +370,8 @@ class DataTable:
         if filenameOrHeadings:
             if isinstance(filenameOrHeadings, str):
                 self.readFileNamed(
-                    filenameOrHeadings, delimiter, allowComments, stripWhite)
+                    filenameOrHeadings, delimiter,
+                    allowComments, stripWhite, encoding)
             else:
                 self.setHeadings(filenameOrHeadings)
 
@@ -380,7 +381,8 @@ class DataTable:
 
     def readFileNamed(
             self, filename, delimiter=',',
-            allowComments=True, stripWhite=True, worksheet=1, row=1, column=1):
+            allowComments=True, stripWhite=True, encoding=None,
+            worksheet=1, row=1, column=1):
         self._filename = filename
         data = None
         if self._usePickleCache:
@@ -390,7 +392,7 @@ class DataTable:
             if self._filename.lower().endswith('.xls'):
                 self.readExcel(worksheet, row, column)
             else:
-                with open(self._filename) as f:
+                with open(self._filename, encoding=encoding) as f:
                     self.readFile(f, delimiter, allowComments, stripWhite)
             if self._usePickleCache:
                 writePickleCache(self, filename, source='MiscUtils.DataTable')
@@ -776,7 +778,7 @@ class TableRecord:
         return key in self._nameToIndexMap
 
     def __repr__(self):
-        return '%s' % self._values
+        return repr(self._values)
 
     def __iter__(self):
         for value in self._values:
