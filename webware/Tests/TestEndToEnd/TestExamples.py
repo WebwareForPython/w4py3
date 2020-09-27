@@ -1,5 +1,6 @@
 """Test Webware Example context"""
 
+import os
 import unittest
 
 from .AppTest import AppTest
@@ -14,6 +15,11 @@ class TestExamples(AppTest, unittest.TestCase):
     def setUp(self):
         AppTest.setUp(self)
         self.testApp.reset()
+
+    @staticmethod
+    def removeDemoDatabase():
+        if os.path.exists('demo.db'):
+            os.remove('demo.db')
 
     def testStartPage(self):
         r = self.testApp.get('/')
@@ -469,6 +475,93 @@ class TestExamples(AppTest, unittest.TestCase):
             '<h2>Demo contact form</h2>',
             'Your subject looks like spam!',
             no=['did not enter', 'message looks like spam'])
+
+    def testDBUtilsDemo(self):
+        self.removeDemoDatabase()
+        r = self.testApp.get('/DBUtilsDemo')
+        self.app.addShutDownHandler(self.removeDemoDatabase)
+        self.assertEqual(r.status, '200 OK')
+        self.assertEqual(r.content_type, 'text/html')
+        r.mustcontain(
+            '<title>DBUtils Demo</title>',
+            '<h2>Welcome to the DBUtils Demo!</h2>',
+            'We are using PooledDB with the sqlite3 database module',
+            'Play with the demo database', 'Create tables',
+            no=['No database', 'error'])
+        r = r.form.submit('_action_createTables')
+        r.mustcontain(
+            'Creating the following table:',
+            'The table was successfully created',
+            no=['already exists', 'error'])
+        r = r.click('Back')
+        r.mustcontain('Play with the demo database')
+        r = r.form.submit('_action_addSeminar')
+        r.mustcontain('Add a seminar entry to the database:')
+        r.form['id'] = 'W4PY'
+        r.form['title'] = 'Creating Webware apps'
+        r.form['places'] = 12
+        r = r.form.submit()
+        r.mustcontain('"Creating Webware apps" added to seminars.')
+        r = r.click('Back')
+        r.mustcontain('Play with the demo database')
+        r = r.form.submit('_action_addSeminar')
+        r.form['id'] = 'JAVA'
+        r.form['title'] = 'Creating Java apps'
+        r.form['cost'] = 1000
+        r = r.form.submit()
+        r.mustcontain('"Creating Java apps" added to seminars.')
+        r = r.click('Back')
+        r.mustcontain('Play with the demo database')
+        r = r.form.submit('_action_listSeminars')
+        r.mustcontain(
+            'List of seminars in the database:',
+            '<td>JAVA</td><td>Creating Java apps</td>'
+            '<td align="right">1000</td><td align="right">unlimited</td>',
+            '<td>W4PY</td><td>Creating Webware apps</td>'
+            '<td align="right">free</td><td align="right">12</td>')
+        r.form['id'] = ['JAVA', None]
+        r = r.form.submit()
+        r.mustcontain('Entries deleted: 1', 'W4PY', no=['JAVA'])
+        r = r.click('Back')
+        ##
+        r.mustcontain('Play with the demo database')
+        r = r.form.submit('_action_addAttendee')
+        r.mustcontain('Add an attendee entry to the database:')
+        r.form['name'] = 'John Doe'
+        r.form['paid'] = '1'
+        r = r.form.submit()
+        r.mustcontain('John Doe added to attendees.')
+        r = r.click('Back')
+        r.mustcontain('Play with the demo database')
+        r = r.form.submit('_action_addAttendee')
+        r.form['name'] = "John's Bro"
+        r.form['paid'] = '0'
+        r = r.form.submit()
+        r.mustcontain("John's Bro added to attendees.")
+        r = r.click('Back')
+        r.mustcontain('Play with the demo database')
+        r = r.form.submit('_action_listAttendees')
+        r.mustcontain(
+            'List of attendees in the database:',
+            '<td>John Doe</td><td>Creating Webware apps</td>'
+            '<td align="center">Yes</td>',
+            "<td>John's Bro</td><td>Creating Webware apps</td>"
+            '<td align="center">No</td>')
+        r.form['id'] = [None, "W4PY:John's Bro"]
+        r = r.form.submit()
+        r.mustcontain('Entries deleted: 1', 'John Doe', no=["John's Bro"])
+        r = r.click('Back')
+        r = r.form.submit('_action_listSeminars')
+        r.mustcontain(
+            'List of seminars in the database:',
+            '<td>W4PY</td><td>Creating Webware apps</td>'
+            '<td align="right">free</td><td align="right">11</td>')
+        r = r.click('Back')
+        self.assertEqual(r.status, '200 OK')
+        self.assertEqual(r.content_type, 'text/html')
+        r.mustcontain(
+            '<title>DBUtils Demo</title>',
+            '<h2>Welcome to the DBUtils Demo!</h2>')
 
     def testAjaxSuggest(self):
         r = self.testApp.get('/AjaxSuggest')

@@ -27,6 +27,7 @@ webwareConfig = {
         'ImageDemo',
         'DominateDemo',
         'YattagDemo',
+        'DBUtilsDemo',
         'AjaxSuggest',
         'JSONRPCClient',
     ]

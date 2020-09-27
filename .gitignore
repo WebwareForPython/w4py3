@@ -21,6 +21,7 @@ _build/
 
 Thumbs.db
 .DS_Store
+demo.db
 
 Cache/
 Logs/

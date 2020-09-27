@@ -18,7 +18,8 @@ requireDocs = [
     'Sphinx>=2.4,<3', 'sphinx_rtd_theme>=0.4'
 ]
 requireExamples = [
-    'Pygments>=2.6,<3', 'Pillow>=7,<8', 'dominate>=2.5,<3', 'yattag>=1.13,<2'
+    'Pygments>=2.6,<3', 'Pillow>=7,<8', 'dominate>=2.5,<3', 'yattag>=1.13,<2',
+    'DBUtils>=2,<4'
 ]
 requireTests = [
     'psutil>=5.7,<6', 'flake8>=3.8,<4', 'pylint>=2.5,<3', 'tox>=3.15,<4',

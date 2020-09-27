@@ -24,6 +24,7 @@ disable =
  missing-docstring,
  no-self-use,
  protected-access,
+ raise-missing-from,
  redefined-argument-from-local,
  redefined-outer-name
 
@@ -46,7 +47,7 @@ variable-naming-style = camelCase
 
 good-names =
  b, c, d, e, f, g, h, i, j, k, m, n, p, q, r, s, t, ,v, w, x, y,
- dt, fd, fp, fs, ip, ok, tm, ts, wr,
+ db, dt, fd, fp, fs, ip, ok, tm, ts, wr,
  dir_, id_, input_, type_,
  allow_none, entry_point, has_key, start_response, ssl_ctx,
  memcache, redis,
