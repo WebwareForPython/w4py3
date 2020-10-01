@@ -132,8 +132,7 @@ class Configurable:
         if not filename:
             return {}
         try:
-            with open(filename) as f:
-                contents = f.read()
+            contents = self.readConfig(filename)
         except IOError as e:
             print('WARNING: Config file', filename, 'not loaded:', e.strerror)
             print()
@@ -157,6 +156,23 @@ class Configurable:
             raise ConfigurationError(
                 f'Invalid configuration file, {filename} ({e}).')
         return config
+
+    @staticmethod
+    def readConfig(filename):
+        """Read the configuration from the file with the given name.
+
+        Raises an UIError if the configuration cannot be read.
+
+        This implementation assumes the file is stored in utf-8 encoding with
+        possible BOM at the start, but also tries to read as latin-1 if it
+        cannot be decoded as utf-8. Subclasses can override this behavior.
+        """
+        try:
+            with open(filename, encoding='utf-8-sig') as f:
+                return f.read()
+        except UnicodeDecodeError:
+            with open(filename, encoding='latin-1') as f:
+                return f.read()
 
     def printConfig(self, dest=None):
         """Print the configuration to the given destination.
