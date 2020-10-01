@@ -12,17 +12,17 @@ with open('README.md') as fh:
 
 requireDev = [
     'Pygments>=2.6,<3', 'WebTest>=2.0,<3',
-    'waitress>=1.4.3,<2', 'hupper>=1.10,<2',
+    'waitress>=1.4.4,<2', 'hupper>=1.10,<2',
 ]
 requireDocs = [
     'Sphinx>=2.4,<3', 'sphinx_rtd_theme>=0.4'
 ]
 requireExamples = [
-    'Pygments>=2.6,<3', 'Pillow>=7,<8', 'dominate>=2.5,<3', 'yattag>=1.13,<2',
-    'DBUtils>=2,<4'
+    'DBUtils>=2,<4', 'dominate>=2.5,<3', 'yattag>=1.13,<2',
+    'Pygments>=2.6,<3', 'Pillow>=7,<9'
 ]
 requireTests = [
-    'psutil>=5.7,<6', 'flake8>=3.8,<4', 'pylint>=2.5,<3', 'tox>=3.15,<4',
+    'psutil>=5.7,<6', 'flake8>=3.8,<4', 'pylint>=2.6,<3', 'tox>=3.20,<4',
     'pywin32>=227,<300;sys_platform=="win32"'
 ] + requireDev + requireDocs + requireExamples
 
@@ -55,6 +55,7 @@ setuptools.setup(
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
         'Programming Language :: Python :: 3.8',
+        'Programming Language :: Python :: 3.9',
         'Operating System :: OS Independent',
     ],
     extras_require={
