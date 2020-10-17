@@ -3,8 +3,8 @@
 List of Changes
 ===============
 
-Changes in Webware for Python 3
--------------------------------
+What's new in Webware for Python 3
+----------------------------------
 
 This is the full list of changes in Webware for Python 3 (first version 3.0.0) compared with Webware for Python 2 (last version 1.2.3):
 
@@ -27,3 +27,7 @@ This is the full list of changes in Webware for Python 3 (first version 3.0.0) c
 * In particular, end-to-end tests using Twill have been replaced by more efficient unit tests using WebTest.
 * Internal assert statements have been removed or replaced with checks raising real errors.
 * The style guide has been slightly revised. We now rely on flake8 and pylint instead of using the custom "checksrc" script.
+
+See also the list of `releases`_ on GitHub for all changes in newer releases of Webware for Python 3 since the first alpha release 3.0.0a0.
+
+.. _releases: https://github.com/WebwareForPython/w4py3/releases
