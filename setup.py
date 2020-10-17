@@ -19,7 +19,7 @@ requireDocs = [
 ]
 requireExamples = [
     'DBUtils>=2,<4', 'dominate>=2.5,<3', 'yattag>=1.13,<2',
-    'Pygments>=2.6,<3', 'Pillow>=7,<9'
+    'Pygments>=2.6,<3', 'Pillow>=8,<9'
 ]
 requireTests = [
     'psutil>=5.7,<6', 'flake8>=3.8,<4', 'pylint>=2.6,<3', 'tox>=3.20,<4',
