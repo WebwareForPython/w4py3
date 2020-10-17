@@ -23,7 +23,8 @@ requireExamples = [
 ]
 requireTests = [
     'psutil>=5.7,<6', 'flake8>=3.8,<4', 'pylint>=2.6,<3', 'tox>=3.20,<4',
-    'pywin32>=227,<300;sys_platform=="win32"'
+    'pywin32>=228,<300;'
+    'sys_platform=="win32" and implementation_name=="cpython"'
 ] + requireDev + requireDocs + requireExamples
 
 
@@ -56,6 +57,8 @@ setuptools.setup(
         'Programming Language :: Python :: 3.7',
         'Programming Language :: Python :: 3.8',
         'Programming Language :: Python :: 3.9',
+        'Programming Language :: Python :: Implementation :: CPython',
+        'Programming Language :: Python :: Implementation :: PyPy',
         'Operating System :: OS Independent',
     ],
     extras_require={

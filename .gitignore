@@ -3,6 +3,7 @@
 *.bak
 *.cache
 *.default
+*.db
 *.egg-info
 *.log
 *.patch
@@ -19,9 +20,7 @@ build/
 dist/
 _build/
 
-Thumbs.db
 .DS_Store
-demo.db
 
 Cache/
 Logs/
