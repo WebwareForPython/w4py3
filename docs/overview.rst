@@ -24,6 +24,7 @@ Design Points and Changes
 * **Simplicity**. Webware's code is quite simple and easy to understand if you feel the need to extend it.
 * **Servlets**. Similar to Java servlets, they provide a familiar basis for the construction of web applications.
 * **Robustness**. A crash of one page will not crash the server. Exception reports are logged and easy to read when developing.
+* **Object-programming programming** (making good use of multiple inheritance and the template method pattern).
 * **Extensibility** via plug-ins.
 * **Python Server Pages** (PSP, similar to ASP, PHP and JSP) as a built-in plug-in.
 * Built-in plug-ins for **Task scheduling** and **User management**.
