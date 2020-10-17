@@ -11,7 +11,7 @@ Webware for Python is a framework for developing object-oriented, web-based appl
 
 The project had been initiated in 1999 by Chuck Esterbrook with the goal of creating the ultimate web development suite for Python, and it soon got a lot of attraction. Jay Love, Geoff Talvola and Ian Bicking were other early contributors and core developers.
 
-They created a mature and stable software that has been used in production for a long time by a variety of people in different environments. Since then, a lot of other web frameworks for Python emerged and have taken the lead, such as Django, Flask or Pyramid, while Webware for Python got less attention. Webware for Python was still available, maintained and slightly improved by Christoph Zwerschke, and happily used here and there, but did not change much over the years.
+They created a mature and stable web framework that has been used in production for a long time by a variety of people in different environments. Since then, a lot of other web frameworks for Python emerged and have taken the lead, such as Django, Flask or Pyramid, while Webware for Python got less attention. Webware for Python was still available, maintained and slightly improved by Christoph Zwerschke, and happily used here and there, but did not change much over the years.
 
 Since Webware for Python was based on Python 2, for which support ended 20 years later at the end of 2019, but there were still Webware for Python applications in the wild running happily after 2020, Christoph Zwerschke created a Python 3 based edition of the project called `Webware for Python 3`_.
 

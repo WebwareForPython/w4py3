@@ -15,7 +15,7 @@ requireDev = [
     'waitress>=1.4.4,<2', 'hupper>=1.10,<2',
 ]
 requireDocs = [
-    'Sphinx>=2.4,<3', 'sphinx_rtd_theme>=0.4'
+    'Sphinx>=3,<4', 'sphinx_rtd_theme>=0.5'
 ]
 requireExamples = [
     'DBUtils>=2,<4', 'dominate>=2.5,<3', 'yattag>=1.13,<2',

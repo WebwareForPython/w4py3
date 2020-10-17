@@ -50,9 +50,11 @@ class Error(dict):
         self.update(valueArgs)
 
     def object(self):
+        """Get the object the error occurred for."""
         return self._object
 
     def message(self):
+        """Get the user-readable error message."""
         return self._message
 
     def __repr__(self):

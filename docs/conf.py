@@ -22,7 +22,7 @@ from Tests.TestSessions import redis, memcache
 # -- Project information -----------------------------------------------------
 
 project = 'Webware for Python 3'
-copyright = '2019, Christoph Zwerschke et al'
+copyright = '1999-2020, Christoph Zwerschke et al'
 author = 'Christoph Zwerschke et al.'
 
 # The short X.Y version
@@ -50,11 +50,11 @@ templates_path = ['_templates']
 exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 
 # AutoDoc configuration
-autoclass_content = "both"
+autoclass_content = "class"
 autodoc_default_options = {
     'members': True,
     'inherited-members': True,
-    'private-members': True,
+    'special-members': '__init__',
     'undoc-members': True,
     'show-inheritance': True
 }
@@ -64,11 +64,8 @@ autosummary_generate = True
 # (references to some of the Python built-in types do not resolve correctly)
 nitpicky = True
 nitpick_ignore = [('py:class', t) for t in (
-    'object', 'dict',
-    'Exception', 'ConnectionError', 'LookupError',
     'cgi.FieldStorage', 'html.parser.HTMLParser',
     'threading.Thread', 'xmlrpc.client.ProtocolError')]
-
 
 # -- Options for HTML output -------------------------------------------------
 
