@@ -41,7 +41,7 @@ Installation with Pip
 
 With the virtual environment activated, you can now download and install Webware for Python 3 in one step using the following command::
 
-    pip install "Webware-for-Python>=3a"
+    pip install "Webware-for-Python>=3"
 
 For developing with Webware for Python, you will probably also install "extras" as explained below.
 
@@ -57,7 +57,7 @@ When installing Webware for Python 3, the following "extras" can optionally be i
 
 On your development machine, we recommend installing the full "test" environment which also includes the other two environments. To do that, you need to specify the "Extras" name in square brackets when installing Webware for Python 3::
 
-    pip install "Webware-for-Python[tests]>=3a"
+    pip install "Webware-for-Python[tests]>=3"
 
 
 Installation from Source

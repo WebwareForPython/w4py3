@@ -30,7 +30,7 @@ Next, we recommend creating a virtual environment for your Webware for Python 3 
 This will create the virtual environment in the subdirectory ``.venv``. Of course, you can also use a different name for that directory. Now, install Webware for Python 3 into that virtual environment. Under Linux, you can do this as follows::
 
     . .venv/bin/activate
-    pip install "Webware-for-Python>=3a"
+    pip install "Webware-for-Python>=3"
 
 You will also need to install other Python packages required by your application into the virtual environment with pip, unless these are provided as part of the application, e.g. in a ``Lib`` subdirectory of the application working directory. If you want to use a Python-based WSGI server such as waitress, you need to install it into this virtual environment as well::
 
