@@ -11,15 +11,15 @@ with open('README.md') as fh:
     long_description = fh.read()
 
 requireDev = [
-    'Pygments>=2.6,<3', 'WebTest>=2.0,<3',
+    'Pygments>=2.7,<3', 'WebTest>=2.0,<3',
     'waitress>=1.4.4,<2', 'hupper>=1.10,<2',
 ]
 requireDocs = [
     'Sphinx>=3,<4', 'sphinx_rtd_theme>=0.5'
 ]
 requireExamples = [
-    'DBUtils>=2,<4', 'dominate>=2.5,<3', 'yattag>=1.13,<2',
-    'Pygments>=2.6,<3', 'Pillow>=8,<9'
+    'DBUtils>=2,<4', 'dominate>=2.5,<3', 'yattag>=1.14,<2',
+    'Pygments>=2.7,<3', 'Pillow>=8,<9'
 ]
 requireTests = [
     'psutil>=5.7,<6', 'flake8>=3.8,<4', 'pylint>=2.6,<3', 'tox>=3.20,<4',
