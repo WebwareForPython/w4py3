@@ -8,8 +8,8 @@ import argparse
 def serve(args):
     try:
         from waitress import serve
-    except ImportError:
-        raise RuntimeError('Waitress server is not installed')
+    except ImportError as e:
+        raise RuntimeError('Waitress server is not installed') from e
 
     if args.browser:
         scheme = args.url_scheme
@@ -34,8 +34,9 @@ def serve(args):
     if args.reload:
         try:
             import hupper
-        except ImportError:
-            raise RuntimeError('The hupper process monitor is not installed')
+        except ImportError as e:
+            raise RuntimeError(
+                'The hupper process monitor is not installed') from e
         if not hupper.is_active():
             print('Running Webware with reloading option...')
             args.browser = args.reload = False
@@ -64,8 +65,8 @@ def serve(args):
         application = scriptVars['application']
     except Exception as e:
         raise RuntimeError(
-            f'Cannot find Webware application:\n{e}\n'
-            'Is the current directory the application working directory?')
+            'Cannot find Webware application.\nIs the current directory'
+            ' the application working directory?') from e
 
     print("Waitress serving Webware application...")
     args = vars(args)

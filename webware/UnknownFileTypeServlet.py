@@ -189,8 +189,8 @@ class UnknownFileTypeServlet(HTTPServlet, Configurable):
         filename = self.filename(trans)
         try:
             f = open(filename, 'rb')
-        except IOError:
-            raise HTTPExceptions.HTTPNotFound
+        except IOError as e:
+            raise HTTPExceptions.HTTPNotFound from e
 
         stat = os.fstat(f.fileno())
         fileSize, mtime = stat[6], stat[8]

@@ -62,7 +62,7 @@ class WSGIStreamOut:
                         ' Try the setting WSGIWrite=False.')
         except Exception as e:
             print("Response Start Error:", e)
-            raise ConnectionAbortedError
+            raise ConnectionAbortedError from e
 
     def autoCommit(self):
         """Get the auto commit mode."""
@@ -109,7 +109,7 @@ class WSGIStreamOut:
             except Exception as e:
                 print("StreamOut Error:", e)
                 self._closed = True
-                raise ConnectionAbortedError
+                raise ConnectionAbortedError from e
             sent += bufferSize
         self.pop(sent)
 

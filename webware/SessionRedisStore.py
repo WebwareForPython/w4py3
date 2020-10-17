@@ -4,8 +4,10 @@ from pickle import loads, dumps
 
 try:
     import redis  # pylint: disable=import-error
-except Exception:
-    raise ImportError("For using Redis sessions, redis-py must be installed.")
+except Exception as e:
+    raise ImportError(
+        "For using Redis sessions,"
+        " redis-py must be installed.") from e
 
 from MiscUtils import NoDefault
 

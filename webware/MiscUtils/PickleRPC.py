@@ -373,9 +373,9 @@ class SafeTransport(Transport):
 
     def make_connection(self, host, port=None, key_file=None, cert_file=None):
         """Create an HTTPS connection object from a host descriptor."""
-        import http.client
         try:
-            return http.client.HTTPSConnection(host, port, key_file, cert_file)
-        except AttributeError:
+            from http.client import HTTPSConnection
+        except ImportError as e:
             raise NotImplementedError(
-                "Your version of http.client doesn't support HTTPS")
+                "Your version of http.client doesn't support HTTPS") from e
+        return HTTPSConnection(host, port, key_file, cert_file)

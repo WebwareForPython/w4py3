@@ -5,9 +5,10 @@ from pickle import HIGHEST_PROTOCOL as maxPickleProtocol
 
 try:
     import memcache  # pylint: disable=import-error
-except Exception:
+except Exception as e:
     raise ImportError(
-        "For using Memcached sessions, python-memcached must be installed.")
+        "For using Memcached sessions,"
+        " python-memcached must be installed.") from e
 
 from MiscUtils import NoDefault
 

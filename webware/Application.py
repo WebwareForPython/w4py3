@@ -486,7 +486,7 @@ class Application(ConfigurableForServerSidePath):
             except KeyError:
                 trans.request().setSessionExpired(1)
                 if not self.setting('IgnoreInvalidSession'):
-                    raise HTTPSessionExpired
+                    raise HTTPSessionExpired from None
                 sessId = None
         if not sessId:
             session = self._sessionClass(trans)

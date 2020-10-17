@@ -87,7 +87,8 @@ class PSPServletFactory(ServletFactory):
             return getattr(module, className)
         except AttributeError:
             raise AttributeError(
-                f'Cannot find expected class named {className} in {fileName}.')
+                'Cannot find expected class'
+                f' named {className} in {fileName}.') from None
 
     def loadClass(self, transaction, path):
         className = self.computeClassName(path)

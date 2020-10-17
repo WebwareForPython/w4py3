@@ -89,10 +89,10 @@ class PickleRPCServlet(RPCServlet, SafeUnpickler):
                             try:
                                 rawstring = data.read()
                                 req = self.loads(zlib.decompress(rawstring))
-                            except zlib.error:
+                            except zlib.error as e:
                                 raise RequestError(
                                     'Cannot uncompress'
-                                    ' compressed dict-rpc request')
+                                    ' compressed dict-rpc request') from e
                         else:
                             raise RequestError(
                                 'Cannot handle compressed dict-rpc request')
@@ -101,8 +101,9 @@ class PickleRPCServlet(RPCServlet, SafeUnpickler):
                             f'Cannot handle Content-Encoding of {encoding}')
                     else:
                         req = self.load(data)
-                except PickleError:
-                    raise RequestError('Cannot unpickle dict-rpc request.')
+                except PickleError as e:
+                    raise RequestError(
+                        'Cannot unpickle dict-rpc request.') from e
                 if not isinstance(req, dict):
                     raise RequestError(
                         'Expecting a dictionary for dict-rpc requests, '
@@ -116,7 +117,8 @@ class PickleRPCServlet(RPCServlet, SafeUnpickler):
                 try:
                     methodName = req['methodName']
                 except KeyError:
-                    raise RequestError('Missing method in request')
+                    raise RequestError(
+                        'Missing method name in request') from None
                 args = req.get('args', ())
                 if methodName == '__methods__.__getitem__':
                     # support PythonWin autoname completion

@@ -42,7 +42,7 @@ def checkAttributes(tagType, attrs, validAttrs):
             attrs.remove(attr)
         except KeyError:
             raise PSPParserException(
-                f'{tagType}: Mandatory attribute {attr} missing')
+                f'{tagType}: Mandatory attribute {attr} missing') from None
     optionalAttrs = validAttrs[1]
     for attr in attrs:
         if attr not in optionalAttrs:

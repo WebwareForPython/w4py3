@@ -172,8 +172,9 @@ class PSPParser:
         start = reader.mark()
         try:
             stop = reader.skipUntil('%>')
-        except EOFError:
-            raise EOFError("Reached EOF while looking for ending script tag")
+        except EOFError as e:
+            raise EOFError(
+                "Reached EOF while looking for ending script tag") from e
         if stop is None:
             raise PSPParserException('Script not terminated')
         handler.setTemplateInfo(self.tmplStart, self.tmplStop)
@@ -201,9 +202,10 @@ class PSPParser:
             if stop is None:
                 raise PSPParserException(
                     'Script not terminated in <psp:file> block')
-        except EOFError:
+        except EOFError as e:
             raise EOFError(
-                'Reached EOF while looking for ending script tag </psp:file>')
+                'Reached EOF while looking for'
+                ' ending script tag </psp:file>') from e
         handler.setTemplateInfo(self.tmplStart, self.tmplStop)
         handler.handleScriptFile(start, stop, None)
         return True
@@ -228,9 +230,10 @@ class PSPParser:
             if stop is None:
                 raise PSPParserException(
                     'Script not terminated in <psp:class> block')
-        except EOFError:
+        except EOFError as e:
             raise EOFError(
-                'Reached EOF while looking for ending script tag </psp:class>')
+                'Reached EOF while looking for'
+                ' ending script tag </psp:class>') from e
         handler.setTemplateInfo(self.tmplStart, self.tmplStop)
         handler.handleScriptClass(start, stop, None)
         return True

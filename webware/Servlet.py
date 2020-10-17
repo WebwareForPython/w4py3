@@ -3,7 +3,7 @@
 import os
 
 from MiscUtils import AbstractError
-from MiscUtils.Funcs import asclocaltime, excstr
+from MiscUtils.Funcs import asclocaltime
 
 
 class Servlet:
@@ -80,8 +80,7 @@ class Servlet:
                 # the first exception gets hidden by the second which is often
                 # just a result of the first. Then you're stuck scratching your
                 # head wondering what the first might have been.
-                raise Exception('Two exceptions. first={}; second={}'.format(
-                    excstr(first), excstr(second)))
+                raise second from first
             else:
                 # no problems with sleep() so raise the one and only exception
                 raise

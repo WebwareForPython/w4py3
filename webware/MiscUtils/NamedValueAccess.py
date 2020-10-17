@@ -62,7 +62,7 @@ def valueForKey(obj, key, default=NoDefault):
             try:
                 return obj[key]
             except KeyError:
-                raise ValueForKeyError(key)
+                raise ValueForKeyError(key) from None
         else:
             return obj.get(key, default)
     else:

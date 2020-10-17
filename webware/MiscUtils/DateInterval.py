@@ -60,5 +60,5 @@ def timeDecode(s):
         try:
             time += int(match[:-1]) * timeValues[char]
         except KeyError:
-            raise ValueError(f'Invalid unit of time: {char}')
+            raise ValueError(f'Invalid unit of time: {char}') from None
     return time

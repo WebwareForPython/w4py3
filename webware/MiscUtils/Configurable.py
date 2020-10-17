@@ -70,9 +70,10 @@ class Configurable:
         if default is NoDefault:
             try:
                 return self.config()[name]
-            except KeyError:
+            except KeyError as e:
                 keys = ', '.join(sorted(self.config()))
-                raise KeyError(f'{name} not found - config keys are: {keys}')
+                raise KeyError(
+                    f'{name} not found - config keys are: {keys}') from e
         else:
             return self.config().get(name, default)
 
@@ -154,7 +155,7 @@ class Configurable:
                 del config[key]
         except Exception as e:
             raise ConfigurationError(
-                f'Invalid configuration file, {filename} ({e}).')
+                f'Invalid configuration file, {filename} ({e}).') from e
         return config
 
     @staticmethod

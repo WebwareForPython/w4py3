@@ -302,7 +302,7 @@ class TableColumn:
             except Exception:
                 types = ', '.join(sorted(_types))
                 raise DataTableError(f'Unknown type {type_!r}.'
-                                     f' Known types are: {types}')
+                                     f' Known types are: {types}') from None
         else:
             self._type = None
 
@@ -699,9 +699,9 @@ class TableRecord:
             else:
                 try:
                     self.initFromObject(values)
-                except AttributeError:
+                except AttributeError as e:
                     raise DataTableError(
-                        f'Unknown type for values {values!r}.')
+                        f'Unknown type for values {values!r}.') from e
 
     def initFromSequence(self, values):
         headings = self._headings
@@ -762,7 +762,7 @@ class TableRecord:
             return self._values[key]
         except TypeError:
             raise TypeError(f'key={key!r}, key type={type(key)!r},'
-                            f' values={self._values!r}')
+                            f' values={self._values!r}') from None
 
     def __setitem__(self, key, value):
         if isinstance(key, str):

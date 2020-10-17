@@ -198,8 +198,9 @@ class SessionStore:
                             timeout == 0 or
                             curTime >= session.lastAccessTime() + timeout):
                         keys.append(key)
-                except AttributeError:
-                    raise ValueError('Not a Session object: %r' % session)
+                except AttributeError as e:
+                    raise ValueError(
+                        f'Not a Session object: {session!r}') from e
         for key in keys:
             try:
                 del self[key]

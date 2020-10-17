@@ -47,21 +47,21 @@ class SessionFileStore(SessionStore):
         with self._lock:
             try:
                 sessionFile = open(filename, 'rb')
-            except IOError:
-                raise KeyError(key)  # session file not found
+            except IOError as e:
+                raise KeyError(key) from e  # session file not found
             try:
                 try:
                     value = self.decoder()(sessionFile)
                 finally:
                     sessionFile.close()
-            except Exception:
+            except Exception as e:
                 print("Error loading session from disk:", key)
                 self.application().handleException()
                 try:  # remove the session file because it is corrupt
                     os.remove(filename)
                 except Exception:
                     pass
-                raise KeyError(key)
+                raise KeyError(key) from e
         return value
 
     def __setitem__(self, key, value):
