@@ -62,7 +62,7 @@ indent-after-paren = 4
 
 [DESIGN]
 
-max-attributes = 35
+max-attributes = 40
 max-args = 10
 max-branches = 40
 max-line-length = 79

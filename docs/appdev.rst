@@ -281,7 +281,7 @@ Activity Log
 Three options let you control:
 
 * Whether or not to log activity (``LogActivity``, defaults to 0, i.e. off)
-* The name of the file to store the log (``ActivityLogFilename``, defaults to ``Logs/Activity.csv``)
+* The name of the file to store the log (``ActivityLogFilename``, defaults to ``Activity.csv``)
 * The fields to store in the log (``ActivityLogColumns``) </ul>
 
 See the chapter on :ref:`configuration` for more information.
@@ -314,7 +314,7 @@ The most common technique is the infamous ``print`` statement which has been rep
 
 For convenient debugging, the default ``Application.config`` file already uses the following conditional setting::
 
-    AppLogFilename = None if Development else 'Logs/Application.log'
+    AppLogFilename = None if Development else 'Application.log'
 
 This will prevent standard output and error from being redirected to the log file in development mode, which makes it easier to find debugging output, and also makes it possible to use ``pdb`` (see below).
 

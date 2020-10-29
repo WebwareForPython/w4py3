@@ -40,7 +40,7 @@ import URLParser
 debug = False
 
 defaultConfig = dict(
-    ActivityLogFilename='Logs/Activity.csv',
+    ActivityLogFilename='Activity.csv',
     ActivityLogColumns=[
         'request.remoteAddress', 'request.method',
         'request.uri', 'response.size',
@@ -49,7 +49,7 @@ defaultConfig = dict(
         'transaction.errorOccurred'
     ],
     AlwaysSaveSessions=True,
-    AppLogFilename='Logs/Application.log',
+    AppLogFilename='Application.log',
     CacheDir='Cache',
     CacheServletClasses=True,
     CacheServletInstances=True,
@@ -75,7 +75,7 @@ defaultConfig = dict(
         'Content-Type': 'text/html',
         'Subject': 'Error'
     },
-    ErrorLogFilename='Logs/Errors.csv',
+    ErrorLogFilename='Errors.csv',
     ErrorMessagesDir='ErrorMsgs',
     ErrorPage=None,
     ExtensionCascadeOrder=['.py', '.psp', '.html'],
@@ -95,6 +95,7 @@ defaultConfig = dict(
     IncludeEditLink=True,
     IncludeFancyTraceback=False,
     LogActivity=True,
+    LogDir='Logs',
     LogErrors=True,
     MaxValueLengthInExceptionReport=500,
     OutputEncoding='utf-8',
@@ -164,12 +165,17 @@ class Application(ConfigurableForServerSidePath):
         You can specify the path of the application working directory,
         a dictionary of settings to override in the configuration,
         and whether the application should run in development mode.
+
+        In the setting 'ApplicationConfigFilename' you can also specify
+        a different location of the application configuration file.
         """
         ConfigurableForServerSidePath.__init__(self)
         if path is None:
             path = os.getcwd()
         self._serverSidePath = os.path.abspath(path)
         self._webwarePath = os.path.abspath(os.path.dirname(__file__))
+        self._configFilename = settings.get(
+            'ApplicationConfigFilename', 'Configs/Application.config')
 
         if not os.path.isfile(self.configFilename()):
             print("ERROR: The application cannot be started:")
@@ -206,9 +212,12 @@ class Application(ConfigurableForServerSidePath):
         if self.setting('CheckInterval') is not None:
             sys.setswitchinterval(self.setting('CheckInterval'))
 
-        logFilename = self.setting('AppLogFilename')
-        if logFilename:
-            sys.stderr = sys.stdout = open(logFilename, 'a', buffering=1)
+        self.makeDirs()
+        filename = self.setting('AppLogFilename')
+        if filename:
+            if '/' not in filename:
+                filename = os.path.join(self._logDir, filename)
+            sys.stderr = sys.stdout = open(filename, 'a', buffering=1)
 
         self.initErrorPage()
         self.printStartUpMessage()
@@ -226,7 +235,6 @@ class Application(ConfigurableForServerSidePath):
         # sessions, in case the loading of the sessions causes an exception.
         self._exceptionHandlerClass = ExceptionHandler
 
-        self.makeDirs()
         self.initSessions()
 
         URLParser.initApp(self)
@@ -324,9 +332,11 @@ class Application(ConfigurableForServerSidePath):
             setting('CacheDir') or 'Cache')
         self._errorMessagesDir = self.serverSidePath(
             setting('ErrorMessagesDir') or 'ErrorMsgs')
+        self._logDir = self.serverSidePath(
+            self.setting('LogDir') or 'Logs')
         self._sessionDir = self.serverSidePath(
             setting('SessionStoreDir') or 'Sessions')
-        for path in (self.serverSidePath('Logs'), self._cacheDir,
+        for path in (self._logDir, self._cacheDir,
                      self._errorMessagesDir, self._sessionDir):
             if path and not os.path.exists(path):
                 os.makedirs(path)
@@ -418,7 +428,7 @@ class Application(ConfigurableForServerSidePath):
 
     def configFilename(self):
         """The configuration file path."""
-        return self.serverSidePath('Configs/Application.config')
+        return self.serverSidePath(self._configFilename)
 
     def configReplacementValues(self):
         """Get config values that need to be escaped."""
@@ -591,8 +601,10 @@ class Application(ConfigurableForServerSidePath):
         Writes an entry to the script log file. Uses settings
         ``ActivityLogFilename`` and ``ActivityLogColumns``.
         """
-        filename = self.serverSidePath(
-            self.setting('ActivityLogFilename'))
+        filename = self.setting('ActivityLogFilename')
+        if '/' not in filename:
+            filename = os.path.join(self._logDir, filename)
+        filename = self.serverSidePath(filename)
         if os.path.exists(filename):
             f = open(filename, 'a')
         else:

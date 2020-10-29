@@ -469,7 +469,7 @@ class ExceptionHandler:
             return element
 
         logLine = ','.join(map(fixElement, logLine)) + '\n'
-        filename = self._app.serverSidePath(self.setting('ErrorLogFilename'))
+        filename = self._app.setting('ErrorLogFilename')
         try:
             if os.path.exists(filename):
                 with open(filename, 'a') as f:

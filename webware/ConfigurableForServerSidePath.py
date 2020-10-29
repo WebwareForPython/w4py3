@@ -1,3 +1,5 @@
+import os.path
+
 from MiscUtils.Configurable import Configurable, NoDefault
 
 
@@ -28,5 +30,8 @@ class ConfigurableForServerSidePath(Configurable):
         value = Configurable.setting(self, name, default)
         if name.endswith(('Dir', 'Filename')) and (
                 value or name.endswith('Dir')):
+            if name.endswith('LogFilename') and '/' not in value:
+                value = os.path.join(
+                    Configurable.setting(self, 'LogDir'), value)
             value = self.serverSidePath(value)  # pylint: disable=no-member
         return value
