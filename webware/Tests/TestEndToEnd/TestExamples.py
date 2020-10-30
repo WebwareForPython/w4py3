@@ -2,6 +2,7 @@
 
 import os
 import unittest
+from time import sleep
 
 from .AppTest import AppTest
 
@@ -19,7 +20,11 @@ class TestExamples(AppTest, unittest.TestCase):
     @staticmethod
     def removeDemoDatabase():
         if os.path.exists('demo.db'):
-            os.remove('demo.db')
+            try:
+                os.remove('demo.db')
+            except OSError:
+                sleep(1)
+                os.remove('demo.db')
 
     def testStartPage(self):
         r = self.testApp.get('/')
