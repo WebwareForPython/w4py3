@@ -53,7 +53,7 @@ def serve(args):
         del environ['WEBWARE_DEVELOPMENT']
     try:
         # get application from WSGI script
-        with open('Scripts/WSGIScript.py') as f:
+        with open(args.wsgi_script) as f:
             script = f.read()
         # set development flag in the script
         script = script.replace(
@@ -70,7 +70,7 @@ def serve(args):
 
     print("Waitress serving Webware application...")
     args = vars(args)
-    for arg in 'browser reload reload_interval prod'.split():
+    for arg in 'browser reload reload_interval prod wsgi_script'.split():
         del args[arg]
     if args['trusted_proxy_headers']:
         args['trusted_proxy_headers'] = args[
@@ -149,6 +149,11 @@ def addArguments(parser):
         action='store_true',
         help="Do not set development mode",
         default=False,
+    )
+    parser.add_argument(
+        '--wsgi-script',
+        help='The file path of the WSGI script',
+        default='Scripts/WSGIScript.py',
     )
 
 
