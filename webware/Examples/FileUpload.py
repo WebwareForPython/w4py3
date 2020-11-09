@@ -50,6 +50,6 @@ class FileUpload(ExamplePage):
 <tr><th>headers</th><td>{f.headers}</td></tr>
 <tr><th>size</th><td>{len(contents)} bytes</td></tr>
 <tr><th style="vertical-align:top">contents</th>
-<td><pre style="font-size:small;margin:0pt">{contentString}</pre></td></tr>
+<td><pre style="font-size:small;margin:0">{contentString}</pre></td></tr>
 </table>'''
         self.writeln(output)
