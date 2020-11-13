@@ -209,13 +209,13 @@ Logging
 ``LogActivity``:
     If True, then the execution of each servlet is logged with useful information such as time, duration and whether or not an error occurred. Default: ``True``.
 ``ActivityLogFilenames``:
-    This is the name of the file that servlet executions are logged to. This setting has no effect if ``LogActivity`` is False. The path can be relative to the Webware location, or an absolute path. Default: ``"Activity.csv"``.
+    This is the name of the file that servlet executions are logged to. This setting has no effect if ``LogActivity`` is False. The path can be relative to the Webware location, or an absolute path. Default: ``'Activity.csv'``.
 ``ActivityLogColumns``:
     Specifies the columns that will be stored in the activity log. Each column can refer to an object from the set [application, transaction, request, response, servlet, session] and then refer to its attributes using "dot notation". The attributes can be methods or instance attributes and can be qualified arbitrarily deep. Default: ``['request.remoteAddress', 'request.method', 'request.uri', 'response.size', 'servlet.name', 'request.timeStamp', 'transaction.duration', 'transaction.errorOccurred']``.
 ``AppLogFilename``:
     The Application redirects standard output and error to this file, if this is set in production mode. Default: ``'Application.log'``.
 ```LogDir``:
-    The directory where log files should be stored. All log files without an explicit path will be put here.
+    The directory where log files should be stored. All log files without an explicit path will be put here. Default: ``'Logs'``.
 ``Verbose``:
     If True, then additional messages are printed while the Application runs, most notably information about each request such as size and response time. Default: ``True``.
 ``SilentURIs``:
