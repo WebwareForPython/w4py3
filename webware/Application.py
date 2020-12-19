@@ -102,6 +102,7 @@ defaultConfig = dict(
     PlugIns=['MiscUtils', 'WebUtils', 'TaskKit', 'UserKit', 'PSP'],
     PrintConfigAtStartUp=True,
     PrintPlugIns=True,
+    RegisterSignalHandler=False,
     ReloadServletClasses=False,
     ReportRPCExceptionsInWebware=True,
     ResponseBufferSize=8 * 1024,  # 8 kBytes
@@ -250,11 +251,12 @@ class Application(ConfigurableForServerSidePath):
 
         self._needsShutDown = [True]
         atexit.register(self.shutDown)
-        self._sigTerm = signal.signal(signal.SIGTERM, self.sigTerm)
-        try:
-            self._sigHup = signal.signal(signal.SIGHUP, self.sigTerm)
-        except AttributeError:
-            pass  # SIGHUP does not exist on Windows
+        if self.setting('RegisterSignalHandler'):
+            self._sigTerm = signal.signal(signal.SIGTERM, self.sigTerm)
+            try:
+                self._sigHup = signal.signal(signal.SIGHUP, self.sigTerm)
+            except AttributeError:
+                pass  # SIGHUP does not exist on Windows
 
     def initErrorPage(self):
         """Initialize the error page related attributes."""

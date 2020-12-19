@@ -34,6 +34,10 @@ General Settings
     Buffer size for the output response stream. This is only used when a servlet has set ``autoFlush`` to True using the ``flush()`` method of the Response. Otherwise, the whole response is buffered and sent in one shot when the servlet is done. Default: ``8192``.
 ``WSGIWrite``:
     If this is set to True, then the write() callable is used instead of passing the response as an iterable, which would be the standard WSGI mechanism. Default: ``True``.
+``RegisterSignalHandler``:
+    When the Application is regularly shut down, it tries to save its Sessions and stop the TaskManager. An atexit-handler will do this automatically. You can also shut down the Application manually by calling its ``shutDown()`` method. If this setting is set to True, then the Application will also register signal handlers to notice when it is shutdown and shut down cleanly. However, as the ``mod_wsgi`` documentation explains (see section on WSGIRestrictSignal_), "a well behaved Python WSGI application should not in general register any signal handlers of its own using ``signal.signal()``. The reason for this is that the web server which is hosting a WSGI application will more than likely register signal handlers of its own. If a WSGI application were to override such signal handlers it could interfere with the operation of the web server, preventing actions such as server shutdown and restart." Therefore, the default setting is: ``False``.
+
+    .. _WSGIRestrictSignal: https://modwsgi.readthedocs.io/en/develop/configuration-directives/WSGIRestrictSignal.html
 
 Path Handling
 ~~~~~~~~~~~~~
