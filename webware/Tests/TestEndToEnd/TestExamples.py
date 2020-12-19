@@ -19,12 +19,16 @@ class TestExamples(AppTest, unittest.TestCase):
 
     @staticmethod
     def removeDemoDatabase():
-        if os.path.exists('demo.db'):
+        # pylint: disable=unused-variable
+        for i in range(20):
+            if not os.path.exists('demo.db'):
+                break
             try:
                 os.remove('demo.db')
             except OSError:
-                sleep(1)
-                os.remove('demo.db')
+                sleep(.5)
+            else:
+                break
 
     def testStartPage(self):
         r = self.testApp.get('/')
