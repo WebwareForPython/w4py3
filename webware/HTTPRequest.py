@@ -34,22 +34,28 @@ class HTTPRequest(Request):
             self._environ = requestDict['environ']
             self._input = requestDict['input']
             self._requestID = requestDict['requestID']
+            # Protect the loading of fields with an exception handler,
+            # because bad headers sometimes can break the field storage
+            # (see also https://bugs.python.org/issue27777).
             try:
                 self._fields = FieldStorage.FieldStorage(
                     self._input, environ=self._environ,
                     keep_blank_values=True, strict_parsing=False)
             except Exception:
-                # Protect the loading of fields with an exception handler,
-                # because bad headers sometimes can break the field storage
-                # (see also https://bugs.python.org/issue27777).
                 self._fields = cgi.FieldStorage(keep_blank_values=True)
                 traceback.print_exc(file=sys.stderr)
             self._cookies = Cookie()
             if 'HTTP_COOKIE' in self._environ:
+                # If there are duplicate cookies, always use the first one
+                # because it is the most relevant one according to RFC 2965
+                # (workaround for https://bugs.python.org/issue1375011).
+                # noinspection PyTypeChecker
+                cookies = dict(cookie.split('=', 1) for cookie in reversed(
+                    self._environ['HTTP_COOKIE'].split('; ')))
                 # Protect the loading of cookies with an exception handler,
                 # because MSIE cookies sometimes can break the cookie module.
                 try:
-                    self._cookies.load(self._environ['HTTP_COOKIE'])
+                    self._cookies.load(cookies)
                 except Exception:
                     traceback.print_exc(file=sys.stderr)
         else:
