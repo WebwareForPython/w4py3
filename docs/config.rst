@@ -100,6 +100,10 @@ Sessions
     You can specify a path for the session cookie here. ``None`` means that the servlet path will be used, which is normally the best choice. If you rewrite the URL using different prefixes, you may have to specify a fixed prefix for all your URLs. Using the root path '/' will always work, but may have security issues if you are running less secure applications on the same server. Default: ``None``.
 ``SecureSessionCookie``:
     If True, then the Application will use a secure cookie for the session ID if the request was using an HTTPS connection. Default: ``True``.
+``HttpOnlySessionCookie``:
+    If True, then the Application will set the HttpOnly attribute on the session cookie . Default: ``True``.
+``SameSiteSessionCookie``:
+    If not ``None``, then the Application will set this value as the SameSite attribute on the session cookie . Default: ``Strict``.
 ``MaxDynamicMemorySessions``:
     The maximum number of dynamic memory sessions that will be retained in memory. When this number is exceeded, the least recently used, excess sessions will be pushed out to disk. This setting can be used to help control memory requirements, especially for busy sites. This is used only if the ``SessionStore`` is set to ``Dynamic``. Default: ``10000``.
 ``DynamicSessionTimeout``:

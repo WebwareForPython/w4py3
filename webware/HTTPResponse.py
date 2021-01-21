@@ -406,6 +406,11 @@ class HTTPResponse(Response):
         cookie.setPath(app.sessionCookiePath(trans))
         if request.isSecure():
             cookie.setSecure(app.setting('SecureSessionCookie'))
+        if app.setting('HttpOnlySessionCookie'):
+            cookie.setHttpOnly()
+        sameSite = app.setting('SameSiteSessionCookie')
+        if sameSite:
+            cookie.setSameSite(sameSite)
         self.addCookie(cookie)
         if debug:
             print('>> recordSession: Setting SID', identifier)

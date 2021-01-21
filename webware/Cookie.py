@@ -64,11 +64,11 @@ class Cookie:
     def domain(self):
         return self._cookie['domain']
 
-    def maxAge(self):
-        return self._cookie['max-age']
-
     def expires(self):
         return self._cookie['expires']
+
+    def maxAge(self):
+        return self._cookie['max-age']
 
     def name(self):
         return self._name
@@ -78,6 +78,15 @@ class Cookie:
 
     def isSecure(self):
         return self._cookie['secure']
+
+    def httpOnly(self):
+        return self._cookie['httponly']
+
+    def sameSite(self):
+        try:
+            return self._cookie['samesite']
+        except KeyError:  # Python < 3.8
+            return ''
 
     def value(self):
         return self._value
@@ -106,6 +115,12 @@ class Cookie:
 
     def setSecure(self, secure=True):
         self._cookie['secure'] = secure
+
+    def setHttpOnly(self, httpOnly=True):
+        self._cookie['httponly'] = httpOnly
+
+    def setSameSite(self, sameSite='Strict'):
+        self._cookie['samesite'] = sameSite
 
     def setValue(self, value):
         self._value = value
