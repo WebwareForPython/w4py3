@@ -74,6 +74,7 @@ class AppTest:
                 + output)
 
     def setUp(self):
+        self.output = ''
         self.stdout, self.stderr = sys.stdout, sys.stderr
         if self.catchOutput:
             sys.stdout = sys.stderr = StringIO()
@@ -82,8 +83,6 @@ class AppTest:
         if self.catchOutput:
             self.output = sys.stdout.getvalue().rstrip()
             sys.stdout, sys.stderr = self.stdout, self.stderr
-        else:
-            self.output = ''
 
     def run(self, result=None):
         result = super().run(result)  # pylint: disable=no-member
