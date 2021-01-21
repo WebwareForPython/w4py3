@@ -120,7 +120,10 @@ class Cookie:
         self._cookie['httponly'] = httpOnly
 
     def setSameSite(self, sameSite='Strict'):
-        self._cookie['samesite'] = sameSite
+        try:
+            self._cookie['samesite'] = sameSite
+        except CookieEngine.CookieError:  # Python < 3.8
+            pass
 
     def setValue(self, value):
         self._value = value
