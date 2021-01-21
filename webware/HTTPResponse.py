@@ -404,7 +404,7 @@ class HTTPResponse(Response):
                 return
         cookie = Cookie(app.sessionName(trans), identifier)
         cookie.setPath(app.sessionCookiePath(trans))
-        if trans.request().isSecure():
+        if request.isSecure():
             cookie.setSecure(app.setting('SecureSessionCookie'))
         self.addCookie(cookie)
         if debug:

@@ -33,8 +33,7 @@ class TestIMS(SidebarPage):
         d = self.request().serverDictionary()
         self._host = d['HTTP_HOST']  # includes the port
         self._httpConnection = (
-            http.client.HTTPSConnection
-            if d.get('HTTPS', '').lower() == 'on'
+            http.client.HTTPSConnection if d.get('wsgi.url_scheme') == 'https'
             else http.client.HTTPConnection)
         servletPath = self.request().servletPath()
         # pick a static file which is served up by Webware's UnknownFileHandler
