@@ -30,3 +30,4 @@ Sessions/
 .idea/
 .tox/
 .venv/
+.venv.*/
