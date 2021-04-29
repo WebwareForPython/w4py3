@@ -46,6 +46,7 @@ class SessionFileStore(SessionStore):
         filename = self.filenameForKey(key)
         with self._lock:
             try:
+                # pylint: disable=consider-using-with
                 sessionFile = open(filename, 'rb')
             except IOError as e:
                 raise KeyError(key) from e  # session file not found
@@ -73,6 +74,7 @@ class SessionFileStore(SessionStore):
                 if dirty:
                     value.setDirty(False)
                 try:
+                    # pylint: disable=consider-using-with
                     sessionFile = open(filename, 'wb')
                     try:
                         try:

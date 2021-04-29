@@ -168,6 +168,7 @@ class TestServer(unittest.TestCase):
             chdir(cls.currentDir)
 
     def getPage(self, path=''):
+        # pylint: disable=consider-using-with
         return urlopen(f'http://localhost:8080/{path}')
 
     def compareOutput(self, gotLines, expectedLines):

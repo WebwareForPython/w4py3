@@ -220,6 +220,7 @@ class Application(ConfigurableForServerSidePath):
         if filename:
             if '/' not in filename:
                 filename = os.path.join(self._logDir, filename)
+            # pylint: disable=consider-using-with
             sys.stderr = sys.stdout = open(filename, 'a', buffering=1)
 
         self.initErrorPage()
@@ -609,31 +610,29 @@ class Application(ConfigurableForServerSidePath):
         if '/' not in filename:
             filename = os.path.join(self._logDir, filename)
         filename = self.serverSidePath(filename)
-        if os.path.exists(filename):
-            f = open(filename, 'a')
-        else:
-            f = open(filename, 'w')
-            f.write(','.join(self.setting('ActivityLogColumns')) + '\n')
-        values = []
-        objects = dict(
-            application=self, transaction=trans,
-            request=trans.request(), response=trans.response(),
-            servlet=trans.servlet(),
-            # don't cause creation of session here:
-            session=trans._session)
-        for column in self.setting('ActivityLogColumns'):
-            try:
-                value = valueForName(objects, column)
-            except Exception:
-                value = '(unknown)'
-            if isinstance(value, float):
-                # probably need more flexibility in the future
-                value = f'{value:02f}'
-            else:
-                value = str(value)
-            values.append(value)
-        f.write(','.join(values) + '\n')
-        f.close()
+        mode = 'a' if os.path.exists(filename) else 'w'
+        with open(filename, mode) as f:
+            if mode == 'w':
+                f.write(','.join(self.setting('ActivityLogColumns')) + '\n')
+            values = []
+            objects = dict(
+                application=self, transaction=trans,
+                request=trans.request(), response=trans.response(),
+                servlet=trans.servlet(),
+                # don't cause creation of session here:
+                session=trans._session)
+            for column in self.setting('ActivityLogColumns'):
+                try:
+                    value = valueForName(objects, column)
+                except Exception:
+                    value = '(unknown)'
+                if isinstance(value, float):
+                    # probably need more flexibility in the future
+                    value = f'{value:02f}'
+                else:
+                    value = str(value)
+                values.append(value)
+            f.write(','.join(values) + '\n')
 
     def startTime(self):
         """Return the time the application was started.

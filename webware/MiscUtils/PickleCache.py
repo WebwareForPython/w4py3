@@ -107,6 +107,7 @@ class PickleCacheReader(PickleCache):
                 try:
                     if v:
                         print(f'About to open for read {picklePath!r}.')
+                    # pylint: disable=consider-using-with
                     file = open(picklePath, 'rb')
                 except IOError as e:
                     if v:
@@ -209,7 +210,8 @@ class PickleCacheWriter(PickleCache):
             pprint(d)
         try:
             if v:
-                print('About to open for write %r.' % picklePath)
+                print(f'About to open for write {picklePath!r}.')
+            # pylint: disable=consider-using-with
             pickleFile = open(picklePath, 'wb')
         except IOError as e:
             if v:
@@ -225,6 +227,7 @@ class PickleCacheWriter(PickleCache):
                         print('Timestamps are identical, sleeping'
                               f' {self._writeSleepInterval:%0.2f} seconds.')
                     sleep(self._writeSleepInterval)
+                    # pylint: disable=consider-using-with
                     pickleFile = open(picklePath, 'wb')
                 else:
                     break

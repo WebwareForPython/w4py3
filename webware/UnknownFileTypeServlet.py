@@ -188,64 +188,64 @@ class UnknownFileTypeServlet(HTTPServlet, Configurable):
 
         filename = self.filename(trans)
         try:
+            # pylint: disable=consider-using-with
             f = open(filename, 'rb')
         except IOError as e:
             raise HTTPExceptions.HTTPNotFound from e
-
-        stat = os.fstat(f.fileno())
-        fileSize, mtime = stat[6], stat[8]
-
-        if debug:
-            print('>> UnknownFileType.serveContent()')
-            print('>> filename =', filename)
-            print('>> size=', fileSize)
-        fileDict = fileCache.get(filename)
-        if fileDict is not None and mtime != fileDict['mtime']:
-            # Cache is out of date; clear it.
+        try:
+            stat = os.fstat(f.fileno())
+            fileSize, mtime = stat[6], stat[8]
             if debug:
-                print('>> changed, clearing cache')
-            del fileCache[filename]
-            fileDict = None
-        if fileDict is None:
-            if debug:
-                print('>> not found in cache')
-            mimeType, mimeEncoding = guess_type(filename, False)
-            if mimeType is None:
-                mimeType, mimeEncoding = 'application/octet-stream', None
-        else:
-            mimeType = fileDict['mimeType']
-            mimeEncoding = fileDict['mimeEncoding']
-        response.setHeader('Content-Type', mimeType)
-        response.setHeader('Content-Length', str(fileSize))
-        if mimeEncoding:
-            response.setHeader('Content-Encoding', mimeEncoding)
-        if trans.request().method() == 'HEAD':
+                print('>> UnknownFileType.serveContent()')
+                print('>> filename =', filename)
+                print('>> size=', fileSize)
+            fileDict = fileCache.get(filename)
+            if fileDict is not None and mtime != fileDict['mtime']:
+                # Cache is out of date; clear it.
+                if debug:
+                    print('>> changed, clearing cache')
+                del fileCache[filename]
+                fileDict = None
+            if fileDict is None:
+                if debug:
+                    print('>> not found in cache')
+                mimeType, mimeEncoding = guess_type(filename, False)
+                if mimeType is None:
+                    mimeType, mimeEncoding = 'application/octet-stream', None
+            else:
+                mimeType = fileDict['mimeType']
+                mimeEncoding = fileDict['mimeEncoding']
+            response.setHeader('Content-Type', mimeType)
+            response.setHeader('Content-Length', str(fileSize))
+            if mimeEncoding:
+                response.setHeader('Content-Encoding', mimeEncoding)
+            if trans.request().method() == 'HEAD':
+                return
+            if (fileDict is None and self.setting('ReuseServlets')
+                    and self.shouldCacheContent()
+                    and fileSize < maxCacheContentSize):
+                if debug:
+                    print('>> caching')
+                fileDict = dict(
+                    content=f.read(),
+                    mimeType=mimeType, mimeEncoding=mimeEncoding,
+                    mtime=mtime, size=fileSize, filename=filename)
+                fileCache[filename] = fileDict
+            if fileDict is not None:
+                if debug:
+                    print('>> sending content from cache')
+                response.write(fileDict['content'])
+            else:  # too big or not supposed to cache
+                if debug:
+                    print('>> sending directly')
+                numBytesSent = 0
+                while numBytesSent < fileSize:
+                    data = f.read(min(fileSize-numBytesSent, readBufferSize))
+                    if data == '':
+                        break  # unlikely, but safety first
+                    response.write(data)
+                    numBytesSent += len(data)
+        finally:
             f.close()
-            return
-        if (fileDict is None and self.setting('ReuseServlets')
-                and self.shouldCacheContent()
-                and fileSize < maxCacheContentSize):
-            if debug:
-                print('>> caching')
-            fileDict = dict(
-                content=f.read(),
-                mimeType=mimeType, mimeEncoding=mimeEncoding,
-                mtime=mtime, size=fileSize, filename=filename)
-            fileCache[filename] = fileDict
-        if fileDict is not None:
-            if debug:
-                print('>> sending content from cache')
-            response.write(fileDict['content'])
-        else:  # too big or not supposed to cache
-            if debug:
-                print('>> sending directly')
-            numBytesSent = 0
-            while numBytesSent < fileSize:
-                data = f.read(min(fileSize-numBytesSent, readBufferSize))
-                if data == '':
-                    break  # unlikely, but safety first
-                response.write(data)
-                numBytesSent += len(data)
-        f.close()
 
     # endregion Init et al

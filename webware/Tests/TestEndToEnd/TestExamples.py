@@ -20,7 +20,7 @@ class TestExamples(AppTest, unittest.TestCase):
     @staticmethod
     def removeDemoDatabase():
         # pylint: disable=unused-variable
-        for i in range(20):
+        for i in range(40):
             if not os.path.exists('demo.db'):
                 break
             try:
@@ -28,6 +28,7 @@ class TestExamples(AppTest, unittest.TestCase):
             except OSError:
                 sleep(.5)
             else:
+                sleep(.5)
                 break
 
     def testStartPage(self):

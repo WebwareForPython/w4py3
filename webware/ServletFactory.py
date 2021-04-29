@@ -305,14 +305,13 @@ class ServletFactory:
         Servlets that are currently in the wild may find their way back
         into the cache (this may be a problem).
         """
-        self._importLock.acquire()
-        self._classCache = {}
-        # We can't just delete all the lists, because returning
-        # servlets expect it to exist.
-        for key in self._servletPool:
-            self._servletPool[key] = []
-        self._threadsafeServletCache = {}
-        self._importLock.release()
+        with self._importLock:
+            self._classCache = {}
+            # We can't just delete all the lists, because returning
+            # servlets expect it to exist.
+            for key in self._servletPool:
+                self._servletPool[key] = []
+            self._threadsafeServletCache = {}
 
     # endregion Servlet Pool
 
