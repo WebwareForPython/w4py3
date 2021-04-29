@@ -22,15 +22,13 @@ class FieldStorage(cgi.FieldStorage):
     versions which append values from the query string to values sent via POST
     for parameters with the same name. With other words, our FieldStorage class
     overrides the query string parameters with the parameters sent via POST.
-
-    As recommended by W3C in section B.2.2 of the HTML 4.01 specification,
-    we also support use of ';' in place of '&' as separator in query strings.
     """
 
     def __init__(self, fp=None, headers=None, outerboundary=b'',
                  environ=None, keep_blank_values=False,
                  strict_parsing=False, limit=None,
-                 encoding='utf-8', errors='replace', max_num_fields=None):
+                 encoding='utf-8', errors='replace',
+                 max_num_fields=None, separator='&'):
         if environ is None:
             environ = os.environ
         method = environ.get('REQUEST_METHOD', 'GET').upper()
@@ -48,20 +46,29 @@ class FieldStorage(cgi.FieldStorage):
                     if 'CONTENT_LENGTH' in environ:
                         headers = {'content-type': content_type,
                                    'content-length': '-1'}
-            if max_num_fields is None:
-                # max_num_fields is only supported since Python 3.6.7 and 3.7.2
-                super().__init__(
-                    fp, headers=headers, outerboundary=outerboundary,
-                    environ=environ, keep_blank_values=keep_blank_values,
-                    strict_parsing=strict_parsing, limit=limit,
-                    encoding=encoding, errors=errors)
+            if separator == '&':
+                # separator is only supported since Python 3.6.13
+                if max_num_fields is None:
+                    # max_num_fields is only supported since Python 3.6.7
+                    super().__init__(
+                        fp, headers=headers, outerboundary=outerboundary,
+                        environ=environ, keep_blank_values=keep_blank_values,
+                        strict_parsing=strict_parsing, limit=limit,
+                        encoding=encoding, errors=errors)
+                else:
+                    super().__init__(
+                        fp, headers=headers, outerboundary=outerboundary,
+                        environ=environ, keep_blank_values=keep_blank_values,
+                        strict_parsing=strict_parsing, limit=limit,
+                        encoding=encoding, errors=errors,
+                        max_num_fields=max_num_fields)
             else:
                 super().__init__(
                     fp, headers=headers, outerboundary=outerboundary,
                     environ=environ, keep_blank_values=keep_blank_values,
                     strict_parsing=strict_parsing, limit=limit,
                     encoding=encoding, errors=errors,
-                    max_num_fields=max_num_fields)
+                    max_num_fields=max_num_fields, separator=separator)
         finally:
             if qs_on_post:
                 environ['QUERY_STRING'] = qs_on_post
@@ -71,17 +78,39 @@ class FieldStorage(cgi.FieldStorage):
     def add_qs(self, qs):
         """Add all non-existing parameters from the given query string."""
         values = defaultdict(list)
-        for name_values in qs.split('&'):
-            for name_value in name_values.split(';'):
-                nv = name_value.split('=', 2)
-                if len(nv) != 2:
-                    if self.strict_parsing:
-                        raise ValueError(f'bad query field: {name_value!r}')
-                    continue
-                name = parse.unquote(nv[0].replace('+', ' '))
-                value = parse.unquote(nv[1].replace('+', ' '))
-                if len(value) or self.keep_blank_values:
-                    values[name].append(value)
+        # split the query string in the same way as the current Python does it
+        try:
+            max_num_fields = self.max_num_fields
+        except AttributeError:
+            max_num_fields = None
+        try:
+            separator = self.separator
+        except AttributeError:
+            # splitting algorithm before Python 3.6.13
+            if max_num_fields is not None:
+                num_fields = 1 + qs.count('&') + qs.count(';')
+                if max_num_fields < num_fields:
+                    raise ValueError('Max number of fields exceeded')
+            pairs = [s2 for s1 in qs.split('&') for s2 in s1.split(';')]
+        else:
+            if not separator or not isinstance(separator, (str, bytes)):
+                return  # invalid separator, do nothing in this case
+            if max_num_fields is not None:
+                num_fields = 1 + qs.count(separator)
+                if max_num_fields < num_fields:
+                    raise ValueError('Max number of fields exceeded')
+            # new splitting algorithm that only supports one separator
+            pairs = qs.split(separator)
+        for name_value in pairs:
+            nv = name_value.split('=', 1)
+            if len(nv) != 2:
+                if self.strict_parsing:
+                    raise ValueError(f'bad query field: {name_value!r}')
+                continue
+            name = parse.unquote(nv[0].replace('+', ' '))
+            value = parse.unquote(nv[1].replace('+', ' '))
+            if len(value) or self.keep_blank_values:
+                values[name].append(value)
         if self.list is None:
             # This makes sure self.keys() are available, even
             # when valid POST data wasn't encountered.

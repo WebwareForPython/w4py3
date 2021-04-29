@@ -19,7 +19,7 @@ class TestFieldStorage(unittest.TestCase):
 
     def testPostRequestWithQuery(self):
         fs = FieldStorage(fp=BytesIO(), environ=dict(
-            REQUEST_METHOD='GET', QUERY_STRING='a=1&b=2&b=3&c=3'))
+            REQUEST_METHOD='POST', QUERY_STRING='a=1&b=2&b=3&c=3'))
         self.assertEqual(fs.getfirst('a'), '1')
         self.assertEqual(fs.getfirst('b'), '2')
         self.assertEqual(fs.getfirst('c'), '3')
@@ -53,22 +53,66 @@ class TestFieldStorage(unittest.TestCase):
         self.assertEqual(fs.getlist('e'), ['5', '6'])
         self.assertEqual(fs.getlist('f'), ['6'])
 
+    def testPostRequestWithTooManyFields(self):
+        fs = FieldStorage(fp=BytesIO(), environ=dict(
+            REQUEST_METHOD='POST', QUERY_STRING='a=1&a=2&a=3&a=4'),
+            max_num_fields=4)
+        self.assertEqual(fs.getlist('a'), ['1', '2', '3', '4'])
+        if hasattr(fs, 'max_num_fields'):  # only test if this is supported
+            self.assertRaises(
+                ValueError, FieldStorage,
+                fp=BytesIO(), environ=dict(
+                    REQUEST_METHOD='POST', QUERY_STRING='a=1&a=2&a=3&a=4'),
+                max_num_fields=3)
+
     def testPostRequestWithQueryWithSemicolon1(self):
         fs = FieldStorage(fp=BytesIO(), environ=dict(
-            REQUEST_METHOD='GET', QUERY_STRING='a=1&b=2;b=3&c=3'))
+            REQUEST_METHOD='POST', QUERY_STRING='a=1&b=2;b=3&c=3'))
         self.assertEqual(fs.getfirst('a'), '1')
-        self.assertEqual(fs.getfirst('b'), '2')
         self.assertEqual(fs.getfirst('c'), '3')
         self.assertEqual(fs.getlist('a'), ['1'])
-        self.assertEqual(fs.getlist('b'), ['2', '3'])
         self.assertEqual(fs.getlist('c'), ['3'])
+        separator = getattr(fs, 'separator', None)
+        if separator:  # new Python version, splits only &
+            self.assertEqual(fs.getfirst('b'), '2;b=3')
+            self.assertEqual(fs.getlist('b'), ['2;b=3'])
+            fs = FieldStorage(fp=BytesIO(), environ=dict(
+                REQUEST_METHOD='POST', QUERY_STRING='a=1&b=2&b=3&c=3'),
+                separator='&')
+            self.assertEqual(fs.getfirst('a'), '1')
+            self.assertEqual(fs.getfirst('b'), '2')
+            self.assertEqual(fs.getfirst('c'), '3')
+            self.assertEqual(fs.getlist('a'), ['1'])
+            self.assertEqual(fs.getlist('b'), ['2', '3'])
+            self.assertEqual(fs.getlist('c'), ['3'])
+        else:  # old Python version, splits ; and &
+            self.assertEqual(fs.getfirst('b'), '2')
+            self.assertEqual(fs.getlist('b'), ['2', '3'])
 
     def testPostRequestWithQueryWithSemicolon2(self):
         fs = FieldStorage(fp=BytesIO(), environ=dict(
-            REQUEST_METHOD='GET', QUERY_STRING='a=1;b=2&b=3;c=3'))
-        self.assertEqual(fs.getfirst('a'), '1')
-        self.assertEqual(fs.getfirst('b'), '2')
-        self.assertEqual(fs.getfirst('c'), '3')
-        self.assertEqual(fs.getlist('a'), ['1'])
-        self.assertEqual(fs.getlist('b'), ['2', '3'])
-        self.assertEqual(fs.getlist('c'), ['3'])
+            REQUEST_METHOD='POST', QUERY_STRING='a=1;b=2&b=3;c=3'))
+        separator = getattr(fs, 'separator', None)
+        if separator:  # new Python version, splits only &
+            self.assertEqual(fs.getfirst('a'), '1;b=2')
+            self.assertEqual(fs.getfirst('b'), '3;c=3')
+            self.assertIsNone(fs.getfirst('c'))
+            self.assertEqual(fs.getlist('a'), ['1;b=2'])
+            self.assertEqual(fs.getlist('b'), ['3;c=3'])
+            self.assertEqual(fs.getlist('c'), [])
+            fs = FieldStorage(fp=BytesIO(), environ=dict(
+                REQUEST_METHOD='POST', QUERY_STRING='a=1;b=2;b=3;c=3'),
+                separator=';')
+            self.assertEqual(fs.getfirst('a'), '1')
+            self.assertEqual(fs.getfirst('b'), '2')
+            self.assertEqual(fs.getfirst('c'), '3')
+            self.assertEqual(fs.getlist('a'), ['1'])
+            self.assertEqual(fs.getlist('b'), ['2', '3'])
+            self.assertEqual(fs.getlist('c'), ['3'])
+        else:  # old Python version, splits ; and &
+            self.assertEqual(fs.getfirst('a'), '1')
+            self.assertEqual(fs.getfirst('b'), '2')
+            self.assertEqual(fs.getfirst('c'), '3')
+            self.assertEqual(fs.getlist('a'), ['1'])
+            self.assertEqual(fs.getlist('b'), ['2', '3'])
+            self.assertEqual(fs.getlist('c'), ['3'])
