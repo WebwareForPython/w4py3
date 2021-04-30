@@ -12,14 +12,14 @@ def serve(args):
     except ImportError as e:
         raise RuntimeError('Waitress server is not installed') from e
 
-    if args.browser:
-        scheme = args.url_scheme
-        host, port = args.host, args.port
-        prefix = args.url_prefix.strip('/')
-        if prefix:
-            prefix += '/'
-        url = f'{scheme}://{host}:{port}/{prefix}'
+    scheme = args.url_scheme
+    host, port = args.host, args.port
+    path = args.url_prefix.strip('/')
+    if path:
+        path = f'/{path}/'
+    url = f'{scheme}://{host}:{port}{path}'
 
+    if args.browser:
         import time
         import threading
         import webbrowser
@@ -87,7 +87,7 @@ def serve(args):
             logger = logging.getLogger('waitress')
             logger.setLevel(logLevel)
 
-    print("Waitress serving Webware application...")
+    print(f"Waitress serving Webware application on {url}")
     serve(application, **args)
 
 
