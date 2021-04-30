@@ -42,7 +42,6 @@ Loading plug-in: PSP at .+PSP
 Loading context: PSP/Examples at .+Examples
 
 Waitress serving Webware application...
-Serving on http://.+:8080
 '''
 
 expectedStartPage = r'''
@@ -74,7 +73,7 @@ h1 { .+; }
 class RunServer(Process):
     """Run a given command until a given line is found in the output."""
 
-    def __init__(self, cmd=None, waitForLine='Serving on '):
+    def __init__(self, cmd=None, waitForLine='Waitress serving Webware'):
         super().__init__()
         self.cmd = cmd or ['webware', 'serve']
         self.waitForLine = waitForLine

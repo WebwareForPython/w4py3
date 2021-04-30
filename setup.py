@@ -12,17 +12,17 @@ with open('README.md') as fh:
 
 requireDev = [
     'Pygments>=2.7,<3', 'WebTest>=2.0,<3',
-    'waitress>=1.4.4,<2', 'hupper>=1.10,<2',
+    'waitress>=2,<3', 'hupper>=1.10,<2',
 ]
 requireDocs = [
-    'Sphinx>=3,<4', 'sphinx_rtd_theme>=0.5'
+    'Sphinx>=3.5,<4', 'sphinx_rtd_theme>=0.5'
 ]
 requireExamples = [
     'DBUtils>=2,<4', 'dominate>=2.6,<3', 'yattag>=1.14,<2',
     'Pygments>=2.7,<3', 'Pillow>=8,<9'
 ]
 requireTests = [
-    'psutil>=5.8,<6', 'flake8>=3.8,<4', 'pylint>=2.6,<3', 'tox>=3.21,<4',
+    'psutil>=5.8,<6', 'flake8>=3.9,<4', 'pylint>=2.8,<3', 'tox>=3.23,<4',
     'pywin32>=300,<400;'
     'sys_platform=="win32" and implementation_name=="cpython"'
 ] + requireDev + requireDocs + requireExamples

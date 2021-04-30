@@ -3,6 +3,7 @@
 """Serve Webware for Python Application using the waitress WSGI server."""
 
 import argparse
+import logging
 
 
 def serve(args):
@@ -68,7 +69,6 @@ def serve(args):
             'Cannot find Webware application.\nIs the current directory'
             ' the application working directory?') from e
 
-    print("Waitress serving Webware application...")
     args = vars(args)
     for arg in 'browser reload reload_interval prod wsgi_script'.split():
         del args[arg]
@@ -80,6 +80,14 @@ def serve(args):
             del args['trusted_proxy_count']
         if not args['trusted_proxy_headers']:
             del args['trusted_proxy_headers']
+    logLevel = args.pop('log_level')
+    if logLevel:
+        logLevel = logging.getLevelName(logLevel)
+        if isinstance(logLevel, int):
+            logger = logging.getLogger('waitress')
+            logger.setLevel(logLevel)
+
+    print("Waitress serving Webware application...")
     serve(application, **args)
 
 
@@ -154,6 +162,13 @@ def addArguments(parser):
         '--wsgi-script',
         help='The file path of the WSGI script',
         default='Scripts/WSGIScript.py',
+    )
+    parser.add_argument(
+        '--log-level',
+        help='Logs output on the given level',
+        default=None,
+        choices=('DEBUG', 'INFO', 'WARNING', 'ERROR', 'CRITICAL'),
+        type=str.upper
     )
 
 
