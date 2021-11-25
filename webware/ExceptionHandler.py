@@ -9,6 +9,7 @@ from io import StringIO
 from random import randint
 from time import time, localtime
 
+import email
 from email.message import Message
 from email.utils import formatdate
 
@@ -489,6 +490,12 @@ class ExceptionHandler:
         Send the exception via mail, either as an attachment,
         or as the body of the mail.
         """
+
+        # we use quoted-printable encoding, which will automatically split long lines.
+        # this is important because tracebacks can contain long representations of python
+        # data, longer than the max line length smtp servers will accept (a typical limit is 990 bytes).
+        cs = email.charset.Charset('utf-8')
+        cs.body_encoding = email.charset.QP
         message = Message()
 
         # Construct the message headers
@@ -519,7 +526,6 @@ class ExceptionHandler:
             message.attach(part)
             part = Message()
             # now add htmlErrMsg
-            part.add_header('Content-Transfer-Encoding', '7bit')
             part.add_header(
                 'Content-Description',
                 'HTML version of Webware error message')
@@ -527,11 +533,11 @@ class ExceptionHandler:
                 'Content-Disposition',
                 'attachment', filename='WebwareErrorMsg.html')
             part.set_type('text/html')
-            part.set_payload(htmlErrMsg)
+            part.set_payload(htmlErrMsg, charset=cs)
             message.attach(part)
         else:
             message.set_type('text/html')
-            message.set_payload(htmlErrMsg, 'us-ascii')
+            message.set_payload(htmlErrMsg, charset=cs)
 
         # Send the message
         server = self.setting('ErrorEmailServer')
