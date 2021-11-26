@@ -47,19 +47,19 @@ class TestUtils(unittest.TestCase):
 
     def testCheckAttributes(self):
         checkAttributes = PSPUtils.checkAttributes
-        for attrs in (dict(man=1), dict(man=1, opt=1)):
+        for attrs in ({'man': 1}, {'man': 1, 'opt': 1}):
             checkAttributes('test', attrs, (['man'], ['opt']))
         PSPParserException = PSPUtils.PSPParserException
-        for attrs in (dict(), dict(opt=1), dict(man=1, noopt=1)):
+        for attrs in ({}, {'man': 1}, {'man': 1, 'noopt': 1}):
             self.assertRaises(
                 PSPParserException, checkAttributes,
                 'test', attrs, (['man'], ['opt']))
         self.assertRaises(
             PSPParserException, checkAttributes,
-            'test', dict(opt=1), (['man1', 'man2'], []))
+            'test', {'opt': 1}, (['man1', 'man2'], []))
         self.assertRaises(
             PSPParserException, checkAttributes,
-            'test', dict(man=1), ([], ['opt1', 'opt2']))
+            'test', {'man': 1}, ([], ['opt1', 'opt2']))
 
     def testNormalizeIndentation(self):
         normalizeIndentation = PSPUtils.normalizeIndentation
