@@ -21,6 +21,7 @@ class RoleUserManagerMixIn:
 
     def initUserClass(self):
         """Invoked by __init__ to set the default user class to RoleUser."""
+        # pylint: disable=no-member
         self.setUserClass(RoleUser)
 
     # endregion Init

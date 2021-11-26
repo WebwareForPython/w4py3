@@ -166,10 +166,12 @@ class UserManagerToFile(UserManager):
 class UserMixIn:
 
     def filename(self):
+        # pylint: disable=no-member
         return os.path.join(
             self.manager().userDir(), f'{self.serialNum()}.user')
 
     def save(self):
+        # pylint: disable=no-member
         with open(self.filename(), 'wb') as f:
             self.manager().encoder()(self, f)
 
