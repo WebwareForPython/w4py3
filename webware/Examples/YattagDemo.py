@@ -55,7 +55,8 @@ class YattagDemo(ExamplePage):
         else:
             subject = message = None
 
-        doc, tag, text = Doc(defaults=defaults, errors=errors).tagtext()
+        doc = Doc(defaults=defaults, errors=errors)
+        tag, text = doc.tag, doc.text
 
         if message and not errors:
 
@@ -77,8 +78,7 @@ class YattagDemo(ExamplePage):
 
             with tag('form', action="YattagDemo"):
                 doc.input(name='subject', type='text', size=80)
-                with doc.textarea(
-                        name='message', cols=80, rows=8):
+                with doc.textarea(name='message', cols=80, rows=8):
                     pass
                 doc.stag('input', type='submit', value='Send my message')
 
