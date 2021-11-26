@@ -22,7 +22,7 @@ requireExamples = [
     'Pygments>=2.7,<3', 'Pillow>=8,<9'
 ]
 requireTests = [
-    'psutil>=5.8,<6', 'flake8>=3.9,<4', 'pylint>=2.8,<3', 'tox>=3.23,<4',
+    'psutil>=5.8,<6', 'flake8>=4,<5', 'pylint>=2.12,<3', 'tox>=3.23,<4',
     'pywin32>=300,<400;'
     'sys_platform=="win32" and implementation_name=="cpython"'
 ] + requireDev + requireDocs + requireExamples
