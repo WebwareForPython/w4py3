@@ -11,7 +11,7 @@ with open('README.md') as fh:
     long_description = fh.read()
 
 requireDev = [
-    'Pygments>=2.10,<3', 'WebTest>=2.0,<3',
+    'Pygments>=2.10,<3', 'WebTest>=3,<4',
     'waitress>=2,<3', 'hupper>=1.10,<2',
 ]
 requireDocs = [
