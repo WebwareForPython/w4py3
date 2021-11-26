@@ -116,8 +116,9 @@ class MakeAppWorkDir:
                 self.msg(f"\t{path} already exists.")
             else:
                 os.makedirs(path)
-                open(os.path.join(path, '__init__.py'), 'w',
-                     encoding='ascii').write('#\n')
+                with open(os.path.join(path, '__init__.py'), 'w',
+                          encoding='ascii') as initFile:
+                    initFile.write('#\n')
                 self.msg(f"\t{path} created.")
 
     def copyConfigFiles(self):
@@ -193,14 +194,16 @@ class MakeAppWorkDir:
                 self.msg(f"\t{filename} already exists.")
             else:
                 self.msg(f"\t{filename}")
-                open(filename, "w", encoding='ascii').write(source)
+                with open(filename, "w", encoding='ascii') as sourceFile:
+                    sourceFile.write(source)
         self.msg("Updating config for default context...")
         filename = os.path.join(self._workDir, 'Configs', 'Application.config')
         self.msg(f"\t{filename}")
-        content = open(filename, encoding='utf-8').readlines()
+        with open(filename, encoding='utf-8') as configFile:
+            configLines = configFile.readlines()
         foundContext = 0
         with open(filename, 'w', encoding='utf-8') as output:
-            for line in content:
+            for line in configLines:
                 contextName = self._contextName
                 if line.startswith(
                         f"Contexts[{contextName!r}] = {configDir!r}\n"):
