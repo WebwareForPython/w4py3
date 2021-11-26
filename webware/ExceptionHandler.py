@@ -495,8 +495,8 @@ class ExceptionHandler:
         # long lines. This is important because tracebacks can contain long
         # representations of Python data, longer than the maximum line length
         # that SMTP servers will accept (a typical limit is 990 bytes).
-        cs = email.charset.Charset('utf-8')
-        cs.body_encoding = email.charset.QP
+        charset = email.charset.Charset('utf-8')
+        charset.body_encoding = email.charset.QP
         message = Message()
 
         # Construct the message headers
@@ -534,11 +534,11 @@ class ExceptionHandler:
                 'Content-Disposition',
                 'attachment', filename='WebwareErrorMsg.html')
             part.set_type('text/html')
-            part.set_payload(htmlErrMsg, charset=cs)
+            part.set_payload(htmlErrMsg, charset=charset)
             message.attach(part)
         else:
             message.set_type('text/html')
-            message.set_payload(htmlErrMsg, charset=cs)
+            message.set_payload(htmlErrMsg, charset=charset)
 
         # Send the message
         server = self.setting('ErrorEmailServer')
