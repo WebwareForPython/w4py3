@@ -27,6 +27,8 @@ Logs/
 ErrorMsgs/
 Sessions/
 
+Webware-for-Python-*
+
 .idea/
 .tox/
 .venv/
