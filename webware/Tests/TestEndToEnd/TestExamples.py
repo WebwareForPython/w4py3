@@ -28,8 +28,8 @@ class TestExamples(AppTest, unittest.TestCase):
             except OSError:
                 sleep(.5)
             else:
-                sleep(.5)
                 break
+        sleep(.5)
 
     def testStartPage(self):
         r = self.testApp.get('/')
