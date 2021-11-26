@@ -50,7 +50,7 @@ class TestUtils(unittest.TestCase):
         for attrs in ({'man': 1}, {'man': 1, 'opt': 1}):
             checkAttributes('test', attrs, (['man'], ['opt']))
         PSPParserException = PSPUtils.PSPParserException
-        for attrs in ({}, {'man': 1}, {'man': 1, 'noopt': 1}):
+        for attrs in ({}, {'opt': 1}, {'man': 1, 'noopt': 1}):
             self.assertRaises(
                 PSPParserException, checkAttributes,
                 'test', attrs, (['man'], ['opt']))
