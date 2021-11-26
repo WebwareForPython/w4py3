@@ -187,14 +187,13 @@ class MakeAppWorkDir:
         else:
             self.msg(f"\t{contextDir}")
             os.makedirs(contextDir)
-        for name in exampleContext:
+        for name, source in exampleContext.items():
             filename = os.path.join(contextDir, name)
             if os.path.exists(filename):
                 self.msg(f"\t{filename} already exists.")
             else:
                 self.msg(f"\t{filename}")
-                open(filename, "w",
-                     encoding='ascii').write(exampleContext[name])
+                open(filename, "w", encoding='ascii').write(source)
         self.msg("Updating config for default context...")
         filename = os.path.join(self._workDir, 'Configs', 'Application.config')
         self.msg(f"\t{filename}")

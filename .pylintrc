@@ -13,6 +13,7 @@ init-hook = sys.path.insert(0, 'webware')
 disable =
  attribute-defined-outside-init,
  broad-except,
+ consider-using-dict-items,
  consider-using-f-string,
  cyclic-import,
  similarities,
