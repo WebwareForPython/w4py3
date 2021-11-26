@@ -41,7 +41,7 @@ class Scheduler(Thread):
         self._isRunning = False
         self._exceptionHandler = exceptionHandler
         if daemon:
-            self.setDaemon(True)
+            self.daemon = True
 
     # endregion Init
 

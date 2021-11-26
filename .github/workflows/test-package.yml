@@ -9,7 +9,7 @@ jobs:
     strategy:
       max-parallel: 4
       matrix:
-        python-version: [3.6, 3.7, 3.8, 3.9, pypy3]
+        python-version: [3.6, 3.7, 3.8, 3.9, 3.10, pypy3]
 
     steps:
     - uses: actions/checkout@v2
@@ -22,11 +22,11 @@ jobs:
         python -m pip install --upgrade pip
         pip install .[tests]
     - name: Lint with flake8
-      if: matrix.python-version == 3.8
+      if: matrix.python-version == 3.9
       run: |
         flake8 webware setup.py --count --exit-zero --statistics
     - name: Lint with pylint
-      if: matrix.python-version == 3.8
+      if: matrix.python-version == 3.9
       run: |
         pylint webware
     - name: Run all unit tests
