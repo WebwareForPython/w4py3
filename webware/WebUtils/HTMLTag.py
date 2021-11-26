@@ -544,18 +544,18 @@ class HTMLReader(HTMLParser):
         raise HTMLTagProcessingInstructionError(
             f'Was not expecting a processing instruction: {data!r}')
 
-    def handle_starttag(self, name, attrs):  # pylint: disable=arguments-differ
+    def handle_starttag(self, tag, attrs):
         if self._finished:
             return
-        tag = HTMLTag(name, lineNumber=self._lineNumber)
+        htmlTag = HTMLTag(tag, lineNumber=self._lineNumber)
         for attrName, value in attrs:
-            tag.readAttr(attrName, value)
-        if name in self._emptyTagSet:
+            htmlTag.readAttr(attrName, value)
+        if tag in self._emptyTagSet:
             # We'll never have any children. Boo hoo.
             if not self._rootTag:
                 raise HTMLTagError(
-                    f'Cannot start HTML with an empty tag: {tag!r}')
-            self._tagStack[-1].addChild(tag)
+                    f'Cannot start HTML with an empty tag: {htmlTag!r}')
+            self._tagStack[-1].addChild(htmlTag)
             empty = True
         else:
             # We could have children, so we go on the stack
@@ -567,37 +567,37 @@ class HTMLReader(HTMLParser):
                 # is this legal?
                 tagConfig = self._tagContainmentConfig.get(lastTag.name())
                 if tagConfig:
-                    tagConfig.encounteredTag(name, self._lineNumber)
+                    tagConfig.encounteredTag(tag, self._lineNumber)
                 # tell last tag about his new child
-                lastTag.addChild(tag)
-            elif name != 'html' and self._fakeRootTagIfNeeded:
+                lastTag.addChild(htmlTag)
+            elif tag != 'html' and self._fakeRootTagIfNeeded:
                 self._rootTag = HTMLTag('html')
                 self._tagStack.append(self._rootTag)
-                self._tagStack[-1].addChild(tag)
+                self._tagStack[-1].addChild(htmlTag)
                 self._usedFakeRootTag = True
             else:
-                self._rootTag = tag
-            self._tagStack.append(tag)
+                self._rootTag = htmlTag
+            self._tagStack.append(htmlTag)
             empty = False
         if self._printsStack:
             prefix = ('START', '-----')[empty]
-            print(f'{prefix} {name.ljust(6)}: {self._tagStack!r}')
+            print(f'{prefix} {tag.ljust(6)}: {self._tagStack!r}')
 
-    def handle_endtag(self, name):  # pylint: disable=arguments-differ
+    def handle_endtag(self, tag):
         if self._finished:
             return
-        if name == self._endingTag:
+        if tag == self._endingTag:
             self._finished = True
         openingTag = self._tagStack.pop()
         if self._printsStack:
-            print(f'END   {name.ljust(6)}: {self._tagStack}')
-        if openingTag.name() != name:
+            print(f'END   {tag.ljust(6)}: {self._tagStack}')
+        if openingTag.name() != tag:
             raise HTMLTagUnbalancedError(
                 f'line {self._lineNumber}:'
-                f' opening is {openingTag}, but closing is <{name}>.',
+                f' opening is {openingTag}, but closing is <{tag}>.',
                 line=self._lineNumber, opening=openingTag.name(),
-                closing=name, tagStack=self._tagStack)
-        openingTag.closedBy(name, self._lineNumber)
+                closing=tag, tagStack=self._tagStack)
+        openingTag.closedBy(tag, self._lineNumber)
 
     def close(self):
         stackSize = len(self._tagStack)
