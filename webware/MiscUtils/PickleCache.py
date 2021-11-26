@@ -92,7 +92,7 @@ class PickleCacheReader(PickleCache):
         if not os.path.exists(filename):
             if v:
                 print(f'Cannot find {filename!r}.')
-            open(filename)  # to get a properly constructed IOError
+            open(filename, 'rb')  # to get a properly constructed IOError
 
         shouldDeletePickle = False
         data = None

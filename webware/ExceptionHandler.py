@@ -421,7 +421,7 @@ class ExceptionHandler:
         filename = os.path.join(
             self._app._errorMessagesDir, self.errorPageFilename())
         try:
-            with open(filename, 'w') as f:
+            with open(filename, 'w', encoding='utf-8') as f:
                 f.write(html)
         except IOError:
             sys.stderr.write(
@@ -473,10 +473,10 @@ class ExceptionHandler:
         filename = self._app.setting('ErrorLogFilename')
         try:
             if os.path.exists(filename):
-                with open(filename, 'a') as f:
+                with open(filename, 'a', encoding='utf-8') as f:
                     f.write(logLine)
             else:
-                with open(filename, 'w') as f:
+                with open(filename, 'w', encoding='utf-8') as f:
                     f.write(
                         'time,filename,pathname,exception name,'
                         'exception data,error report filename\n')

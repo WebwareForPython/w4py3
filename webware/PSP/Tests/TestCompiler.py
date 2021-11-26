@@ -50,7 +50,7 @@ class TestCompiler(unittest.TestCase):
         modulePath = os.path.join(self.testDir, moduleName)
         tmpInName = modulePath + '.psp'
         tmpOutName = modulePath + '.py'
-        with open(tmpInName, 'w') as fp:
+        with open(tmpInName, 'w', encoding='utf-8') as fp:
             fp.write(pspSource)
         # Compile PSP into .py file
         context = Context.PSPCLContext(tmpInName)

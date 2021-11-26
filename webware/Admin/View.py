@@ -24,8 +24,7 @@ class View(AdminSecurity):
                 self.writeError('File cannot be viewed!')
 
     def writeError(self, message):
-        self.writeln(
-            f'<h3 style="color:red">Error</h3><p>{message}</p>')
+        self.writeln(f'<h3 style="color:red">Error</h3><p>{message}</p>')
 
     def writeContent(self):
         filename = self.request().field('filename', None)
@@ -41,7 +40,7 @@ class View(AdminSecurity):
         self._type = 'text/' + (
             'html' if splitext(filename)[1] in ('.htm', '.html') else 'plain')
         try:
-            with open(filename) as f:
+            with open(filename, encoding='utf-8') as f:
                 self._data = f.read()
         except Exception:
             self.writeError(f'The requested file {filename!r} cannot be read.')

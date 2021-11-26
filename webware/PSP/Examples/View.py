@@ -26,7 +26,7 @@ class View(PSPExamplePage):
                 self.write('<p style="color:red">'
                            f'No such file {basename} exists</p>')
                 return
-            text = open(filename).read()
+            text = open(filename, encoding='utf-8').read()
             text = self.htmlEncode(text)
             text = text.replace('\n', '<br>').replace('\t', ' '*4)
             self.write(f'<pre>{text}</pre>')

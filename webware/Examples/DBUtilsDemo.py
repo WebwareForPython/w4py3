@@ -44,9 +44,8 @@ class DBUtilsDemo(ExamplePage):
     # Initialize the buttons
     _actions = []
     _buttons = []
-    for action in (
-            'create tables', 'list seminars', 'list attendees',
-            'add seminar', 'add attendee'):
+    for action in ('create tables', 'list seminars', 'list attendees',
+                   'add seminar', 'add attendee'):
         value = action.capitalize()
         action = action.split()
         action[1] = action[1].capitalize()

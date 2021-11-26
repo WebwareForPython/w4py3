@@ -507,8 +507,8 @@ class DataTable:
     def save(self):
         self.writeFileNamed(self._filename)
 
-    def writeFileNamed(self, filename):
-        with open(filename, 'w') as f:
+    def writeFileNamed(self, filename, encoding='utf-8'):
+        with open(filename, 'w', encoding=encoding) as f:
             self.writeFile(f)
 
     def writeFile(self, file):

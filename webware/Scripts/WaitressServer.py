@@ -54,7 +54,7 @@ def serve(args):
         del environ['WEBWARE_DEVELOPMENT']
     try:
         # get application from WSGI script
-        with open(args.wsgi_script) as f:
+        with open(args.wsgi_script, encoding='utf-8') as f:
             script = f.read()
         # set development flag in the script
         script = script.replace(

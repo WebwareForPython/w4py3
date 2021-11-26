@@ -221,7 +221,8 @@ class Application(ConfigurableForServerSidePath):
             if '/' not in filename:
                 filename = os.path.join(self._logDir, filename)
             # pylint: disable=consider-using-with
-            sys.stderr = sys.stdout = open(filename, 'a', buffering=1)
+            sys.stderr = sys.stdout = open(
+                filename, 'a', encoding='utf-8', buffering=1)
 
         self.initErrorPage()
         self.printStartUpMessage()
@@ -267,7 +268,7 @@ class Application(ConfigurableForServerSidePath):
                      os.path.dirname(os.path.abspath(__file__))):
             error404file = os.path.join(path, 'error404.html')
             try:
-                with open(error404file) as f:
+                with open(error404file, encoding='utf-8') as f:
                     self._error404 = f.read()
             except Exception:
                 continue
@@ -611,7 +612,7 @@ class Application(ConfigurableForServerSidePath):
             filename = os.path.join(self._logDir, filename)
         filename = self.serverSidePath(filename)
         mode = 'a' if os.path.exists(filename) else 'w'
-        with open(filename, mode) as f:
+        with open(filename, mode, encoding='utf-8') as f:
             if mode == 'w':
                 f.write(','.join(self.setting('ActivityLogColumns')) + '\n')
             values = []

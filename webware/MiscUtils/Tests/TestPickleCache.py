@@ -70,7 +70,7 @@ class TestPickleCache(unittest.TestCase):
             self.remove(picklePath)
 
     def writeSource(self):
-        with open(self._sourcePath, 'w') as f:
+        with open(self._sourcePath, 'w', encoding='ascii') as f:
             f.write(str(self._data))
 
     def writePickle(self):

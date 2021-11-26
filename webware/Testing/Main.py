@@ -54,7 +54,7 @@ class Main(SidebarPage):
         Each of them is a dictionary, as defined the given file.
         See TestCases.data for information on the format.
         """
-        with open(filename) as f:
+        with open(filename, encoding='utf-8') as f:
             cases = self.readFile(f)
         return cases
 

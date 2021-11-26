@@ -91,7 +91,7 @@ class StreamReader:
         if parent is not None and not isAbsolute:
             filepath = os.path.join(parent, filepath)
         fileId = self.registerSourceFile(filepath)
-        with open(filepath, 'r') as handle:
+        with open(filepath, 'r', encoding=encoding) as handle:
             stream = handle.read()
             handle.seek(0, 0)
             if self.current is None:

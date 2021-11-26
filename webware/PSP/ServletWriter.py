@@ -63,7 +63,7 @@ class ServletWriter:
         self._file.close()
         if os.path.exists(self._pyFilename):
             os.remove(self._pyFilename)
-        with open(self._pyFilename, 'w') as f:
+        with open(self._pyFilename, 'w', encoding='utf-8') as f:
             f.write(pyCode)
 
     def pushIndent(self):

@@ -71,7 +71,7 @@ class PropertiesObject(dict):
 
     def readFileNamed(self, filename):
         results = {}
-        with open(filename) as f:
+        with open(filename, encoding='utf-8') as f:
             exec(f.read(), results)
         self.update(results)
         self.cleanPrivateItems()

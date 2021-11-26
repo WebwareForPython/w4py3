@@ -71,7 +71,7 @@ class HTTPRequest(Request):
 
         # Debugging
         if debug:
-            with open('env.text', 'a') as f:
+            with open('env.text', 'a', encoding='utf-8') as f:
                 f.write('>> env for request:\n')
                 for key in sorted(env):
                     f.write(f'{key}: {env[key]!r}\n')

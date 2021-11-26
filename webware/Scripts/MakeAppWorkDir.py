@@ -116,7 +116,8 @@ class MakeAppWorkDir:
                 self.msg(f"\t{path} already exists.")
             else:
                 os.makedirs(path)
-                open(os.path.join(path, '__init__.py'), 'w').write('#\n')
+                open(os.path.join(path, '__init__.py'), 'w',
+                     encoding='ascii').write('#\n')
                 self.msg(f"\t{path} created.")
 
     def copyConfigFiles(self):
@@ -157,14 +158,14 @@ class MakeAppWorkDir:
         self.msg("Setting the library directories...")
         wsgiScript = os.path.join(self._workDir, 'Scripts', 'WSGIScript.py')
         if os.path.isfile(wsgiScript):
-            with open(wsgiScript) as f:
+            with open(wsgiScript, encoding='utf-8') as f:
                 script = f.read()
             if 'libDirs = []' not in script:
                 self.msg("\tWarning: Unexpected WSGI script")
             else:
                 script = script.replace(
                     'libDirs = []', f'libDirs = {self._libraryDirs!r}')
-                with open(wsgiScript, 'w') as f:
+                with open(wsgiScript, 'w', encoding='utf-8') as f:
                     f.write(script)
         else:
             self.msg("\tWarning: Cannot find WSGI script.")
@@ -192,14 +193,14 @@ class MakeAppWorkDir:
                 self.msg(f"\t{filename} already exists.")
             else:
                 self.msg(f"\t{filename}")
-                open(filename, "w").write(exampleContext[name])
+                open(filename, "w",
+                     encoding='ascii').write(exampleContext[name])
         self.msg("Updating config for default context...")
-        filename = os.path.join(
-            self._workDir, 'Configs', 'Application.config')
+        filename = os.path.join(self._workDir, 'Configs', 'Application.config')
         self.msg(f"\t{filename}")
-        content = open(filename).readlines()
+        content = open(filename, encoding='utf-8').readlines()
         foundContext = 0
-        with open(filename, 'w') as output:
+        with open(filename, 'w', encoding='utf-8') as output:
             for line in content:
                 contextName = self._contextName
                 if line.startswith(
@@ -226,7 +227,7 @@ class MakeAppWorkDir:
         if os.path.exists(filename):
             existed = True
         else:
-            with open(filename, 'w') as f:
+            with open(filename, 'w', encoding='ascii') as f:
                 f.write(ignore)
         if existed:
             self.msg("\tDid not change existing .gitignore file.")

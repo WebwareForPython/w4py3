@@ -395,13 +395,13 @@ class HTMLReader(HTMLParser):
 
     # region Reading
 
-    def readFileNamed(self, filename, retainRootTag=True):
+    def readFileNamed(self, filename, retainRootTag=True, encoding='utf-8'):
         """Read the given file.
 
         Relies on readString(). See that method for more information.
         """
         self._filename = filename
-        with open(filename) as f:
+        with open(filename, encoding=encoding) as f:
             contents = f.read()
         return self.readString(contents, retainRootTag)
 

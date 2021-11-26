@@ -44,8 +44,8 @@ class BenchCSVParser:
             print("Benchmark using", name, "...")
             self.benchFileNamed(name)
 
-    def benchFileNamed(self, name):
-        with open(name) as f:
+    def benchFileNamed(self, name, encoding='utf-8'):
+        with open(name, encoding=encoding) as f:
             lines = f.readlines()
         for line in lines:
             for _iteration in range(self._iterations):

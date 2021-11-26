@@ -62,14 +62,14 @@ class TestMakeApp(unittest.TestCase):
         appFiles = '.gitignore error404.html Scripts/WSGIScript.py'.split()
         for appFile in appFiles:
             self.assertTrue(os.path.isfile(appFile), appFile)
-        with open('Scripts/WSGIScript.py') as f:
+        with open('Scripts/WSGIScript.py', encoding='utf-8') as f:
             wsgiScript = f.read().splitlines()
         self.assertEqual(wsgiScript[0], '#!/usr/bin/env python3')
         self.assertIn('from Application import Application', wsgiScript)
         os.chdir('MyContext')
-        with open('__init__.py') as f:
+        with open('__init__.py', encoding='utf-8') as f:
             initScript = f.read().splitlines()
         self.assertIn('def contextInitialize(application, path):', initScript)
-        with open('Main.py') as f:
+        with open('Main.py', encoding='utf-8') as f:
             mainServlet = f.read().splitlines()
         self.assertIn('class Main(Page):', mainServlet)

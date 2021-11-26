@@ -54,7 +54,7 @@ class Colorize(Page):
         filename = req.field('filename')
         filename = self.request().serverSidePath(os.path.basename(filename))
         try:
-            with open(filename) as f:
+            with open(filename, encoding='utf-8') as f:
                 source = f.read()
         except IOError:
             source = None

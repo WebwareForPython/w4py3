@@ -303,7 +303,7 @@ class InsertGenerator(GenericGenerator):
         # Cut down on those by using a single res.write on the whole
         # file, after escaping any triple-double quotes.
         if self.static:
-            with open(self.page) as f:
+            with open(self.page, encoding='utf-8') as f:
                 data = f.read()
             data = data.replace('"""', r'\"""')
             writer.println(f'res.write("""{data}""")')

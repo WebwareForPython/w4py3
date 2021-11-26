@@ -45,8 +45,8 @@ class BenchDataTable:
             print("Benchmark using", name, "...")
             self.benchFileNamed(name)
 
-    def benchFileNamed(self, name):
-        with open(name) as f:
+    def benchFileNamed(self, name, encoding='utf-8'):
+        with open(name, encoding=encoding) as f:
             contents = f.read()
         for _iteration in range(self._iterations):
             # we duplicate lines to reduce the overhead of the loop
