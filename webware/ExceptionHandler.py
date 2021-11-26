@@ -491,9 +491,10 @@ class ExceptionHandler:
         or as the body of the mail.
         """
 
-        # we use quoted-printable encoding, which will automatically split long lines.
-        # this is important because tracebacks can contain long representations of python
-        # data, longer than the max line length smtp servers will accept (a typical limit is 990 bytes).
+        # We use quoted-printable encoding, which will automatically split
+        # long lines. This is important because tracebacks can contain long
+        # representations of Python data, longer than the maximum line length
+        # that SMTP servers will accept (a typical limit is 990 bytes).
         cs = email.charset.Charset('utf-8')
         cs.body_encoding = email.charset.QP
         message = Message()
