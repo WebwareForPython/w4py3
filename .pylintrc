@@ -50,7 +50,7 @@ good-names =
  b, c, d, e, f, g, h, i, j, k, m, n, p, q, r, s, t, ,v, w, x, y,
  db, dt, fd, fp, fs, ip, ok, tm, ts, wr,
  dir_, id_, input_, type_,
- allow_none, entry_point, has_key, start_response, ssl_ctx,
+ allow_none, entry_point, has_key, start_response, ssl_context,
  memcache, redis,
  index, webware, MixIn,
  simple, test1, test2, test3, test4, test5, test5join1, test5join2,

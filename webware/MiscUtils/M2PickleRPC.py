@@ -20,15 +20,12 @@ class M2Transport(Transport):
     user_agent = f"M2PickleRPC.py/{__version__} - {Transport.user_agent}"
 
     def __init__(self, ssl_context=None):
-        if ssl_context is None:
-            self.ssl_ctx = SSL.Context('sslv23')
-        else:
-            self.ssl_ctx = ssl_context
+        self.ssl_context = ssl_context or SSL.Context('sslv23')
 
     def make_connection(self, host, port=None):
         if port is None:
             host, port = m2urllib.splitport(host)
-        return httpslib.HTTPS(host, int(port), ssl_context=self.ssl_ctx)
+        return httpslib.HTTPS(host, int(port), ssl_context=self.ssl_context)
 
     # Workarounds below are necessary because M2Crypto seems to
     # return from fileobject.read() early!  So we have to call it
