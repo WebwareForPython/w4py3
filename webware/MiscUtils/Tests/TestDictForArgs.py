@@ -64,11 +64,9 @@ x=5 'y'=6
         except DictForArgsError:
             pass  # expected
         except Exception as err:
-            self.fail(
-                f'Expecting DictForArgError.\nGot error: {err!r}.\n')
+            self.fail(f'Expecting DictForArgError.\nGot error: {err!r}.\n')
         else:
-            self.fail(
-                f'Expecting DictForArgError.\nGot result: {res!r}.\n')
+            self.fail(f'Expecting DictForArgError.\nGot result: {res!r}.\n')
 
     def testPyDictForArgs(self):
         cases = '''\

@@ -80,7 +80,7 @@ def htmlForDict(d, addSpace=None, filterValueCallBack=None,
         if isinstance(topHeading, tuple):
             append('<th>{}</th><th>{}</th>'.format(*topHeading))
         else:
-            append('<th colspan="2">{}</th>'.format(topHeading))
+            append(f'<th colspan="2">{topHeading}</th>')
         append('</tr>\n')
     for key in sorted(d):
         value = d[key]

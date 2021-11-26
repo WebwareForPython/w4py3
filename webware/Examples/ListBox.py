@@ -21,8 +21,7 @@ class ListBox(ExamplePage):
             self._vars = session.value('vars')
         else:
             self._vars = dict(
-                items=[], height=10, width=250,
-                newCount=1, formCount=1)
+                items=[], height=10, width=250, newCount=1, formCount=1)
             session.setValue('vars', self._vars)
         self._error = None
 
@@ -30,15 +29,16 @@ class ListBox(ExamplePage):
         enc, wr = self.htmlEncode, self.writeln
         wr('<div style="text-align:center">')
         if debug:
-            wr('<p>fields = {}</p>'.format(enc(str(self.request().fields()))))
-            wr('<p>vars = {}</p>'.format(enc(str(self._vars))))
+            wr(f'<p>fields = {enc(str(self.request().fields()))}</p>')
+            wr(f'<p>vars = {enc(str(self._vars))}</p>')
         # Intro text is provided by our class' doc string:
         intro = self.__class__.__doc__.strip().split('\n\n')
-        wr('<h2>{}</h2>'.format(intro.pop(0)))
+        wr(f'<h2>{intro.pop(0)}</h2>')
         for s in intro:
-            wr('<p>{}</p>'.format('<br>'.join(
-                s.strip() for s in s.splitlines())))
-        wr('<p style="color:red">{}</p>'.format(self._error or '&nbsp;'))
+            s = '<br>'.join(s.strip() for s in s.splitlines())
+            wr(f'<p>{s}</p>')
+        s = self._error or '&nbsp;'
+        wr(f'<p style="color:red">{s}</p>')
         wr('''
 <form action="ListBox" method="post">
 <input name="formCount" type="hidden" value="{formCount}">
@@ -47,8 +47,8 @@ style="width:{width}pt;text-align:center">
 '''.format(**self._vars))
         index = 0
         for item in self._vars['items']:
-            wr('<option value="{}">{}</option>'.format(
-                index, enc(item['name'])))
+            name = enc(item['name'])
+            wr(f'<option value="{index}">{name}</option>')
             index += 1
         if not index:
             wr('<option value="" disabled>--- empty ---</option>')
@@ -80,8 +80,8 @@ style="width:{width}pt;text-align:center">
 
     def new(self):
         """Add a new item to the list box."""
-        self._vars['items'].append(dict(
-            name='New item {}'.format(self._vars['newCount'])))
+        newCount = self._vars['newCount']
+        self._vars['items'].append(dict(name=f'New item {newCount}'))
         self._vars['newCount'] += 1
         self.writeBody()
 

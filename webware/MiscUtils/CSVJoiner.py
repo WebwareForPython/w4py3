@@ -17,7 +17,8 @@ def joinCSVFields(fields):
         if not isinstance(field, str):
             raise UnicodeDecodeError('CSV fields should be strings')
         if '"' in field:
-            newField = '"{}"'.format(field.replace('"', '""'))
+            field = field.replace('"', '""')
+            newField = f'"{field}"'
         elif ',' in field or '\n' in field or '\r' in field:
             newField = f'"{field}"'
         else:

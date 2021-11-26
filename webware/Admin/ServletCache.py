@@ -34,13 +34,13 @@ class ServletCache(AdminSecurity):
             wr('<table>')
             for factory in factories:
                 name = factory.name()
-                wr('<tr><td><a href="#{0}">{0}</a></td></tr>'.format(name))
+                wr(f'<tr><td><a href="#{name}">{name}</a></td></tr>')
             wr('</table>')
         hasField = self.request().hasField
         wr('<form action="ServletCache" method="post">')
         for factory in factories:
             name = factory.name()
-            wr('<a id="{0}"></a><h4>{0}</h4>'.format(name))
+            wr(f'<a id="{name}"></a><h4>{name}</h4>')
             if hasField('flush_' + name):
                 factory.flushCache()
                 wr('<p style="color:green">'

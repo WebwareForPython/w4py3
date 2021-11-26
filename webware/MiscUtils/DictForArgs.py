@@ -13,7 +13,7 @@ class DictForArgsError(Exception):
 
 
 def _SyntaxError(s):
-    raise DictForArgsError('Syntax error: %r' % s)
+    raise DictForArgsError(f'Syntax error: {s!r}')
 
 
 _nameRE = re.compile(r'\w+')

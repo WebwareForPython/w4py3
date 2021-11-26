@@ -91,10 +91,10 @@ class LookupTest:
         # pylint: disable=assignment-from-no-return,no-member
         for obj in self.objs:
             value = func(obj, 'foo')
-            self.assertEqual(value, 1, 'value = %r, obj = %r' % (value, obj))
+            self.assertEqual(value, 1, f'value = {value!r}, obj = {obj!r}')
             self.assertRaises(NamedValueAccessError, func, obj, 'bar')
             value = func(obj, 'bar', 2)
-            self.assertEqual(value, 2, 'value = %r, obj = %r' % (value, obj))
+            self.assertEqual(value, 2, f'value = {value!r}, obj = {obj!r}')
 
     def testBasicAccessRepeated(self):
         """Just repeat checkBasicAccess multiple times to check stability."""

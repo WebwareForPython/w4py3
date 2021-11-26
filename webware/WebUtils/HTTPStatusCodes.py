@@ -62,11 +62,11 @@ HTMLTableOfHTTPStatusCodes = htmlTableOfHTTPStatusCodes
 
 
 if __name__ == '__main__':
-    print('''<html>
+    print(f'''<html>
 <head>
     <title>HTTP Status Codes</title>
 </head>
 <body>
-{}
+{htmlTableOfHTTPStatusCodes()}
 </body>
-</html>'''.format(htmlTableOfHTTPStatusCodes()))
+</html>''')
