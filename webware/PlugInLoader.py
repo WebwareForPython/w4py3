@@ -57,7 +57,7 @@ class PlugInLoader:
             entry_point = entryPoints.get(name)
             if not entry_point:
                 if verbose:
-                    print(f'Plug-in {name} has not entry point.')
+                    print(f'Plug-in {name} has no entry point.')
                 continue
             module = entry_point.load()
             plugIn = self.loadPlugIn(name, module, verbose=verbose)
