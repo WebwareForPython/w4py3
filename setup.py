@@ -11,18 +11,18 @@ with open('README.md') as fh:
     long_description = fh.read()
 
 requireDev = [
-    'Pygments>=2.10,<3', 'WebTest>=3,<4',
+    'Pygments>=2.11,<3', 'WebTest>=3,<4',
     'waitress>=2,<3', 'hupper>=1.10,<2',
 ]
 requireDocs = [
-    'Sphinx>=4.3,<5', 'sphinx_rtd_theme>=1'
+    'Sphinx>=4.4,<5', 'sphinx_rtd_theme>=1'
 ]
 requireExamples = [
     'DBUtils>=3,<4', 'dominate>=2.6,<3', 'yattag>=1.14,<2',
-    'Pygments>=2.10,<3', 'Pillow>=8,<9'
+    'Pygments>=2.11,<3', 'Pillow>=9,<10'
 ]
 requireTests = [
-    'psutil>=5.8,<6', 'flake8>=4,<5', 'pylint>=2.12,<3', 'tox>=3.24,<4',
+    'psutil>=5.9,<6', 'flake8>=4,<5', 'pylint>=2.12,<3', 'tox>=3.24,<4',
     'pywin32>=300,<400;'
     'sys_platform=="win32" and implementation_name=="cpython"'
 ] + requireDev + requireDocs + requireExamples
