@@ -37,6 +37,14 @@ class TestFieldStorage(unittest.TestCase):
         self.assertEqual(fs.getlist('e'), ['5', '6'])
         self.assertEqual(fs.getlist('f'), ['6'])
 
+    def testPostRequestWithSpacesInValues(self):
+        fs = FieldStorage(fp=BytesIO(), environ=dict(
+            REQUEST_METHOD='POST', QUERY_STRING='a=b%20c+d'))
+        self.assertEqual(fs.getfirst('a'), 'b c d')
+        fs = FieldStorage(fp=BytesIO(b'a=b%20c+d'), environ=dict(
+            REQUEST_METHOD='POST'))
+        self.assertEqual(fs.getfirst('a'), 'b c d')
+
     def testPostRequestOverrides(self):
         fs = FieldStorage(fp=BytesIO(b'b=8&c=9&d=4&e=5&e=6&f=6'), environ=dict(
             REQUEST_METHOD='POST', QUERY_STRING='a=1&b=2&b=3&c=3'))

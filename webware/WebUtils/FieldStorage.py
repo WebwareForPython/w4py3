@@ -8,8 +8,7 @@ even in a POST request.
 import cgi
 import os
 
-from collections import defaultdict
-from urllib import parse
+from urllib.parse import unquote_plus
 
 
 class FieldStorage(cgi.FieldStorage):
@@ -77,11 +76,11 @@ class FieldStorage(cgi.FieldStorage):
 
     def add_qs(self, qs):
         """Add all non-existing parameters from the given query string."""
-        values = defaultdict(list)
         # split the query string in the same way as the current Python does it
         try:
             max_num_fields = self.max_num_fields
         except AttributeError:
+            # parameter did not exist before Python 3.6.7
             max_num_fields = None
         try:
             separator = self.separator
@@ -101,23 +100,27 @@ class FieldStorage(cgi.FieldStorage):
                     raise ValueError('Max number of fields exceeded')
             # new splitting algorithm that only supports one separator
             pairs = qs.split(separator)
-        for name_value in pairs:
-            nv = name_value.split('=', 1)
-            if len(nv) != 2:
-                if self.strict_parsing:
-                    raise ValueError(f'bad query field: {name_value!r}')
-                continue
-            name = parse.unquote(nv[0].replace('+', ' '))
-            value = parse.unquote(nv[1].replace('+', ' '))
-            if len(value) or self.keep_blank_values:
-                values[name].append(value)
+        if not pairs:
+            return  # shortcut when there are no parameters
         if self.list is None:
             # This makes sure self.keys() are available, even
             # when valid POST data wasn't encountered.
             self.list = []
-        for key in values:
-            if key not in self:
-                # Only append values that aren't already the FieldStorage;
-                # this makes POSTed vars override vars on the query string.
-                for value in values[key]:
-                    self.list.append(cgi.MiniFieldStorage(key, value))
+        append = self.list.append
+        existing_names = set(self)
+        strict_parsing = self.strict_parsing
+        keep_blank_values = self.keep_blank_values
+        for name_value in pairs:
+            nv = name_value.split('=', 1)
+            if len(nv) != 2:
+                if strict_parsing:
+                    raise ValueError(f'bad query field: {name_value!r}')
+                # Ignore parameters with no equal sign if not strict parsing
+                continue
+            value = unquote_plus(nv[1])
+            if value or keep_blank_values:
+                name = unquote_plus(nv[0])
+                if name not in existing_names:
+                    # Only append values that aren't already the FieldStorage;
+                    # this makes POSTed vars override vars on the query string.
+                    append(cgi.MiniFieldStorage(name, value))
