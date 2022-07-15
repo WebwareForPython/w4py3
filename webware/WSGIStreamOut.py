@@ -155,7 +155,7 @@ class WSGIStreamOut:
     def prepend(self, output):
         """Add the output to the front of the response buffer.
 
-        The output may be a byte string or a anything that can be converted
+        The output may be a byte string or anything that can be converted
         to a string and encoded to a byte string using the output encoding.
 
         Invalid if we are already committed.
@@ -205,7 +205,7 @@ class WSGIStreamOut:
     def write(self, output):
         """Write output to the buffer.
 
-        The output may be a byte string or a anything that can be converted
+        The output may be a byte string or anything that can be converted
         to a string and encoded to a byte string using the output encoding.
         """
         if self._closed:

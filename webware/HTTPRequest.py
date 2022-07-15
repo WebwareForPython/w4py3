@@ -111,7 +111,7 @@ class HTTPRequest(Request):
             # Instead, iterate directly over the items of the internal list.
             fieldItems = fieldStorage.list
         except AttributeError:
-            # This can happen if we do not have a a regular POST
+            # This can happen if we do not have a regular POST
             # from an HTML form, but, for example, an XML-RPC request.
             fieldItems = None
             if debug:

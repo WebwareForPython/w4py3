@@ -219,26 +219,26 @@ class HTTPContent(HTTPServlet):
     def preAction(self, actionName):
         """Things to do before action.
 
-        Invoked by self prior to invoking a action method.
+        Invoked by self prior to invoking an action method.
         The `actionName` is passed to this method,
         although it seems a generally bad idea to rely on this.
         However, it's still provided just in case you need that hook.
 
-        By default this does nothing.
+        By default, this does nothing.
         """
         # base method does nothing
 
     def postAction(self, actionName):
         """Things to do after action.
 
-        Invoked by self after invoking a action method.
+        Invoked by self after invoking an action method.
         Subclasses may override to customize and may or may not
         invoke super as they see fit.
         The `actionName` is passed to this method,
         although it seems a generally bad idea to rely on this.
         However, it's still provided just in case you need that hook.
 
-        By default this does nothing.
+        By default, this does nothing.
         """
         # base method does nothing
 
