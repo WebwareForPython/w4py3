@@ -100,8 +100,7 @@ class Request:
 
     # region Security
 
-    @staticmethod
-    def isSecure():
+    def isSecure(self):
         """Check whether this is a secure channel.
 
         Returns true if request was made using a secure channel,

@@ -30,6 +30,5 @@ class JSONRPCExample(JSONRPCServlet):
     def lowercase(msg):
         return msg.lower()
 
-    @staticmethod
-    def exposedMethods():
+    def exposedMethods(self):
         return ['echo', 'reverse', 'uppercase', 'lowercase']

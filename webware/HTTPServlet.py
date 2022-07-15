@@ -41,6 +41,7 @@ class HTTPServlet(Servlet):
         # For GET and HEAD, handle the HTTP If-Modified-Since header:
         # If the object's last modified time equals this header, we're done.
         if httpMethodName in ('GET', 'HEAD'):
+            # pylint: disable=assignment-from-none
             lastMod = self.lastModified(transaction)
             if lastMod:
                 lastMod = strftime(
@@ -65,8 +66,7 @@ class HTTPServlet(Servlet):
     def notImplemented(trans):
         trans.response().setStatus(501, 'Not Implemented')
 
-    @staticmethod
-    def lastModified(_trans):
+    def lastModified(self, _trans):
         """Get time of last modification.
 
         Return this object's Last-Modified time (as a float),

@@ -152,8 +152,7 @@ table.NiceTable th a:link, table.NiceTable th a:visited {
     def writeSidebar(self):
         self.writeWebwareSidebarSections()
 
-    @staticmethod
-    def cornerTitle():
+    def cornerTitle(self):
         return ''
 
     # endregion Content methods

@@ -18,8 +18,7 @@ class RPCServlet(HTTPServlet):
             raise NotImplementedError(methodName)
         return getattr(self, methodName)(*args, **keywords)
 
-    @staticmethod
-    def exposedMethods():
+    def exposedMethods(self):
         """Get exposed methods.
 
         Subclasses should return a list of methods that will be exposed

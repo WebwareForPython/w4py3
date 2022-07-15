@@ -127,8 +127,7 @@ class Servlet:
 
     # region Abilities
 
-    @staticmethod
-    def canBeThreaded():
+    def canBeThreaded(self):
         """Return whether the servlet can be multithreaded.
 
         This value should not change during the lifetime of the object.
@@ -137,8 +136,7 @@ class Servlet:
         """
         return False
 
-    @staticmethod
-    def canBeReused():
+    def canBeReused(self):
         """Returns whether a single servlet instance can be reused.
 
         The default is True, but subclasses con override to return False.
