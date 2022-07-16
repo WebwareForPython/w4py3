@@ -1,8 +1,10 @@
+"""Test modified functionality of FieldStorage."""
+
 import unittest
 
 from io import BytesIO
 
-from WebUtils.FieldStorage import FieldStorage
+from WebUtils.FieldStorage import FieldStorage, hasSeparator
 
 
 class TestFieldStorage(unittest.TestCase):
@@ -80,8 +82,7 @@ class TestFieldStorage(unittest.TestCase):
         self.assertEqual(fs.getfirst('c'), '3')
         self.assertEqual(fs.getlist('a'), ['1'])
         self.assertEqual(fs.getlist('c'), ['3'])
-        separator = getattr(fs, 'separator', None)
-        if separator:  # new Python version, splits only &
+        if hasSeparator():  # new Python version, splits only &
             self.assertEqual(fs.getfirst('b'), '2;b=3')
             self.assertEqual(fs.getlist('b'), ['2;b=3'])
             fs = FieldStorage(fp=BytesIO(), environ=dict(
@@ -100,8 +101,7 @@ class TestFieldStorage(unittest.TestCase):
     def testPostRequestWithQueryWithSemicolon2(self):
         fs = FieldStorage(fp=BytesIO(), environ=dict(
             REQUEST_METHOD='POST', QUERY_STRING='a=1;b=2&b=3;c=3'))
-        separator = getattr(fs, 'separator', None)
-        if separator:  # new Python version, splits only &
+        if hasSeparator():  # new Python version, splits only &
             self.assertEqual(fs.getfirst('a'), '1;b=2')
             self.assertEqual(fs.getfirst('b'), '3;c=3')
             self.assertIsNone(fs.getfirst('c'))
