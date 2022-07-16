@@ -253,14 +253,7 @@ class Application(ConfigurableForServerSidePath):
         self._plugInLoader = None
         self.loadPlugIns()
 
-        self._needsShutDown = [True]
-        atexit.register(self.shutDown)
-        if self.setting('RegisterSignalHandler'):
-            self._sigTerm = signal.signal(signal.SIGTERM, self.sigTerm)
-            try:
-                self._sigHup = signal.signal(signal.SIGHUP, self.sigTerm)
-            except AttributeError:
-                pass  # SIGHUP does not exist on Windows
+        self.registerShutDownHandler()
 
     def initErrorPage(self):
         """Initialize the error page related attributes."""
@@ -384,6 +377,42 @@ class Application(ConfigurableForServerSidePath):
                 tm.addPeriodicAction(time() + sweepInterval, sweepInterval,
                                      task, "SessionSweeper")
                 print("Session sweeper has started.")
+
+    def registerShutDownHandler(self):
+        """Register shutdown handler in various ways.
+
+        We want to make sure the shutdown handler is called, so that the
+        application can save the sessions to disk and do cleanup tasks.
+        """
+        self._needsShutDown = [True]
+        # register as Python atexit handler
+        atexit.register(self.shutDown)
+        # register as termination signal handler
+        if self.setting('RegisterSignalHandler'):
+            self._sigTerm = signal.signal(signal.SIGTERM, self.sigTerm)
+            try:
+                self._sigHup = signal.signal(signal.SIGHUP, self.sigTerm)
+            except AttributeError:
+                pass  # SIGHUP does not exist on Windows
+        # register as mod_wsgi shutdown handler
+        try:
+            import mod_wsgi
+        except ImportError:  # mod_wsgi not installed
+            subscribeShutdown = None
+        else:
+            try:
+                subscribeShutdown = mod_wsgi.subscribe_shutdown
+            except AttributeError:  # mod_wsgi < 4.8.0
+                try:
+                    subscribeShutdown = mod_wsgi.subscribe_events
+                except AttributeError:  # mod_wsgi < 4.4.11
+                    subscribeShutdown = None
+        if subscribeShutdown:
+            def shutDownHandler(event, **_kwargs):
+                if event == 'process_stopping':
+                    print("\nWSGI application has been notified to shutdown.")
+                    self.shutDown()
+            subscribeShutdown(shutDownHandler)
 
     def shutDown(self):
         """Shut down the application.
