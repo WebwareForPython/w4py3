@@ -10,12 +10,12 @@ with open('webware/Properties.py') as f:
 with open('README.md') as fh:
     long_description = fh.read()
 
+requireDocs = [
+    'Sphinx>=5,<6', 'sphinx_rtd_theme>=1'
+]
 requireDev = [
     'Pygments>=2.12,<3', 'WebTest>=3,<4',
     'waitress>=2,<3', 'hupper>=1.10,<2',
-]
-requireDocs = [
-    'Sphinx>=5,<6', 'sphinx_rtd_theme>=1'
 ]
 requireExamples = [
     'DBUtils>=3,<4', 'dominate>=2.6,<3', 'yattag>=1.14,<2',
@@ -25,8 +25,7 @@ requireTests = [
     'psutil>=5.9,<6', 'flake8>=4,<5', 'pylint>=2.13.9,<3', 'tox>=3.25,<4',
     'pywin32>=300,<400;'
     'sys_platform=="win32" and implementation_name=="cpython"'
-] + requireDev + requireDocs + requireExamples
-
+] + requireDev + requireExamples
 
 setuptools.setup(
     name='Webware-for-Python',
