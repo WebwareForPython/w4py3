@@ -37,16 +37,24 @@ class FieldStorage:
     filename: the filename, if specified; otherwise None;
     this is the client side filename, *not* the file name on which
     it is stored (that's a temporary file you don't deal with)
+
     value: the value as a *string*; for file uploads, this transparently
     reads the file every time you request the value and returns *bytes*
+
     file: the file(-like) object from which you can read the data *as bytes*;
     None if the data is stored a simple string
+
     type: the content-type, or None if not specified
+
     type_options: dictionary of options specified on the content-type line
+
     disposition: content-disposition, or None if not specified
+
     disposition_options: dictionary of corresponding options
+
     headers: a dictionary(-like) object (sometimes email.message.Message
     or a subclass thereof) containing *all* headers
+
     The class can be subclassed, mostly for the purpose of overriding
     the make_file() method, which is called internally to come up with
     a file open for reading and writing.  This makes it possible to
@@ -68,27 +76,36 @@ class FieldStorage:
         """Constructor.  Read multipart/* until last part.
         Arguments, all optional:
         fp: file pointer; default: sys.stdin.buffer
+
         Not used when the request method is GET.
         Can be a TextIOWrapper object or an object whose read() and readline()
         methods return bytes.
+
         headers: header dictionary-like object;
         default: taken from environ as per CGI spec
+
         outerboundary: terminating multipart boundary (for internal use only)
+
         environ: environment dictionary; default: os.environ
+
         keep_blank_values: flag indicating whether blank values in
         percent-encoded forms should be treated as blank strings.
         A true value indicates that blanks should be retained as blank strings.
         The default false value indicates that blank values are to be ignored
         and treated as if they were not included.
+
         strict_parsing: flag indicating what to do with parsing errors.
         If false (the default), errors are silently ignored.
         If true, errors raise a ValueError exception.
+
         limit: used internally to read parts of multipart/form-data forms,
         to exit from the reading loop when reached. It is the difference
-        between the form content-length and the number of bytes already read
+        between the form content-length and the number of bytes already read.
+
         encoding, errors: the encoding and error handler used to decode the
         binary stream to strings. Must be the same as the charset defined for
         the page sending the form (content-type : meta http-equiv or header)
+
         max_num_fields: int. If set, then __init__ throws a ValueError if
         there are more than n fields read by parse_qsl().
         """
