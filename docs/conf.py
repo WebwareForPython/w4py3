@@ -28,7 +28,7 @@ author = 'Christoph Zwerschke et al.'
 # The short X.Y version
 version = '3.0'
 # The full version, including alpha/beta/rc tags
-release = '3.0.4'
+release = '3.0.6'
 
 
 # -- General configuration ---------------------------------------------------
@@ -61,7 +61,7 @@ autodoc_default_options = {
 autosummary_generate = True
 
 # ignore certain warnings
-# (references to some of the Python built-in types do not resolve correctly)
+# (references to some Python built-in types do not resolve correctly)
 nitpicky = True
 nitpick_ignore = [('py:class', t) for t in (
     'cgi.FieldStorage', 'html.parser.HTMLParser',
@@ -77,5 +77,4 @@ html_theme = 'alabaster'
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
-#html_static_path = ['_static']
 html_static_path = ['css']
