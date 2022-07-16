@@ -62,11 +62,7 @@ This documentation is available online via `GitHub Pages`_ and via `Read the Doc
 Feedback, Contributing and Support
 ----------------------------------
 
-You can use the `discussion mailing list`_ to give feedback, discuss features and get help using Webware.
-
-You can also report issues_ and send in `pull requests`_ using the `GitHub project page`_ of Webware for Python 3.
-
-You can keep up on new releases through the very low traffic `announcement mailing list`_ or subscribing to `releases`_ on GitHub.
+You can report issues_ and send in `pull requests`_ using the `GitHub project page`_ of Webware for Python 3. If you want to be notified when new `releases`_ are available, you can use the "Watch" feature of GitHub.
 
 .. _Webware for Python 3: https://webwareforpython.github.io/w4py3/
 .. _original project: https://webwareforpython.github.io/w4py/
@@ -79,8 +75,6 @@ You can keep up on new releases through the very low traffic `announcement maili
 .. _twill: https://twill-tools.github.io/twill/
 .. _WebTest: https://docs.pylonsproject.org/projects/webtest/en/latest/
 .. _Python 2 to Python 3: https://docs.python.org/3/howto/pyporting.html
-.. _discussion mailing list: https://sourceforge.net/projects/webware/lists/webware-discuss
-.. _announcement mailing list: https://sourceforge.net/projects/webware/lists/webware-announce
 .. _GitHub project page: https://github.com/WebwareForPython/w4py3
 .. _GitHub pages: https://webwareforpython.github.io/w4py3/
 .. _Read the Docs: https://webware-for-python-3.readthedocs.io/

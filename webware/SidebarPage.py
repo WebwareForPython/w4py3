@@ -182,7 +182,7 @@ table.NiceTable th a:link, table.NiceTable th a:visited {
         It writes sections such as contexts, e-mails, exits and versions.
         """
         self.writeContextsMenu()
-        self.writeWebwareEmailMenu()
+        self.writeWebwareDocsMenu()
         self.writeWebwareExitsMenu()
         self.writeVersions()
 
@@ -195,10 +195,11 @@ table.NiceTable th a:link, table.NiceTable th a:visited {
         for context in contexts:
             self.menuItem(context, f'{servletPath}/{context}/')
 
-    def writeWebwareEmailMenu(self):
-        self.menuHeading('E-mail')
-        self.menuItem(
-            'webware-discuss', 'mailto:webware-discuss@lists.sourceforge.net')
+    def writeWebwareDocsMenu(self):
+        docs = 'https://webwareforpython.github.io/w4py3/'
+        self.menuHeading('Docs')
+        self.menuItem('Quickstart', f'{docs}quickstart.html')
+        self.menuItem('Reference', f'{docs}ref/')
 
     def writeWebwareExitsMenu(self):
         self.menuHeading('Exits')

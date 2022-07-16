@@ -51,7 +51,7 @@ class TestExamples(AppTest, unittest.TestCase):
             '<div class="MenuHeading">Examples</div>',
             '<div class="MenuHeading">Other</div>',
             '<div class="MenuHeading">Contexts</div>',
-            '<div class="MenuHeading">E-mail</div>', 'webware-discuss',
+            '<div class="MenuHeading">Docs</div>', 'Quickstart',
             '<div class="MenuHeading">Exits</div>',
             '<a href="https://webwareforpython.github.io/w4py3/">Webware</a>',
             '<a href="https://www.python.org/">Python</a>',
