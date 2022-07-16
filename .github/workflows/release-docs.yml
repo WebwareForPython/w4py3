@@ -3,7 +3,7 @@ name: Release Webware for Python 3 documentation
 on:
   push:
     branches:
-      - master
+      - main
 
 jobs:
   build:
