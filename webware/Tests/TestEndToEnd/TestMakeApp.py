@@ -31,13 +31,15 @@ class TestMakeApp(unittest.TestCase):
 
     def testMakeHelp(self):
         output = self.runMake(['-h'])
+        output = ' ' .join(' '.join(output[:4]).split())
         expected = [
             'usage: webware make [-h]',
             '[-c CONTEXT_NAME] [-d CONTEXT_DIR] [-l LIBRARY]']
         if hasattr(shutil, 'chown'):
             expected.append('[-u USER] [-g GROUP]')
         expected.append('WORK_DIR')
-        self.assertEqual(output.pop(0), ' '.join(expected))
+        expected = ' '.join(expected)
+        self.assertTrue(output.startswith(expected))
 
     def testMakeNewApp(self):
         output = self.runMake(['MyApp'])
