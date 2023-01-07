@@ -29,7 +29,7 @@ def serve(args):
             webbrowser.open(url)
 
         t = threading.Thread(target=openBrowser)
-        t.setDaemon(True)
+        t.daemon = True
         t.start()
 
     if args.reload:

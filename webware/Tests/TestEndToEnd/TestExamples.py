@@ -29,7 +29,7 @@ class TestExamples(AppTest, unittest.TestCase):
                 sleep(.5)
             else:
                 break
-        sleep(.5)
+        sleep(1)
 
     def testStartPage(self):
         r = self.testApp.get('/')

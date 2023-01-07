@@ -91,7 +91,7 @@ from a mandate from the masses, not from some farcical aquatic ceremony!"'''
         self.assertEqual(localIP(), ip)  # second invocation
         self.assertEqual(localIP(useCache=None), ip)
         # ignore if the following tests fetch the WSL address
-        ips = (ip, '192.168.80.1', '172.25.112.1')
+        ips = (ip, '192.168.80.1', '172.22.32.1', '172.25.112.1')
         self.assertIn(
             localIP(remote=None, useCache=None), ips,
             'See if this works: localIP(remote=None).'

@@ -11,18 +11,18 @@ with open('README.md') as fh:
     long_description = fh.read()
 
 requireDocs = [
-    'Sphinx>=5,<6', 'sphinx_rtd_theme>=1'
+    'Sphinx>=5,<7', 'sphinx_rtd_theme>=1.1'
 ]
 requireDev = [
-    'Pygments>=2.12,<3', 'WebTest>=3,<4',
+    'Pygments>=2.14,<3', 'WebTest>=3,<4',
     'waitress>=2,<3', 'hupper>=1.10,<2',
 ]
 requireExamples = [
-    'DBUtils>=3,<4', 'dominate>=2.6,<3', 'yattag>=1.14,<2',
-    'Pygments>=2.12,<3', 'Pillow>=8,<10'
+    'DBUtils>=3,<4', 'dominate>=2.7,<3', 'yattag>=1.15,<2',
+    'Pygments>=2.14,<3', 'Pillow>=8,<10'
 ]
 requireTests = [
-    'psutil>=5.9,<6', 'flake8>=4,<5', 'pylint>=2.13.9,<3', 'tox>=3.25,<4',
+    'psutil>=5.9,<6', 'flake8>=5,<7', 'pylint>=2.13,<3', 'tox>=3.28,<5',
     'pywin32>=300,<400;'
     'sys_platform=="win32" and implementation_name=="cpython"'
 ] + requireDev + requireExamples
@@ -59,6 +59,7 @@ setuptools.setup(
         'Programming Language :: Python :: 3.8',
         'Programming Language :: Python :: 3.9',
         'Programming Language :: Python :: 3.10',
+        'Programming Language :: Python :: 3.11',
         'Programming Language :: Python :: Implementation :: CPython',
         'Programming Language :: Python :: Implementation :: PyPy',
         'Operating System :: OS Independent',

@@ -22,13 +22,13 @@ from Tests.TestSessions import redis, memcache
 # -- Project information -----------------------------------------------------
 
 project = 'Webware for Python 3'
-copyright = '1999-2022, Christoph Zwerschke et al'
+copyright = '1999-2023, Christoph Zwerschke et al'
 author = 'Christoph Zwerschke et al.'
 
 # The short X.Y version
 version = '3.0'
 # The full version, including alpha/beta/rc tags
-release = '3.0.6'
+release = '3.0.7'
 
 
 # -- General configuration ---------------------------------------------------

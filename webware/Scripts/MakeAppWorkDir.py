@@ -277,7 +277,8 @@ class MakeAppWorkDir:
             self.msg("\tWarning: Write permissions could not be set.")
             self.msg(f"\tThe error message was: {e}")
 
-    def printCompleted(self):
+    @staticmethod
+    def printCompleted():
         print("""
 Congratulations, you've just created a runtime working directory for Webware.
 
