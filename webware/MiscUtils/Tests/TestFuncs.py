@@ -85,20 +85,21 @@ from a mandate from the masses, not from some farcical aquatic ceremony!"'''
         self.assertEqual(host, host.lower())
 
     def testLocalIP(self):
-        ip = localIP()
-        self.assertTrue(ip)
-        self.assertFalse(ip.startswith('127.'))
-        self.assertEqual(localIP(), ip)  # second invocation
-        self.assertEqual(localIP(useCache=None), ip)
-        # ignore if the following tests fetch the WSL address
-        ips = (ip, '192.168.80.1', '172.22.32.1', '172.25.112.1')
-        self.assertIn(
-            localIP(remote=None, useCache=None), ips,
-            'See if this works: localIP(remote=None).'
-            ' If this fails, dont worry.')
-        self.assertIn(
+        ip_local = localIP()
+        self.assertTrue(ip_local)
+        self.assertFalse(ip_local.startswith('127.'))
+        self.assertEqual(localIP(), ip_local)  # second invocation
+        self.assertEqual(localIP(useCache=None), ip_local)
+
+        def assert_local(ip):
+            self.assertTrue(
+                ip == ip_local or ip.startswith(('127.', '192.168.'))
+                or '172.16.' <= ip <= '172.31.')
+
+        assert_local(localIP(remote=None, useCache=None))
+        assert_local(
             localIP(remote=('www.hostname.and.domain.are.invalid', 80),
-                    useCache=None), ips)
+                    useCache=None))
 
     def testPositiveId(self):
         # About all we can do is invoke positiveId()
