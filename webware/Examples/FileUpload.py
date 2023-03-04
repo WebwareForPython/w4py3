@@ -7,7 +7,7 @@ class FileUpload(ExamplePage):
     The process is fairly self-explanatory. You use a form like the one below
     in the writeContent method. When the form is uploaded, the request field
     with the name you gave to the file selector form item will be an instance
-    of the FieldStorage class from the standard Python module "cgi". The key
+    of the FieldStorage class from the WebUtils.FieldStorage module. The key
     attributes of this class are shown in the example below. The most important
     things are filename, which gives the name of the file that was uploaded,
     and file, which is an open file handle to the uploaded file. The uploaded
