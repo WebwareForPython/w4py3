@@ -41,12 +41,7 @@ class PyJs:
     def __call__(self, *args, **kw):
         args = ','.join(map(quoteJs, args))
         kwArgs = ','.join(f'{k}={quoteJs(v)}' for k, v in kw.items())
-        if args and kwArgs:
-            allArgs = f'{args},{kwArgs}'
-        elif not kwArgs:
-            allArgs = args
-        elif not args:
-            allArgs = kwArgs
+        allArgs = f'{args},{kwArgs}' if args and kwArgs else args or kwArgs
         return self.__class__(f'{self}({allArgs}')
 
     def __getitem__(self, index):

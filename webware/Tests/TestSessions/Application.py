@@ -22,7 +22,7 @@ class Application:
         }.get(key, default)
 
     def handleException(self):
-        raise Exception('Application Error')
+        raise RuntimeError('Application Error')
 
     def sessionTimeout(self, _trans=None):
         return self._sessionTimeout

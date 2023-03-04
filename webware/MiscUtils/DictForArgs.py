@@ -7,6 +7,16 @@ Also, there is a test suite in Tests/TestDictForArgs.py
 
 import re
 
+verbose = False
+
+_nameRE = re.compile(r'\w+')
+_equalsRE = re.compile(r'\=')
+_stringRE = re.compile(r'''"[^"]+"|'[^']+'|\S+''')
+_whiteRE = re.compile(r'\s+')
+
+_REs = {_nameRE: 'name', _equalsRE: 'equals',
+        _stringRE: 'string', _whiteRE: 'white'}
+
 
 class DictForArgsError(Exception):
     """Error when building dictionary from arguments."""
@@ -14,14 +24,6 @@ class DictForArgsError(Exception):
 
 def _SyntaxError(s):
     raise DictForArgsError(f'Syntax error: {s!r}')
-
-
-_nameRE = re.compile(r'\w+')
-_equalsRE = re.compile(r'\=')
-_stringRE = re.compile(r'''"[^"]+"|'[^']+'|\S+''')
-_whiteRE = re.compile(r'\s+')
-
-_REs = [_nameRE, _equalsRE, _stringRE, _whiteRE]
 
 
 def dictForArgs(s):
@@ -58,7 +60,6 @@ def dictForArgs(s):
 
     # Tokenize
 
-    verbose = False
     matches = []
     start = 0
     sLen = len(s)
@@ -84,17 +85,7 @@ def dictForArgs(s):
             _SyntaxError(s)
 
     if verbose:
-        names = []
-        for match in matches:
-            if match.re is _nameRE:
-                name = 'name'
-            elif match.re is _equalsRE:
-                name = 'equals'
-            elif match.re is _stringRE:
-                name = 'string'
-            elif match.re is _whiteRE:
-                name = 'white'
-            names.append(name)
+        names = ', '.join(_REs[match.re] for match in matches)
         print('>> names =', names)
 
     # Process tokens
@@ -107,10 +98,7 @@ def dictForArgs(s):
     i = 0
     while i < matchesLen:
         match = matches[i]
-        if i + 1 < matchesLen:
-            peekMatch = matches[i+1]
-        else:
-            peekMatch = None
+        peekMatch = matches[i+1] if i + 1 < matchesLen else None
         if match.re is _nameRE:
             if peekMatch is not None:
                 if peekMatch.re is _nameRE:
@@ -121,9 +109,9 @@ def dictForArgs(s):
                 if peekMatch.re is _equalsRE:
                     if i + 2 < matchesLen:
                         target = matches[i+2]
-                        if target.re is _nameRE or target.re is _stringRE:
+                        if target.re in (_nameRE, _stringRE):
                             value = target.group()
-                            if value[0] == "'" or value[0] == '"':
+                            if value[0] in ("'", '"'):
                                 value = value[1:-1]
                             d[match.group()] = value
                             i += 3

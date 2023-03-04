@@ -77,7 +77,7 @@ class BraceConverter:
                     self.line = ''
                 else:
                     # should never get here
-                    raise Exception()
+                    raise ValueError(f'Invalid character: {c!r}')
         writer.printChars('\n')
 
     def openBlock(self, writer):

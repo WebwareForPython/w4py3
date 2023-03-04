@@ -21,14 +21,10 @@ class CSVParserTests(unittest.TestCase):
             'a\n,b'
         ]
         for inp in inputs:
-            try:
+            with self.assertRaises(
+                    ParseError, msg=f'Did not get an exception for: {inp!r}'):
                 results = self.parse(inp)
-            except ParseError:
-                pass
-            else:
-                print()
-                print('results:', repr(results))
-                raise Exception(f'Did not get an exception for: {inp!r}')
+                print(f'\nresults: {results!r}')
 
     def testPositives(self):
         tests = [
@@ -86,19 +82,16 @@ class CSVParserTests(unittest.TestCase):
                 self.assertEqual(
                     res, out,
                     f'\ninput={inp!r}\nresult={res!r}\noutput={out!r}')
-                res = self.parse(inp+'\n')
+                res = self.parse(inp + '\n')
                 self.assertEqual(
                     res, out,
                     f'\ninput={inp!r}\nresult={res!r}\noutput={out!r}')
             else:
                 # multiple lines
-                gotFields = False
+                res = None
                 for line in inp.splitlines():
-                    self.assertFalse(gotFields)
+                    self.assertIsNone(res)
                     res = self.parse(line)
-                    if res is not None:
-                        gotFields = True
-                self.assertTrue(gotFields)
                 self.assertEqual(
                     res, out,
                     f'\ninput={inp!r}\nresult={res!r}\noutput={out!r}')

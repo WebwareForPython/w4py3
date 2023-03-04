@@ -92,4 +92,4 @@ including links found in the headers and footers of the pages.</li>
 </ul>''')
 
     def error(self, msg):
-        raise Exception(msg)
+        raise RuntimeError(msg)

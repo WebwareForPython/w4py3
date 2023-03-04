@@ -212,13 +212,10 @@ Class,Attribute,Type,Extras
         self._testSource('MK enums', src, headings, data)
 
         # Unfinished multiline record
-        try:
+        with self.assertRaises(
+                DataTableError,
+                msg='Did not raise error for unfinished multiline record'):
             DataTable().readString('a\n"1\n')
-        except DataTableError:
-            pass  # just what we were expecting
-        else:
-            raise Exception(
-                'Failed to raise exception for unfinished multiline record')
 
     def testDefaultUsePickleCache(self):
         t = DataTable()
