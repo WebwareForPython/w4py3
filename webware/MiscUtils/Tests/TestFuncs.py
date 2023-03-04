@@ -85,20 +85,19 @@ from a mandate from the masses, not from some farcical aquatic ceremony!"'''
         self.assertEqual(host, host.lower())
 
     def testLocalIP(self):
-        ip_local = localIP()
-        self.assertTrue(ip_local)
-        self.assertFalse(ip_local.startswith('127.'))
-        self.assertEqual(localIP(), ip_local)  # second invocation
-        self.assertEqual(localIP(useCache=None), ip_local)
+        thisIp = localIP()
+        self.assertTrue(thisIp)
+        self.assertFalse(thisIp.startswith('127.'))
+        self.assertEqual(localIP(), thisIp)  # second invocation
+        self.assertEqual(localIP(useCache=None), thisIp)
 
-        def assert_local(ip):
+        def assertLocal(ip):
             self.assertTrue(
-                ip == ip_local or ip.startswith(('127.', '192.168.'))
+                ip == thisIp or ip.startswith(('127.', '192.168.'))
                 or '172.16.' <= ip <= '172.31.')
 
-        assert_local(localIP(remote=None, useCache=None))
-        assert_local(
-            localIP(remote=('www.hostname.and.domain.are.invalid', 80),
+        assertLocal(localIP(remote=None, useCache=None))
+        assertLocal(localIP(remote=('www.hostname.and.domain.are.invalid', 80),
                     useCache=None))
 
     def testPositiveId(self):
