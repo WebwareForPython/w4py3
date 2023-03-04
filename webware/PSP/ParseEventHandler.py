@@ -36,16 +36,12 @@ class ParseEventHandler:
     """
 
     aspace = ' '
-    defaults = dict(
-        BASE_CLASS='Page',
-        BASE_METHOD='writeHTML',
-        imports=dict(filename='classes'),
-        threadSafe='no',
-        instanceSafe='yes',
-        indent=4,
-        gobbleWhitespace=True,
-        formatter='str'
-    )
+    defaults = {
+        'BASE_CLASS': 'Page', 'BASE_METHOD': 'writeHTML',
+        'imports': {'filename': 'classes'}, 'threadSafe': 'no',
+        'instanceSafe': 'yes', 'indent': 4,
+        'gobbleWhitespace': True, 'formatter': 'str'
+    }
 
     def __init__(self, ctxt, parser):
         self._ctxt = ctxt

@@ -268,11 +268,12 @@ def timestamp(t=None):
     formats are generally more appropriate for filenames.
     """
     t = time.localtime(t)[:6]
-    return dict(
-        tuple=t,
-        pretty='{:4d}-{:02d}-{:02d} {:02d}:{:02d}:{:02d}'.format(*t),
-        condensed='{:4d}{:02d}{:02d}{:02d}{:02d}{:02d}'.format(*t),
-        dashed='{:4d}-{:02d}-{:02d}-{:02d}-{:02d}-{:02d}'.format(*t))
+    return {
+        'tuple': t,
+        'pretty': '{:4d}-{:02d}-{:02d} {:02d}:{:02d}:{:02d}'.format(*t),
+        'condensed': '{:4d}{:02d}{:02d}{:02d}{:02d}{:02d}'.format(*t),
+        'dashed': '{:4d}-{:02d}-{:02d}-{:02d}-{:02d}-{:02d}'.format(*t)
+    }
 
 
 def localTimeDelta(t=None):

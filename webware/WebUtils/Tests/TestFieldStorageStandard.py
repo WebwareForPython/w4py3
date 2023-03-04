@@ -17,7 +17,7 @@ class HackedSysModule:
 cgi.sys = HackedSysModule()
 
 
-def genTesult(data, environ):
+def genResult(data, environ):
     encoding = 'latin-1'
     fakeStdin = BytesIO(data.encode(encoding))
     fakeStdin.seek(0)
@@ -172,7 +172,7 @@ Content-Type: text/plain
                 'CONTENT_TYPE':     'multipart/form-data; boundary=-123',
                 'REQUEST_METHOD':   'POST',
             }
-            self.assertEqual(genTesult(data, environ),
+            self.assertEqual(genResult(data, environ),
                              {'upload': content.encode('latin1')})
         check('x' * (maxline - 1))
         check('x' * (maxline - 1) + '\r')
@@ -271,7 +271,7 @@ Test
             'QUERY_STRING':     'key1=value1&key2=value2y',
             'REQUEST_METHOD':   'POST',
         }
-        v = genTesult(data, environ)
+        v = genResult(data, environ)
         self.assertNotEqual(self._qsResult, v)
         self.assertEqual(self._qsResultModified, v)
 
@@ -344,7 +344,7 @@ value4
             'QUERY_STRING':     'key1=value1&key2=value2x',
             'REQUEST_METHOD':   'POST',
         }
-        v = genTesult(data, environ)
+        v = genResult(data, environ)
         self.assertEqual(self._qsResult, v)
 
     def testQSAndFormDataFile(self):
@@ -376,7 +376,7 @@ this is the content of the fake file
         }
         result = self._qsResult.copy()
         result['upload'] = b'this is the content of the fake file\n'
-        v = genTesult(data, environ)
+        v = genResult(data, environ)
         self.assertEqual(result, v)
 
     def testParseHeader(self):

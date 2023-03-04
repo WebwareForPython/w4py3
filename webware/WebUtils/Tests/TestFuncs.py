@@ -61,33 +61,33 @@ class TestFuncs(unittest.TestCase):
     def testHtmlDorDict(self):
         f = Funcs.htmlForDict
         self.assertEqual(
-            f(dict(foo='bar', answer=42)),
+            f({'foo': 'bar', 'answer': 42}),
             '<table class="NiceTable">\n'
             '<tr><th>answer</th><td>42</td></tr>\n'
             '<tr><th>foo</th><td>bar</td></tr>\n</table>')
         self.assertEqual(
-            f(dict(foo='ba,zong', bar='ka;woom'),
-              addSpace=dict(foo=',', bar=';')),
+            f({'foo': 'ba,zong', 'bar': 'ka;woom'},
+              addSpace={'foo': ',', 'bar': ';'}),
             '<table class="NiceTable">\n'
             '<tr><th>bar</th><td>ka; woom</td></tr>\n'
             '<tr><th>foo</th><td>ba, zong</td></tr>\n</table>')
         self.assertEqual(
-            f(dict(foo='barbarabarbarabarbarabarbara'), maxValueLength=12),
+            f({'foo': 'barbarabarbarabarbarabarbara'}, maxValueLength=12),
             '<table class="NiceTable">\n'
             '<tr><th>foo</th><td>barbaraba...</td></tr>\n</table>')
         self.assertEqual(
-            f(dict(foo='zing', bar='zang'),
+            f({'foo': 'zing', 'bar': 'zang'},
               filterValueCallBack=lambda v, k, d: 'zung' if k == 'bar' else v),
             '<table class="NiceTable">\n'
             '<tr><th>bar</th><td>zung</td></tr>\n'
             '<tr><th>foo</th><td>zing</td></tr>\n</table>')
         self.assertEqual(
-            f(dict(foo='bar'), topHeading='twinkle'),
+            f({'foo': 'bar'}, topHeading='twinkle'),
             '<table class="NiceTable">\n'
             '<tr class="TopHeading"><th colspan="2">twinkle</th></tr>\n'
             '<tr><th>foo</th><td>bar</td></tr>\n</table>')
         self.assertEqual(
-            f(dict(foo='bar'), topHeading=('key', 'value')),
+            f({'foo': 'bar'}, topHeading=('key', 'value')),
             '<table class="NiceTable">\n'
             '<tr class="TopHeading"><th>key</th><th>value</th></tr>\n'
             '<tr><th>foo</th><td>bar</td></tr>\n</table>')
@@ -103,12 +103,12 @@ class TestFuncs(unittest.TestCase):
     def testRequestURI(self):
         f = Funcs.requestURI
         self.assertEqual(
-            f(dict(REQUEST_URI='http://w4py.org')), 'http://w4py.org')
+            f({'REQUEST_URI': 'http://w4py.org'}), 'http://w4py.org')
         self.assertEqual(
-            f(dict(SCRIPT_URL='http://w4py.org', QUERY_STRING='foo=bar')),
+            f({'SCRIPT_URL': 'http://w4py.org', 'QUERY_STRING': 'foo=bar'}),
             'http://w4py.org?foo=bar')
         self.assertEqual(
-            f(dict(SCRIPT_NAME='/test', QUERY_STRING='foo=bar')),
+            f({'SCRIPT_NAME': '/test', 'QUERY_STRING': 'foo=bar'}),
             '/test?foo=bar')
 
     def testNormURL(self):

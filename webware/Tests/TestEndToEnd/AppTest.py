@@ -14,9 +14,7 @@ __all__ = ['AppTest', 'AppError']
 
 class AppTest:
 
-    settings = dict(
-        PrintConfigAtStartUp=False
-    )
+    settings = {'PrintConfigAtStartUp': False}
     catchOutput = True  # set to False if you want to run pdb inside a test
 
     @classmethod

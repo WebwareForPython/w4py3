@@ -4,7 +4,7 @@ from .ExamplePage import ExamplePage
 class FileUpload(ExamplePage):
     """This servlet shows how to handle uploaded files.
 
-    The process is fairly self explanatory. You use a form like the one below
+    The process is fairly self-explanatory. You use a form like the one below
     in the writeContent method. When the form is uploaded, the request field
     with the name you gave to the file selector form item will be an instance
     of the FieldStorage class from the standard Python module "cgi". The key

@@ -9,11 +9,11 @@ class MockImportManager:
         pass
 
 
-defaultConfig = dict(
-    CacheDir='Cache',
-    PlugIns=['MiscUtils', 'WebUtils', 'TaskKit', 'UserKit', 'PSP'],
-    PrintPlugIns=False
-)
+defaultConfig = {
+    'CacheDir': 'Cache',
+    'PlugIns': ['MiscUtils', 'WebUtils', 'TaskKit', 'UserKit', 'PSP'],
+    'PrintPlugIns': False
+}
 
 
 class MockApplication(ConfigurableForServerSidePath):
@@ -51,10 +51,11 @@ class MockApplication(ConfigurableForServerSidePath):
 
     def configReplacementValues(self):
         """Get config values that need to be escaped."""
-        return dict(
-            ServerSidePath=self._serverSidePath,
-            WebwarePath=self._webwarePath,
-            Development=self._development)
+        return {
+            'ServerSidePath': self._serverSidePath,
+            'WebwarePath': self._webwarePath,
+            'Development': self._development
+        }
 
     def configFilename(self):
         return self.serverSidePath('Configs/Application.config')

@@ -70,7 +70,7 @@ def htCache(factory):
     paths = []
     for key in keys:
         head, tail = os.path.split(key)
-        path = dict(dir=head, base=tail, full=key, id=id(key))
+        path = {'dir': head, 'base': tail, 'full': key, 'id': id(key)}
         paths.append(path)
     paths.sort(key=lambda p: (p['base'].lower(), p['dir'].lower()))
     for path in paths:

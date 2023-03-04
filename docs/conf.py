@@ -64,8 +64,7 @@ autosummary_generate = True
 # (references to some Python built-in types do not resolve correctly)
 nitpicky = True
 nitpick_ignore = [('py:class', t) for t in (
-    'cgi.FieldStorage', 'html.parser.HTMLParser',
-    'threading.Thread', 'xmlrpc.client.ProtocolError')]
+    'html.parser.HTMLParser', 'threading.Thread', 'xmlrpc.client.ProtocolError')]
 
 # -- Options for HTML output -------------------------------------------------
 

@@ -8,10 +8,7 @@ from .AppTest import AppTest
 
 class TestTesting(AppTest, unittest.TestCase):
 
-    settings = dict(
-        PrintConfigAtStartUp=False,
-        ExtraPathInfo=False
-    )
+    settings = {'PrintConfigAtStartUp': False, 'ExtraPathInfo': False}
 
     def testStartPage(self):
         r = self.testApp.get('/').click('Testing')
@@ -273,7 +270,4 @@ class TestTesting(AppTest, unittest.TestCase):
 
 class TestTestingWithExtraPathInfo(TestTesting):
 
-    settings = dict(
-        PrintConfigAtStartUp=False,
-        ExtraPathInfo=True
-    )
+    settings = {'PrintConfigAtStartUp': False, 'ExtraPathInfo': True}

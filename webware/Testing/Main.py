@@ -76,8 +76,8 @@ class Main(SidebarPage):
                     if len(parts) != 2:
                         self.error(f'Invalid line at {lineNum}.')
                     urls.append(parts[0].strip())
-                    cases.append(dict(
-                        URLs=urls, Expectation=parts[1].strip()))
+                    cases.append(
+                        {'URLs': urls, 'Expectation': parts[1].strip()})
                     urls = []  # reset list of URLs
             lineNum += 1
         return cases

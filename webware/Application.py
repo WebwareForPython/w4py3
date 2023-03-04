@@ -39,108 +39,104 @@ import URLParser
 
 debug = False
 
-defaultConfig = dict(
-    ActivityLogFilename='Activity.csv',
-    ActivityLogColumns=[
+defaultConfig = {
+    'ActivityLogFilename': 'Activity.csv',
+    'ActivityLogColumns': [
         'request.remoteAddress', 'request.method',
         'request.uri', 'response.size',
         'servlet.name', 'request.timeStamp',
-        'transaction.duration',
-        'transaction.errorOccurred'
+        'transaction.duration', 'transaction.errorOccurred'
     ],
-    AlwaysSaveSessions=True,
-    AppLogFilename='Application.log',
-    CacheDir='Cache',
-    CacheServletClasses=True,
-    CacheServletInstances=True,
-    CheckInterval=None,
-    Contexts={
+    'AlwaysSaveSessions': True,
+    'AppLogFilename': 'Application.log',
+    'CacheDir': 'Cache',
+    'CacheServletClasses': True,
+    'CacheServletInstances': True,
+    'CheckInterval': None,
+    'Contexts': {
         'default': 'Examples',
         'Admin': 'Admin',
         'Examples': 'Examples',
         'Testing': 'Testing',
     },
-    Debug=dict(
-        Sessions=False,
-    ),
-    DirectoryFile=['index', 'Index', 'main', 'Main'],
-    EnterDebuggerOnException=False,
-    EmailErrors=False,
-    EmailErrorReportAsAttachment=False,
-    ErrorEmailServer='localhost',
-    ErrorEmailHeaders={
+    'Debug': {'Sessions': False},
+    'DirectoryFile': ['index', 'Index', 'main', 'Main'],
+    'EnterDebuggerOnException': False,
+    'EmailErrors': False,
+    'EmailErrorReportAsAttachment': False,
+    'ErrorEmailServer': 'localhost',
+    'ErrorEmailHeaders': {
         'From': 'webware@mydomain',
         'To': ['webware@mydomain'],
         'Reply-To': 'webware@mydomain',
         'Content-Type': 'text/html',
         'Subject': 'Error'
     },
-    ErrorLogFilename='Errors.csv',
-    ErrorMessagesDir='ErrorMsgs',
-    ErrorPage=None,
-    ExtensionCascadeOrder=['.py', '.psp', '.html'],
-    ExtensionsToIgnore={
+    'ErrorLogFilename': 'Errors.csv',
+    'ErrorMessagesDir': 'ErrorMsgs',
+    'ErrorPage': None,
+    'ExtensionCascadeOrder': ['.py', '.psp', '.html'],
+    'ExtensionsToIgnore': {
         '.pyc', '.pyo', '.tmpl', '.bak', '.py_bak',
         '.py~', '.psp~', '.html~', '.tmpl~'
     },
-    ExtensionsToServe=[],
-    ExtraPathInfo=True,
-    FancyTracebackContext=5,
-    FilesToHide={
+    'ExtensionsToServe': [],
+    'ExtraPathInfo': True,
+    'FancyTracebackContext': 5, 'FilesToHide': {
         '.*', '*~', '*.bak', '*.py_bak', '*.tmpl',
         '*.pyc', '*.pyo', '__init__.*', '*.config'
     },
-    FilesToServe=[],
-    IgnoreInvalidSession=True,
-    IncludeEditLink=True,
-    IncludeFancyTraceback=False,
-    LogActivity=True,
-    LogDir='Logs',
-    LogErrors=True,
-    MaxValueLengthInExceptionReport=500,
-    OutputEncoding='utf-8',
-    PlugIns=['MiscUtils', 'WebUtils', 'TaskKit', 'UserKit', 'PSP'],
-    PrintConfigAtStartUp=True,
-    PrintPlugIns=True,
-    RegisterSignalHandler=False,
-    ReloadServletClasses=False,
-    ReportRPCExceptionsInWebware=True,
-    ResponseBufferSize=8 * 1024,  # 8 kBytes
-    RetainSessions=True,
-    RPCExceptionReturn='traceback',
-    RunTasks=True,
-    SaveErrorMessages=True,
-    SecureSessionCookie=True,
-    SessionCookiePath=None,
-    HttpOnlySessionCookie=True,
-    SameSiteSessionCookie='Strict',
-    SessionModule='Session',
-    SessionName='_SID_',
-    SessionPrefix='',
-    SessionStore='Dynamic',
-    SessionStoreDir='Sessions',
-    SessionTimeout=60,
-    ShowDebugInfoOnErrors=False,
-    SilentURIs=None,
-    UnknownFileTypes=dict(
-        ReuseServlets=True,
-        Technique='serveContent',  # or redirectSansScript
-        CacheContent=False,
-        MaxCacheContentSize=128 * 1024,
-        ReadBufferSize=32 * 1024
-    ),
-    UseAutomaticPathSessions=False,
-    UseCascadingExtensions=True,
-    UseCookieSessions=True,
-    UserErrorMessage=(
+    'FilesToServe': [],
+    'IgnoreInvalidSession': True,
+    'IncludeEditLink': True,
+    'IncludeFancyTraceback': False,
+    'LogActivity': True,
+    'LogDir': 'Logs',
+    'LogErrors': True,
+    'MaxValueLengthInExceptionReport': 500,
+    'OutputEncoding': 'utf-8',
+    'PlugIns': ['MiscUtils', 'WebUtils', 'TaskKit', 'UserKit', 'PSP'],
+    'PrintConfigAtStartUp': True,
+    'PrintPlugIns': True,
+    'RegisterSignalHandler': False,
+    'ReloadServletClasses': False,
+    'ReportRPCExceptionsInWebware': True,
+    'ResponseBufferSize': 8 * 1024,  # 8 kBytes
+    'RetainSessions': True,
+    'RPCExceptionReturn': 'traceback',
+    'RunTasks': True,
+    'SaveErrorMessages': True,
+    'SecureSessionCookie': True,
+    'SessionCookiePath': None,
+    'HttpOnlySessionCookie': True,
+    'SameSiteSessionCookie': 'Strict',
+    'SessionModule': 'Session',
+    'SessionName': '_SID_',
+    'SessionPrefix': '',
+    'SessionStore': 'Dynamic',
+    'SessionStoreDir': 'Sessions',
+    'SessionTimeout': 60,
+    'ShowDebugInfoOnErrors': False,
+    'SilentURIs': None,
+    'UnknownFileTypes': {
+        'ReuseServlets': True,
+        'Technique': 'serveContent',  # or redirectSansScript
+        'CacheContent': False,
+        'MaxCacheContentSize': 128 * 1024,
+        'ReadBufferSize': 32 * 1024
+    },
+    'UseAutomaticPathSessions': False,
+    'UseCascadingExtensions': True,
+    'UseCookieSessions': True,
+    'UserErrorMessage': (
         'The site is having technical difficulties with this page.'
         ' An error has been logged, and the problem will be fixed'
         ' as soon as possible. Sorry!'
     ),
-    UseSessionSweeper=True,
-    Verbose=True,
-    WSGIWrite=True,  # use write callable with WSGI
-)
+    'UseSessionSweeper': True,
+    'Verbose': True,
+    'WSGIWrite': True  # use write callable with WSGI
+}
 
 
 class EndResponse(Exception):
@@ -467,10 +463,11 @@ class Application(ConfigurableForServerSidePath):
 
     def configReplacementValues(self):
         """Get config values that need to be escaped."""
-        return dict(
-            ServerSidePath=self._serverSidePath,
-            WebwarePath=self._webwarePath,
-            Development=self._development)
+        return {
+            'ServerSidePath': self._serverSidePath,
+            'WebwarePath': self._webwarePath,
+            'Development': self._development
+        }
 
     def development(self):
         """Whether the application shall run in development mode"""
@@ -645,12 +642,14 @@ class Application(ConfigurableForServerSidePath):
             if mode == 'w':
                 f.write(','.join(self.setting('ActivityLogColumns')) + '\n')
             values = []
-            objects = dict(
-                application=self, transaction=trans,
-                request=trans.request(), response=trans.response(),
-                servlet=trans.servlet(),
+            objects = {
+                'application': self, 'transaction': trans,
+                'request': trans.request(),
+                'response': trans.response(),
+                'servlet': trans.servlet(),
                 # don't cause creation of session here:
-                session=trans._session)
+                'session': trans._session
+            }
             for column in self.setting('ActivityLogColumns'):
                 try:
                     value = valueForName(objects, column)
@@ -988,7 +987,7 @@ class Application(ConfigurableForServerSidePath):
         editlink = f'{request.scriptName()}/Admin/EditFile' if self.setting(
             'IncludeEditLink') else None
         self._exceptionHandlerClass(
-            self, trans, excInfo, dict(editlink=editlink))
+            self, trans, excInfo, {'editlink': editlink})
 
     def rootURLParser(self):
         """Accessor: the Root URL parser.
@@ -1172,7 +1171,7 @@ class Application(ConfigurableForServerSidePath):
     def __call__(self, environ, start_response):
         """The WSGI application callable"""
         verbose = self._verbose
-        requestDict = dict(environ=environ)
+        requestDict = {'environ': environ}
 
         requestID = self._requestID
         self._requestID = requestID + 1

@@ -1,6 +1,5 @@
 """HTTP requests"""
 
-import cgi
 import os
 import sys
 import traceback
@@ -11,7 +10,7 @@ from http.cookies import SimpleCookie as Cookie
 import HTTPResponse
 
 from MiscUtils import NoDefault
-from WebUtils import FieldStorage
+from WebUtils.FieldStorage import FieldStorage
 from Request import Request
 
 debug = False
@@ -38,11 +37,11 @@ class HTTPRequest(Request):
             # because bad headers sometimes can break the field storage
             # (see also https://bugs.python.org/issue27777).
             try:
-                self._fields = FieldStorage.FieldStorage(
+                self._fields = FieldStorage(
                     self._input, environ=self._environ,
                     keep_blank_values=True, strict_parsing=False)
             except Exception:
-                self._fields = cgi.FieldStorage(keep_blank_values=True)
+                self._fields = FieldStorage(keep_blank_values=True)
                 traceback.print_exc(file=sys.stderr)
             self._cookies = Cookie()
             if 'HTTP_COOKIE' in self._environ:
@@ -64,7 +63,7 @@ class HTTPRequest(Request):
             self._time = time()
             self._environ = os.environ.copy()
             self._input = None
-            self._fields = cgi.FieldStorage(keep_blank_values=True)
+            self._fields = FieldStorage(keep_blank_values=True)
             self._cookies = Cookie()
 
         env = self._environ
@@ -131,8 +130,8 @@ class HTTPRequest(Request):
 
         # We use Tim O'Malley's Cookie class to get the cookies,
         # but then change them into an ordinary dictionary of values
-        self._cookies = dict(
-            (key, self._cookies[key].value) for key in self._cookies)
+        self._cookies = {
+            key: self._cookies[key].value for key in self._cookies}
 
         self._contextName = None
         self._serverSidePath = self._serverSideContextPath = None

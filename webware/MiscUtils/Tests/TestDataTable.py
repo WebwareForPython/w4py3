@@ -98,7 +98,7 @@ class TestDataTable(unittest.TestCase):
         data = [
             ['John', '26', '7.25'],
             ['Mary', 32, 8.5],
-            dict(name='Fred', age=28, rating=9.0),
+            {'name': 'Fred', 'age': 28, 'rating': 9.0},
             Record(name='Wilma', age=27, rating=9.5)
         ]
         for obj in data:

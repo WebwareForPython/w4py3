@@ -31,7 +31,7 @@ class TestPickleCache(unittest.TestCase):
         sourcePath = self._sourcePath = os.path.join(self._tempDir, 'foo.dict')
         picklePath = self._picklePath = pc.PickleCache().picklePath(sourcePath)
         self.remove(picklePath)  # make sure we're clean
-        data = self._data = dict(x=1)
+        data = self._data = {'x': 1}
         self.writeSource()
         try:
             # test 1: no pickle cache yet

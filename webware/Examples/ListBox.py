@@ -20,8 +20,10 @@ class ListBox(ExamplePage):
         if session.hasValue('vars'):
             self._vars = session.value('vars')
         else:
-            self._vars = dict(
-                items=[], height=10, width=250, newCount=1, formCount=1)
+            self._vars = {
+                'items': [], 'height': 10, 'width': 250,
+                'newCount': 1, 'formCount': 1
+            }
             session.setValue('vars', self._vars)
         self._error = None
 
@@ -81,7 +83,7 @@ style="width:{width}pt;text-align:center">
     def new(self):
         """Add a new item to the list box."""
         newCount = self._vars['newCount']
-        self._vars['items'].append(dict(name=f'New item {newCount}'))
+        self._vars['items'].append({'name': f'New item {newCount}'})
         self._vars['newCount'] += 1
         self.writeBody()
 

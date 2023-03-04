@@ -12,15 +12,14 @@ class Application:
     _sessionName = '_SID_'
 
     def setting(self, key, default=None):
-        return dict(
-            SessionTimeout=self._sessionTimeout // 60,
-            SessionPrefix=self._sessionPrefix,
-            SessionName=self._sessionName,
-            DynamicSessionTimeout=1,
-            MaxDynamicMemorySessions=3,
-            MemcachedOnIteration=None,
-            Debug=dict(Sessions=False),
-        ).get(key, default)
+        return {
+            'SessionTimeout': self._sessionTimeout // 60,
+            'SessionPrefix': self._sessionPrefix,
+            'SessionName': self._sessionName,
+            'DynamicSessionTimeout': 1, 'MaxDynamicMemorySessions': 3,
+            'MemcachedOnIteration': None,
+            'Debug': {'Sessions': False}
+        }.get(key, default)
 
     def handleException(self):
         raise Exception('Application Error')

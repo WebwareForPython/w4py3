@@ -80,7 +80,7 @@ class PickleRPCServlet(RPCServlet, SafeUnpickler):
         try:
             request = trans.request()
             data = request.rawInput(rewind=1)
-            response = dict(timeReceived=trans.request().time())
+            response = {'timeReceived': trans.request().time()}
             try:
                 try:
                     encoding = request.environ().get('HTTP_CONTENT_ENCODING')

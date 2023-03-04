@@ -486,7 +486,7 @@ In order to make use of Bjoern, you need to add the following at the end of the 
 
 Since Bjoern does not support the WSGI ``write()`` callable, you must configure Webware to not use this mechanism, by using the following settings at the top of the ``Scripts\WSGIScript.py``::
 
-    settings = dict(WSGIWrite=False)
+    settings = {'WSGIWrite': False}
 
 A systemd unit file at ``/etc/systemd/system/bjoern.service`` could look like this::
 
@@ -531,7 +531,7 @@ Add the following at the end of the ``Scripts\WSGIScript.py`` file in the applic
 
 Similarly to Bjoern, you need to also adapt the settings at the top of the ``Scripts\WSGIScript.py`` file::
 
-    settings = dict(WSGIWrite=False)
+    settings = {'WSGIWrite': False}
 
 Using CherryPy as WSGI server
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

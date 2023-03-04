@@ -9,9 +9,7 @@ from .AppTest import AppTest
 
 class TestExamples(AppTest, unittest.TestCase):
 
-    settings = dict(
-        PrintConfigAtStartUp=False
-    )
+    settings = {'PrintConfigAtStartUp': False}
 
     def setUp(self):
         AppTest.setUp(self)
@@ -402,8 +400,7 @@ class TestExamples(AppTest, unittest.TestCase):
             '>cookies()<',
             '<td>TestCookieName</td><td>CookieValue</td></tr>',
             no=['Reload the page', 'add some test fields'])
-        r = r.goto('/RequestInformation',
-                   extra_environ=dict(REMOTE_USER='bob'))
+        r = r.goto('/RequestInformation', extra_environ={'REMOTE_USER': 'bob'})
         self.assertEqual(r.status, '200 OK')
         r.mustcontain(
             '<h3>Request Variables</h3>',
@@ -626,17 +623,13 @@ class TestExamples(AppTest, unittest.TestCase):
 
 class TestExamplesWithoutWSGIWrite(TestExamples):
 
-    settings = dict(
-        PrintConfigAtStartUp=False,
-        WSGIWrite=False
-    )
+    settings = {'PrintConfigAtStartUp': False, 'WSGIWrite': False}
 
 
 class TestExamplesWithoutCaching(TestExamples):
 
-    settings = dict(
-        PrintConfigAtStartUp=False,
-        CacheServletClasses=False,
-        CacheServletInstances=False,
-        ReloadServletClasses=False
-    )
+    settings = {
+        'PrintConfigAtStartUp': False,
+        'CacheServletClasses': False, 'CacheServletInstances': False,
+        'ReloadServletClasses': False
+    }

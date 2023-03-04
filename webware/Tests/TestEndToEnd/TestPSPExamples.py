@@ -7,10 +7,7 @@ from .AppTest import AppTest
 
 class TestPSPExamples(AppTest, unittest.TestCase):
 
-    settings = dict(
-        PrintConfigAtStartUp=False,
-        ClearPSPCacheOnStart=True
-    )
+    settings = {'PrintConfigAtStartUp': False, 'ClearPSPCacheOnStart': True}
 
     def testStartPage(self):
         r = self.testApp.get('/').click('^PSP$')

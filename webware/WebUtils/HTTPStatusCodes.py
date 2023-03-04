@@ -21,9 +21,9 @@ HTTPStatusCodes = {}
 
 # Construct HTTPStatusCodes dictionary
 for code, identifier, description in HTTPStatusCodeList:
-    d = dict(code=code, identifier=identifier, description=description,
-             # the following tow exist for backward compatibility only:
-             htmlMsg=description, asciiMsg=description)
+    d = {'code': code, 'identifier': identifier, 'description': description,
+         # the following two exist for backward compatibility only:
+         'htmlMsg': description, 'asciiMsg': description}
     HTTPStatusCodes[code] = d
     HTTPStatusCodes[identifier] = d
 

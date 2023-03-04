@@ -10,7 +10,7 @@ class Session:
 
     def __init__(self, identifier=7, value=None):
         self._identifier = f'foo-{identifier}'
-        self._data = dict(bar=value or identifier * 6)
+        self._data = {'bar': value or identifier * 6}
         self._expired = self._dirty = False
         self._timeout = 1800
         self._lastAccessTime = time() - identifier * 400

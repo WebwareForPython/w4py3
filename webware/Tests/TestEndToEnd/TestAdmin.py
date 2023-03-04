@@ -7,10 +7,10 @@ from .AppTest import AppTest
 
 class TestAdminLogin(AppTest, unittest.TestCase):
 
-    settings = dict(
-        PrintConfigAtStartUp=False,
-        AdminPassword='LoginTestPassword'
-    )
+    settings = {
+        'PrintConfigAtStartUp': False,
+        'AdminPassword': 'LoginTestPassword'
+    }
 
     def testLogin(self):
         r = self.testApp.get('/')
@@ -79,12 +79,11 @@ class TestAdminWithoutPassword(AppTest, unittest.TestCase):
 
 class TestAdmin(AppTest, unittest.TestCase):
 
-    settings = dict(
-        PrintConfigAtStartUp=False,
-        AdminPassword='AdminTestPassword',
-        CacheServletClasses=True,
-        CacheServletInstances=True
-    )
+    settings = {
+        'PrintConfigAtStartUp': False,
+        'AdminPassword': 'AdminTestPassword',
+        'CacheServletClasses': True, 'CacheServletInstances': True
+    }
 
     def setUp(self):
         AppTest.setUp(self)

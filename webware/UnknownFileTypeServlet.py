@@ -226,10 +226,11 @@ class UnknownFileTypeServlet(HTTPServlet, Configurable):
                     and fileSize < maxCacheContentSize):
                 if debug:
                     print('>> caching')
-                fileDict = dict(
-                    content=f.read(),
-                    mimeType=mimeType, mimeEncoding=mimeEncoding,
-                    mtime=mtime, size=fileSize, filename=filename)
+                fileDict = {
+                    'content': f.read(),
+                    'mimeType': mimeType, 'mimeEncoding': mimeEncoding,
+                    'mtime': mtime, 'size': fileSize, 'filename': filename
+                }
                 fileCache[filename] = fileDict
             if fileDict is not None:
                 if debug:

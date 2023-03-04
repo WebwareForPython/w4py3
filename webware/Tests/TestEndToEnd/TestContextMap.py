@@ -7,11 +7,10 @@ from .AppTest import AppTest
 
 class TestContextMap(AppTest, unittest.TestCase):
 
-    settings = dict(
-        PrintConfigAtStartUp=False,
-        ExtraPathInfo=False,
-        Contexts={'Testing': 'Testing', 'default': 'Testing'}
-    )
+    settings = {
+        'PrintConfigAtStartUp': False, 'ExtraPathInfo': False,
+        'Contexts': {'Testing': 'Testing', 'default': 'Testing'}
+    }
 
     def testStartPage(self):
         r = self.testApp.get('/')
@@ -34,11 +33,9 @@ class TestContextMap(AppTest, unittest.TestCase):
 
 class TestAliasedContext(AppTest, unittest.TestCase):
 
-    settings = dict(
-        PrintConfigAtStartUp=False,
-        ExtraPathInfo=False,
-        Contexts={'TestAlias': 'Testing', 'default': 'TestAlias'}
-    )
+    settings = {
+        'PrintConfigAtStartUp': False, 'ExtraPathInfo': False,
+        'Contexts': {'TestAlias': 'Testing', 'default': 'TestAlias'}}
 
     def testStartPage(self):
         r = self.testApp.get('/')
@@ -61,11 +58,10 @@ class TestAliasedContext(AppTest, unittest.TestCase):
 
 class TestOnlyDefaultContext(AppTest, unittest.TestCase):
 
-    settings = dict(
-        PrintConfigAtStartUp=False,
-        ExtraPathInfo=False,
-        Contexts={'default': 'Testing'}
-    )
+    settings = {
+        'PrintConfigAtStartUp': False, 'ExtraPathInfo': False,
+        'Contexts': {'default': 'Testing'}
+    }
 
     def testStartPage(self):
         r = self.testApp.get('/')

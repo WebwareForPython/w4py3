@@ -128,7 +128,7 @@ class SecurePage(ExamplePage, Configurable):
         return self.session().value('authenticated_user', None)
 
     def defaultConfig(self):
-        return dict(RequireLogin=True)
+        return {'RequireLogin': True}
 
     def configFilename(self):
         return 'Configs/SecurePage.config'

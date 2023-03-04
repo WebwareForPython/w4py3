@@ -683,8 +683,8 @@ class TagCannotHaveConfig(TagConfig):
                 cannotHave=self.tags)
 
 
-configClassForName = dict(
-    canOnlyHave=TagCanOnlyHaveConfig, cannotHave=TagCannotHaveConfig)
+configClassForName = {
+    'canOnlyHave': TagCanOnlyHaveConfig, 'cannotHave': TagCannotHaveConfig}
 
 
 if __name__ == '__main__':
