@@ -200,8 +200,7 @@ class DBUtilsDemo(ExamplePage):
                     pass
                 self.outputMsg(error, True)
                 return
-            else:
-                self.outputMsg(f'Entries deleted: {len(ids)}')
+            self.outputMsg(f'Entries deleted: {len(ids)}')
         db = self.connection()
         if not db:
             return
@@ -271,8 +270,7 @@ class DBUtilsDemo(ExamplePage):
                     db.rollback()
                 self.outputMsg(error, True)
                 return
-            else:
-                self.outputMsg(f'Entries deleted: {len(ids)}')
+            self.outputMsg(f'Entries deleted: {len(ids)}')
         db = self.connection()
         if not db:
             return

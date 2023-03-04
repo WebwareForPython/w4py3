@@ -81,11 +81,9 @@ class Servlet:
                 # just a result of the first. Then you're stuck scratching your
                 # head wondering what the first might have been.
                 raise second from first
-            else:
-                # no problems with sleep() so raise the one and only exception
-                raise
-        else:
-            transaction.sleep()
+            # no problems with sleep() so raise the one and only exception
+            raise
+        transaction.sleep()
 
     def runMethodForTransaction(self, transaction, method, *args, **kw):
         self.awake(transaction)

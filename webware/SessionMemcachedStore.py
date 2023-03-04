@@ -212,9 +212,8 @@ class SessionMemcachedStore(SessionStore):
             value = self[key]
         except KeyError:
             return default
-        else:
-            del self[key]
-            return value
+        del self[key]
+        return value
 
     # endregion Access
 

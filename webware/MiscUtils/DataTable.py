@@ -253,8 +253,7 @@ def canReadExcel():
         Dispatch("Excel.Application")
     except Exception:
         return False
-    else:
-        return True
+    return True
 
 # endregion Functions
 

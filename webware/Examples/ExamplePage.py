@@ -57,8 +57,7 @@ class ExamplePage(SidebarPage):
             plugIn = self.application().plugIn(plugInName)
         except KeyError:
             return []
-        else:
-            return plugIn.examplePages()
+        return plugIn.examplePages()
 
     def writeSidebar(self):
         self.writeExamplesMenu()
