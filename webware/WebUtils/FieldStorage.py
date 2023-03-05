@@ -428,7 +428,7 @@ class FieldStorage:
                 self.done = -1
                 break
             if not self._binary_file:
-                # fix for https://github.com/python/cpython/pull/7804
+                # fix for https://github.com/python/cpython/issues/71964
                 try:
                     data = data.decode()
                 except UnicodeDecodeError:
