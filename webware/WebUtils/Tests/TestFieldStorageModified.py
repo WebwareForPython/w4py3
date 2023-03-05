@@ -131,3 +131,96 @@ class TestFieldStorage(unittest.TestCase):
             self.assertEqual(fs.getlist('a'), ['1'])
             self.assertEqual(fs.getlist('b'), ['2', '3'])
             self.assertEqual(fs.getlist('c'), ['3'])
+
+    def testPostRequestWithoutContentLength(self):
+        # see https://github.com/python/cpython/issues/71964
+        fs = FieldStorage(
+            fp=BytesIO(b'{"test":123}'),
+            environ={'REQUEST_METHOD': 'POST',
+                     'CONTENT_TYPE': 'application/json'})
+        self.assertEqual(fs.headers, {
+            'content-type': 'application/json'})
+        self.assertEqual(fs.type, 'application/json')
+        self.assertEqual(fs.length, -1)
+        self.assertEqual(fs.bytes_read, 12)
+        assert fs.file.read() == '{"test":123}'
+
+    def testPostRequestWithContentLengthAndContentDispositionInline(self):
+        # see https://github.com/python/cpython/issues/71964
+        fs = FieldStorage(
+            fp=BytesIO(b'{"test":123}'),
+            headers={'content-length': 12, 'content-disposition': 'inline',
+                     'content-type': 'application/json'},
+            environ={'REQUEST_METHOD': 'POST'})
+        self.assertEqual(fs.headers, {
+            'content-type': 'application/json', 'content-length': 12,
+            'content-disposition': 'inline'})
+        self.assertEqual(fs.disposition, 'inline')
+        self.assertIsNone(fs.filename)
+        self.assertEqual(fs.type, 'application/json')
+        self.assertEqual(fs.length, 12)
+        self.assertEqual(fs.bytes_read, 12)
+        self.assertEqual(fs.file.read(), '{"test":123}')
+
+    def testPostRequestWithContentLengthAndContentDispositionAttachment(self):
+        # not affected by https://github.com/python/cpython/issues/71964
+        fs = FieldStorage(
+            fp=BytesIO(b'{"test":123}'),
+            headers={'content-length': 12,
+                     'content-disposition': 'attachment; filename="foo.json"',
+                     'content-type': 'application/json'},
+            environ={'REQUEST_METHOD': 'POST'})
+        self.assertEqual(fs.headers, {
+            'content-type': 'application/json', 'content-length': 12,
+            'content-disposition': 'attachment; filename="foo.json"'})
+        self.assertEqual(fs.disposition, 'attachment')
+        self.assertEqual(fs.filename, 'foo.json')
+        self.assertEqual(fs.type, 'application/json')
+        self.assertEqual(fs.length, 12)
+        self.assertEqual(fs.bytes_read, 12)
+        self.assertEqual(fs.file.read(), b'{"test":123}')
+
+    def testPostRequestWithContentLengthButWithoutContentDisposition(self):
+        # see https://github.com/python/cpython/issues/71964
+        fs = FieldStorage(fp=BytesIO(b'{"test":123}'), environ={
+            'CONTENT_LENGTH': 12, 'REQUEST_METHOD': 'POST',
+            'CONTENT_TYPE': 'application/json'})
+        self.assertEqual(fs.headers, {
+            'content-type': 'application/json', 'content-length': 12})
+        self.assertEqual(fs.disposition, '')
+        self.assertEqual(fs.type, 'application/json')
+        self.assertEqual(fs.length, 12)
+        self.assertEqual(fs.bytes_read, 12)
+        self.assertEqual(fs.file.read(), '{"test":123}')
+
+    def testPostRequestWithUtf8BinaryData(self):
+        text = 'The \u2603 by Raymond Briggs'
+        content = text.encode('utf-8')
+        length = len(content)
+        fs = FieldStorage(fp=BytesIO(content), environ={
+            'CONTENT_LENGTH': length, 'REQUEST_METHOD': 'POST',
+            'CONTENT_TYPE': 'application/octet-stream'})
+        self.assertEqual(fs.headers, {
+            'content-type': 'application/octet-stream',
+            'content-length': length})
+        self.assertEqual(fs.type, 'application/octet-stream')
+        self.assertEqual(fs.length, length)
+        self.assertEqual(fs.bytes_read, length)
+        self.assertEqual(fs.file.read(), text)
+
+    def testPostRequestWithNonUtf8BinaryData(self):
+        # see https://github.com/WebwareForPython/w4py3/issues/14
+        content = b'\xfe\xff\xc0'
+        with self.assertRaises(UnicodeDecodeError):
+            content.decode('utf-8')
+        length = len(content)
+        fs = FieldStorage(fp=BytesIO(content), environ={
+            'CONTENT_LENGTH': length, 'REQUEST_METHOD': 'POST',
+            'CONTENT_TYPE': 'application/octet-stream'})
+        self.assertEqual(fs.headers, {
+            'content-type': 'application/octet-stream',
+            'content-length': length})
+        self.assertEqual(fs.type, 'application/octet-stream')
+        self.assertEqual(fs.length, length)
+        self.assertEqual(fs.bytes_read, length)
+        self.assertEqual(fs.file.read(), content)

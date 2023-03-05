@@ -416,7 +416,6 @@ class FieldStorage:
 
     def read_binary(self):
         """Internal: read binary data."""
-        self.file = self.make_file()
         todo = self.length
         while todo > 0:
             data = self.fp.read(min(todo, self.bufsize))
@@ -428,10 +427,14 @@ class FieldStorage:
             if not data:
                 self.done = -1
                 break
-            if self._binary_file:
-                self.file.write(data)
-            else:  # fix for issue 27777
-                self.file.write(data.decode())
+            if not self._binary_file:
+                # fix for https://github.com/python/cpython/pull/7804
+                try:
+                    data = data.decode()
+                except UnicodeDecodeError:
+                    self._binary_file = True
+            self.file = self.make_file()
+            self.file.write(data)
             todo -= len(data)
 
     def read_lines(self):

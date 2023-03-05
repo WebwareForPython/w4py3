@@ -35,7 +35,7 @@ class HTTPRequest(Request):
             self._requestID = requestDict['requestID']
             # Protect the loading of fields with an exception handler,
             # because bad headers sometimes can break the field storage
-            # (see also https://bugs.python.org/issue27777).
+            # (see also https://github.com/python/cpython/issues/71964).
             try:
                 self._fields = FieldStorage(
                     self._input, environ=self._environ,
@@ -47,7 +47,7 @@ class HTTPRequest(Request):
             if 'HTTP_COOKIE' in self._environ:
                 # If there are duplicate cookies, always use the first one
                 # because it is the most relevant one according to RFC 2965
-                # (workaround for https://bugs.python.org/issue1375011).
+                # (see also https://github.com/python/cpython/issues/42664).
                 # noinspection PyTypeChecker
                 cookies = dict(cookie.split('=', 1) for cookie in reversed(
                     self._environ['HTTP_COOKIE'].split('; ')))
@@ -321,7 +321,7 @@ class HTTPRequest(Request):
 
         This is actually the same as pathInfo().
 
-        For example, http://host/Webware/Context/Servlet?x=1
+        For example, https://host/Webware/Context/Servlet?x=1
         yields '/Context/Servlet'.
         """
         return self._pathInfo
@@ -329,7 +329,7 @@ class HTTPRequest(Request):
     def urlPathDir(self):
         """Same as urlPath, but only gives the directory.
 
-        For example, http://host/Webware/Context/Servlet?x=1
+        For example, https://host/Webware/Context/Servlet?x=1
         yields '/Context'.
         """
         return os.path.dirname(self.urlPath())
@@ -434,7 +434,7 @@ class HTTPRequest(Request):
         then the canonical hostname of the server is used if possible.
 
         The path is returned without any extra path info or query strings,
-        i.e. http://www.my.own.host.com:8080/Webware/TestPage.py
+        i.e. https://www.my.own.host.com:8080/Webware/TestPage.py
         """
         if canonical and 'SCRIPT_URI' in self._environ:
             return self._environ['SCRIPT_URI']
@@ -801,7 +801,8 @@ class HTTPRequest(Request):
         ]
         for method in _infoMethods:
             try:
-                info.append((method.__name__, method(self)))
+                # noinspection PyArgumentList
+                info.append((method.__name__, method(self),))
             except Exception:
                 info.append((method.__name__, None))
         return info
