@@ -13,7 +13,7 @@ columns, where each row in the table can be thought of as a record::
     John   893-5901
 
 This data often comes from delimited text files which typically
-have well defined columns or fields with several rows each of which can
+have well-defined columns or fields with several rows each of which can
 be thought of as a record.
 
 Using a DataTable can be as easy as using lists and dictionaries::
@@ -202,6 +202,7 @@ import sys
 
 from datetime import date, datetime, time, timedelta, tzinfo
 from decimal import Decimal
+from time import sleep
 from warnings import warn
 
 from MiscUtils import NoDefault
@@ -249,8 +250,8 @@ _blankValues = {
 
 def canReadExcel():
     try:
-        from win32com.client import Dispatch  # pylint: disable=import-error
-        Dispatch("Excel.Application")
+        from win32com import client  # pylint: disable=import-error
+        client.gencache.EnsureDispatch("Excel.Application")
     except Exception:
         return False
     return True
@@ -440,9 +441,19 @@ class DataTable:
     def readExcel(self, worksheet=1, row=1, column=1):
         maxBlankRows = 10
         numRowsToReadPerCall = 20
-        from win32com.client import Dispatch  # pylint: disable=import-error
-        excel = Dispatch("Excel.Application")
-        workbook = excel.Workbooks.Open(os.path.abspath(self._filename))
+        from win32com import client  # pylint: disable=import-error
+        for _retry in range(40):
+            try:
+                excel = client.gencache.EnsureDispatch("Excel.Application")
+                workbooks = excel.Workbooks
+            except Exception:
+                # Excel may be busy, wait a bit and try again
+                sleep(0.125)
+            else:
+                break
+        else:
+            raise DataTableError('Cannot read Excel sheet')
+        workbook = workbooks.Open(os.path.abspath(self._filename))
         try:
             worksheet = workbook.Worksheets(worksheet)
             worksheet.Cells(row, column)
