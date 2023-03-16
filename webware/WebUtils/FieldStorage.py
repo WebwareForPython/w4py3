@@ -187,6 +187,8 @@ class FieldStorage:
             ctype, pdict = 'application/x-www-form-urlencoded', {}
         self.type = ctype
         self.type_options = pdict
+        if not self._binary_file and isBinaryType(ctype, pdict):
+            self._binary_file = True
         self.innerboundary = pdict['boundary'].encode(
             self.encoding, self.errors) if 'boundary' in pdict else b''
 
@@ -637,3 +639,13 @@ def hasSeparator():
     except TypeError:  # Python < 3.9.2
         return False
     return True
+
+
+def isBinaryType(ctype, pdict=None):
+    """"Check whether the given MIME type uses binary data."""
+    if pdict and pdict.get('charset') == 'binary':
+        return True
+    return not (
+        ctype.startswith('text/') or ctype.endswith(('+json', '+xml')) or
+        (ctype.startswith('application') and
+         ctype.endswith(('/json', '/xml', '/ecmascript', '/javascript'))))

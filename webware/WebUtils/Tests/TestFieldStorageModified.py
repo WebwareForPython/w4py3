@@ -4,7 +4,7 @@ import unittest
 
 from io import BytesIO
 
-from WebUtils.FieldStorage import FieldStorage, hasSeparator
+from WebUtils.FieldStorage import FieldStorage, hasSeparator, isBinaryType
 
 
 class TestFieldStorage(unittest.TestCase):
@@ -206,7 +206,7 @@ class TestFieldStorage(unittest.TestCase):
         self.assertEqual(fs.type, 'application/octet-stream')
         self.assertEqual(fs.length, length)
         self.assertEqual(fs.bytes_read, length)
-        self.assertEqual(fs.file.read(), text)
+        self.assertEqual(fs.file.read(), content)
 
     def testPostRequestWithNonUtf8BinaryData(self):
         # see https://github.com/WebwareForPython/w4py3/issues/14
@@ -224,3 +224,57 @@ class TestFieldStorage(unittest.TestCase):
         self.assertEqual(fs.length, length)
         self.assertEqual(fs.bytes_read, length)
         self.assertEqual(fs.file.read(), content)
+
+    def testPostRequestWithUtf8TextData(self):
+        text = 'The \u2603 by Raymond Briggs'
+        content = text.encode('utf-8')
+        length = len(content)
+        fs = FieldStorage(fp=BytesIO(content), environ={
+            'CONTENT_LENGTH': length, 'REQUEST_METHOD': 'POST',
+            'CONTENT_TYPE': 'text/plain'})
+        self.assertEqual(fs.headers, {
+            'content-type': 'text/plain',
+            'content-length': length})
+        self.assertEqual(fs.type, 'text/plain')
+        self.assertEqual(fs.length, length)
+        self.assertEqual(fs.bytes_read, length)
+        self.assertEqual(fs.file.read(), text)
+
+    def testPostRequestWithNonUtf8TextData(self):
+        # see https://github.com/WebwareForPython/w4py3/issues/14
+        content = b'\xfe\xff\xc0'
+        with self.assertRaises(UnicodeDecodeError):
+            content.decode('utf-8')
+        length = len(content)
+        fs = FieldStorage(fp=BytesIO(content), environ={
+            'CONTENT_LENGTH': length, 'REQUEST_METHOD': 'POST',
+            'CONTENT_TYPE': 'text/plain'})
+        self.assertEqual(fs.headers, {
+            'content-type': 'text/plain',
+            'content-length': length})
+        self.assertEqual(fs.type, 'text/plain')
+        self.assertEqual(fs.length, length)
+        self.assertEqual(fs.bytes_read, length)
+        self.assertEqual(fs.file.read(), content)
+
+    def testIsBinaryType(self):
+        self.assertIs(isBinaryType('application/json'), False)
+        self.assertIs(isBinaryType('application/xml'), False)
+        self.assertIs(isBinaryType('application/calendar+json'), False)
+        self.assertIs(isBinaryType('application/calendar+xml'), False)
+        self.assertIs(isBinaryType('model/x3d+xml'), False)
+        self.assertIs(isBinaryType('text/csv'), False)
+        self.assertIs(isBinaryType('text/html'), False)
+        self.assertIs(isBinaryType('text/plain'), False)
+        self.assertIs(isBinaryType('x3d+xml'), False)
+        self.assertIs(isBinaryType('application/octet-stream'), True)
+        self.assertIs(isBinaryType('application/pdf'), True)
+        self.assertIs(isBinaryType('application/zip'), True)
+        self.assertIs(isBinaryType('audio/ogg'), True)
+        self.assertIs(isBinaryType('font/otf'), True)
+        self.assertIs(isBinaryType('image/png'), True)
+        self.assertIs(isBinaryType('video/mp4'), True)
+        self.assertIs(isBinaryType('application/json',
+                                   {'charset': 'utf8'}), False)
+        self.assertIs(isBinaryType('text/csv',
+                                   {'charset': 'binary'}), True)
