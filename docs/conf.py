@@ -28,7 +28,7 @@ author = 'Christoph Zwerschke et al.'
 # The short X.Y version
 version = '3.0'
 # The full version, including alpha/beta/rc tags
-release = '3.0.7'
+release = '3.0.8'
 
 
 # -- General configuration ---------------------------------------------------
