@@ -435,7 +435,8 @@ class FieldStorage:
                     data = data.decode()
                 except UnicodeDecodeError:
                     self._binary_file = True
-            self.file = self.make_file()
+            if self.file is None:
+                self.file = self.make_file()
             self.file.write(data)
             todo -= len(data)
 

@@ -257,6 +257,86 @@ class TestFieldStorage(unittest.TestCase):
         self.assertEqual(fs.bytes_read, length)
         self.assertEqual(fs.file.read(), content)
 
+    def testPostRequestWithSmallPayloadWithContentLength(self):
+        length = 1000  # much smaller than buffer size
+        payload = 'x' * length
+        fs = FieldStorage(
+            fp=BytesIO(payload.encode()),
+            environ={'REQUEST_METHOD': 'POST',
+                     'CONTENT_TYPE': 'text/plain',
+                     'CONTENT_LENGTH': length})
+        self.assertEqual(fs.headers, {
+            'content-type': 'text/plain',
+            'content-length': length})
+        self.assertEqual(fs.type, 'text/plain')
+        self.assertEqual(fs.length, length)
+        self.assertEqual(fs.bytes_read, length)
+        self.assertEqual(fs.file.read(), payload)
+
+    def testPostRequestWithLargeTextPayloadWithContentLength(self):
+        length = 25000  # much larger than buffer size
+        payload = 'x' * length
+        fs = FieldStorage(
+            fp=BytesIO(payload.encode()),
+            environ={'REQUEST_METHOD': 'POST',
+                     'CONTENT_TYPE': 'text/plain',
+                     'CONTENT_LENGTH': length})
+        self.assertEqual(fs.headers, {
+            'content-type': 'text/plain',
+            'content-length': length})
+        self.assertEqual(fs.type, 'text/plain')
+        self.assertEqual(fs.length, length)
+        self.assertEqual(fs.bytes_read, length)
+        self.assertEqual(fs.file.read(), payload)
+
+    def testPostRequestWithLargeJsonPayloadWithContentLength(self):
+        # create JSON payload that is much larger than the buffer size
+        payload = {f'test{i}': str(i) * 5000 for i in range(5)}
+        payload = str(payload).replace("'", '"')
+        length = len(payload)
+        self.assertGreater(length, 25000)
+        fs = FieldStorage(
+            fp=BytesIO(payload.encode()),
+            environ={'REQUEST_METHOD': 'POST',
+                     'CONTENT_TYPE': 'application/json',
+                     'CONTENT_LENGTH': length})
+        self.assertEqual(fs.headers, {
+            'content-type': 'application/json',
+            'content-length': length})
+        self.assertEqual(fs.type, 'application/json')
+        self.assertEqual(fs.length, length)
+        self.assertEqual(fs.bytes_read, length)
+        # make sure that the original payload is preserved
+        self.assertEqual(fs.file.read(), payload)
+
+    def testPostRequestWithSmallPayloadWithoutContentLength(self):
+        length = 1000  # much smaller than buffer size
+        payload = 'x' * length
+        fs = FieldStorage(
+            fp=BytesIO(payload.encode()),
+            environ={'REQUEST_METHOD': 'POST',
+                     'CONTENT_TYPE': 'text/plain'})
+        self.assertEqual(fs.headers, {
+            'content-type': 'text/plain'})
+        self.assertEqual(fs.type, 'text/plain')
+        self.assertEqual(fs.length, -1)
+        self.assertEqual(fs.bytes_read, length)
+        self.assertEqual(fs.file.read(), payload)
+
+    def testPostRequestWithLargePayloadWithoutContentLength(self):
+        length = 25000  # much larger than buffer size
+        payload = 'x' * length
+        fs = FieldStorage(
+            fp=BytesIO(payload.encode()),
+            environ={'REQUEST_METHOD': 'POST',
+                     'CONTENT_TYPE': 'text/plain'})
+        self.assertEqual(fs.headers, {
+            'content-type': 'text/plain'})
+        self.assertEqual(fs.type, 'text/plain')
+        self.assertEqual(fs.length, -1)
+        self.assertEqual(fs.bytes_read, length)
+        self.assertEqual(fs.file.read(), payload)
+
     def testIsBinaryType(self):
         self.assertIs(isBinaryType('application/json'), False)
         self.assertIs(isBinaryType('application/xml'), False)
