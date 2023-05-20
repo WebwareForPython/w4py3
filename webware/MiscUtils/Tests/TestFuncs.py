@@ -93,7 +93,7 @@ from a mandate from the masses, not from some farcical aquatic ceremony!"'''
 
         def assertLocal(ip):
             self.assertTrue(
-                ip == thisIp or ip.startswith(('127.', '192.168.'))
+                ip == thisIp or ip.startswith(('127.', '169.254', '192.168.'))
                 or '172.16.' <= ip <= '172.31.')
 
         assertLocal(localIP(remote=None, useCache=None))
