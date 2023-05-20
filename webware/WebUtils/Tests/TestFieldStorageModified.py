@@ -257,6 +257,46 @@ class TestFieldStorage(unittest.TestCase):
         self.assertEqual(fs.bytes_read, length)
         self.assertEqual(fs.file.read(), content)
 
+    def testPostRequestWithTextDataAndQueryParams(self):
+        text = 'The \u2603 by Raymond Briggs'
+        content = text.encode('utf-8')
+        length = len(content)
+        fs = FieldStorage(fp=BytesIO(content), environ={
+            'CONTENT_LENGTH': length, 'REQUEST_METHOD': 'POST',
+            'CONTENT_TYPE': 'text/plain',
+            'QUERY_STRING': 'a=1&b=2&b=2'})
+        self.assertEqual(fs.headers, {
+            'content-type': 'text/plain',
+            'content-length': length})
+        self.assertEqual(fs.type, 'text/plain')
+        self.assertEqual(fs.length, length)
+        self.assertEqual(fs.bytes_read, length)
+        self.assertEqual(fs.file.read(), text)
+        self.assertEqual(fs.getfirst('a'), '1')
+        self.assertEqual(fs.getfirst('b'), '2')
+        self.assertEqual(fs.getlist('a'), ['1'])
+        self.assertEqual(fs.getlist('b'), ['2', '2'])
+
+    def testPostRequestWithBinaryDataAndQueryParams(self):
+        content = b'\xfe\xff\xc0'
+        length = len(content)
+        fs = FieldStorage(fp=BytesIO(content), environ={
+            'REQUEST_METHOD': 'POST',
+            'CONTENT_LENGTH': length,
+            'CONTENT_TYPE': 'application/octet-stream',
+            'QUERY_STRING': 'a=1&b=2&b=2'})
+        self.assertEqual(fs.headers, {
+            'content-type': 'application/octet-stream',
+            'content-length': length})
+        self.assertEqual(fs.type, 'application/octet-stream')
+        self.assertEqual(fs.length, length)
+        self.assertEqual(fs.bytes_read, length)
+        self.assertEqual(fs.file.read(), content)
+        self.assertEqual(fs.getfirst('a'), '1')
+        self.assertEqual(fs.getfirst('b'), '2')
+        self.assertEqual(fs.getlist('a'), ['1'])
+        self.assertEqual(fs.getlist('b'), ['2', '2'])
+
     def testPostRequestWithSmallPayloadWithContentLength(self):
         length = 1000  # much smaller than buffer size
         payload = 'x' * length

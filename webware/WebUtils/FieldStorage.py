@@ -413,6 +413,18 @@ class FieldStorage:
         else:
             self.read_lines()
         self.file.seek(0)
+        # contrary to the standard library, we also parse the query string
+        if self.qs_on_post:
+            kwargs = {
+                'keep_blank_values': self.keep_blank_values,
+                'strict_parsing': self.strict_parsing,
+                'encoding': self.encoding, 'errors': self.errors}
+            if self.max_num_fields is not None:  # Python >= 3.8
+                kwargs['max_num_fields'] = self.max_num_fields
+            if self.separator != '&':  # Python >= 3.9.2
+                kwargs['separator'] = self.separator
+            query = parse_qsl(self.qs_on_post, **kwargs)
+            self.list = [MiniFieldStorage(key, value) for key, value in query]
 
     bufsize = 8 * 1024
 
