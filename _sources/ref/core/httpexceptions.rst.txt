@@ -1,0 +1,4 @@
+HTTPExceptions
+--------------
+
+.. automodule:: HTTPExceptions

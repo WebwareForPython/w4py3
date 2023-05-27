@@ -1,0 +1,4 @@
+Scheduler
+---------
+
+.. automodule:: TaskKit.Scheduler

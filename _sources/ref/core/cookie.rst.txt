@@ -1,0 +1,4 @@
+Cookie
+------
+
+.. automodule:: Cookie

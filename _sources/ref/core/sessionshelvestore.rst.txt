@@ -1,0 +1,4 @@
+SessionShelveStore
+------------------
+
+.. automodule:: SessionShelveStore

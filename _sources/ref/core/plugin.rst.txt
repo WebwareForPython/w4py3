@@ -1,0 +1,4 @@
+PlugIn
+------
+
+.. automodule:: PlugIn

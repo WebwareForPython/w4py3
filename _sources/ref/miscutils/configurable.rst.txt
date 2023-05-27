@@ -1,0 +1,4 @@
+Configurable
+------------
+
+.. automodule:: MiscUtils.Configurable

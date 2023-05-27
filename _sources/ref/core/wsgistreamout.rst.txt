@@ -1,0 +1,4 @@
+WSGIStreamOut
+-------------
+
+.. automodule:: WSGIStreamOut

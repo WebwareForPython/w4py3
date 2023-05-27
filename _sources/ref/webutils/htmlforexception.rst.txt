@@ -1,0 +1,4 @@
+HTMLForException
+----------------
+
+.. automodule:: WebUtils.HTMLForException

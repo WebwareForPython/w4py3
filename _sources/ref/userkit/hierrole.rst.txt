@@ -1,0 +1,4 @@
+HierRole
+--------
+
+.. automodule:: UserKit.HierRole

@@ -1,0 +1,4 @@
+PickleCache
+-----------
+
+.. automodule:: MiscUtils.PickleCache

@@ -1,0 +1,4 @@
+DateInterval
+------------
+
+.. automodule:: MiscUtils.DateInterval

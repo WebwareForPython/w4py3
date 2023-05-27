@@ -1,0 +1,4 @@
+ImportManager
+-------------
+
+.. automodule:: ImportManager
