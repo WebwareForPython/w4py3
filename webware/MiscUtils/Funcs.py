@@ -278,10 +278,7 @@ def timestamp(t=None):
 
 def localTimeDelta(t=None):
     """Return timedelta of local zone from GMT."""
-    if t is None:
-        t = time.time()
-    dt = datetime.datetime
-    return dt.fromtimestamp(t) - dt.utcfromtimestamp(t)
+    return datetime.timedelta(seconds=time.localtime(t).tm_gmtoff)
 
 
 def uniqueId(forObject=None):
