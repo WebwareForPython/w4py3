@@ -37,8 +37,7 @@ def breaker():
 
 def html(context=5, options=None):
     if options:
-        opt = DefaultOptions.copy()
-        opt.update(options)
+        opt = DefaultOptions | options
     else:
         opt = DefaultOptions
 

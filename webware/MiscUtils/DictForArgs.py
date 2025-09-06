@@ -193,11 +193,10 @@ def expandDictWithExtras(d, key='Extras',
     to specify attributes that occur infrequently.
     """
     if key in d:
-        newDict = dict(d)
+        baseDict = dict(d)
         if delKey:
-            del newDict[key]
-        newDict.update(dictForArgs(d[key]))
-        return newDict
+            del baseDict[key]
+        return baseDict | dictForArgs(d[key])
     return d
 
 

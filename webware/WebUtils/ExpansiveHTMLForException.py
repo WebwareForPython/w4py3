@@ -17,8 +17,7 @@ HTMLForExceptionOptions = {
 def expansiveHTMLForException(context=5, options=None):
     """Create expansive HTML for exceptions."""
     if options:
-        opt = HTMLForExceptionOptions.copy()
-        opt.update(options)
+        opt = HTMLForExceptionOptions | options
     else:
         opt = HTMLForExceptionOptions
     return CGITraceback.html(context=context, options=opt)

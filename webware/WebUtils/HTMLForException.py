@@ -29,8 +29,7 @@ def htmlForLines(lines, options=None):
 
     # Set up the options:
     if options:
-        opt = HTMLForExceptionOptions.copy()
-        opt.update(options)
+        opt = HTMLForExceptionOptions | options
     else:
         opt = HTMLForExceptionOptions
 
