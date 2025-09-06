@@ -47,16 +47,17 @@ class ServletWriter:
         self._indent = '\t' if self._useTabs else self._indentSpaces
 
     def setIndentType(self, indentType):
-        if indentType == 'tabs':
-            self._useTabs = True
-            self.setIndention()
-        elif indentType == 'spaces':
-            self._useTabs = False
-            self.setIndention()
-        elif indentType == 'braces':
-            self._useTabs = False
-            self._useBraces = True
-            self.setIndention()
+        match indentType:
+            case 'tabs':
+                self._useTabs = True
+                self.setIndention()
+            case 'spaces':
+                self._useTabs = False
+                self.setIndention()
+            case 'braces':
+                self._useTabs = False
+                self._useBraces = True
+                self.setIndention()
 
     def close(self):
         pyCode = self._file.getvalue()

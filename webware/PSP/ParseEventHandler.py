@@ -190,21 +190,22 @@ class ParseEventHandler:
         """Flush any template data and create a new DirectiveGenerator."""
         self._parser.flushCharData(self.tmplStart, self.tmplStop)
         # big switch
-        if directive == 'page':
-            for h in attrs:
-                if h in self.directiveHandlers:
-                    self.directiveHandlers[h](self, attrs[h], start, stop)
-                else:
-                    raise ValueError(f'No page directive handler: {h}')
-        elif directive == 'include':
-            filename = attrs['file']
-            encoding = attrs.get('encoding')
-            try:
-                self._reader.pushFile(filename, encoding)
-            except IOError as e:
-                raise IOError(f'PSP include file not found: {filename}') from e
-        else:
-            raise ValueError('Invalid directive: {directive}')
+        match directive:
+            case 'page':
+                for h in attrs:
+                    if h in self.directiveHandlers:
+                        self.directiveHandlers[h](self, attrs[h], start, stop)
+                    else:
+                        raise ValueError(f'No page directive handler: {h}')
+            case 'include':
+                filename = attrs['file']
+                encoding = attrs.get('encoding')
+                try:
+                    self._reader.pushFile(filename, encoding)
+                except IOError as e:
+                    raise IOError(f'PSP include file not found: {filename}') from e
+            case _:
+                raise ValueError('Invalid directive: {directive}')
 
     def handleScript(self, start, stop, attrs):
         """Handle scripting elements"""

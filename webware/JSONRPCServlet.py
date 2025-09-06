@@ -83,12 +83,13 @@ class JSONRPCServlet(HTTPContent):
                 try:
                     if self._debug:
                         self.log(f"json call {call}(call)")
-                    if isinstance(params, list):
-                        result = method(*params)
-                    elif isinstance(params, dict):
-                        result = method(**params)
-                    else:
-                        result = method()
+                    match params:
+                        case list():
+                            result = method(*params)
+                        case dict():
+                            result = method(**params)
+                        case _:
+                            result = method()
                     self.writeResult(result)
                 except Exception:
                     err = StringIO()

@@ -60,24 +60,25 @@ class BraceConverter:
                 self.line = self.line[match.end(1):]
             else:
                 c = self.line[0]
-                if c == "'":
-                    self.handleQuote("'", writer)
-                    self.skipQuote(writer)
-                elif c == '"':
-                    self.handleQuote('"', writer)
-                    self.skipQuote(writer)
-                elif c == '{':
-                    self.openBrace(writer)
-                elif c == '}':
-                    self.closeBrace(writer)
-                elif c == ':':
-                    self.openBlock(writer)
-                elif c == '#':
-                    writer.printChars(self.line)
-                    self.line = ''
-                else:
-                    # should never get here
-                    raise ValueError(f'Invalid character: {c!r}')
+                match c:
+                    case "'":
+                        self.handleQuote("'", writer)
+                        self.skipQuote(writer)
+                    case '"':
+                        self.handleQuote('"', writer)
+                        self.skipQuote(writer)
+                    case '{':
+                        self.openBrace(writer)
+                    case '}':
+                        self.closeBrace(writer)
+                    case ':':
+                        self.openBlock(writer)
+                    case '#':
+                        writer.printChars(self.line)
+                        self.line = ''
+                    case _:
+                        # should never get here
+                        raise ValueError(f'Invalid character: {c!r}')
         writer.printChars('\n')
 
     def openBlock(self, writer):

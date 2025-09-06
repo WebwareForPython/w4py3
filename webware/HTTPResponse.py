@@ -123,16 +123,17 @@ class HTTPResponse(Response):
         cookie = Cookie(name, value)
         t = expires
         if isinstance(t, str):
-            if t == 'ONCLOSE':
-                t = None
-            elif t == 'NOW':
-                cookie.delete()
-                return
-            elif t == 'NEVER':
-                t = gmtime()
-                t = (t[0] + 10,) + t[1:]
-            elif t.startswith('+'):
-                t = time() + timeDecode(t[1:])
+            match t:
+                case 'ONCLOSE':
+                    t = None
+                case 'NOW':
+                    cookie.delete()
+                    return
+                case 'NEVER':
+                    t = gmtime()
+                    t = (t[0] + 10,) + t[1:]
+                case _ if t.startswith('+'):
+                    t = time() + timeDecode(t[1:])
         if t:
             if isinstance(t, int | float):
                 t = gmtime(t)

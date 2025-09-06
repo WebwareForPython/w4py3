@@ -28,10 +28,11 @@ def main(args=None):
     args = parser.parse_args(args)
     command = args.command
     del args.command
-    if command == 'make':
-        make(args)
-    elif command == 'serve':
-        serve(args)
+    match command:
+        case 'make':
+            make(args)
+        case 'serve':
+            serve(args)
 
 
 if __name__ == '__main__':

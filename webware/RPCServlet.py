@@ -35,15 +35,15 @@ class RPCServlet(HTTPServlet):
         """
         # report exception back to server
         setting = trans.application().setting('RPCExceptionReturn')
-        if setting == 'occurred':
-            result = 'unhandled exception'
-        elif setting == 'exception':
-            result = str(e)
-        elif setting == 'traceback':
-            result = ''.join(traceback.format_exception(*sys.exc_info()))
-        else:
-            raise ValueError(f'Invalid setting: {setting!r}')
-        return result
+        match setting:
+            case 'occurred':
+                return 'unhandled exception'
+            case 'exception':
+                return str(e)
+            case 'traceback':
+                return ''.join(traceback.format_exception(*sys.exc_info()))
+            case _:
+                raise ValueError(f'Invalid setting: {setting!r}')
 
     @staticmethod
     def sendOK(contentType, contents, trans, contentEncoding=None):

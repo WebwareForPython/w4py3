@@ -579,10 +579,12 @@ class DataTable:
         """
         if not headings:
             self._headings = []
-        elif isinstance(headings[0], str):
-            self._headings = list(map(TableColumn, headings))
-        elif isinstance(headings[0], TableColumn):
-            self._headings = list(headings)
+        else:
+            match headings[0]:
+                case str():
+                    self._headings = list(map(TableColumn, headings))
+                case TableColumn():
+                    self._headings = list(headings)
         for heading in self._headings:
             if heading.type() is None:
                 heading.setType(self._defaultType)

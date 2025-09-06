@@ -117,16 +117,17 @@ class PSPParser:
         reader.advance(len(match))
         # parse the directive attr:val pair dictionary
         attrs = reader.parseTagAttributes()
-        if match == 'page':
-            checkAttributes('Page directive', attrs, ([], {
-                'imports', 'extends', 'method',
-                'isThreadSafe', 'isInstanceSafe',
-                'indentType', 'indentSpaces',
-                'gobbleWhitespace', 'formatter'}))
-        elif match == 'include':
-            checkAttributes('Include directive', attrs, (['file'], []))
-        else:
-            raise PSPParserException(f'{match} directive not implemented')
+        match match:
+            case 'page':
+                checkAttributes('Page directive', attrs, ([], {
+                    'imports', 'extends', 'method',
+                    'isThreadSafe', 'isInstanceSafe',
+                    'indentType', 'indentSpaces',
+                    'gobbleWhitespace', 'formatter'}))
+            case 'include':
+                checkAttributes('Include directive', attrs, (['file'], []))
+            case _:
+                raise PSPParserException(f'{match} directive not implemented')
         reader.skipSpaces()  # skip to where we expect a close tag
         if reader.matches('%>'):
             reader.advance(2)  # advance past it
