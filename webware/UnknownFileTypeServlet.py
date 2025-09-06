@@ -196,8 +196,8 @@ class UnknownFileTypeServlet(HTTPServlet, Configurable):
             fileSize, mtime = stat[6], stat[8]
             if debug:
                 print('>> UnknownFileType.serveContent()')
-                print('>> filename =', filename)
-                print('>> size=', fileSize)
+                print(f'>> {filename=}')
+                print(f'>> {fileSize=}')
             if (fileDict := fileCache.get(filename)) is not None and mtime != fileDict['mtime']:
                 # Cache is out of date; clear it.
                 if debug:
