@@ -800,7 +800,7 @@ class TableRecord:
         return self._values[index]
 
     def has_key(self, key):
-        warn("has_key is deprecated, please us 'in' instead.",
+        warn("has_key is deprecated, use 'in' instead.",
              DeprecationWarning, stacklevel=2)
         return key in self
 
