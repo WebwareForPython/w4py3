@@ -1,4 +1,4 @@
-import pkg_resources
+from importlib.metadata import entry_points
 
 from PlugIn import PlugIn
 
@@ -46,7 +46,7 @@ class PlugInLoader:
 
         entryPoints = {
             entry_point.name: entry_point for entry_point
-            in pkg_resources.iter_entry_points('webware.plugins')}
+            in entry_points(group='webware.plugins')}
 
         plugIns = {}
         for name in plugInNames:

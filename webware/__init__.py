@@ -1,5 +1,9 @@
 """Webware for Python"""
 
+from .Properties import version as versionTuple
+
+__version__ =  '.'.join(map(str, versionTuple))
+
 
 def addToSearchPath():
     """Add the Webware package to the search path for Python modules."""

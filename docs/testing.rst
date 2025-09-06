@@ -11,7 +11,7 @@ Testing Webware itself
 
 The unit tests and end to end tests for Webware for Python can be found in the ``Tests`` subdirectories of the root ``webware`` package and its plug-ins. Webware also has a built-in context ``Testing`` that contains some special servlets for testing various functionality of Webware, which can be invoked manually, but will also be tested automatically as part of the end-to-end tests.
 
-Before running the test suite, install Webware for Python into a virtual environment and activate that environment. While developing and testing Webware, it is recommended to install Webware in editable mode. To do this, unpack the source installation package of Webware for Python 3, and run this command in the directory containing the ``setup.py`` file::
+Before running the test suite, install Webware for Python into a virtual environment and activate that environment. While developing and testing Webware, it is recommended to install Webware in editable mode. To do this, unpack the source installation package of Webware for Python 3, and run this command in the directory containing the ``pyproject.toml`` file::
 
     pip install -e .[tests]
 

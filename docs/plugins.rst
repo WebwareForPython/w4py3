@@ -9,7 +9,7 @@ In Webware for Python 3, plug-ins are implemented as packages with metadata ("en
 
 Every Webware plug-in is a Python package, i.e. a directory that contains a ``__init__.py`` file and optionally other files. As a Webware plugin, it must also contain a special ``Properties.py`` file. You can disable a specific plug-in by placing a ``dontload`` file in its package directory.
 
-If you want to distribute a Webware plug-in, you should advertize it as an entry point using the ``webware.plugins`` identifier in the ``setup.py`` file used to install the plug-in.
+If you want to distribute a Webware plug-in, you should advertize it as an entry point using the ``webware.plugins`` identifier in the ``pyproject.toml`` file used to install the plug-in.
 
 The ``__init.py__`` file of the plug-in must contain at least a function like this::
 

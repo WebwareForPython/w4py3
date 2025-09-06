@@ -53,22 +53,24 @@ When installing Webware for Python 3, the following "extras" can optionally be i
 
 * "dev": extras for developing Webware applications
 * "examples": extras for running all Webware examples
-* "test": extras needed to test all functions of Webware
+* "tests": extras needed to test all functions of Webware
 * "docs": extras needed to build this documentation
 
-On your development machine, we recommend installing the full "test" environment which also includes the other two environments. To do that, you need to specify the "Extras" name in square brackets when installing Webware for Python 3::
+On your development machine, we recommend installing the full "tests" environment which also includes the other two environments. To do that, you need to specify the "Extras" name in square brackets when installing Webware for Python 3::
 
-    pip install "Webware-for-Python[dev]>=3"
+    pip install "Webware-for-Python[tests]>=3"
 
 
 Installation from Source
 ------------------------
 
-Alternatively, you can also download_ Webware for Python 3 from PyPI, and run the ``setup.py`` command in the tar.gz archive like this::
+Alternatively, you can also download_ Webware for Python 3 from PyPI, and run::
 
-    setup.py install
+    python -m pip install .
 
-You will then have to also install the "extra" requirements manually, though. Have a look at the setup.py file to see the list of required packages.
+Or, to create an editable installation with the extras for testing::
+
+    python -m pip install -e .[tests]
 
 .. _download: https://pypi.org/project/Webware-for-Python/
 

@@ -25,7 +25,7 @@ jobs:
     - name: Lint with flake8
       if: matrix.python-version == '3.11'
       run: |
-        flake8 webware setup.py --count --exit-zero --statistics
+        flake8 webware --count --exit-zero --statistics
     - name: Lint with pylint
       if: matrix.python-version == '3.11'
       run: |

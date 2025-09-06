@@ -206,8 +206,8 @@ class TestServer(unittest.TestCase):
         self.compareOutput(self.output, expectedOutput)
         startLine = f'Webware for Python {self.version} Application'
         self.assertEqual(self.output[0], startLine)
-        self.assertTrue(not any(
-            'ERROR' in line or 'WARNING' in line for line in self.output))
+        self.assertFalse(
+            any('ERROR' in line or 'WARNING' in line for line in self.output))
 
     def testStartPage(self):
         self.assertTrue(self.running)
