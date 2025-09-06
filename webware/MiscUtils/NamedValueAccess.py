@@ -77,7 +77,8 @@ def valueForKey(obj, key, default=NoDefault):
             underKey = '_' + key
             if not (method := getattr(cls, underKey, None) if cls else None):
                 if (attr := getattr(obj, key, NoDefault)) is NoDefault:
-                    if (attr := getattr(obj, underKey, NoDefault)) is NoDefault and cls is not None:
+                    if ((attr := getattr(obj, underKey, NoDefault))
+                            is NoDefault and cls is not None):
                         if getitem := getattr(cls, '__getitem__', None):
                             try:
                                 getitem(obj, key)

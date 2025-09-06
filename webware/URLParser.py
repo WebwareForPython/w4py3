@@ -644,7 +644,8 @@ class _FileParser(URLParser):
                 redirectTo = mod.urlRedirect['']
             else:
                 redirectTo = None
-            if redirectTo := (mod.urlRedirect.get(nextPart) or mod.urlRedirect.get('')):
+            if redirectTo := (mod.urlRedirect.get(nextPart) or
+                              mod.urlRedirect.get('')):
                 if isinstance(redirectTo, str):
                     fp = FileParser(os.path.join(self._path, redirectTo))
                 else:

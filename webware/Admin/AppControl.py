@@ -24,11 +24,12 @@ class AppControl(AdminSecurity):
                 wr('<tr><td></td><td>')
                 for n in sorted(sys.modules):
                     m = sys.modules[n]
-                    if (not n.endswith('__init__') and not hasattr(m, '__path__')
+                    if (not n.endswith('__init__')
+                            and not hasattr(m, '__path__')
                             and not hasattr(m, '__orig_file__')):
                         # show only the easily reloadable modules
-                        wr(f'<input type="checkbox" name="reloads" value="{n}">'
-                           f' {n}<br>')
+                        wr(f'<input type="checkbox" name="reloads"'
+                           f' value="{n}"> {n}<br>')
                 wr('</td></tr>\n</table>\n</form>')
 
             case "Clear cache":

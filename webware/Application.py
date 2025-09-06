@@ -14,6 +14,7 @@ to the Application object itself.
 """
 
 import atexit
+import importlib
 import os
 import signal
 import sys
@@ -295,12 +296,12 @@ class Application(ConfigurableForServerSidePath):
         moduleName = setting('SessionModule')
         className = moduleName.rpartition('.')[2]
         try:
-            exec(f'from {moduleName} import {className}')
-            cls = locals()[className]
+            module = importlib.import_module(moduleName)
+            cls = getattr(module, className)
             if not isinstance(cls, type):
                 raise ImportError
             self._sessionClass = cls
-        except ImportError:
+        except (ImportError, AttributeError):
             print(f"ERROR: Could not import Session class '{className}'"
                   f" from module '{moduleName}'")
             self._sessionClass = None
@@ -310,8 +311,8 @@ class Application(ConfigurableForServerSidePath):
             moduleName = f'Session{moduleName}Store'
         className = moduleName.rpartition('.')[2]
         try:
-            exec(f'from {moduleName} import {className}')
-            cls = locals()[className]
+            module = importlib.import_module(moduleName)
+            cls = getattr(module, className)
             if not isinstance(cls, type):
                 raise ImportError
             self._sessions = cls(self)

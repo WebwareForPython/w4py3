@@ -203,7 +203,8 @@ class ParseEventHandler:
                 try:
                     self._reader.pushFile(filename, encoding)
                 except IOError as e:
-                    raise IOError(f'PSP include file not found: {filename}') from e
+                    raise IOError(
+                        f'PSP include file not found: {filename}') from e
             case _:
                 raise ValueError('Invalid directive: {directive}')
 

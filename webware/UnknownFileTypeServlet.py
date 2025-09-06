@@ -198,7 +198,8 @@ class UnknownFileTypeServlet(HTTPServlet, Configurable):
                 print('>> UnknownFileType.serveContent()')
                 print(f'>> {filename=}')
                 print(f'>> {fileSize=}')
-            if (fileDict := fileCache.get(filename)) is not None and mtime != fileDict['mtime']:
+            if ((fileDict := fileCache.get(filename)) is not None
+                    and mtime != fileDict['mtime']):
                 # Cache is out of date; clear it.
                 if debug:
                     print('>> changed, clearing cache')
@@ -239,7 +240,8 @@ class UnknownFileTypeServlet(HTTPServlet, Configurable):
                     print('>> sending directly')
                 numBytesSent = 0
                 while numBytesSent < fileSize:
-                    if not (data := f.read(min(fileSize-numBytesSent, readBufferSize))):
+                    if not (data := f.read(
+                            min(fileSize-numBytesSent, readBufferSize))):
                         break  # unlikely, but safety first
                     response.write(data)
                     numBytesSent += len(data)

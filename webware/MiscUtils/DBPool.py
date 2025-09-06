@@ -128,6 +128,20 @@ class DBPool:
         for _count in range(maxconnections):
             self.addConnection(dbapi.connect(*args, **kwargs))
 
+    def close(self):
+        """Close all connections in the pool."""
+        try:
+            queue = self._queue
+        except AttributeError:
+            connections = self._connections
+            while connections:
+                con = connections.pop()
+                con.close()
+        else:
+            while not queue.empty():
+                con = queue.get_nowait()
+                con.close()
+
     # The following functions are used with DB-API 2 modules
     # that do not have connection level threadsafety, like PyGreSQL.
     # However, the module must be threadsafe at the module level.
