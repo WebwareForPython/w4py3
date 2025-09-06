@@ -47,10 +47,7 @@ import os
 import sys
 from time import sleep
 from pprint import pprint
-try:
-    from pickle import load, dump, HIGHEST_PROTOCOL as maxPickleProtocol
-except ImportError:
-    from pickle import load, dump, HIGHEST_PROTOCOL as maxPickleProtocol
+from pickle import load, dump, HIGHEST_PROTOCOL as maxPickleProtocol
 
 verbose = False
 

@@ -18,7 +18,7 @@ def quoteJs(what):
     """Return quoted JavaScript string corresponding to the Python object."""
     if isinstance(what, bool):
         ret = str(what).lower()
-    elif isinstance(what, (int, float, PyJs)):
+    elif isinstance(what, int | float | PyJs):
         ret = str(what)
     else:
         ret = "'{}'".format(str(what).replace('\\', '\\\\').replace(

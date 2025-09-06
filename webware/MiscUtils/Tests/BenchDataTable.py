@@ -3,10 +3,7 @@
 import sys
 import time
 from glob import glob
-try:
-    from cProfile import Profile
-except ImportError:
-    from profile import Profile
+from cProfile import Profile
 
 from MiscUtils.DataTable import DataTable
 

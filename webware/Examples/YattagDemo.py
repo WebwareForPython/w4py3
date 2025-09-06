@@ -63,9 +63,8 @@ class YattagDemo(ExamplePage):
             with tag('p', klass='success'):
                 text('Congratulations! You have sent the following message:')
             with tag('div', klass='output'):
-                with tag('p'):
-                    with tag('strong'):
-                        text(subject)
+                with tag('p'), tag('strong'):
+                    text(subject)
                 with tag('p'):
                     text(message)
             with tag('a', href='YattagDemo'):

@@ -144,7 +144,7 @@ class HTMLTag:
 
         The child will be another tag or a string (CDATA).
         """
-        if not isinstance(child, (str, HTMLTag)):
+        if not isinstance(child, str | HTMLTag):
             raise HTMLTagError(f'Invalid child: {child!r}')
         self._children.append(child)
         if isinstance(child, HTMLTag):

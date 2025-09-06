@@ -85,7 +85,7 @@ def MixIn(pyClass, mixInClass, makeAncestor=False, mixInSuperMethods=False):
                     continue  # built in or descriptor
             else:
                 member = getattr(mixInClass, name)
-            if isinstance(member, (FunctionType, MethodType)):
+            if isinstance(member, FunctionType | MethodType):
                 if mixInSuperMethods:
                     if hasattr(pyClass, name):
                         origMember = getattr(pyClass, name)

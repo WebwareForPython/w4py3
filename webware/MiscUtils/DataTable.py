@@ -702,7 +702,7 @@ class TableRecord:
         self._headings = table.headings() if headings is None else headings
         self._nameToIndexMap = table.nameToIndexMap()
         if values is not None:
-            if isinstance(values, (list, tuple)):
+            if isinstance(values, list | tuple):
                 self.initFromSequence(values)
             elif isinstance(values, dict):
                 self.initFromDict(values)

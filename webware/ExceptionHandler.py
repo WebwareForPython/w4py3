@@ -506,7 +506,7 @@ class ExceptionHandler:
         headers['Subject'] = '{} {}: {}'.format(
             headers.get('Subject', '[Webware Error]'), *sys.exc_info()[:2])
         for header, value in headers.items():
-            if isinstance(value, (list, tuple)):
+            if isinstance(value, list | tuple):
                 value = ','.join(value)
             message.add_header(header, value)
 

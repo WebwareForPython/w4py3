@@ -126,32 +126,32 @@ def html(context=5, options=None):
         names = []
         dotted = [0, []]
 
-        def tokeneater():
-            if type_ == tokenize.OP and token == '.':
-                dotted[0] = 1
-            if type_ == tokenize.NAME and token not in keyword.kwlist:
-                if dotted[0]:
-                    dotted[0] = 0
-                    dotted[1].append(token)
-                    if token not in names:
-                        names.append(dotted[1][:])
-                elif token not in names:
-                    if token != 'self':
-                        names.append(token)
-                    dotted[1] = [token]
-            if type_ == tokenize.NEWLINE:
-                raise IndexError
-
         def linereader():
             nonlocal lineno
-            line = linecache.getline(filename, lineno)
-            line = line.encode('utf-8')
+            line = linecache.getline(filename, lineno).encode('utf-8')
             lineno += 1
             return line
 
+        def tokeneater(type_, token):
+            match (type_, token):
+                case (tokenize.OP, '.'):
+                    dotted[0] = 1
+                case (tokenize.NAME, token) if token not in keyword.kwlist:
+                    if dotted[0]:
+                        dotted[0] = 0
+                        dotted[1].append(token)
+                        if token not in names:
+                            names.append(dotted[1][:])
+                    elif token not in names:
+                        if token != 'self':
+                            names.append(token)
+                        dotted[1] = [token]
+                case (tokenize.NEWLINE, _):
+                    raise IndexError
+
         for type_, token, _start, _end, _line in tokenize.tokenize(linereader):
             try:
-                tokeneater()
+                tokeneater(type_, token)
             except IndexError:
                 break
 

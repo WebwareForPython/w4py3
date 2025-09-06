@@ -20,7 +20,7 @@ class Introspect(ExamplePage):
         self.writeln('</table>')
 
     def pair(self, key, value):
-        if isinstance(value, (list, tuple)):
+        if isinstance(value, list | tuple):
             value = ', '.join(map(str, value))
         value = self.htmlEncode(str(value))
         self.writeln(
@@ -29,6 +29,6 @@ class Introspect(ExamplePage):
 
     def list(self, codeString):
         value = eval(codeString)
-        if not isinstance(value, (list, tuple)):
+        if not isinstance(value, list | tuple):
             value = '<em>not a list or a tuple</em>'
         self.pair(codeString, value)

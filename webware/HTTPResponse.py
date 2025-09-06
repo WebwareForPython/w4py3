@@ -134,13 +134,13 @@ class HTTPResponse(Response):
             elif t.startswith('+'):
                 t = time() + timeDecode(t[1:])
         if t:
-            if isinstance(t, (int, float)):
+            if isinstance(t, int | float):
                 t = gmtime(t)
-            if isinstance(t, (tuple, struct_time)):
+            elif isinstance(t, tuple | struct_time):
                 t = strftime("%a, %d-%b-%Y %H:%M:%S GMT", t)
-            if isinstance(t, timedelta):
+            elif isinstance(t, timedelta):
                 t = datetime.now() + t
-            if isinstance(t, datetime):
+            elif isinstance(t, datetime):
                 d = t.utcoffset()
                 if d is None:
                     d = localTimeDelta()
