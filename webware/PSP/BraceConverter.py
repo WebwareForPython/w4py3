@@ -82,8 +82,7 @@ class BraceConverter:
 
     def openBlock(self, writer):
         """Open a new block."""
-        match = self._reColonBrace.match(self.line)
-        if match and not self.dictLevel:
+        if (match := self._reColonBrace.match(self.line)) and not self.dictLevel:
             writer.printChars(':')
             writer.pushIndent()
             if match.group(1):

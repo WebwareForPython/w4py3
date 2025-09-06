@@ -66,8 +66,7 @@ def MixIn(pyClass, mixInClass, makeAncestor=False, mixInSuperMethods=False):
 
         # Track the mix-ins made for a particular class
         attrName = 'mixInsFor' + pyClass.__name__
-        mixIns = getattr(pyClass, attrName, None)
-        if mixIns is None:
+        if (mixIns := getattr(pyClass, attrName, None)) is None:
             mixIns = []
             setattr(pyClass, attrName, mixIns)
 

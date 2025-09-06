@@ -75,14 +75,10 @@ def valueForKey(obj, key, default=NoDefault):
             method = getattr(cls, key, None)
         if not method:
             underKey = '_' + key
-            method = getattr(cls, underKey, None) if cls else None
-            if not method:
-                attr = getattr(obj, key, NoDefault)
-                if attr is NoDefault:
-                    attr = getattr(obj, underKey, NoDefault)
-                    if attr is NoDefault and cls is not None:
-                        getitem = getattr(cls, '__getitem__', None)
-                        if getitem:
+            if not (method := getattr(cls, underKey, None) if cls else None):
+                if (attr := getattr(obj, key, NoDefault)) is NoDefault:
+                    if (attr := getattr(obj, underKey, NoDefault)) is NoDefault and cls is not None:
+                        if getitem := getattr(cls, '__getitem__', None):
                             try:
                                 getitem(obj, key)
                             except KeyError:

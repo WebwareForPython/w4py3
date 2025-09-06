@@ -78,8 +78,7 @@ class UnknownFileTypeServlet(HTTPServlet, Configurable):
         A subclass could override this in order to serve files from other
         disk locations based on some logic.
         """
-        filename = getattr(self, '_serverSideFilename', None)
-        if filename is None:
+        if (filename := getattr(self, '_serverSideFilename', None)) is None:
             filename = trans.request().serverSidePath()
             self._serverSideFilename = filename  # cache it
         return filename
@@ -199,8 +198,7 @@ class UnknownFileTypeServlet(HTTPServlet, Configurable):
                 print('>> UnknownFileType.serveContent()')
                 print('>> filename =', filename)
                 print('>> size=', fileSize)
-            fileDict = fileCache.get(filename)
-            if fileDict is not None and mtime != fileDict['mtime']:
+            if (fileDict := fileCache.get(filename)) is not None and mtime != fileDict['mtime']:
                 # Cache is out of date; clear it.
                 if debug:
                     print('>> changed, clearing cache')
@@ -241,8 +239,7 @@ class UnknownFileTypeServlet(HTTPServlet, Configurable):
                     print('>> sending directly')
                 numBytesSent = 0
                 while numBytesSent < fileSize:
-                    data = f.read(min(fileSize-numBytesSent, readBufferSize))
-                    if data == '':
+                    if not (data := f.read(min(fileSize-numBytesSent, readBufferSize))):
                         break  # unlikely, but safety first
                     response.write(data)
                     numBytesSent += len(data)

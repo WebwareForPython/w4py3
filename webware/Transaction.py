@@ -197,8 +197,7 @@ class Transaction:
         handler.writeAttrs(self, self._exceptionReportAttrNames)
 
         for name in self._exceptionReportAttrNames:
-            obj = getattr(self, '_' + name, None)
-            if obj:
+            if obj := getattr(self, '_' + name, None):
                 try:
                     obj.writeExceptionReport(handler)
                 except Exception:

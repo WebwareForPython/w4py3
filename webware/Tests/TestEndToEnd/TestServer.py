@@ -120,8 +120,7 @@ class RunServer(Process):
                    encoding='utf-8', stdout=PIPE, stderr=STDOUT) as p:
             outputStarted = False
             while True:
-                ret = p.poll()
-                if ret is not None:
+                if (ret := p.poll()) is not None:
                     break
                 line = p.stdout.readline().rstrip()
                 if line:
@@ -133,8 +132,7 @@ class RunServer(Process):
             self.pollQueue.put(ret)
             if ret is None:
                 while True:
-                    ret = p.poll()
-                    if ret is not None:
+                    if (ret := p.poll()) is not None:
                         break
                     line = p.stdout.readline().rstrip()
                     self.outputQueue.put(line)

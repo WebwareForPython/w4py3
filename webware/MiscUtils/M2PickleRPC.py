@@ -34,10 +34,7 @@ class M2Transport(Transport):
     def parse_response(self, f):
         """Workaround M2Crypto issue mentioned above."""
         sio = BytesIO()
-        while True:
-            chunk = f.read()
-            if not chunk:
-                break
+        while chunk := f.read():
             sio.write(chunk)
         sio.seek(0)
         return Transport.parse_response(self, sio)
@@ -45,10 +42,7 @@ class M2Transport(Transport):
     def parse_response_gzip(self, f):
         """Workaround M2Crypto issue mentioned above."""
         sio = BytesIO()
-        while True:
-            chunk = f.read()
-            if not chunk:
-                break
+        while chunk := f.read():
             sio.write(chunk)
         sio.seek(0)
         return Transport.parse_response_gzip(self, sio)

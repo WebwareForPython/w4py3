@@ -266,8 +266,7 @@ class ContextParser(URLParser):
             context.append('')
         parts = []
         while context:
-            contextName = '/'.join(context)
-            if contextName in self._contexts:
+            if (contextName := '/'.join(context)) in self._contexts:
                 break
             parts.insert(0, context.pop())
         if context:
@@ -645,7 +644,7 @@ class _FileParser(URLParser):
                 redirectTo = mod.urlRedirect['']
             else:
                 redirectTo = None
-            if redirectTo:
+            if redirectTo := (mod.urlRedirect.get(nextPart) or mod.urlRedirect.get('')):
                 if isinstance(redirectTo, str):
                     fp = FileParser(os.path.join(self._path, redirectTo))
                 else:
