@@ -24,8 +24,7 @@ def rgbToHexColor(r, g, b):
 def hexToRgbColor(h):
     """Convert #RRGGBB to r, g, b."""
     h = h.strip()
-    if h.startswith('#'):
-        h = h[1:]
+    h = h.removeprefix('#')
     h = h[:2], h[2:4], h[4:]
     return [int(x, 16) for x in h]
 

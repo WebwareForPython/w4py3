@@ -155,8 +155,7 @@ class Servlet:
         if self._serverSidePath is None:
             self._serverSidePath = self._transaction.request().serverSidePath()
         if path:
-            if path.startswith('/'):
-                path = path[1:]
+            path = path.removeprefix('/')
             return os.path.normpath(os.path.join(
                 os.path.dirname(self._serverSidePath), path))
         return self._serverSidePath

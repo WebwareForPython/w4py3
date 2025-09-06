@@ -351,8 +351,7 @@ class HTTPRequest(Request):
         server side directory to form a path relative to the object.
         """
         if path:
-            if path.startswith('/'):
-                path = path[1:]
+            path = path.removeprefix('/')
             return os.path.normpath(os.path.join(
                 os.path.dirname(self._serverSidePath), path))
         return self._serverSidePath
@@ -367,8 +366,7 @@ class HTTPRequest(Request):
         if the request is in a subdirectory of the main context directory.
         """
         if path:
-            if path.startswith('/'):
-                path = path[1:]
+            path = path.removeprefix('/')
             return os.path.normpath(os.path.join(
                 self._serverSideContextPath, path))
         return self._serverSideContextPath
@@ -385,15 +383,11 @@ class HTTPRequest(Request):
         """Return servlet URI without any query strings or extra path info."""
         p = self._pathInfo
         if not self._extraURLPath:
-            if p.endswith('/'):
-                p = p[:-1]
-            return p
+            return p.removesuffix('/')
         i = p.rfind(self._extraURLPath)
         if i >= 0:
             p = p[:i]
-        if p.endswith('/'):
-            p = p[:-1]
-        return p
+        return p.removesuffix('/')
 
     def uriWebwareRoot(self):
         """Return relative URL path of the Webware root location."""
@@ -494,11 +488,9 @@ class HTTPRequest(Request):
         of the servlet that you have forwarded to.
         """
         url = self.originalURLPath()
-        if url.startswith('/'):
-            url = url[1:]
+        url = url.removeprefix('/')
         contextName = self.contextName() + '/'
-        if url.startswith(contextName):
-            url = url[len(contextName):]
+        url = url.removeprefix(contextName)
         numStepsBack = url.count('/')
         return '../' * numStepsBack
 
@@ -512,11 +504,9 @@ class HTTPRequest(Request):
         relative to the _current_ servlet, not the _original_ servlet.
         """
         url = self.urlPath()
-        if url.startswith('/'):
-            url = url[1:]
+        url = url.removeprefix('/')
         contextName = self.contextName() + '/'
-        if url.startswith(contextName):
-            url = url[len(contextName):]
+        url = url.removeprefix(contextName)
         numStepsBackward = url.count('/')
         return '../' * numStepsBackward
 
@@ -529,8 +519,7 @@ class HTTPRequest(Request):
         servlet in a database, for example.
         """
         urlPath = self.urlPath()
-        if urlPath.startswith('/'):
-            urlPath = urlPath[1:]
+        urlPath = urlPath.removeprefix('/')
         parts = urlPath.split('/')
         newParts = []
         for part in parts:

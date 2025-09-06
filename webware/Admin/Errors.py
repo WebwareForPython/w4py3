@@ -18,9 +18,7 @@ class Errors(DumpCSV):
         if self._headings[colIndex] in ('pathname', 'error report filename'):
             path = self.application().serverSidePath()
             if value.startswith(path):
-                value = value[len(path):]
-                if value.startswith(sep):
-                    value = value[len(sep):]
+                value = value.removeprefix(path).removeprefix(sep)
                 link = f'View?filename={urlEncode(value)}'
                 value = value.replace(sep, sep + '<wbr>')
                 value = f'<a href="{link}">{value}</a>'
