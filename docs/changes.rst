@@ -3,12 +3,12 @@
 List of Changes
 ===============
 
-What's new in Webware for Python 3
-----------------------------------
+What's new in Webware for Python 3.0
+------------------------------------
 
 This is the full list of changes in Webware for Python 3 (first version 3.0.0) compared with Webware for Python 2 (last version 1.2.3):
 
-* Webware for Python 3 now requires Python 3.6 or newer, and makes internal use of newer Python features where applicable. Webware applications must now be migrated to or written for Python 3.
+* Webware for Python 3.0 now requires Python 3.6 or newer, and makes internal use of newer Python features where applicable. Webware applications must now be migrated to or written for Python 3.
 * The "Application" instance is now callable and usable as a WSGI application.
 * The application server ("AppServer" class and subclasses including the "ThreadedAppServer") and the various adapters and start scripts and other related scripts for the application server are not supported anymore. Instead, Webware applications are now supposed to be served as WSGI applications using a WSGI server such as waitress, which is now used as the development server.
 * The "ASSStreamOut" class has been replaced by a "WSGIStreamOut" class. The "Message" class has been removed, since it was not really used for anything, simplifying the class hierarchy a bit.
@@ -31,3 +31,10 @@ This is the full list of changes in Webware for Python 3 (first version 3.0.0) c
 See also the list of `releases`_ on GitHub for all changes in newer releases of Webware for Python 3 since the first alpha release 3.0.0a0.
 
 .. _releases: https://github.com/WebwareForPython/w4py3/releases
+
+What's new in Webware for Python 3.1
+------------------------------------
+
+Webware for Python 3.1 is a minor update making the following changes:
+
+* Webware for Python 3.1 now requires Python 3.10 and supports versions up to Python 3.14.

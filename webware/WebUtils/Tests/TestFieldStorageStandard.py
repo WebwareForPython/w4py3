@@ -44,7 +44,6 @@ class CgiTests(unittest.TestCase):
         fs = cgi.FieldStorage(headers={'content-type': 'text/plain'})
         self.assertRaises(TypeError, bool, fs)
 
-    @unittest.skipUnless(cgi.hasSeparator(), "separator not supported")
     def testSeparator(self):
         parseSemicolon = [
             ("x=1;y=2.0", {'x': ['1'], 'y': ['2.0']}),

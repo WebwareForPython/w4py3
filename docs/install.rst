@@ -7,7 +7,7 @@ Installation
 Python Version
 --------------
 
-Webware for Python 3 requires at least Python version 3.6.
+Webware for Python 3.1 requires at least Python version 3.10.
 
 
 Create a Virtual Environment

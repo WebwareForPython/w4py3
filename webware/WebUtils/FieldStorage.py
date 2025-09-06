@@ -316,10 +316,8 @@ class FieldStorage:
             'keep_blank_values': self.keep_blank_values,
             'strict_parsing': self.strict_parsing,
             'encoding': self.encoding, 'errors': self.errors}
-        if self.max_num_fields is not None:  # Python >= 3.8
-            kwargs['max_num_fields'] = self.max_num_fields
-        if self.separator != '&':  # Python >= 3.9.2
-            kwargs['separator'] = self.separator
+        kwargs['max_num_fields'] = self.max_num_fields
+        kwargs['separator'] = self.separator
         query = parse_qsl(qs, **kwargs)
         # contrary to the standard library, we only add those fields
         # from the query string that do not already appear in the body
@@ -344,10 +342,8 @@ class FieldStorage:
                 'keep_blank_values': self.keep_blank_values,
                 'strict_parsing': self.strict_parsing,
                 'encoding': self.encoding, 'errors': self.errors}
-            if self.max_num_fields is not None:  # Python >= 3.8
-                kwargs['max_num_fields'] = self.max_num_fields
-            if self.separator != '&':  # Python >= 3.9.2
-                kwargs['separator'] = self.separator
+            kwargs['max_num_fields'] = self.max_num_fields
+            kwargs['separator'] = self.separator
             query = parse_qsl(self.qs_on_post, **kwargs)
             self.list.extend(MiniFieldStorage(key, value)
                              for key, value in query)
@@ -419,10 +415,8 @@ class FieldStorage:
                 'keep_blank_values': self.keep_blank_values,
                 'strict_parsing': self.strict_parsing,
                 'encoding': self.encoding, 'errors': self.errors}
-            if self.max_num_fields is not None:  # Python >= 3.8
-                kwargs['max_num_fields'] = self.max_num_fields
-            if self.separator != '&':  # Python >= 3.9.2
-                kwargs['separator'] = self.separator
+            kwargs['max_num_fields'] = self.max_num_fields
+            kwargs['separator'] = self.separator
             query = parse_qsl(self.qs_on_post, **kwargs)
             self.list = [MiniFieldStorage(key, value) for key, value in query]
 
@@ -642,16 +636,6 @@ _vb_pattern_str = re.compile(_vb_pattern)
 def valid_boundary(s):
     pattern = _vb_pattern_bytes if isinstance(s, bytes) else _vb_pattern_str
     return pattern.match(s)
-
-
-def hasSeparator():
-    """Check whether the separator parameter is supported."""
-    from urllib.parse import parse_qsl
-    try:
-        parse_qsl("", separator='&')
-    except TypeError:  # Python < 3.9.2
-        return False
-    return True
 
 
 def isBinaryType(ctype, pdict=None):

@@ -371,11 +371,11 @@ class Transport(SafeUnpickler):
 class SafeTransport(Transport):
     """Handle an HTTPS transaction to a Pickle-RPC server."""
 
-    def make_connection(self, host, port=None, key_file=None, cert_file=None):
+    def make_connection(self, host, port=None, **kwargs):
         """Create an HTTPS connection object from a host descriptor."""
         try:
             from http.client import HTTPSConnection
         except ImportError as e:
             raise NotImplementedError(
                 "Your version of http.client doesn't support HTTPS") from e
-        return HTTPSConnection(host, port, key_file, cert_file)
+        return HTTPSConnection(host, port, **kwargs)

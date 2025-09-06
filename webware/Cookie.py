@@ -83,10 +83,7 @@ class Cookie:
         return self._cookie['httponly']
 
     def sameSite(self):
-        try:
-            return self._cookie['samesite']
-        except KeyError:  # Python < 3.8
-            return ''
+        return self._cookie['samesite']
 
     def value(self):
         return self._value
@@ -120,10 +117,7 @@ class Cookie:
         self._cookie['httponly'] = httpOnly
 
     def setSameSite(self, sameSite='Strict'):
-        try:
-            self._cookie['samesite'] = sameSite
-        except CookieEngine.CookieError:  # Python < 3.8
-            pass
+        self._cookie['samesite'] = sameSite
 
     def setValue(self, value):
         self._value = value

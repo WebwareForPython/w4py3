@@ -14,7 +14,7 @@ readme = "README.md"
 keywords = ["web", "framework", "servlets"]
 license = {text = "MIT"}
 # must match properties.requiredPyVersion
-requires-python = ">=3.6"
+requires-python = ">=3.10"
 classifiers = [
     "Development Status :: 5 - Production/Stable",
     "Environment :: Web Environment",
@@ -25,10 +25,6 @@ classifiers = [
     "License :: OSI Approved :: MIT License",
     "Programming Language :: Python",
     "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.6",
-    "Programming Language :: Python :: 3.7",
-    "Programming Language :: Python :: 3.8",
-    "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
@@ -45,38 +41,38 @@ Documentation = "https://webwareforpython.github.io/w4py3/"
 
 [project.optional-dependencies]
 dev = [
-    "Pygments>=2.14,<3",
+    "Pygments>=2.19,<3",
     "WebTest>=3,<4",
-    "waitress>=2,<3",
-    "hupper>=1.10,<2",
+    "waitress>=3,<4",
+    "hupper>=1.12,<2",
 ]
 docs = [
-    "Sphinx>=5,<7",
-    "sphinx_rtd_theme>=1.1",
+    "Sphinx>=8,<9",
+    "sphinx_rtd_theme>=3,<4",
 ]
 examples = [
     "DBUtils>=3,<4",
-    "dominate>=2.7,<3",
-    "yattag>=1.15,<2",
-    "Pygments>=2.14,<3",
-    "Pillow>=8,<12",
+    "dominate>=2.9,<3",
+    "yattag>=1.16,<2",
+    "Pillow>=11,<12",
+    "Pygments>=2.19,<3",
 ]
 tests = [
-    "psutil>=5.9,<7",
-    "flake8>=5,<7",
-    "pylint>=2.13,<3",
-    "tox>=3.28,<5",
+    "psutil>=7,<8",
+    "flake8>=7,<8",
+    "pylint>=3,<4",
+    "tox>=4,<5",
     "pywin32>=300,<400; sys_platform=='win32' and implementation_name=='cpython'",
     # include dev dependencies
-    "Pygments>=2.14,<3",
+    "Pygments>=2.19,<3",
     "WebTest>=3,<4",
-    "waitress>=2,<3",
-    "hupper>=1.10,<2",
+    "waitress>=3,<4",
+    "hupper>=1.12,<2",
     # include example dependencies
     "DBUtils>=3,<4",
-    "dominate>=2.7,<3",
-    "yattag>=1.15,<2",
-    "Pillow>=8,<12",
+    "dominate>=2.9,<3",
+    "yattag>=1.16,<2",
+    "Pillow>=11,<12",
 ]
 
 [project.scripts]

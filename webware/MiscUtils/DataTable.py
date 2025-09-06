@@ -791,8 +791,7 @@ class TableRecord:
         return repr(self._values)
 
     def __iter__(self):
-        for value in self._values:
-            yield value
+        yield from self._values
 
     def get(self, key, default=None):
         index = self._nameToIndexMap.get(key)

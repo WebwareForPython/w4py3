@@ -65,6 +65,7 @@ indent-after-paren = 4
 
 max-attributes = 40
 max-args = 10
+max-positional-arguments = 10
 max-branches = 40
 max-line-length = 79
 max-locals = 30

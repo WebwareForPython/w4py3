@@ -57,7 +57,7 @@ class PushServlet(Page):
         if count:
             wr('<h3>This page has been replaced'
                f' <strong style="color:#339">{count:d}</strong>'
-               f" time{'' if count ==1 else 's'}.</h3>")
+               f" time{'' if count == 1 else 's'}.</h3>")
             if count == 3:
                 wr('<p>Stopped pushing contents.</p>')
             else:

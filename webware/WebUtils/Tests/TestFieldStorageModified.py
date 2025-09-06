@@ -4,7 +4,7 @@ import unittest
 
 from io import BytesIO
 
-from WebUtils.FieldStorage import FieldStorage, hasSeparator, isBinaryType
+from WebUtils.FieldStorage import FieldStorage, isBinaryType
 
 
 class TestFieldStorage(unittest.TestCase):
@@ -85,52 +85,40 @@ class TestFieldStorage(unittest.TestCase):
         self.assertEqual(fs.getfirst('c'), '3')
         self.assertEqual(fs.getlist('a'), ['1'])
         self.assertEqual(fs.getlist('c'), ['3'])
-        if hasSeparator():  # new Python version, splits only &
-            self.assertEqual(fs.getfirst('b'), '2;b=3')
-            self.assertEqual(fs.getlist('b'), ['2;b=3'])
-            fs = FieldStorage(
-                fp=BytesIO(),
-                environ={'REQUEST_METHOD': 'POST',
-                         'QUERY_STRING': 'a=1&b=2&b=3&c=3'},
-                separator='&')
-            self.assertEqual(fs.getfirst('a'), '1')
-            self.assertEqual(fs.getfirst('b'), '2')
-            self.assertEqual(fs.getfirst('c'), '3')
-            self.assertEqual(fs.getlist('a'), ['1'])
-            self.assertEqual(fs.getlist('b'), ['2', '3'])
-            self.assertEqual(fs.getlist('c'), ['3'])
-        else:  # old Python version, splits ; and &
-            self.assertEqual(fs.getfirst('b'), '2')
-            self.assertEqual(fs.getlist('b'), ['2', '3'])
+        self.assertEqual(fs.getfirst('b'), '2;b=3')
+        self.assertEqual(fs.getlist('b'), ['2;b=3'])
+        fs = FieldStorage(
+            fp=BytesIO(),
+            environ={'REQUEST_METHOD': 'POST',
+                     'QUERY_STRING': 'a=1&b=2&b=3&c=3'},
+            separator='&')
+        self.assertEqual(fs.getfirst('a'), '1')
+        self.assertEqual(fs.getfirst('b'), '2')
+        self.assertEqual(fs.getfirst('c'), '3')
+        self.assertEqual(fs.getlist('a'), ['1'])
+        self.assertEqual(fs.getlist('b'), ['2', '3'])
+        self.assertEqual(fs.getlist('c'), ['3'])
 
     def testPostRequestWithQueryWithSemicolon2(self):
         fs = FieldStorage(fp=BytesIO(), environ={
             'REQUEST_METHOD': 'POST', 'QUERY_STRING': 'a=1;b=2&b=3;c=3'})
-        if hasSeparator():  # new Python version, splits only &
-            self.assertEqual(fs.getfirst('a'), '1;b=2')
-            self.assertEqual(fs.getfirst('b'), '3;c=3')
-            self.assertIsNone(fs.getfirst('c'))
-            self.assertEqual(fs.getlist('a'), ['1;b=2'])
-            self.assertEqual(fs.getlist('b'), ['3;c=3'])
-            self.assertEqual(fs.getlist('c'), [])
-            fs = FieldStorage(
-                fp=BytesIO(),
-                environ={'REQUEST_METHOD': 'POST',
-                         'QUERY_STRING': 'a=1;b=2;b=3;c=3'},
-                separator=';')
-            self.assertEqual(fs.getfirst('a'), '1')
-            self.assertEqual(fs.getfirst('b'), '2')
-            self.assertEqual(fs.getfirst('c'), '3')
-            self.assertEqual(fs.getlist('a'), ['1'])
-            self.assertEqual(fs.getlist('b'), ['2', '3'])
-            self.assertEqual(fs.getlist('c'), ['3'])
-        else:  # old Python version, splits ; and &
-            self.assertEqual(fs.getfirst('a'), '1')
-            self.assertEqual(fs.getfirst('b'), '2')
-            self.assertEqual(fs.getfirst('c'), '3')
-            self.assertEqual(fs.getlist('a'), ['1'])
-            self.assertEqual(fs.getlist('b'), ['2', '3'])
-            self.assertEqual(fs.getlist('c'), ['3'])
+        self.assertEqual(fs.getfirst('a'), '1;b=2')
+        self.assertEqual(fs.getfirst('b'), '3;c=3')
+        self.assertIsNone(fs.getfirst('c'))
+        self.assertEqual(fs.getlist('a'), ['1;b=2'])
+        self.assertEqual(fs.getlist('b'), ['3;c=3'])
+        self.assertEqual(fs.getlist('c'), [])
+        fs = FieldStorage(
+            fp=BytesIO(),
+            environ={'REQUEST_METHOD': 'POST',
+                     'QUERY_STRING': 'a=1;b=2;b=3;c=3'},
+            separator=';')
+        self.assertEqual(fs.getfirst('a'), '1')
+        self.assertEqual(fs.getfirst('b'), '2')
+        self.assertEqual(fs.getfirst('c'), '3')
+        self.assertEqual(fs.getlist('a'), ['1'])
+        self.assertEqual(fs.getlist('b'), ['2', '3'])
+        self.assertEqual(fs.getlist('c'), ['3'])
 
     def testPostRequestWithoutContentLength(self):
         # see https://github.com/python/cpython/issues/71964

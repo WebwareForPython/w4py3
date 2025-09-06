@@ -4,7 +4,7 @@ version = (3, 1, 0)
 
 status = 'stable'
 
-requiredPyVersion = (3, 6)
+requiredPyVersion = (3, 10)
 
 synopsis = (
     "Webware for Python is a time-tested"

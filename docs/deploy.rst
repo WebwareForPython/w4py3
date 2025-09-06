@@ -19,9 +19,11 @@ If your performance requirements are not that high, you can use `waitress`_ as W
 
 Installation on the Production System
 -------------------------------------
-In order to install your Webware for Python 3 application on the production system, first make sure the minimum required Python 3.6 version is already installed. One popular and recommended option is running a Linux distribution on your production system - see `Installing Python 3 on Linux`_.
+In order to install your Webware for Python 3 application on the production system, first make sure the minimum required Python version is already installed. One popular and recommended option is running a Linux distribution on your production system - see `Installing Python 3 on Linux`_.
 
 .. _Installing Python 3 on Linux: https://docs.python-guide.org/starting/install3/linux/
+
+Note that Webware for Python 3.0 supports Python 3.6 to 3.12, and Webware for Python 3.1 supports Python 3.10 to 3.14.
 
 Next, we recommend creating a virtual environment for your Webware for Python 3 application. We also recommend creating a dedicated user as owner of your application, and placing the virtual environment into the home directory of that user. When you are logged in as that user under Linux, you can create the virtual environment with the following command. If you get an error, you may need to install ``python3-venv`` as an additional Linux package before you can run this command::
 

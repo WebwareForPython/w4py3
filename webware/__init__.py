@@ -2,7 +2,7 @@
 
 from .Properties import version as versionTuple
 
-__version__ =  '.'.join(map(str, versionTuple))
+__version__ = '.'.join(map(str, versionTuple))
 
 
 def addToSearchPath():

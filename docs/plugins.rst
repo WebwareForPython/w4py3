@@ -23,7 +23,7 @@ The ``Properties.py`` file should contain a number of assignments::
     name = "Plugin name"
     version = (1, 0, 0)
     status = 'beta'
-    requiredPyVersion = (3, 6)
+    requiredPyVersion = (3, 10)
     requiredOpSys = 'posix'
     synopsis = """A paragraph-long description of the plugin"""
     webwareConfig = {
