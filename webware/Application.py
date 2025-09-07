@@ -299,11 +299,11 @@ class Application(ConfigurableForServerSidePath):
             module = importlib.import_module(moduleName)
             cls = getattr(module, className)
             if not isinstance(cls, type):
-                raise ImportError
+                raise ImportError(f'{cls!r} is not a type')
             self._sessionClass = cls
-        except (ImportError, AttributeError):
+        except (ImportError, AttributeError) as err:
             print(f"ERROR: Could not import Session class '{className}'"
-                  f" from module '{moduleName}'")
+                  f" from module '{moduleName}':\n{err}")
             self._sessionClass = None
         moduleName = setting('SessionStore')
         if moduleName in (
@@ -314,7 +314,7 @@ class Application(ConfigurableForServerSidePath):
             module = importlib.import_module(moduleName)
             cls = getattr(module, className)
             if not isinstance(cls, type):
-                raise ImportError
+                raise ImportError(f'{cls!r} is not a type')
             self._sessions = cls(self)
         except ImportError as err:
             print(f"ERROR: Could not import SessionStore class '{className}'"
