@@ -419,7 +419,7 @@ class TestExamples(AppTest, unittest.TestCase):
         r = self.testApp.get('/ImageDemo?fmt=.png')
         self.assertEqual(r.status, '200 OK')
         self.assertEqual(r.content_type, 'image/png')
-        self.assertTrue(2000 < r.content_length < 2500)
+        self.assertTrue(2000 < r.content_length < 4500)
         self.assertTrue(r.body.startswith(b'\x89PNG\r\n\x1a\n'))
 
     def testDominateDemo(self):

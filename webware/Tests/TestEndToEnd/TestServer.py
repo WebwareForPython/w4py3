@@ -203,11 +203,16 @@ class TestServer(unittest.TestCase):
 
     def testExpectedServerOutput(self):
         expectedOutput = expectedServerOutput.strip().splitlines()
-        self.compareOutput(self.output, expectedOutput)
+        output = self.output
+        self.compareOutput(output, expectedOutput)
         startLine = f'Webware for Python {self.version} Application'
-        self.assertEqual(self.output[0], startLine)
+        if 'UserWarning' in output[0]:
+            del output[0]
+            while output[0].startswith(' '):
+                del output[0]
+        self.assertEqual(output[0], startLine)
         self.assertTrue(not any(
-            'ERROR' in line or 'WARNING' in line for line in self.output))
+            'ERROR' in line or 'WARNING' in line for line in output))
 
     def testStartPage(self):
         self.assertTrue(self.running)
