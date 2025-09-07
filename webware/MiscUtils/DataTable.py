@@ -791,8 +791,7 @@ class TableRecord:
         return repr(self._values)
 
     def __iter__(self):
-        for value in self._values:
-            yield value
+        yield from self._values
 
     def get(self, key, default=None):
         index = self._nameToIndexMap.get(key)
@@ -801,7 +800,7 @@ class TableRecord:
         return self._values[index]
 
     def has_key(self, key):
-        warn("has_key is deprecated, please us 'in' instead.",
+        warn("has_key is deprecated, use 'in' instead.",
              DeprecationWarning, stacklevel=2)
         return key in self
 

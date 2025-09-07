@@ -4,10 +4,7 @@ import sys
 import traceback
 from time import time
 
-try:
-    from pickle import dumps, PickleError
-except ImportError:
-    from pickle import dumps, PickleError
+from pickle import dumps, PickleError
 
 try:
     import zlib

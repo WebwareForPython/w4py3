@@ -14,6 +14,7 @@ to the Application object itself.
 """
 
 import atexit
+import importlib
 import os
 import signal
 import sys
@@ -295,14 +296,14 @@ class Application(ConfigurableForServerSidePath):
         moduleName = setting('SessionModule')
         className = moduleName.rpartition('.')[2]
         try:
-            exec(f'from {moduleName} import {className}')
-            cls = locals()[className]
+            module = importlib.import_module(moduleName)
+            cls = getattr(module, className)
             if not isinstance(cls, type):
-                raise ImportError
+                raise ImportError(f'{cls!r} is not a type')
             self._sessionClass = cls
-        except ImportError:
+        except (ImportError, AttributeError) as err:
             print(f"ERROR: Could not import Session class '{className}'"
-                  f" from module '{moduleName}'")
+                  f" from module '{moduleName}':\n{err}")
             self._sessionClass = None
         moduleName = setting('SessionStore')
         if moduleName in (
@@ -310,12 +311,12 @@ class Application(ConfigurableForServerSidePath):
             moduleName = f'Session{moduleName}Store'
         className = moduleName.rpartition('.')[2]
         try:
-            exec(f'from {moduleName} import {className}')
-            cls = locals()[className]
+            module = importlib.import_module(moduleName)
+            cls = getattr(module, className)
             if not isinstance(cls, type):
-                raise ImportError
+                raise ImportError(f'{cls!r} is not a type')
             self._sessions = cls(self)
-        except ImportError as err:
+        except (ImportError, AttributeError) as err:
             print(f"ERROR: Could not import SessionStore class '{className}'"
                   f" from module '{moduleName}':\n{err}")
             self._sessions = None

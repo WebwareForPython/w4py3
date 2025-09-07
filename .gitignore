@@ -30,6 +30,7 @@ Sessions/
 Webware-for-Python-*
 
 .idea/
+.vscode/
 .tox/
 .venv/
 .venv.*/

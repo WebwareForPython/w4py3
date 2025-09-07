@@ -39,7 +39,7 @@ class TestMakeApp(unittest.TestCase):
             expected.append('[-u USER] [-g GROUP]')
         expected.append('WORK_DIR')
         expected = ' '.join(expected)
-        self.assertTrue(output.startswith(expected))
+        self.assertTrue(output.startswith(expected), output)
 
     def testMakeNewApp(self):
         output = self.runMake(['MyApp'])

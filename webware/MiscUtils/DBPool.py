@@ -152,6 +152,20 @@ class DBPool:
         """
         self._unthreadsafeAddConnection(con)
 
+    def close(self):
+        """Close all connections in the pool."""
+        try:
+            queue = self._queue
+        except AttributeError:
+            connections = self._connections
+            while connections:
+                con = connections.pop()
+                con.close()
+        else:
+            while not queue.empty():
+                con = queue.get_nowait()
+                con.close()
+
     # The following functions are used with DB-API 2 modules
     # that are threadsafe at the connection level, like psycopg.
     # Note: In this case, connections are shared between threads.

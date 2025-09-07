@@ -641,10 +641,8 @@ class _FileParser(URLParser):
                 restPath = ''
             if nextPart in mod.urlRedirect:
                 redirectTo = mod.urlRedirect[nextPart]
-                redirectPath = restPath
             elif '' in mod.urlRedirect:
                 redirectTo = mod.urlRedirect['']
-                redirectPath = restPath
             else:
                 redirectTo = None
             if redirectTo:
@@ -652,7 +650,7 @@ class _FileParser(URLParser):
                     fp = FileParser(os.path.join(self._path, redirectTo))
                 else:
                     fp = redirectTo
-                return fp.parse(trans, redirectPath)
+                return fp.parse(trans, restPath)
 
         if 'SubParser' not in seen and hasattr(mod, 'SubParser'):
             seen.add('SubParser')

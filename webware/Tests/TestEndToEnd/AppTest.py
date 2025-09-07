@@ -1,6 +1,7 @@
 """Test Webware Application via its WSGI interface"""
 
 import sys
+import traceback
 
 from io import StringIO
 from os import chdir, getcwd
@@ -31,7 +32,8 @@ class AppTest:
             cls.app = app
             cls.testApp = TestApp(app)
         except Exception as e:
-            error = str(e) or 'Could not create application'
+            error = (f"ERROR: {type(e).__name__}: {e}\n"
+                     f"Full traceback:\n{traceback.format_exc()}")
         else:
             error = None
         finally:
@@ -42,15 +44,15 @@ class AppTest:
                 output = ''
         if error:
             raise RuntimeError(
-                'Error setting up application:\n' + error +
-                '\nOutput was:\n' + output)
+                'Error setting up application:\n'
+                f'{error}\nOutput was:\n{output}')
         if cls.catchOutput and not (
                 output.startswith('Webware for Python')
                 and 'Running in development mode' in output
                 and 'Loading context' in output):
             raise AssertionError(
                 'Application was not properly started.'
-                ' Output was:\n' + output)
+                f' Output was:\n{output}')
 
     @classmethod
     def tearDownClass(cls):
@@ -68,8 +70,8 @@ class AppTest:
                 'Application is shutting down...\n'
                 'Application has been successfully shut down.'):
             raise AssertionError(
-                'Application was not properly shut down. Output was:\n'
-                + output)
+                'Application was not properly shut down.'
+                f' Output was:\n{output}')
 
     def setUp(self):
         self.output = ''
