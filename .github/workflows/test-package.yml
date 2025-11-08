@@ -8,9 +8,9 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     strategy:
-      max-parallel: 6
+      max-parallel: 7
       matrix:
-        python-version: ['3.10', '3.11', '3.12', '3.13', 'pypy-3.10', 'pypy-3.11']
+        python-version: ['3.10', '3.11', '3.12', '3.13', '3.14', 'pypy-3.10', 'pypy-3.11']
 
     steps:
     - uses: actions/checkout@v5
@@ -23,14 +23,13 @@ jobs:
         python -m pip install --upgrade pip
         pip install .[tests]
     - name: Lint with flake8
-      if: matrix.python-version == '3.13'
+      if: matrix.python-version == '3.14'
       run: |
         flake8 webware --count --exit-zero --statistics
     - name: Lint with pylint
-      if: matrix.python-version == '3.13'
+      if: matrix.python-version == '3.14'
       run: |
         pylint webware
     - name: Run all unit tests
       run: |
-        cd webware
-        python -m unittest discover -fv -p Test*.py
+        python run_tests.py
