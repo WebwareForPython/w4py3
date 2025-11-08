@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Overview &#8212; Webware for Python 3 3.1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=27fed22d" />
+    <script src="_static/documentation_options.js?v=dd1205ac"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="copyright" title="Copyright" href="copyright.html" />
+    <link rel="next" title="Installation" href="install.html" />
+    <link rel="prev" title="Webware for Python 3" href="index.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="overview">
+<span id="id1"></span><h1>Overview<a class="headerlink" href="#overview" title="Link to this heading">¶</a></h1>
+<section id="synopsis">
+<h2>Synopsis<a class="headerlink" href="#synopsis" title="Link to this heading">¶</a></h2>
+<p>Webware for Python is a framework for developing object-oriented, web-based applications.</p>
+<p>The project had been initiated in 1999 by Chuck Esterbrook with the goal of creating the ultimate web development suite for Python, and it soon got a lot of attraction. Jay Love, Geoff Talvola and Ian Bicking were other early contributors and core developers.</p>
+<p>They created a mature and stable web framework that has been used in production for a long time by a variety of people in different environments. Since then, a lot of other web frameworks for Python emerged and have taken the lead, such as Django, Flask or Pyramid, while Webware for Python got less attention. Webware for Python was still available, maintained and slightly improved by Christoph Zwerschke, and happily used here and there, but did not change much over the years.</p>
+<p>Since Webware for Python was based on Python 2, for which support ended 20 years later at the end of 2019, but there were still Webware for Python applications in the wild running happily after 2020, Christoph Zwerschke created a Python 3 based edition of the project called <a class="reference external" href="https://webwareforpython.github.io/w4py3/">Webware for Python 3</a>.</p>
+</section>
+<section id="design-points-and-changes">
+<h2>Design Points and Changes<a class="headerlink" href="#design-points-and-changes" title="Link to this heading">¶</a></h2>
+<p><a class="reference external" href="https://webwareforpython.github.io/w4py3/">Webware for Python 3</a> kept the following ideas and key goals from the <a class="reference external" href="https://webwareforpython.github.io/w4py/">original project</a>:</p>
+<ul class="simple">
+<li><p><strong>Simplicity</strong>. Webware’s code is quite simple and easy to understand if you feel the need to extend it.</p></li>
+<li><p><strong>Servlets</strong>. Similar to Java servlets, they provide a familiar basis for the construction of web applications.</p></li>
+<li><p><strong>Robustness</strong>. A crash of one page will not crash the server. Exception reports are logged and easy to read when developing.</p></li>
+<li><p><strong>Object-programming programming</strong> (making good use of multiple inheritance and the template method pattern).</p></li>
+<li><p><strong>Extensibility</strong> via plug-ins.</p></li>
+<li><p><strong>Python Server Pages</strong> (PSP, similar to ASP, PHP and JSP) as a built-in plug-in.</p></li>
+<li><p>Built-in plug-ins for <strong>Task scheduling</strong> and <strong>User management</strong>.</p></li>
+<li><p>Excellent <strong>documentation</strong> and numerous <strong>examples</strong>.</p></li>
+</ul>
+<p>Another key goal of the original project was to provide a “Pythonic” API, instead of simply copying Java APIs. However, the project was created when Python 2 was still in its infancy, lacking many modern features and conventions such as PEP-8. Therefore, the Webware for Python API is a bit different from what is considered “Pythonic” nowadays. Particularly, it uses getters and setters instead of properties (but without the “get” prefix for getters), and camelCase method names instead of snake_case. In order to facilitate migration of existing projects, Webware for Python 3 kept this old API, even though it is not in line with PEP-8 and could be simplified by using properties. Modernizing the API will be a goal for a possible third edition of Webware for Python, as well as using the Python logging facility which did not yet exist when Webware for Python was created and is still done via printing to the standard output.</p>
+<p>The plug-in architecture has also been kept in Webware for Python 3, but now implemented in a more modern way using entry points for discovering plug-ins. Old plug-ins are not compatible, but can be adapted quite easily. The old Webware for Python installer has been replaced by a standard setup.py and later pyproject.toml based installation.</p>
+<p>The most incisive change in Webware for Python 3 is the discontinuation of the threaded application server that was part of the built-in “WebKit” plug-in and actually one of the strong-points of Webware for Python. However, a threaded application based architecture may not be the best option anymore for Python in the age of multi-core processors due to the global interpreter lock (<a class="reference external" href="https://realpython.com/python-gil/">GIL</a>), and maintaining the application server based architecture would have also meant to maintain the various adapters such as <code class="docutils literal notranslate"><span class="pre">mod_webkit</span></code> and the start scripts for the application server for various operating systems. This did not appear to be feasible. At the same time, Python nowadays already provides a standardized way for web frameworks to deploy web applications with the Python Web Server Gateway Interface (<a class="reference external" href="https://www.fullstackpython.com/wsgi-servers.html">WSGI</a>). By making the already existing Application class of Webware for Python usable as a WSGI application object, Webware applications can now be deployed in a standardized way using any WSGI compliant web server, and the necessity for operating as an application server itself has been removed. Webware for Python 3 applications deployed using <code class="docutils literal notranslate"><span class="pre">mod_wsgi</span></code> are even performing better and can be scaled in more ways than applications for the original Webware for Python that have been deployed using <code class="docutils literal notranslate"><span class="pre">mod_webkit</span></code> which used to be the deployment option with the best performance. During development, the <a class="reference external" href="https://docs.pylonsproject.org/projects/waitress/">waitress</a> WSGI server is used to serve the application, replacing the old built-in HTTP server. As a structural simplification that goes along with the removal of the WebKit application server, the contents of the WebKit plug-in are now available at the top level of Webware for Python 3, and WebKit ceased to exist as a separate plug-in.</p>
+<p>The second incisive change in Webware for Python 3 is the removal of the “MiddleKit” as a built-in plug-in. This plug-in served as a middle tier between the data storage and the web interface, something that nowadays is usually done with an object relational mapper (<a class="reference external" href="https://en.wikipedia.org/wiki/Object-relational_mapping">ORM</a>) such as <a class="reference external" href="https://www.sqlalchemy.org/">SQLAlchemy</a>. MiddleKit was a powerful component that many users liked and used in production, but was also pretty complex, with adapters to various databases, and therefore hard to maintain. It made sense to swap it out and provide <a class="reference external" href="https://github.com/WebwareForPython/w4py3-middlekit">MiddleKit for Webware for Python 3</a> as a separate, external plug-in on GitHub. Also removed were the “CGIWrapper”, “COMKit” and “KidKit” built-in plug-ins, because they have become obsolete or outdated. The other built-in plug-ins were less complex than MiddleKit and were kept as built-in plug-ins of Webware for Python 3. Particularly, “PSP, “UserKit” and “TaskKit” are still available in Webware for Python 3.</p>
+<p>To facilitate web development with Webware for Python 3, a <code class="docutils literal notranslate"><span class="pre">webware</span></code> console script has been added that can be used to create working directories for new application and start the development server. This script replaces the old <code class="docutils literal notranslate"><span class="pre">MakeAppWorkDir</span></code> and <code class="docutils literal notranslate"><span class="pre">AppServer</span></code> scripts. When creating a new working directory, a WSGI script will also be created that can be used to attach the application to a web server.</p>
+<p>The documentation contexts of the various plug-ins have been replaced by a common Sphinx based documentation provided in the top-level <code class="docutils literal notranslate"><span class="pre">docs</span></code> directory. The tests are still contained in <code class="docutils literal notranslate"><span class="pre">Tests</span></code> subdirectories at the top and plug-in levels, but the test suite has been expanded and is using the unittest framework consistently. The <a class="reference external" href="https://twill-tools.github.io/twill/">twill</a> tests have also been replaced by unit tests based using <a class="reference external" href="https://docs.pylonsproject.org/projects/webtest/en/latest/">WebTest</a>. They make sure that all servlets in the examples and testing contexts work as expected. Since Webware for Python 3 uses WSGI, WebTest can now also be used to test applications built with Webware for Python 3.</p>
+<p>Otherwise, not much has been changed, so that migrating existing Webware for Python applications to Webware for Python 3 should be straight forward. Of course, you still need to migrate your Webware applications from <a class="reference external" href="https://docs.python.org/3/howto/pyporting.html">Python 2 to Python 3</a>, but meanwhile a lot of tools and guidelines have been provided that help making this process as painless as possible.</p>
+<p>See the <a class="reference internal" href="changes.html#list-of-changes"><span class="std std-ref">List of Changes</span></a> and the <a class="reference internal" href="migrate.html#migration-guide"><span class="std std-ref">Migration Guide</span></a> for more detailed information.</p>
+</section>
+<section id="download-and-installation">
+<h2>Download and Installation<a class="headerlink" href="#download-and-installation" title="Link to this heading">¶</a></h2>
+<p>See the chapter on <a class="reference internal" href="install.html#installation"><span class="std std-ref">Installation</span></a> for instructions how to download and install Webware for Python 3.</p>
+</section>
+<section id="documentation">
+<h2>Documentation<a class="headerlink" href="#documentation" title="Link to this heading">¶</a></h2>
+<p>This documentation is available online via <a class="reference external" href="https://webwareforpython.github.io/w4py3/">GitHub Pages</a> and via <a class="reference external" href="https://webware-for-python-3.readthedocs.io/">Read the Docs</a>.</p>
+</section>
+<section id="feedback-contributing-and-support">
+<h2>Feedback, Contributing and Support<a class="headerlink" href="#feedback-contributing-and-support" title="Link to this heading">¶</a></h2>
+<p>You can report <a class="reference external" href="https://github.com/WebwareForPython/w4py3/issues">issues</a> and send in <a class="reference external" href="https://github.com/WebwareForPython/w4py3/pulls">pull requests</a> using the <a class="reference external" href="https://github.com/WebwareForPython/w4py3">GitHub project page</a> of Webware for Python 3. If you want to be notified when new <a class="reference external" href="https://github.com/WebwareForPython/w4py3/releases">releases</a> are available, you can use the “Watch” feature of GitHub.</p>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">Webware for Python 3</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Overview</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#synopsis">Synopsis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#design-points-and-changes">Design Points and Changes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#download-and-installation">Download and Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#documentation">Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#feedback-contributing-and-support">Feedback, Contributing and Support</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changes.html">List of Changes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="migrate.html">Migration Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="copyright.html">Copyright and License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial.html">Beginner Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="appdev.html">Application Development</a></li>
+<li class="toctree-l1"><a class="reference internal" href="config.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="deploy.html">Deployment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="plugins.html">Plug-ins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="style.html">Style Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="psp.html">PSP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="userkit.html">UserKit</a></li>
+<li class="toctree-l1"><a class="reference internal" href="taskkit.html">TaskKit</a></li>
+<li class="toctree-l1"><a class="reference internal" href="webutils.html">WebUtils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="miscutils.html">MiscUtils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="testing.html">Testing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ref/index.html">API Reference</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="index.html" title="previous chapter">Webware for Python 3</a></li>
+      <li>Next: <a href="install.html" title="next chapter">Installation</a></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;1999-2025, Christoph Zwerschke et al.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.2.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+      |
+      <a href="_sources/overview.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

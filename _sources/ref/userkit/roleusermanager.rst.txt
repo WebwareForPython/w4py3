@@ -1,0 +1,4 @@
+RoleUserManager
+---------------
+
+.. automodule:: UserKit.RoleUserManager

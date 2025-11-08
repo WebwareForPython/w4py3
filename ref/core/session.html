@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Session &#8212; Webware for Python 3 3.1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="../../_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="../../_static/alabaster.css?v=27fed22d" />
+    <script src="../../_static/documentation_options.js?v=dd1205ac"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="copyright" title="Copyright" href="../../copyright.html" />
+    <link rel="next" title="SessionDynamicStore" href="sessiondynamicstore.html" />
+    <link rel="prev" title="ServletFactory" href="servletfactory.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="module-Session">
+<span id="session"></span><h1>Session<a class="headerlink" href="#module-Session" title="Link to this heading">¶</a></h1>
+<p>Implementation of client sessions.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="Session.Session">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">Session.</span></span><span class="sig-name descname"><span class="pre">Session</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">trans</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">identifier</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Session.Session" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Implementation of client sessions.</p>
+<p>All methods that deal with time stamps, such as creationTime(),
+treat time as the number of seconds since January 1, 1970.</p>
+<p>Session identifiers are stored in cookies. Therefore, clients
+must have cookies enabled.</p>
+<p>Note that the session id should be a string that is valid
+as part of a filename. This is currently true, and should
+be maintained if the session id generation technique is
+modified. Session ids can be used in filenames.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="Session.Session.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">trans</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">identifier</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Session.Session.__init__" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Session.Session.awake">
+<span class="sig-name descname"><span class="pre">awake</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">_trans</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Session.Session.awake" title="Link to this definition">¶</a></dt>
+<dd><p>Let the session awake.</p>
+<p>Invoked during the beginning of a transaction, giving a Session an
+opportunity to perform any required setup. The default implementation
+updates the ‘lastAccessTime’.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Session.Session.creationTime">
+<span class="sig-name descname"><span class="pre">creationTime</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Session.Session.creationTime" title="Link to this definition">¶</a></dt>
+<dd><p>Return the time when this session was created.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Session.Session.delValue">
+<span class="sig-name descname"><span class="pre">delValue</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Session.Session.delValue" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Session.Session.expiring">
+<span class="sig-name descname"><span class="pre">expiring</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Session.Session.expiring" title="Link to this definition">¶</a></dt>
+<dd><p>Let the session expire.</p>
+<p>Called when session is expired by the application.
+Subclasses should invoke super.
+Session store __delitem__()s should invoke if not isExpired().</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Session.Session.hasValue">
+<span class="sig-name descname"><span class="pre">hasValue</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Session.Session.hasValue" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Session.Session.identifier">
+<span class="sig-name descname"><span class="pre">identifier</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Session.Session.identifier" title="Link to this definition">¶</a></dt>
+<dd><p>Return a string that uniquely identifies the session.</p>
+<p>This method will create the identifier if needed.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Session.Session.invalidate">
+<span class="sig-name descname"><span class="pre">invalidate</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Session.Session.invalidate" title="Link to this definition">¶</a></dt>
+<dd><p>Invalidate the session.</p>
+<p>It will be discarded the next time it is accessed.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Session.Session.isDirty">
+<span class="sig-name descname"><span class="pre">isDirty</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Session.Session.isDirty" title="Link to this definition">¶</a></dt>
+<dd><p>Check whether the session is dirty (has unsaved changes).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Session.Session.isExpired">
+<span class="sig-name descname"><span class="pre">isExpired</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Session.Session.isExpired" title="Link to this definition">¶</a></dt>
+<dd><p>Check whether the session has been previously expired.</p>
+<p>See also: expiring()</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Session.Session.isNew">
+<span class="sig-name descname"><span class="pre">isNew</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Session.Session.isNew" title="Link to this definition">¶</a></dt>
+<dd><p>Check whether the session is new.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Session.Session.lastAccessTime">
+<span class="sig-name descname"><span class="pre">lastAccessTime</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Session.Session.lastAccessTime" title="Link to this definition">¶</a></dt>
+<dd><p>Get last access time.</p>
+<p>Returns the last time the user accessed the session through
+interaction. This attribute is updated in awake(), which is
+invoked at the beginning of a transaction.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Session.Session.numTransactions">
+<span class="sig-name descname"><span class="pre">numTransactions</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Session.Session.numTransactions" title="Link to this definition">¶</a></dt>
+<dd><p>Get number of transactions.</p>
+<p>Returns the number of transactions in which the session has been used.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Session.Session.respond">
+<span class="sig-name descname"><span class="pre">respond</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">trans</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Session.Session.respond" title="Link to this definition">¶</a></dt>
+<dd><p>Let the session respond to a request.</p>
+<p>The default implementation does nothing, but could do something
+in the future. Subclasses should invoke super.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Session.Session.sessionEncode">
+<span class="sig-name descname"><span class="pre">sessionEncode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">url</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Session.Session.sessionEncode" title="Link to this definition">¶</a></dt>
+<dd><p>Encode the session ID as a parameter to a url.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Session.Session.setDirty">
+<span class="sig-name descname"><span class="pre">setDirty</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dirty</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Session.Session.setDirty" title="Link to this definition">¶</a></dt>
+<dd><p>Set the dirty status of the session.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Session.Session.setTimeout">
+<span class="sig-name descname"><span class="pre">setTimeout</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">timeout</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Session.Session.setTimeout" title="Link to this definition">¶</a></dt>
+<dd><p>Set the timeout on this session in seconds.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Session.Session.setValue">
+<span class="sig-name descname"><span class="pre">setValue</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Session.Session.setValue" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Session.Session.sleep">
+<span class="sig-name descname"><span class="pre">sleep</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">trans</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Session.Session.sleep" title="Link to this definition">¶</a></dt>
+<dd><p>Let the session sleep again.</p>
+<p>Invoked during the ending of a transaction, giving a Session an
+opportunity to perform any required shutdown. The default
+implementation does nothing, but could do something in the future.
+Subclasses should invoke super.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Session.Session.timeout">
+<span class="sig-name descname"><span class="pre">timeout</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Session.Session.timeout" title="Link to this definition">¶</a></dt>
+<dd><p>Return the timeout for this session in seconds.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Session.Session.value">
+<span class="sig-name descname"><span class="pre">value</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default=&lt;class</span> <span class="pre">'MiscUtils.NoDefault'&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Session.Session.value" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Session.Session.values">
+<span class="sig-name descname"><span class="pre">values</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Session.Session.values" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Session.Session.writeExceptionReport">
+<span class="sig-name descname"><span class="pre">writeExceptionReport</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">handler</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Session.Session.writeExceptionReport" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="Session.SessionError">
+<em class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">Session.</span></span><span class="sig-name descname"><span class="pre">SessionError</span></span><a class="headerlink" href="#Session.SessionError" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+<p>Client session error</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="Session.SessionError.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Session.SessionError.__init__" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Session.SessionError.add_note">
+<span class="sig-name descname"><span class="pre">add_note</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="positional-only-separator o"><abbr title="Positional-only parameter separator (PEP 570)"><span class="pre">/</span></abbr></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Session.SessionError.add_note" title="Link to this definition">¶</a></dt>
+<dd><p>Exception.add_note(note) –
+add a note to the exception</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Session.SessionError.args">
+<span class="sig-name descname"><span class="pre">args</span></span><a class="headerlink" href="#Session.SessionError.args" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Session.SessionError.with_traceback">
+<span class="sig-name descname"><span class="pre">with_traceback</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="positional-only-separator o"><abbr title="Positional-only parameter separator (PEP 570)"><span class="pre">/</span></abbr></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Session.SessionError.with_traceback" title="Link to this definition">¶</a></dt>
+<dd><p>Exception.with_traceback(tb) –
+set self.__traceback__ to tb and return self.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../index.html">Webware for Python 3</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../changes.html">List of Changes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../migrate.html">Migration Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../copyright.html">Copyright and License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorial.html">Beginner Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../appdev.html">Application Development</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../config.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../deploy.html">Deployment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../plugins.html">Plug-ins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../style.html">Style Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../psp.html">PSP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../userkit.html">UserKit</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../taskkit.html">TaskKit</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../webutils.html">WebUtils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../miscutils.html">MiscUtils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../testing.html">Testing</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Core Classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../psp/index.html">PSP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../userkit/index.html">UserKit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../taskkit/index.html">TaskKit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../webutils/index.html">WebUtils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../miscutils/index.html">MiscUtils</a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">API Reference</a><ul>
+  <li><a href="index.html">Core Classes</a><ul>
+      <li>Previous: <a href="servletfactory.html" title="previous chapter">ServletFactory</a></li>
+      <li>Next: <a href="sessiondynamicstore.html" title="next chapter">SessionDynamicStore</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;1999-2025, Christoph Zwerschke et al.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.2.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+      |
+      <a href="../../_sources/ref/core/session.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

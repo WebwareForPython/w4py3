@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>UserManager &#8212; Webware for Python 3 3.1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="../../_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="../../_static/alabaster.css?v=27fed22d" />
+    <script src="../../_static/documentation_options.js?v=dd1205ac"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="copyright" title="Copyright" href="../../copyright.html" />
+    <link rel="next" title="UserManagerToFile" href="usermanagertofile.html" />
+    <link rel="prev" title="User" href="user.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="module-UserKit.UserManager">
+<span id="usermanager"></span><h1>UserManager<a class="headerlink" href="#module-UserKit.UserManager" title="Link to this heading">¶</a></h1>
+<p>The abstract UserManager class.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="UserKit.UserManager.UserManager">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">UserKit.UserManager.</span></span><span class="sig-name descname"><span class="pre">UserManager</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">userClass</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#UserKit.UserManager.UserManager" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>The base class for all user manager classes.</p>
+<p>A UserManager manages a set of users including authentication,
+indexing and persistence. Keep in mind that UserManager is abstract;
+you must always use a concrete subclasses like UserManagerToFile
+(but please read the rest of this docstring).</p>
+<p>You can create a user through the manager (preferred):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">user</span> <span class="o">=</span> <span class="n">manager</span><span class="o">.</span><span class="n">createUser</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">password</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Or directly through the user class:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">user</span> <span class="o">=</span> <span class="n">RoleUser</span><span class="p">(</span><span class="n">manager</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">password</span><span class="p">)</span>
+<span class="n">manager</span><span class="o">.</span><span class="n">addUser</span><span class="p">(</span><span class="n">user</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The manager tracks users by whether or not they are “active”
+(e.g., logged in) and indexes them by:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>user serial number</p></li>
+<li><p>external user id</p></li>
+<li><p>user name</p></li>
+</ul>
+</div></blockquote>
+<p>These methods provide access to the users by these keys:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">userForSerialNum</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">serialNum</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="n">NoDefault</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">userForExternalId</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">extId</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="n">NoDefault</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">userForName</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="n">NoDefault</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>UserManager provides convenient methods for iterating through the
+various users. Each method returns an object that can be used in a
+for loop and asked for its len():</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">users</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">activeUsers</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">inactiveUsers</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>You can authenticate a user by passing the user object and attempted
+password to login(). If the authentication is successful, then login()
+returns the User, otherwise it returns None:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">user</span> <span class="o">=</span> <span class="n">mgr</span><span class="o">.</span><span class="n">userForExternalId</span><span class="p">(</span><span class="n">externalId</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">mgr</span><span class="o">.</span><span class="n">login</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="n">password</span><span class="p">):</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">doSomething</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>As a convenience, you can authenticate by passing the serialNum,
+externalId or name of the user:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">loginSerialNum</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">serialNum</span><span class="p">,</span> <span class="n">password</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">loginExternalId</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">externalId</span><span class="p">,</span> <span class="n">password</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">loginName</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">userName</span><span class="p">,</span> <span class="n">password</span><span class="p">):</span>
+</pre></div>
+</div>
+<p>The user will automatically log out after a period of inactivity
+(see below), or you can make it happen with:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">logout</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user</span><span class="p">):</span>
+</pre></div>
+</div>
+<p>There are three user states that are important to the manager:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>modified</p></li>
+<li><p>cached</p></li>
+<li><p>authenticated or “active”</p></li>
+</ul>
+</div></blockquote>
+<p>A modified user is one whose data has changed and eventually requires
+storage to a persistent location. A cached user is a user whose data
+resides in memory (regardless of the other states). An active user
+has been authenticated (e.g., their username and password were checked)
+and has not yet logged out or timed out.</p>
+<p>The manager keeps three timeouts, expressed in minutes, to:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>save modified users after a period of time following the first
+unsaved modification</p></li>
+<li><p>push users out of memory after a period of inactivity</p></li>
+<li><p>deactivate (e.g., log out) users after a period of inactivity</p></li>
+</ul>
+</div></blockquote>
+<p>The methods for managing these values deal with the timeouts as
+number-of-minutes. The default values and the methods are:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>20  modifiedUserTimeout()  setModifiedUserTimeout()</p></li>
+<li><p>20  cachedUserTimeout()    setCachedUserTimeout()</p></li>
+<li><p>20  activeUserTimeout()    setActiveUserTimeout()</p></li>
+</ul>
+</div></blockquote>
+<p>Subclasses of UserManager provide persistence such as to the file
+system or a MiddleKit store. Subclasses must implement all methods
+that raise AbstractErrors. Subclasses typically override (while still
+invoking super) addUser().</p>
+<p>Subclasses should ensure “uniqueness” of users. For example, invoking
+any of the userForSomething() methods repeatedly should always return
+the same user instance for a given key. Without uniqueness, consistency
+issues could arise with users that are modified.</p>
+<p>Please read the method docstrings and other class documentation to
+fully understand UserKit.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="UserKit.UserManager.UserManager.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">userClass</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#UserKit.UserManager.UserManager.__init__" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="UserKit.UserManager.UserManager.activeUserTimeout">
+<span class="sig-name descname"><span class="pre">activeUserTimeout</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#UserKit.UserManager.UserManager.activeUserTimeout" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="UserKit.UserManager.UserManager.activeUsers">
+<span class="sig-name descname"><span class="pre">activeUsers</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#UserKit.UserManager.UserManager.activeUsers" title="Link to this definition">¶</a></dt>
+<dd><p>Return a list of all active users.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="UserKit.UserManager.UserManager.addUser">
+<span class="sig-name descname"><span class="pre">addUser</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">user</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#UserKit.UserManager.UserManager.addUser" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="UserKit.UserManager.UserManager.cachedUserTimeout">
+<span class="sig-name descname"><span class="pre">cachedUserTimeout</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#UserKit.UserManager.UserManager.cachedUserTimeout" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="UserKit.UserManager.UserManager.clearCache">
+<span class="sig-name descname"><span class="pre">clearCache</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#UserKit.UserManager.UserManager.clearCache" title="Link to this definition">¶</a></dt>
+<dd><p>Clear the cache of the manager.</p>
+<p>Use with extreme caution. If your program maintains a reference
+to a user object, but the manager loads in a new copy later on,
+then consistency problems could occur.</p>
+<p>The most popular use of this method is in the regression test suite.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="UserKit.UserManager.UserManager.createUser">
+<span class="sig-name descname"><span class="pre">createUser</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">password</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">userClass</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#UserKit.UserManager.UserManager.createUser" title="Link to this definition">¶</a></dt>
+<dd><p>Return a newly created user that is added to the manager.</p>
+<p>If userClass is not specified, the manager’s default user class
+is instantiated. This not imply that the user is logged in.
+This method invokes self.addUser().</p>
+<p>See also: userClass(), setUserClass()</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="UserKit.UserManager.UserManager.inactiveUsers">
+<span class="sig-name descname"><span class="pre">inactiveUsers</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#UserKit.UserManager.UserManager.inactiveUsers" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="UserKit.UserManager.UserManager.login">
+<span class="sig-name descname"><span class="pre">login</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">user</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">password</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#UserKit.UserManager.UserManager.login" title="Link to this definition">¶</a></dt>
+<dd><p>Return the user if login is successful, otherwise return None.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="UserKit.UserManager.UserManager.loginExternalId">
+<span class="sig-name descname"><span class="pre">loginExternalId</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">externalId</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">password</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#UserKit.UserManager.UserManager.loginExternalId" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="UserKit.UserManager.UserManager.loginName">
+<span class="sig-name descname"><span class="pre">loginName</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">userName</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">password</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#UserKit.UserManager.UserManager.loginName" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="UserKit.UserManager.UserManager.loginSerialNum">
+<span class="sig-name descname"><span class="pre">loginSerialNum</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">serialNum</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">password</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#UserKit.UserManager.UserManager.loginSerialNum" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="UserKit.UserManager.UserManager.logout">
+<span class="sig-name descname"><span class="pre">logout</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">user</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#UserKit.UserManager.UserManager.logout" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="UserKit.UserManager.UserManager.modifiedUserTimeout">
+<span class="sig-name descname"><span class="pre">modifiedUserTimeout</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#UserKit.UserManager.UserManager.modifiedUserTimeout" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="UserKit.UserManager.UserManager.numActiveUsers">
+<span class="sig-name descname"><span class="pre">numActiveUsers</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#UserKit.UserManager.UserManager.numActiveUsers" title="Link to this definition">¶</a></dt>
+<dd><p>Return the number of active users (e.g. the logged in users).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="UserKit.UserManager.UserManager.setActiveUserTimeout">
+<span class="sig-name descname"><span class="pre">setActiveUserTimeout</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#UserKit.UserManager.UserManager.setActiveUserTimeout" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="UserKit.UserManager.UserManager.setCachedUserTimeout">
+<span class="sig-name descname"><span class="pre">setCachedUserTimeout</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#UserKit.UserManager.UserManager.setCachedUserTimeout" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="UserKit.UserManager.UserManager.setModifiedUserTimeout">
+<span class="sig-name descname"><span class="pre">setModifiedUserTimeout</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#UserKit.UserManager.UserManager.setModifiedUserTimeout" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="UserKit.UserManager.UserManager.setUserClass">
+<span class="sig-name descname"><span class="pre">setUserClass</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">userClass</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#UserKit.UserManager.UserManager.setUserClass" title="Link to this definition">¶</a></dt>
+<dd><p>Set the userClass, which cannot be None and must inherit from User.</p>
+<p>See also: userClass().</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="UserKit.UserManager.UserManager.shutDown">
+<span class="sig-name descname"><span class="pre">shutDown</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#UserKit.UserManager.UserManager.shutDown" title="Link to this definition">¶</a></dt>
+<dd><p>Perform any tasks necessary to shut down the user manager.</p>
+<p>Subclasses may override and must invoke super as their <em>last</em> step.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="UserKit.UserManager.UserManager.userClass">
+<span class="sig-name descname"><span class="pre">userClass</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#UserKit.UserManager.UserManager.userClass" title="Link to this definition">¶</a></dt>
+<dd><p>Return the userClass, which is used by createUser.</p>
+<p>The default value is UserKit.User.User.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="UserKit.UserManager.UserManager.userForExternalId">
+<span class="sig-name descname"><span class="pre">userForExternalId</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">externalId</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default=&lt;class</span> <span class="pre">'MiscUtils.NoDefault'&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#UserKit.UserManager.UserManager.userForExternalId" title="Link to this definition">¶</a></dt>
+<dd><p>Return the user with the given external id.</p>
+<p>The user record is pulled into memory if needed.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="UserKit.UserManager.UserManager.userForName">
+<span class="sig-name descname"><span class="pre">userForName</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default=&lt;class</span> <span class="pre">'MiscUtils.NoDefault'&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#UserKit.UserManager.UserManager.userForName" title="Link to this definition">¶</a></dt>
+<dd><p>Return the user with the given name.</p>
+<p>The user record is pulled into memory if needed.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="UserKit.UserManager.UserManager.userForSerialNum">
+<span class="sig-name descname"><span class="pre">userForSerialNum</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">serialNum</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default=&lt;class</span> <span class="pre">'MiscUtils.NoDefault'&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#UserKit.UserManager.UserManager.userForSerialNum" title="Link to this definition">¶</a></dt>
+<dd><p>Return the user with the given serialNum.</p>
+<p>The user record is pulled into memory if needed.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="UserKit.UserManager.UserManager.users">
+<span class="sig-name descname"><span class="pre">users</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#UserKit.UserManager.UserManager.users" title="Link to this definition">¶</a></dt>
+<dd><p>Return a list of all users (regardless of login status).</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../index.html">Webware for Python 3</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../changes.html">List of Changes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../migrate.html">Migration Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../copyright.html">Copyright and License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorial.html">Beginner Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../appdev.html">Application Development</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../config.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../deploy.html">Deployment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../plugins.html">Plug-ins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../style.html">Style Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../psp.html">PSP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../userkit.html">UserKit</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../taskkit.html">TaskKit</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../webutils.html">WebUtils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../miscutils.html">MiscUtils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../testing.html">Testing</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../core/index.html">Core Classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../psp/index.html">PSP</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">UserKit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../taskkit/index.html">TaskKit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../webutils/index.html">WebUtils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../miscutils/index.html">MiscUtils</a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">API Reference</a><ul>
+  <li><a href="index.html">UserKit</a><ul>
+      <li>Previous: <a href="user.html" title="previous chapter">User</a></li>
+      <li>Next: <a href="usermanagertofile.html" title="next chapter">UserManagerToFile</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;1999-2025, Christoph Zwerschke et al.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.2.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+      |
+      <a href="../../_sources/ref/userkit/usermanager.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

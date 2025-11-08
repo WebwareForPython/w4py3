@@ -1,0 +1,2005 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>HTTPExceptions &#8212; Webware for Python 3 3.1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="../../_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="../../_static/alabaster.css?v=27fed22d" />
+    <script src="../../_static/documentation_options.js?v=dd1205ac"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="copyright" title="Copyright" href="../../copyright.html" />
+    <link rel="next" title="HTTPRequest" href="httprequest.html" />
+    <link rel="prev" title="HTTPContent" href="httpcontent.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="module-HTTPExceptions">
+<span id="httpexceptions"></span><h1>HTTPExceptions<a class="headerlink" href="#module-HTTPExceptions" title="Link to this heading">¶</a></h1>
+<p>HTTP exceptions.</p>
+<p>HTTPExceptions are for situations that are predicted by the HTTP spec.
+Where the <code class="docutils literal notranslate"><span class="pre">200</span> <span class="pre">OK</span></code> response is typical, a <code class="docutils literal notranslate"><span class="pre">404</span> <span class="pre">Not</span> <span class="pre">Found</span></code>
+or <code class="docutils literal notranslate"><span class="pre">301</span> <span class="pre">Moved</span> <span class="pre">Temporarily</span></code> response is not entirely unexpected.</p>
+<p><cite>Application</cite> catches all <cite>HTTPException</cite> exceptions (and subclasses of
+HTTPException), and instead of being errors these are translated into
+responses. In various places these can also be caught and changed, for instance
+an <cite>HTTPAuthenticationRequired</cite> could be turned into a normal login page.</p>
+<dl class="py exception">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPAuthenticationRequired">
+<em class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">HTTPExceptions.</span></span><span class="sig-name descname"><span class="pre">HTTPAuthenticationRequired</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">realm</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPAuthenticationRequired" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#HTTPExceptions.HTTPException" title="HTTPExceptions.HTTPException"><code class="xref py py-class docutils literal notranslate"><span class="pre">HTTPException</span></code></a></p>
+<p>HTTPException “authentication required” subclass.</p>
+<p>HTTPAuthenticationRequired will usually cause the browser to open up an
+HTTP login box, and after getting login information from the user, the
+browser will resubmit the request. However, this should also trigger
+login pages in properly set up environments (though much code will not
+work this way).</p>
+<p>Browsers will usually not send authentication information unless they
+receive this response, even when other pages on the site have given 401
+responses before. So when using this authentication every request will
+usually be doubled, once without authentication, once with.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPAuthenticationRequired.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">realm</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPAuthenticationRequired.__init__" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPAuthenticationRequired.add_note">
+<span class="sig-name descname"><span class="pre">add_note</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="positional-only-separator o"><abbr title="Positional-only parameter separator (PEP 570)"><span class="pre">/</span></abbr></span></em><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPAuthenticationRequired.add_note" title="Link to this definition">¶</a></dt>
+<dd><p>Exception.add_note(note) –
+add a note to the exception</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPAuthenticationRequired.args">
+<span class="sig-name descname"><span class="pre">args</span></span><a class="headerlink" href="#HTTPExceptions.HTTPAuthenticationRequired.args" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPAuthenticationRequired.code">
+<span class="sig-name descname"><span class="pre">code</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPAuthenticationRequired.code" title="Link to this definition">¶</a></dt>
+<dd><p>The integer code.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPAuthenticationRequired.codeMessage">
+<span class="sig-name descname"><span class="pre">codeMessage</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPAuthenticationRequired.codeMessage" title="Link to this definition">¶</a></dt>
+<dd><p>The message (like <code class="docutils literal notranslate"><span class="pre">Not</span> <span class="pre">Found</span></code>) that goes with the code.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPAuthenticationRequired.description">
+<span class="sig-name descname"><span class="pre">description</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPAuthenticationRequired.description" title="Link to this definition">¶</a></dt>
+<dd><p>Error description.</p>
+<p>Possibly a plain text version of the error description,
+though usually just identical to <cite>htDescription</cite>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPAuthenticationRequired.headers">
+<span class="sig-name descname"><span class="pre">headers</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPAuthenticationRequired.headers" title="Link to this definition">¶</a></dt>
+<dd><p>Get headers.</p>
+<p>Additional headers that should be sent with the
+response, not including the Status header. For instance,
+the redirect exception adds a Location header.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPAuthenticationRequired.htBody">
+<span class="sig-name descname"><span class="pre">htBody</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPAuthenticationRequired.htBody" title="Link to this definition">¶</a></dt>
+<dd><p>The HTML body of the page.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPAuthenticationRequired.htDescription">
+<span class="sig-name descname"><span class="pre">htDescription</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPAuthenticationRequired.htDescription" title="Link to this definition">¶</a></dt>
+<dd><p>HTML error description.</p>
+<p>The HTML description of the error, for presentation
+to the browser user.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPAuthenticationRequired.htTitle">
+<span class="sig-name descname"><span class="pre">htTitle</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPAuthenticationRequired.htTitle" title="Link to this definition">¶</a></dt>
+<dd><p>The title, but it may include HTML markup (like italics).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPAuthenticationRequired.html">
+<span class="sig-name descname"><span class="pre">html</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPAuthenticationRequired.html" title="Link to this definition">¶</a></dt>
+<dd><p>The error page.</p>
+<p>The HTML page that should be sent with the error,
+usually a description of the problem.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPAuthenticationRequired.setTransaction">
+<span class="sig-name descname"><span class="pre">setTransaction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">trans</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPAuthenticationRequired.setTransaction" title="Link to this definition">¶</a></dt>
+<dd><p>Set transaction.</p>
+<p>When the exception is caught by <cite>Application</cite>, it tells
+the exception what the transaction is. This way you
+can resolve relative paths, or otherwise act in a manner
+sensitive of the context of the error.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPAuthenticationRequired.title">
+<span class="sig-name descname"><span class="pre">title</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPAuthenticationRequired.title" title="Link to this definition">¶</a></dt>
+<dd><p>The title used in the HTML page.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPAuthenticationRequired.with_traceback">
+<span class="sig-name descname"><span class="pre">with_traceback</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="positional-only-separator o"><abbr title="Positional-only parameter separator (PEP 570)"><span class="pre">/</span></abbr></span></em><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPAuthenticationRequired.with_traceback" title="Link to this definition">¶</a></dt>
+<dd><p>Exception.with_traceback(tb) –
+set self.__traceback__ to tb and return self.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPAuthorizationRequired">
+<span class="sig-prename descclassname"><span class="pre">HTTPExceptions.</span></span><span class="sig-name descname"><span class="pre">HTTPAuthorizationRequired</span></span><a class="headerlink" href="#HTTPExceptions.HTTPAuthorizationRequired" title="Link to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#HTTPExceptions.HTTPAuthenticationRequired" title="HTTPExceptions.HTTPAuthenticationRequired"><code class="xref py py-class docutils literal notranslate"><span class="pre">HTTPAuthenticationRequired</span></code></a></p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPBadRequest">
+<em class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">HTTPExceptions.</span></span><span class="sig-name descname"><span class="pre">HTTPBadRequest</span></span><a class="headerlink" href="#HTTPExceptions.HTTPBadRequest" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#HTTPExceptions.HTTPException" title="HTTPExceptions.HTTPException"><code class="xref py py-class docutils literal notranslate"><span class="pre">HTTPException</span></code></a></p>
+<p>HTTPException “bad request” subclass.</p>
+<p>When the browser sends an invalid request.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPBadRequest.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPBadRequest.__init__" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPBadRequest.add_note">
+<span class="sig-name descname"><span class="pre">add_note</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="positional-only-separator o"><abbr title="Positional-only parameter separator (PEP 570)"><span class="pre">/</span></abbr></span></em><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPBadRequest.add_note" title="Link to this definition">¶</a></dt>
+<dd><p>Exception.add_note(note) –
+add a note to the exception</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPBadRequest.args">
+<span class="sig-name descname"><span class="pre">args</span></span><a class="headerlink" href="#HTTPExceptions.HTTPBadRequest.args" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPBadRequest.code">
+<span class="sig-name descname"><span class="pre">code</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPBadRequest.code" title="Link to this definition">¶</a></dt>
+<dd><p>The integer code.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPBadRequest.codeMessage">
+<span class="sig-name descname"><span class="pre">codeMessage</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPBadRequest.codeMessage" title="Link to this definition">¶</a></dt>
+<dd><p>The message (like <code class="docutils literal notranslate"><span class="pre">Not</span> <span class="pre">Found</span></code>) that goes with the code.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPBadRequest.description">
+<span class="sig-name descname"><span class="pre">description</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPBadRequest.description" title="Link to this definition">¶</a></dt>
+<dd><p>Error description.</p>
+<p>Possibly a plain text version of the error description,
+though usually just identical to <cite>htDescription</cite>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPBadRequest.headers">
+<span class="sig-name descname"><span class="pre">headers</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPBadRequest.headers" title="Link to this definition">¶</a></dt>
+<dd><p>Get headers.</p>
+<p>Additional headers that should be sent with the
+response, not including the Status header. For instance,
+the redirect exception adds a Location header.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPBadRequest.htBody">
+<span class="sig-name descname"><span class="pre">htBody</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPBadRequest.htBody" title="Link to this definition">¶</a></dt>
+<dd><p>The HTML body of the page.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPBadRequest.htDescription">
+<span class="sig-name descname"><span class="pre">htDescription</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPBadRequest.htDescription" title="Link to this definition">¶</a></dt>
+<dd><p>HTML error description.</p>
+<p>The HTML description of the error, for presentation
+to the browser user.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPBadRequest.htTitle">
+<span class="sig-name descname"><span class="pre">htTitle</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPBadRequest.htTitle" title="Link to this definition">¶</a></dt>
+<dd><p>The title, but it may include HTML markup (like italics).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPBadRequest.html">
+<span class="sig-name descname"><span class="pre">html</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPBadRequest.html" title="Link to this definition">¶</a></dt>
+<dd><p>The error page.</p>
+<p>The HTML page that should be sent with the error,
+usually a description of the problem.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPBadRequest.setTransaction">
+<span class="sig-name descname"><span class="pre">setTransaction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">trans</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPBadRequest.setTransaction" title="Link to this definition">¶</a></dt>
+<dd><p>Set transaction.</p>
+<p>When the exception is caught by <cite>Application</cite>, it tells
+the exception what the transaction is. This way you
+can resolve relative paths, or otherwise act in a manner
+sensitive of the context of the error.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPBadRequest.title">
+<span class="sig-name descname"><span class="pre">title</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPBadRequest.title" title="Link to this definition">¶</a></dt>
+<dd><p>The title used in the HTML page.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPBadRequest.with_traceback">
+<span class="sig-name descname"><span class="pre">with_traceback</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="positional-only-separator o"><abbr title="Positional-only parameter separator (PEP 570)"><span class="pre">/</span></abbr></span></em><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPBadRequest.with_traceback" title="Link to this definition">¶</a></dt>
+<dd><p>Exception.with_traceback(tb) –
+set self.__traceback__ to tb and return self.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPConflict">
+<em class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">HTTPExceptions.</span></span><span class="sig-name descname"><span class="pre">HTTPConflict</span></span><a class="headerlink" href="#HTTPExceptions.HTTPConflict" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#HTTPExceptions.HTTPException" title="HTTPExceptions.HTTPException"><code class="xref py py-class docutils literal notranslate"><span class="pre">HTTPException</span></code></a></p>
+<p>HTTPException “conflict” subclass.</p>
+<p>When there’s a locking conflict on this resource (in response to
+something like a PUT, not for most other conflicts). Mostly for WebDAV.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPConflict.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPConflict.__init__" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPConflict.add_note">
+<span class="sig-name descname"><span class="pre">add_note</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="positional-only-separator o"><abbr title="Positional-only parameter separator (PEP 570)"><span class="pre">/</span></abbr></span></em><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPConflict.add_note" title="Link to this definition">¶</a></dt>
+<dd><p>Exception.add_note(note) –
+add a note to the exception</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPConflict.args">
+<span class="sig-name descname"><span class="pre">args</span></span><a class="headerlink" href="#HTTPExceptions.HTTPConflict.args" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPConflict.code">
+<span class="sig-name descname"><span class="pre">code</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPConflict.code" title="Link to this definition">¶</a></dt>
+<dd><p>The integer code.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPConflict.codeMessage">
+<span class="sig-name descname"><span class="pre">codeMessage</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPConflict.codeMessage" title="Link to this definition">¶</a></dt>
+<dd><p>The message (like <code class="docutils literal notranslate"><span class="pre">Not</span> <span class="pre">Found</span></code>) that goes with the code.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPConflict.description">
+<span class="sig-name descname"><span class="pre">description</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPConflict.description" title="Link to this definition">¶</a></dt>
+<dd><p>Error description.</p>
+<p>Possibly a plain text version of the error description,
+though usually just identical to <cite>htDescription</cite>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPConflict.headers">
+<span class="sig-name descname"><span class="pre">headers</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPConflict.headers" title="Link to this definition">¶</a></dt>
+<dd><p>Get headers.</p>
+<p>Additional headers that should be sent with the
+response, not including the Status header. For instance,
+the redirect exception adds a Location header.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPConflict.htBody">
+<span class="sig-name descname"><span class="pre">htBody</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPConflict.htBody" title="Link to this definition">¶</a></dt>
+<dd><p>The HTML body of the page.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPConflict.htDescription">
+<span class="sig-name descname"><span class="pre">htDescription</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPConflict.htDescription" title="Link to this definition">¶</a></dt>
+<dd><p>HTML error description.</p>
+<p>The HTML description of the error, for presentation
+to the browser user.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPConflict.htTitle">
+<span class="sig-name descname"><span class="pre">htTitle</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPConflict.htTitle" title="Link to this definition">¶</a></dt>
+<dd><p>The title, but it may include HTML markup (like italics).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPConflict.html">
+<span class="sig-name descname"><span class="pre">html</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPConflict.html" title="Link to this definition">¶</a></dt>
+<dd><p>The error page.</p>
+<p>The HTML page that should be sent with the error,
+usually a description of the problem.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPConflict.setTransaction">
+<span class="sig-name descname"><span class="pre">setTransaction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">trans</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPConflict.setTransaction" title="Link to this definition">¶</a></dt>
+<dd><p>Set transaction.</p>
+<p>When the exception is caught by <cite>Application</cite>, it tells
+the exception what the transaction is. This way you
+can resolve relative paths, or otherwise act in a manner
+sensitive of the context of the error.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPConflict.title">
+<span class="sig-name descname"><span class="pre">title</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPConflict.title" title="Link to this definition">¶</a></dt>
+<dd><p>The title used in the HTML page.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPConflict.with_traceback">
+<span class="sig-name descname"><span class="pre">with_traceback</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="positional-only-separator o"><abbr title="Positional-only parameter separator (PEP 570)"><span class="pre">/</span></abbr></span></em><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPConflict.with_traceback" title="Link to this definition">¶</a></dt>
+<dd><p>Exception.with_traceback(tb) –
+set self.__traceback__ to tb and return self.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPException">
+<em class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">HTTPExceptions.</span></span><span class="sig-name descname"><span class="pre">HTTPException</span></span><a class="headerlink" href="#HTTPExceptions.HTTPException" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+<p>HTTPException template class.</p>
+<p>Subclasses must define these variables (usually as class variables):</p>
+<dl class="simple">
+<dt><cite>_code</cite>:</dt><dd><p>a tuple of the integer error code, and the short
+description that goes with it (like <code class="docutils literal notranslate"><span class="pre">(200,</span> <span class="pre">&quot;OK&quot;)</span></code>)</p>
+</dd>
+<dt><cite>_description</cite>:</dt><dd><p>the long-winded description, to be presented
+in the response page. Or you can override description()
+if you want something more context-sensitive.</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPException.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPException.__init__" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPException.add_note">
+<span class="sig-name descname"><span class="pre">add_note</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="positional-only-separator o"><abbr title="Positional-only parameter separator (PEP 570)"><span class="pre">/</span></abbr></span></em><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPException.add_note" title="Link to this definition">¶</a></dt>
+<dd><p>Exception.add_note(note) –
+add a note to the exception</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPException.args">
+<span class="sig-name descname"><span class="pre">args</span></span><a class="headerlink" href="#HTTPExceptions.HTTPException.args" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPException.code">
+<span class="sig-name descname"><span class="pre">code</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPException.code" title="Link to this definition">¶</a></dt>
+<dd><p>The integer code.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPException.codeMessage">
+<span class="sig-name descname"><span class="pre">codeMessage</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPException.codeMessage" title="Link to this definition">¶</a></dt>
+<dd><p>The message (like <code class="docutils literal notranslate"><span class="pre">Not</span> <span class="pre">Found</span></code>) that goes with the code.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPException.description">
+<span class="sig-name descname"><span class="pre">description</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPException.description" title="Link to this definition">¶</a></dt>
+<dd><p>Error description.</p>
+<p>Possibly a plain text version of the error description,
+though usually just identical to <cite>htDescription</cite>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPException.headers">
+<span class="sig-name descname"><span class="pre">headers</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPException.headers" title="Link to this definition">¶</a></dt>
+<dd><p>Get headers.</p>
+<p>Additional headers that should be sent with the
+response, not including the Status header. For instance,
+the redirect exception adds a Location header.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPException.htBody">
+<span class="sig-name descname"><span class="pre">htBody</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPException.htBody" title="Link to this definition">¶</a></dt>
+<dd><p>The HTML body of the page.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPException.htDescription">
+<span class="sig-name descname"><span class="pre">htDescription</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPException.htDescription" title="Link to this definition">¶</a></dt>
+<dd><p>HTML error description.</p>
+<p>The HTML description of the error, for presentation
+to the browser user.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPException.htTitle">
+<span class="sig-name descname"><span class="pre">htTitle</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPException.htTitle" title="Link to this definition">¶</a></dt>
+<dd><p>The title, but it may include HTML markup (like italics).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPException.html">
+<span class="sig-name descname"><span class="pre">html</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPException.html" title="Link to this definition">¶</a></dt>
+<dd><p>The error page.</p>
+<p>The HTML page that should be sent with the error,
+usually a description of the problem.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPException.setTransaction">
+<span class="sig-name descname"><span class="pre">setTransaction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">trans</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPException.setTransaction" title="Link to this definition">¶</a></dt>
+<dd><p>Set transaction.</p>
+<p>When the exception is caught by <cite>Application</cite>, it tells
+the exception what the transaction is. This way you
+can resolve relative paths, or otherwise act in a manner
+sensitive of the context of the error.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPException.title">
+<span class="sig-name descname"><span class="pre">title</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPException.title" title="Link to this definition">¶</a></dt>
+<dd><p>The title used in the HTML page.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPException.with_traceback">
+<span class="sig-name descname"><span class="pre">with_traceback</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="positional-only-separator o"><abbr title="Positional-only parameter separator (PEP 570)"><span class="pre">/</span></abbr></span></em><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPException.with_traceback" title="Link to this definition">¶</a></dt>
+<dd><p>Exception.with_traceback(tb) –
+set self.__traceback__ to tb and return self.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPForbidden">
+<em class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">HTTPExceptions.</span></span><span class="sig-name descname"><span class="pre">HTTPForbidden</span></span><a class="headerlink" href="#HTTPExceptions.HTTPForbidden" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#HTTPExceptions.HTTPException" title="HTTPExceptions.HTTPException"><code class="xref py py-class docutils literal notranslate"><span class="pre">HTTPException</span></code></a></p>
+<p>HTTPException “forbidden” subclass.</p>
+<p>When access is not allowed to this resource. If the user is anonymous,
+and must be authenticated, then HTTPAuthenticationRequired is a preferable
+exception. If the user should not be able to get to this resource (at
+least through the path they did), or is authenticated and still doesn’t
+have access, or no one is allowed to view this, then HTTPForbidden would
+be the proper response.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPForbidden.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPForbidden.__init__" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPForbidden.add_note">
+<span class="sig-name descname"><span class="pre">add_note</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="positional-only-separator o"><abbr title="Positional-only parameter separator (PEP 570)"><span class="pre">/</span></abbr></span></em><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPForbidden.add_note" title="Link to this definition">¶</a></dt>
+<dd><p>Exception.add_note(note) –
+add a note to the exception</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPForbidden.args">
+<span class="sig-name descname"><span class="pre">args</span></span><a class="headerlink" href="#HTTPExceptions.HTTPForbidden.args" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPForbidden.code">
+<span class="sig-name descname"><span class="pre">code</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPForbidden.code" title="Link to this definition">¶</a></dt>
+<dd><p>The integer code.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPForbidden.codeMessage">
+<span class="sig-name descname"><span class="pre">codeMessage</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPForbidden.codeMessage" title="Link to this definition">¶</a></dt>
+<dd><p>The message (like <code class="docutils literal notranslate"><span class="pre">Not</span> <span class="pre">Found</span></code>) that goes with the code.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPForbidden.description">
+<span class="sig-name descname"><span class="pre">description</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPForbidden.description" title="Link to this definition">¶</a></dt>
+<dd><p>Error description.</p>
+<p>Possibly a plain text version of the error description,
+though usually just identical to <cite>htDescription</cite>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPForbidden.headers">
+<span class="sig-name descname"><span class="pre">headers</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPForbidden.headers" title="Link to this definition">¶</a></dt>
+<dd><p>Get headers.</p>
+<p>Additional headers that should be sent with the
+response, not including the Status header. For instance,
+the redirect exception adds a Location header.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPForbidden.htBody">
+<span class="sig-name descname"><span class="pre">htBody</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPForbidden.htBody" title="Link to this definition">¶</a></dt>
+<dd><p>The HTML body of the page.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPForbidden.htDescription">
+<span class="sig-name descname"><span class="pre">htDescription</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPForbidden.htDescription" title="Link to this definition">¶</a></dt>
+<dd><p>HTML error description.</p>
+<p>The HTML description of the error, for presentation
+to the browser user.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPForbidden.htTitle">
+<span class="sig-name descname"><span class="pre">htTitle</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPForbidden.htTitle" title="Link to this definition">¶</a></dt>
+<dd><p>The title, but it may include HTML markup (like italics).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPForbidden.html">
+<span class="sig-name descname"><span class="pre">html</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPForbidden.html" title="Link to this definition">¶</a></dt>
+<dd><p>The error page.</p>
+<p>The HTML page that should be sent with the error,
+usually a description of the problem.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPForbidden.setTransaction">
+<span class="sig-name descname"><span class="pre">setTransaction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">trans</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPForbidden.setTransaction" title="Link to this definition">¶</a></dt>
+<dd><p>Set transaction.</p>
+<p>When the exception is caught by <cite>Application</cite>, it tells
+the exception what the transaction is. This way you
+can resolve relative paths, or otherwise act in a manner
+sensitive of the context of the error.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPForbidden.title">
+<span class="sig-name descname"><span class="pre">title</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPForbidden.title" title="Link to this definition">¶</a></dt>
+<dd><p>The title used in the HTML page.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPForbidden.with_traceback">
+<span class="sig-name descname"><span class="pre">with_traceback</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="positional-only-separator o"><abbr title="Positional-only parameter separator (PEP 570)"><span class="pre">/</span></abbr></span></em><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPForbidden.with_traceback" title="Link to this definition">¶</a></dt>
+<dd><p>Exception.with_traceback(tb) –
+set self.__traceback__ to tb and return self.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPInsufficientStorage">
+<em class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">HTTPExceptions.</span></span><span class="sig-name descname"><span class="pre">HTTPInsufficientStorage</span></span><a class="headerlink" href="#HTTPExceptions.HTTPInsufficientStorage" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#HTTPExceptions.HTTPException" title="HTTPExceptions.HTTPException"><code class="xref py py-class docutils literal notranslate"><span class="pre">HTTPException</span></code></a></p>
+<p>HTTPException “insufficient storage” subclass.</p>
+<p>When there is not sufficient storage, usually in response to a PUT when
+there isn’t enough disk space. Mostly for WebDAV.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPInsufficientStorage.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPInsufficientStorage.__init__" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPInsufficientStorage.add_note">
+<span class="sig-name descname"><span class="pre">add_note</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="positional-only-separator o"><abbr title="Positional-only parameter separator (PEP 570)"><span class="pre">/</span></abbr></span></em><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPInsufficientStorage.add_note" title="Link to this definition">¶</a></dt>
+<dd><p>Exception.add_note(note) –
+add a note to the exception</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPInsufficientStorage.args">
+<span class="sig-name descname"><span class="pre">args</span></span><a class="headerlink" href="#HTTPExceptions.HTTPInsufficientStorage.args" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPInsufficientStorage.code">
+<span class="sig-name descname"><span class="pre">code</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPInsufficientStorage.code" title="Link to this definition">¶</a></dt>
+<dd><p>The integer code.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPInsufficientStorage.codeMessage">
+<span class="sig-name descname"><span class="pre">codeMessage</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPInsufficientStorage.codeMessage" title="Link to this definition">¶</a></dt>
+<dd><p>The message (like <code class="docutils literal notranslate"><span class="pre">Not</span> <span class="pre">Found</span></code>) that goes with the code.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPInsufficientStorage.description">
+<span class="sig-name descname"><span class="pre">description</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPInsufficientStorage.description" title="Link to this definition">¶</a></dt>
+<dd><p>Error description.</p>
+<p>Possibly a plain text version of the error description,
+though usually just identical to <cite>htDescription</cite>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPInsufficientStorage.headers">
+<span class="sig-name descname"><span class="pre">headers</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPInsufficientStorage.headers" title="Link to this definition">¶</a></dt>
+<dd><p>Get headers.</p>
+<p>Additional headers that should be sent with the
+response, not including the Status header. For instance,
+the redirect exception adds a Location header.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPInsufficientStorage.htBody">
+<span class="sig-name descname"><span class="pre">htBody</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPInsufficientStorage.htBody" title="Link to this definition">¶</a></dt>
+<dd><p>The HTML body of the page.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPInsufficientStorage.htDescription">
+<span class="sig-name descname"><span class="pre">htDescription</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPInsufficientStorage.htDescription" title="Link to this definition">¶</a></dt>
+<dd><p>HTML error description.</p>
+<p>The HTML description of the error, for presentation
+to the browser user.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPInsufficientStorage.htTitle">
+<span class="sig-name descname"><span class="pre">htTitle</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPInsufficientStorage.htTitle" title="Link to this definition">¶</a></dt>
+<dd><p>The title, but it may include HTML markup (like italics).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPInsufficientStorage.html">
+<span class="sig-name descname"><span class="pre">html</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPInsufficientStorage.html" title="Link to this definition">¶</a></dt>
+<dd><p>The error page.</p>
+<p>The HTML page that should be sent with the error,
+usually a description of the problem.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPInsufficientStorage.setTransaction">
+<span class="sig-name descname"><span class="pre">setTransaction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">trans</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPInsufficientStorage.setTransaction" title="Link to this definition">¶</a></dt>
+<dd><p>Set transaction.</p>
+<p>When the exception is caught by <cite>Application</cite>, it tells
+the exception what the transaction is. This way you
+can resolve relative paths, or otherwise act in a manner
+sensitive of the context of the error.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPInsufficientStorage.title">
+<span class="sig-name descname"><span class="pre">title</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPInsufficientStorage.title" title="Link to this definition">¶</a></dt>
+<dd><p>The title used in the HTML page.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPInsufficientStorage.with_traceback">
+<span class="sig-name descname"><span class="pre">with_traceback</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="positional-only-separator o"><abbr title="Positional-only parameter separator (PEP 570)"><span class="pre">/</span></abbr></span></em><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPInsufficientStorage.with_traceback" title="Link to this definition">¶</a></dt>
+<dd><p>Exception.with_traceback(tb) –
+set self.__traceback__ to tb and return self.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPMethodNotAllowed">
+<em class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">HTTPExceptions.</span></span><span class="sig-name descname"><span class="pre">HTTPMethodNotAllowed</span></span><a class="headerlink" href="#HTTPExceptions.HTTPMethodNotAllowed" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#HTTPExceptions.HTTPException" title="HTTPExceptions.HTTPException"><code class="xref py py-class docutils literal notranslate"><span class="pre">HTTPException</span></code></a></p>
+<p>HTTPException “method not allowed” subclass.</p>
+<p>When a method (like GET, PROPFIND, POST, etc) is not allowed
+on this resource (usually because it does not make sense, not
+because it is not permitted). Mostly for WebDAV.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPMethodNotAllowed.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPMethodNotAllowed.__init__" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPMethodNotAllowed.add_note">
+<span class="sig-name descname"><span class="pre">add_note</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="positional-only-separator o"><abbr title="Positional-only parameter separator (PEP 570)"><span class="pre">/</span></abbr></span></em><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPMethodNotAllowed.add_note" title="Link to this definition">¶</a></dt>
+<dd><p>Exception.add_note(note) –
+add a note to the exception</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPMethodNotAllowed.args">
+<span class="sig-name descname"><span class="pre">args</span></span><a class="headerlink" href="#HTTPExceptions.HTTPMethodNotAllowed.args" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPMethodNotAllowed.code">
+<span class="sig-name descname"><span class="pre">code</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPMethodNotAllowed.code" title="Link to this definition">¶</a></dt>
+<dd><p>The integer code.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPMethodNotAllowed.codeMessage">
+<span class="sig-name descname"><span class="pre">codeMessage</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPMethodNotAllowed.codeMessage" title="Link to this definition">¶</a></dt>
+<dd><p>The message (like <code class="docutils literal notranslate"><span class="pre">Not</span> <span class="pre">Found</span></code>) that goes with the code.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPMethodNotAllowed.description">
+<span class="sig-name descname"><span class="pre">description</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPMethodNotAllowed.description" title="Link to this definition">¶</a></dt>
+<dd><p>Error description.</p>
+<p>Possibly a plain text version of the error description,
+though usually just identical to <cite>htDescription</cite>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPMethodNotAllowed.headers">
+<span class="sig-name descname"><span class="pre">headers</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPMethodNotAllowed.headers" title="Link to this definition">¶</a></dt>
+<dd><p>Get headers.</p>
+<p>Additional headers that should be sent with the
+response, not including the Status header. For instance,
+the redirect exception adds a Location header.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPMethodNotAllowed.htBody">
+<span class="sig-name descname"><span class="pre">htBody</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPMethodNotAllowed.htBody" title="Link to this definition">¶</a></dt>
+<dd><p>The HTML body of the page.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPMethodNotAllowed.htDescription">
+<span class="sig-name descname"><span class="pre">htDescription</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPMethodNotAllowed.htDescription" title="Link to this definition">¶</a></dt>
+<dd><p>HTML error description.</p>
+<p>The HTML description of the error, for presentation
+to the browser user.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPMethodNotAllowed.htTitle">
+<span class="sig-name descname"><span class="pre">htTitle</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPMethodNotAllowed.htTitle" title="Link to this definition">¶</a></dt>
+<dd><p>The title, but it may include HTML markup (like italics).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPMethodNotAllowed.html">
+<span class="sig-name descname"><span class="pre">html</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPMethodNotAllowed.html" title="Link to this definition">¶</a></dt>
+<dd><p>The error page.</p>
+<p>The HTML page that should be sent with the error,
+usually a description of the problem.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPMethodNotAllowed.setTransaction">
+<span class="sig-name descname"><span class="pre">setTransaction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">trans</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPMethodNotAllowed.setTransaction" title="Link to this definition">¶</a></dt>
+<dd><p>Set transaction.</p>
+<p>When the exception is caught by <cite>Application</cite>, it tells
+the exception what the transaction is. This way you
+can resolve relative paths, or otherwise act in a manner
+sensitive of the context of the error.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPMethodNotAllowed.title">
+<span class="sig-name descname"><span class="pre">title</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPMethodNotAllowed.title" title="Link to this definition">¶</a></dt>
+<dd><p>The title used in the HTML page.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPMethodNotAllowed.with_traceback">
+<span class="sig-name descname"><span class="pre">with_traceback</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="positional-only-separator o"><abbr title="Positional-only parameter separator (PEP 570)"><span class="pre">/</span></abbr></span></em><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPMethodNotAllowed.with_traceback" title="Link to this definition">¶</a></dt>
+<dd><p>Exception.with_traceback(tb) –
+set self.__traceback__ to tb and return self.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPMovedPermanently">
+<em class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">HTTPExceptions.</span></span><span class="sig-name descname"><span class="pre">HTTPMovedPermanently</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">location</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">webwareLocation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPMovedPermanently" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#HTTPExceptions.HTTPException" title="HTTPExceptions.HTTPException"><code class="xref py py-class docutils literal notranslate"><span class="pre">HTTPException</span></code></a></p>
+<p>HTTPException “moved permanently” subclass.</p>
+<p>When a resource is permanently moved. The browser may remember this
+relocation, and later requests may skip requesting the original
+resource altogether.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPMovedPermanently.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">location</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">webwareLocation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPMovedPermanently.__init__" title="Link to this definition">¶</a></dt>
+<dd><p>Set destination.</p>
+<p>HTTPMovedPermanently needs a destination that you it should be
+directed to – you can pass <cite>location</cite> <em>or</em> <cite>webwareLocation</cite> –
+if you pass <cite>webwareLocation</cite> it will be relative to the Webware
+root location (the mount point of the WSGI application).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPMovedPermanently.add_note">
+<span class="sig-name descname"><span class="pre">add_note</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="positional-only-separator o"><abbr title="Positional-only parameter separator (PEP 570)"><span class="pre">/</span></abbr></span></em><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPMovedPermanently.add_note" title="Link to this definition">¶</a></dt>
+<dd><p>Exception.add_note(note) –
+add a note to the exception</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPMovedPermanently.args">
+<span class="sig-name descname"><span class="pre">args</span></span><a class="headerlink" href="#HTTPExceptions.HTTPMovedPermanently.args" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPMovedPermanently.code">
+<span class="sig-name descname"><span class="pre">code</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPMovedPermanently.code" title="Link to this definition">¶</a></dt>
+<dd><p>The integer code.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPMovedPermanently.codeMessage">
+<span class="sig-name descname"><span class="pre">codeMessage</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPMovedPermanently.codeMessage" title="Link to this definition">¶</a></dt>
+<dd><p>The message (like <code class="docutils literal notranslate"><span class="pre">Not</span> <span class="pre">Found</span></code>) that goes with the code.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPMovedPermanently.description">
+<span class="sig-name descname"><span class="pre">description</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPMovedPermanently.description" title="Link to this definition">¶</a></dt>
+<dd><p>Error description.</p>
+<p>Possibly a plain text version of the error description,
+though usually just identical to <cite>htDescription</cite>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPMovedPermanently.headers">
+<span class="sig-name descname"><span class="pre">headers</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPMovedPermanently.headers" title="Link to this definition">¶</a></dt>
+<dd><p>We include a Location header.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPMovedPermanently.htBody">
+<span class="sig-name descname"><span class="pre">htBody</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPMovedPermanently.htBody" title="Link to this definition">¶</a></dt>
+<dd><p>The HTML body of the page.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPMovedPermanently.htDescription">
+<span class="sig-name descname"><span class="pre">htDescription</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPMovedPermanently.htDescription" title="Link to this definition">¶</a></dt>
+<dd><p>HTML error description.</p>
+<p>The HTML description of the error, for presentation
+to the browser user.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPMovedPermanently.htTitle">
+<span class="sig-name descname"><span class="pre">htTitle</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPMovedPermanently.htTitle" title="Link to this definition">¶</a></dt>
+<dd><p>The title, but it may include HTML markup (like italics).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPMovedPermanently.html">
+<span class="sig-name descname"><span class="pre">html</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPMovedPermanently.html" title="Link to this definition">¶</a></dt>
+<dd><p>The error page.</p>
+<p>The HTML page that should be sent with the error,
+usually a description of the problem.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPMovedPermanently.location">
+<span class="sig-name descname"><span class="pre">location</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPMovedPermanently.location" title="Link to this definition">¶</a></dt>
+<dd><p>The location that we will be redirecting to.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPMovedPermanently.setTransaction">
+<span class="sig-name descname"><span class="pre">setTransaction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">trans</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPMovedPermanently.setTransaction" title="Link to this definition">¶</a></dt>
+<dd><p>Set transaction.</p>
+<p>When the exception is caught by <cite>Application</cite>, it tells
+the exception what the transaction is. This way you
+can resolve relative paths, or otherwise act in a manner
+sensitive of the context of the error.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPMovedPermanently.title">
+<span class="sig-name descname"><span class="pre">title</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPMovedPermanently.title" title="Link to this definition">¶</a></dt>
+<dd><p>The title used in the HTML page.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPMovedPermanently.with_traceback">
+<span class="sig-name descname"><span class="pre">with_traceback</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="positional-only-separator o"><abbr title="Positional-only parameter separator (PEP 570)"><span class="pre">/</span></abbr></span></em><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPMovedPermanently.with_traceback" title="Link to this definition">¶</a></dt>
+<dd><p>Exception.with_traceback(tb) –
+set self.__traceback__ to tb and return self.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPNotFound">
+<em class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">HTTPExceptions.</span></span><span class="sig-name descname"><span class="pre">HTTPNotFound</span></span><a class="headerlink" href="#HTTPExceptions.HTTPNotFound" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#HTTPExceptions.HTTPException" title="HTTPExceptions.HTTPException"><code class="xref py py-class docutils literal notranslate"><span class="pre">HTTPException</span></code></a></p>
+<p>HTTPException “not found” subclass.</p>
+<p>When the requested resource does not exist. To be more secretive,
+it is okay to return a 404 if access to the resource is not permitted
+(you are not required to use HTTPForbidden, though it makes it more
+clear why access was disallowed).</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPNotFound.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPNotFound.__init__" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPNotFound.add_note">
+<span class="sig-name descname"><span class="pre">add_note</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="positional-only-separator o"><abbr title="Positional-only parameter separator (PEP 570)"><span class="pre">/</span></abbr></span></em><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPNotFound.add_note" title="Link to this definition">¶</a></dt>
+<dd><p>Exception.add_note(note) –
+add a note to the exception</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPNotFound.args">
+<span class="sig-name descname"><span class="pre">args</span></span><a class="headerlink" href="#HTTPExceptions.HTTPNotFound.args" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPNotFound.code">
+<span class="sig-name descname"><span class="pre">code</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPNotFound.code" title="Link to this definition">¶</a></dt>
+<dd><p>The integer code.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPNotFound.codeMessage">
+<span class="sig-name descname"><span class="pre">codeMessage</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPNotFound.codeMessage" title="Link to this definition">¶</a></dt>
+<dd><p>The message (like <code class="docutils literal notranslate"><span class="pre">Not</span> <span class="pre">Found</span></code>) that goes with the code.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPNotFound.description">
+<span class="sig-name descname"><span class="pre">description</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPNotFound.description" title="Link to this definition">¶</a></dt>
+<dd><p>Error description.</p>
+<p>Possibly a plain text version of the error description,
+though usually just identical to <cite>htDescription</cite>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPNotFound.headers">
+<span class="sig-name descname"><span class="pre">headers</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPNotFound.headers" title="Link to this definition">¶</a></dt>
+<dd><p>Get headers.</p>
+<p>Additional headers that should be sent with the
+response, not including the Status header. For instance,
+the redirect exception adds a Location header.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPNotFound.htBody">
+<span class="sig-name descname"><span class="pre">htBody</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPNotFound.htBody" title="Link to this definition">¶</a></dt>
+<dd><p>The HTML body of the page.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPNotFound.htDescription">
+<span class="sig-name descname"><span class="pre">htDescription</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPNotFound.htDescription" title="Link to this definition">¶</a></dt>
+<dd><p>HTML error description.</p>
+<p>The HTML description of the error, for presentation
+to the browser user.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPNotFound.htTitle">
+<span class="sig-name descname"><span class="pre">htTitle</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPNotFound.htTitle" title="Link to this definition">¶</a></dt>
+<dd><p>The title, but it may include HTML markup (like italics).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPNotFound.html">
+<span class="sig-name descname"><span class="pre">html</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPNotFound.html" title="Link to this definition">¶</a></dt>
+<dd><p>The error page.</p>
+<p>The HTML page that should be sent with the error,
+usually a description of the problem.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPNotFound.setTransaction">
+<span class="sig-name descname"><span class="pre">setTransaction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">trans</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPNotFound.setTransaction" title="Link to this definition">¶</a></dt>
+<dd><p>Set transaction.</p>
+<p>When the exception is caught by <cite>Application</cite>, it tells
+the exception what the transaction is. This way you
+can resolve relative paths, or otherwise act in a manner
+sensitive of the context of the error.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPNotFound.title">
+<span class="sig-name descname"><span class="pre">title</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPNotFound.title" title="Link to this definition">¶</a></dt>
+<dd><p>The title used in the HTML page.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPNotFound.with_traceback">
+<span class="sig-name descname"><span class="pre">with_traceback</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="positional-only-separator o"><abbr title="Positional-only parameter separator (PEP 570)"><span class="pre">/</span></abbr></span></em><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPNotFound.with_traceback" title="Link to this definition">¶</a></dt>
+<dd><p>Exception.with_traceback(tb) –
+set self.__traceback__ to tb and return self.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPNotImplemented">
+<em class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">HTTPExceptions.</span></span><span class="sig-name descname"><span class="pre">HTTPNotImplemented</span></span><a class="headerlink" href="#HTTPExceptions.HTTPNotImplemented" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#HTTPExceptions.HTTPException" title="HTTPExceptions.HTTPException"><code class="xref py py-class docutils literal notranslate"><span class="pre">HTTPException</span></code></a></p>
+<p>HTTPException “not implemented” subclass.</p>
+<p>When methods (like GET, POST, PUT, PROPFIND, etc) are not
+implemented for this resource.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPNotImplemented.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPNotImplemented.__init__" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPNotImplemented.add_note">
+<span class="sig-name descname"><span class="pre">add_note</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="positional-only-separator o"><abbr title="Positional-only parameter separator (PEP 570)"><span class="pre">/</span></abbr></span></em><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPNotImplemented.add_note" title="Link to this definition">¶</a></dt>
+<dd><p>Exception.add_note(note) –
+add a note to the exception</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPNotImplemented.args">
+<span class="sig-name descname"><span class="pre">args</span></span><a class="headerlink" href="#HTTPExceptions.HTTPNotImplemented.args" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPNotImplemented.code">
+<span class="sig-name descname"><span class="pre">code</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPNotImplemented.code" title="Link to this definition">¶</a></dt>
+<dd><p>The integer code.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPNotImplemented.codeMessage">
+<span class="sig-name descname"><span class="pre">codeMessage</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPNotImplemented.codeMessage" title="Link to this definition">¶</a></dt>
+<dd><p>The message (like <code class="docutils literal notranslate"><span class="pre">Not</span> <span class="pre">Found</span></code>) that goes with the code.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPNotImplemented.description">
+<span class="sig-name descname"><span class="pre">description</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPNotImplemented.description" title="Link to this definition">¶</a></dt>
+<dd><p>Error description.</p>
+<p>Possibly a plain text version of the error description,
+though usually just identical to <cite>htDescription</cite>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPNotImplemented.headers">
+<span class="sig-name descname"><span class="pre">headers</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPNotImplemented.headers" title="Link to this definition">¶</a></dt>
+<dd><p>Get headers.</p>
+<p>Additional headers that should be sent with the
+response, not including the Status header. For instance,
+the redirect exception adds a Location header.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPNotImplemented.htBody">
+<span class="sig-name descname"><span class="pre">htBody</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPNotImplemented.htBody" title="Link to this definition">¶</a></dt>
+<dd><p>The HTML body of the page.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPNotImplemented.htDescription">
+<span class="sig-name descname"><span class="pre">htDescription</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPNotImplemented.htDescription" title="Link to this definition">¶</a></dt>
+<dd><p>HTML error description.</p>
+<p>The HTML description of the error, for presentation
+to the browser user.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPNotImplemented.htTitle">
+<span class="sig-name descname"><span class="pre">htTitle</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPNotImplemented.htTitle" title="Link to this definition">¶</a></dt>
+<dd><p>The title, but it may include HTML markup (like italics).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPNotImplemented.html">
+<span class="sig-name descname"><span class="pre">html</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPNotImplemented.html" title="Link to this definition">¶</a></dt>
+<dd><p>The error page.</p>
+<p>The HTML page that should be sent with the error,
+usually a description of the problem.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPNotImplemented.setTransaction">
+<span class="sig-name descname"><span class="pre">setTransaction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">trans</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPNotImplemented.setTransaction" title="Link to this definition">¶</a></dt>
+<dd><p>Set transaction.</p>
+<p>When the exception is caught by <cite>Application</cite>, it tells
+the exception what the transaction is. This way you
+can resolve relative paths, or otherwise act in a manner
+sensitive of the context of the error.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPNotImplemented.title">
+<span class="sig-name descname"><span class="pre">title</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPNotImplemented.title" title="Link to this definition">¶</a></dt>
+<dd><p>The title used in the HTML page.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPNotImplemented.with_traceback">
+<span class="sig-name descname"><span class="pre">with_traceback</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="positional-only-separator o"><abbr title="Positional-only parameter separator (PEP 570)"><span class="pre">/</span></abbr></span></em><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPNotImplemented.with_traceback" title="Link to this definition">¶</a></dt>
+<dd><p>Exception.with_traceback(tb) –
+set self.__traceback__ to tb and return self.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPPreconditionFailed">
+<em class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">HTTPExceptions.</span></span><span class="sig-name descname"><span class="pre">HTTPPreconditionFailed</span></span><a class="headerlink" href="#HTTPExceptions.HTTPPreconditionFailed" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#HTTPExceptions.HTTPException" title="HTTPExceptions.HTTPException"><code class="xref py py-class docutils literal notranslate"><span class="pre">HTTPException</span></code></a></p>
+<p>HTTPException “Precondition Failed” subclass.</p>
+<p>During compound, atomic operations, when a precondition for an early
+operation fail, then later operations in will fail with this code.
+Mostly for WebDAV.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPPreconditionFailed.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPPreconditionFailed.__init__" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPPreconditionFailed.add_note">
+<span class="sig-name descname"><span class="pre">add_note</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="positional-only-separator o"><abbr title="Positional-only parameter separator (PEP 570)"><span class="pre">/</span></abbr></span></em><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPPreconditionFailed.add_note" title="Link to this definition">¶</a></dt>
+<dd><p>Exception.add_note(note) –
+add a note to the exception</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPPreconditionFailed.args">
+<span class="sig-name descname"><span class="pre">args</span></span><a class="headerlink" href="#HTTPExceptions.HTTPPreconditionFailed.args" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPPreconditionFailed.code">
+<span class="sig-name descname"><span class="pre">code</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPPreconditionFailed.code" title="Link to this definition">¶</a></dt>
+<dd><p>The integer code.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPPreconditionFailed.codeMessage">
+<span class="sig-name descname"><span class="pre">codeMessage</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPPreconditionFailed.codeMessage" title="Link to this definition">¶</a></dt>
+<dd><p>The message (like <code class="docutils literal notranslate"><span class="pre">Not</span> <span class="pre">Found</span></code>) that goes with the code.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPPreconditionFailed.description">
+<span class="sig-name descname"><span class="pre">description</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPPreconditionFailed.description" title="Link to this definition">¶</a></dt>
+<dd><p>Error description.</p>
+<p>Possibly a plain text version of the error description,
+though usually just identical to <cite>htDescription</cite>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPPreconditionFailed.headers">
+<span class="sig-name descname"><span class="pre">headers</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPPreconditionFailed.headers" title="Link to this definition">¶</a></dt>
+<dd><p>Get headers.</p>
+<p>Additional headers that should be sent with the
+response, not including the Status header. For instance,
+the redirect exception adds a Location header.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPPreconditionFailed.htBody">
+<span class="sig-name descname"><span class="pre">htBody</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPPreconditionFailed.htBody" title="Link to this definition">¶</a></dt>
+<dd><p>The HTML body of the page.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPPreconditionFailed.htDescription">
+<span class="sig-name descname"><span class="pre">htDescription</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPPreconditionFailed.htDescription" title="Link to this definition">¶</a></dt>
+<dd><p>HTML error description.</p>
+<p>The HTML description of the error, for presentation
+to the browser user.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPPreconditionFailed.htTitle">
+<span class="sig-name descname"><span class="pre">htTitle</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPPreconditionFailed.htTitle" title="Link to this definition">¶</a></dt>
+<dd><p>The title, but it may include HTML markup (like italics).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPPreconditionFailed.html">
+<span class="sig-name descname"><span class="pre">html</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPPreconditionFailed.html" title="Link to this definition">¶</a></dt>
+<dd><p>The error page.</p>
+<p>The HTML page that should be sent with the error,
+usually a description of the problem.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPPreconditionFailed.setTransaction">
+<span class="sig-name descname"><span class="pre">setTransaction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">trans</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPPreconditionFailed.setTransaction" title="Link to this definition">¶</a></dt>
+<dd><p>Set transaction.</p>
+<p>When the exception is caught by <cite>Application</cite>, it tells
+the exception what the transaction is. This way you
+can resolve relative paths, or otherwise act in a manner
+sensitive of the context of the error.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPPreconditionFailed.title">
+<span class="sig-name descname"><span class="pre">title</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPPreconditionFailed.title" title="Link to this definition">¶</a></dt>
+<dd><p>The title used in the HTML page.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPPreconditionFailed.with_traceback">
+<span class="sig-name descname"><span class="pre">with_traceback</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="positional-only-separator o"><abbr title="Positional-only parameter separator (PEP 570)"><span class="pre">/</span></abbr></span></em><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPPreconditionFailed.with_traceback" title="Link to this definition">¶</a></dt>
+<dd><p>Exception.with_traceback(tb) –
+set self.__traceback__ to tb and return self.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPRedirect">
+<span class="sig-prename descclassname"><span class="pre">HTTPExceptions.</span></span><span class="sig-name descname"><span class="pre">HTTPRedirect</span></span><a class="headerlink" href="#HTTPExceptions.HTTPRedirect" title="Link to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#HTTPExceptions.HTTPTemporaryRedirect" title="HTTPExceptions.HTTPTemporaryRedirect"><code class="xref py py-class docutils literal notranslate"><span class="pre">HTTPTemporaryRedirect</span></code></a></p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPRequestTimeout">
+<em class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">HTTPExceptions.</span></span><span class="sig-name descname"><span class="pre">HTTPRequestTimeout</span></span><a class="headerlink" href="#HTTPExceptions.HTTPRequestTimeout" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#HTTPExceptions.HTTPException" title="HTTPExceptions.HTTPException"><code class="xref py py-class docutils literal notranslate"><span class="pre">HTTPException</span></code></a></p>
+<p>HTTPException “request timeout” subclass.</p>
+<p>The client did not produce a request within the time that the
+server was prepared to wait. The client may repeat the request
+without modifications at any later time.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPRequestTimeout.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPRequestTimeout.__init__" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPRequestTimeout.add_note">
+<span class="sig-name descname"><span class="pre">add_note</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="positional-only-separator o"><abbr title="Positional-only parameter separator (PEP 570)"><span class="pre">/</span></abbr></span></em><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPRequestTimeout.add_note" title="Link to this definition">¶</a></dt>
+<dd><p>Exception.add_note(note) –
+add a note to the exception</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPRequestTimeout.args">
+<span class="sig-name descname"><span class="pre">args</span></span><a class="headerlink" href="#HTTPExceptions.HTTPRequestTimeout.args" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPRequestTimeout.code">
+<span class="sig-name descname"><span class="pre">code</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPRequestTimeout.code" title="Link to this definition">¶</a></dt>
+<dd><p>The integer code.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPRequestTimeout.codeMessage">
+<span class="sig-name descname"><span class="pre">codeMessage</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPRequestTimeout.codeMessage" title="Link to this definition">¶</a></dt>
+<dd><p>The message (like <code class="docutils literal notranslate"><span class="pre">Not</span> <span class="pre">Found</span></code>) that goes with the code.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPRequestTimeout.description">
+<span class="sig-name descname"><span class="pre">description</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPRequestTimeout.description" title="Link to this definition">¶</a></dt>
+<dd><p>Error description.</p>
+<p>Possibly a plain text version of the error description,
+though usually just identical to <cite>htDescription</cite>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPRequestTimeout.headers">
+<span class="sig-name descname"><span class="pre">headers</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPRequestTimeout.headers" title="Link to this definition">¶</a></dt>
+<dd><p>Get headers.</p>
+<p>Additional headers that should be sent with the
+response, not including the Status header. For instance,
+the redirect exception adds a Location header.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPRequestTimeout.htBody">
+<span class="sig-name descname"><span class="pre">htBody</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPRequestTimeout.htBody" title="Link to this definition">¶</a></dt>
+<dd><p>The HTML body of the page.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPRequestTimeout.htDescription">
+<span class="sig-name descname"><span class="pre">htDescription</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPRequestTimeout.htDescription" title="Link to this definition">¶</a></dt>
+<dd><p>HTML error description.</p>
+<p>The HTML description of the error, for presentation
+to the browser user.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPRequestTimeout.htTitle">
+<span class="sig-name descname"><span class="pre">htTitle</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPRequestTimeout.htTitle" title="Link to this definition">¶</a></dt>
+<dd><p>The title, but it may include HTML markup (like italics).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPRequestTimeout.html">
+<span class="sig-name descname"><span class="pre">html</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPRequestTimeout.html" title="Link to this definition">¶</a></dt>
+<dd><p>The error page.</p>
+<p>The HTML page that should be sent with the error,
+usually a description of the problem.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPRequestTimeout.setTransaction">
+<span class="sig-name descname"><span class="pre">setTransaction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">trans</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPRequestTimeout.setTransaction" title="Link to this definition">¶</a></dt>
+<dd><p>Set transaction.</p>
+<p>When the exception is caught by <cite>Application</cite>, it tells
+the exception what the transaction is. This way you
+can resolve relative paths, or otherwise act in a manner
+sensitive of the context of the error.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPRequestTimeout.title">
+<span class="sig-name descname"><span class="pre">title</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPRequestTimeout.title" title="Link to this definition">¶</a></dt>
+<dd><p>The title used in the HTML page.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPRequestTimeout.with_traceback">
+<span class="sig-name descname"><span class="pre">with_traceback</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="positional-only-separator o"><abbr title="Positional-only parameter separator (PEP 570)"><span class="pre">/</span></abbr></span></em><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPRequestTimeout.with_traceback" title="Link to this definition">¶</a></dt>
+<dd><p>Exception.with_traceback(tb) –
+set self.__traceback__ to tb and return self.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPServerError">
+<em class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">HTTPExceptions.</span></span><span class="sig-name descname"><span class="pre">HTTPServerError</span></span><a class="headerlink" href="#HTTPExceptions.HTTPServerError" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#HTTPExceptions.HTTPException" title="HTTPExceptions.HTTPException"><code class="xref py py-class docutils literal notranslate"><span class="pre">HTTPException</span></code></a></p>
+<p>HTTPException “Server Error” subclass.</p>
+<p>The server encountered an unexpected condition which prevented it
+from fulfilling the request.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPServerError.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPServerError.__init__" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPServerError.add_note">
+<span class="sig-name descname"><span class="pre">add_note</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="positional-only-separator o"><abbr title="Positional-only parameter separator (PEP 570)"><span class="pre">/</span></abbr></span></em><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPServerError.add_note" title="Link to this definition">¶</a></dt>
+<dd><p>Exception.add_note(note) –
+add a note to the exception</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPServerError.args">
+<span class="sig-name descname"><span class="pre">args</span></span><a class="headerlink" href="#HTTPExceptions.HTTPServerError.args" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPServerError.code">
+<span class="sig-name descname"><span class="pre">code</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPServerError.code" title="Link to this definition">¶</a></dt>
+<dd><p>The integer code.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPServerError.codeMessage">
+<span class="sig-name descname"><span class="pre">codeMessage</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPServerError.codeMessage" title="Link to this definition">¶</a></dt>
+<dd><p>The message (like <code class="docutils literal notranslate"><span class="pre">Not</span> <span class="pre">Found</span></code>) that goes with the code.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPServerError.description">
+<span class="sig-name descname"><span class="pre">description</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPServerError.description" title="Link to this definition">¶</a></dt>
+<dd><p>Error description.</p>
+<p>Possibly a plain text version of the error description,
+though usually just identical to <cite>htDescription</cite>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPServerError.headers">
+<span class="sig-name descname"><span class="pre">headers</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPServerError.headers" title="Link to this definition">¶</a></dt>
+<dd><p>Get headers.</p>
+<p>Additional headers that should be sent with the
+response, not including the Status header. For instance,
+the redirect exception adds a Location header.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPServerError.htBody">
+<span class="sig-name descname"><span class="pre">htBody</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPServerError.htBody" title="Link to this definition">¶</a></dt>
+<dd><p>The HTML body of the page.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPServerError.htDescription">
+<span class="sig-name descname"><span class="pre">htDescription</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPServerError.htDescription" title="Link to this definition">¶</a></dt>
+<dd><p>HTML error description.</p>
+<p>The HTML description of the error, for presentation
+to the browser user.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPServerError.htTitle">
+<span class="sig-name descname"><span class="pre">htTitle</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPServerError.htTitle" title="Link to this definition">¶</a></dt>
+<dd><p>The title, but it may include HTML markup (like italics).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPServerError.html">
+<span class="sig-name descname"><span class="pre">html</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPServerError.html" title="Link to this definition">¶</a></dt>
+<dd><p>The error page.</p>
+<p>The HTML page that should be sent with the error,
+usually a description of the problem.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPServerError.setTransaction">
+<span class="sig-name descname"><span class="pre">setTransaction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">trans</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPServerError.setTransaction" title="Link to this definition">¶</a></dt>
+<dd><p>Set transaction.</p>
+<p>When the exception is caught by <cite>Application</cite>, it tells
+the exception what the transaction is. This way you
+can resolve relative paths, or otherwise act in a manner
+sensitive of the context of the error.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPServerError.title">
+<span class="sig-name descname"><span class="pre">title</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPServerError.title" title="Link to this definition">¶</a></dt>
+<dd><p>The title used in the HTML page.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPServerError.with_traceback">
+<span class="sig-name descname"><span class="pre">with_traceback</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="positional-only-separator o"><abbr title="Positional-only parameter separator (PEP 570)"><span class="pre">/</span></abbr></span></em><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPServerError.with_traceback" title="Link to this definition">¶</a></dt>
+<dd><p>Exception.with_traceback(tb) –
+set self.__traceback__ to tb and return self.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPServiceUnavailable">
+<em class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">HTTPExceptions.</span></span><span class="sig-name descname"><span class="pre">HTTPServiceUnavailable</span></span><a class="headerlink" href="#HTTPExceptions.HTTPServiceUnavailable" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#HTTPExceptions.HTTPException" title="HTTPExceptions.HTTPException"><code class="xref py py-class docutils literal notranslate"><span class="pre">HTTPException</span></code></a></p>
+<p>HTTPException “service unavailable” subclass.</p>
+<p>The server is currently unable to handle the request due to a temporary
+overloading or maintenance of the server. The implication is that this
+is a temporary condition which will be alleviated after some delay.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPServiceUnavailable.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPServiceUnavailable.__init__" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPServiceUnavailable.add_note">
+<span class="sig-name descname"><span class="pre">add_note</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="positional-only-separator o"><abbr title="Positional-only parameter separator (PEP 570)"><span class="pre">/</span></abbr></span></em><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPServiceUnavailable.add_note" title="Link to this definition">¶</a></dt>
+<dd><p>Exception.add_note(note) –
+add a note to the exception</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPServiceUnavailable.args">
+<span class="sig-name descname"><span class="pre">args</span></span><a class="headerlink" href="#HTTPExceptions.HTTPServiceUnavailable.args" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPServiceUnavailable.code">
+<span class="sig-name descname"><span class="pre">code</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPServiceUnavailable.code" title="Link to this definition">¶</a></dt>
+<dd><p>The integer code.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPServiceUnavailable.codeMessage">
+<span class="sig-name descname"><span class="pre">codeMessage</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPServiceUnavailable.codeMessage" title="Link to this definition">¶</a></dt>
+<dd><p>The message (like <code class="docutils literal notranslate"><span class="pre">Not</span> <span class="pre">Found</span></code>) that goes with the code.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPServiceUnavailable.description">
+<span class="sig-name descname"><span class="pre">description</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPServiceUnavailable.description" title="Link to this definition">¶</a></dt>
+<dd><p>Error description.</p>
+<p>Possibly a plain text version of the error description,
+though usually just identical to <cite>htDescription</cite>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPServiceUnavailable.headers">
+<span class="sig-name descname"><span class="pre">headers</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPServiceUnavailable.headers" title="Link to this definition">¶</a></dt>
+<dd><p>Get headers.</p>
+<p>Additional headers that should be sent with the
+response, not including the Status header. For instance,
+the redirect exception adds a Location header.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPServiceUnavailable.htBody">
+<span class="sig-name descname"><span class="pre">htBody</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPServiceUnavailable.htBody" title="Link to this definition">¶</a></dt>
+<dd><p>The HTML body of the page.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPServiceUnavailable.htDescription">
+<span class="sig-name descname"><span class="pre">htDescription</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPServiceUnavailable.htDescription" title="Link to this definition">¶</a></dt>
+<dd><p>HTML error description.</p>
+<p>The HTML description of the error, for presentation
+to the browser user.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPServiceUnavailable.htTitle">
+<span class="sig-name descname"><span class="pre">htTitle</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPServiceUnavailable.htTitle" title="Link to this definition">¶</a></dt>
+<dd><p>The title, but it may include HTML markup (like italics).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPServiceUnavailable.html">
+<span class="sig-name descname"><span class="pre">html</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPServiceUnavailable.html" title="Link to this definition">¶</a></dt>
+<dd><p>The error page.</p>
+<p>The HTML page that should be sent with the error,
+usually a description of the problem.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPServiceUnavailable.setTransaction">
+<span class="sig-name descname"><span class="pre">setTransaction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">trans</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPServiceUnavailable.setTransaction" title="Link to this definition">¶</a></dt>
+<dd><p>Set transaction.</p>
+<p>When the exception is caught by <cite>Application</cite>, it tells
+the exception what the transaction is. This way you
+can resolve relative paths, or otherwise act in a manner
+sensitive of the context of the error.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPServiceUnavailable.title">
+<span class="sig-name descname"><span class="pre">title</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPServiceUnavailable.title" title="Link to this definition">¶</a></dt>
+<dd><p>The title used in the HTML page.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPServiceUnavailable.with_traceback">
+<span class="sig-name descname"><span class="pre">with_traceback</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="positional-only-separator o"><abbr title="Positional-only parameter separator (PEP 570)"><span class="pre">/</span></abbr></span></em><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPServiceUnavailable.with_traceback" title="Link to this definition">¶</a></dt>
+<dd><p>Exception.with_traceback(tb) –
+set self.__traceback__ to tb and return self.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPSessionExpired">
+<em class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">HTTPExceptions.</span></span><span class="sig-name descname"><span class="pre">HTTPSessionExpired</span></span><a class="headerlink" href="#HTTPExceptions.HTTPSessionExpired" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#HTTPExceptions.HTTPException" title="HTTPExceptions.HTTPException"><code class="xref py py-class docutils literal notranslate"><span class="pre">HTTPException</span></code></a></p>
+<p>HTTPException “session expired” subclass.</p>
+<p>This is the same as HTTPAuthenticationRequired, but should be used
+in the situation when a session has expired.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPSessionExpired.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPSessionExpired.__init__" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPSessionExpired.add_note">
+<span class="sig-name descname"><span class="pre">add_note</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="positional-only-separator o"><abbr title="Positional-only parameter separator (PEP 570)"><span class="pre">/</span></abbr></span></em><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPSessionExpired.add_note" title="Link to this definition">¶</a></dt>
+<dd><p>Exception.add_note(note) –
+add a note to the exception</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPSessionExpired.args">
+<span class="sig-name descname"><span class="pre">args</span></span><a class="headerlink" href="#HTTPExceptions.HTTPSessionExpired.args" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPSessionExpired.code">
+<span class="sig-name descname"><span class="pre">code</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPSessionExpired.code" title="Link to this definition">¶</a></dt>
+<dd><p>The integer code.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPSessionExpired.codeMessage">
+<span class="sig-name descname"><span class="pre">codeMessage</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPSessionExpired.codeMessage" title="Link to this definition">¶</a></dt>
+<dd><p>The message (like <code class="docutils literal notranslate"><span class="pre">Not</span> <span class="pre">Found</span></code>) that goes with the code.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPSessionExpired.description">
+<span class="sig-name descname"><span class="pre">description</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPSessionExpired.description" title="Link to this definition">¶</a></dt>
+<dd><p>Error description.</p>
+<p>Possibly a plain text version of the error description,
+though usually just identical to <cite>htDescription</cite>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPSessionExpired.headers">
+<span class="sig-name descname"><span class="pre">headers</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPSessionExpired.headers" title="Link to this definition">¶</a></dt>
+<dd><p>Get headers.</p>
+<p>Additional headers that should be sent with the
+response, not including the Status header. For instance,
+the redirect exception adds a Location header.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPSessionExpired.htBody">
+<span class="sig-name descname"><span class="pre">htBody</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPSessionExpired.htBody" title="Link to this definition">¶</a></dt>
+<dd><p>The HTML body of the page.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPSessionExpired.htDescription">
+<span class="sig-name descname"><span class="pre">htDescription</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPSessionExpired.htDescription" title="Link to this definition">¶</a></dt>
+<dd><p>HTML error description.</p>
+<p>The HTML description of the error, for presentation
+to the browser user.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPSessionExpired.htTitle">
+<span class="sig-name descname"><span class="pre">htTitle</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPSessionExpired.htTitle" title="Link to this definition">¶</a></dt>
+<dd><p>The title, but it may include HTML markup (like italics).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPSessionExpired.html">
+<span class="sig-name descname"><span class="pre">html</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPSessionExpired.html" title="Link to this definition">¶</a></dt>
+<dd><p>The error page.</p>
+<p>The HTML page that should be sent with the error,
+usually a description of the problem.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPSessionExpired.setTransaction">
+<span class="sig-name descname"><span class="pre">setTransaction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">trans</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPSessionExpired.setTransaction" title="Link to this definition">¶</a></dt>
+<dd><p>Set transaction.</p>
+<p>When the exception is caught by <cite>Application</cite>, it tells
+the exception what the transaction is. This way you
+can resolve relative paths, or otherwise act in a manner
+sensitive of the context of the error.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPSessionExpired.title">
+<span class="sig-name descname"><span class="pre">title</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPSessionExpired.title" title="Link to this definition">¶</a></dt>
+<dd><p>The title used in the HTML page.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPSessionExpired.with_traceback">
+<span class="sig-name descname"><span class="pre">with_traceback</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="positional-only-separator o"><abbr title="Positional-only parameter separator (PEP 570)"><span class="pre">/</span></abbr></span></em><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPSessionExpired.with_traceback" title="Link to this definition">¶</a></dt>
+<dd><p>Exception.with_traceback(tb) –
+set self.__traceback__ to tb and return self.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPTemporaryRedirect">
+<em class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">HTTPExceptions.</span></span><span class="sig-name descname"><span class="pre">HTTPTemporaryRedirect</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">location</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">webwareLocation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPTemporaryRedirect" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#HTTPExceptions.HTTPMovedPermanently" title="HTTPExceptions.HTTPMovedPermanently"><code class="xref py py-class docutils literal notranslate"><span class="pre">HTTPMovedPermanently</span></code></a></p>
+<p>HTTPException “temporary redirect” subclass.</p>
+<p>Like HTTPMovedPermanently, except the redirect is only valid for this
+request. Internally identical to HTTPMovedPermanently, except with a
+different response code. Browsers will check the server for each request
+to see where it’s redirected to.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPTemporaryRedirect.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">location</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">webwareLocation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPTemporaryRedirect.__init__" title="Link to this definition">¶</a></dt>
+<dd><p>Set destination.</p>
+<p>HTTPMovedPermanently needs a destination that you it should be
+directed to – you can pass <cite>location</cite> <em>or</em> <cite>webwareLocation</cite> –
+if you pass <cite>webwareLocation</cite> it will be relative to the Webware
+root location (the mount point of the WSGI application).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPTemporaryRedirect.add_note">
+<span class="sig-name descname"><span class="pre">add_note</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="positional-only-separator o"><abbr title="Positional-only parameter separator (PEP 570)"><span class="pre">/</span></abbr></span></em><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPTemporaryRedirect.add_note" title="Link to this definition">¶</a></dt>
+<dd><p>Exception.add_note(note) –
+add a note to the exception</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPTemporaryRedirect.args">
+<span class="sig-name descname"><span class="pre">args</span></span><a class="headerlink" href="#HTTPExceptions.HTTPTemporaryRedirect.args" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPTemporaryRedirect.code">
+<span class="sig-name descname"><span class="pre">code</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPTemporaryRedirect.code" title="Link to this definition">¶</a></dt>
+<dd><p>The integer code.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPTemporaryRedirect.codeMessage">
+<span class="sig-name descname"><span class="pre">codeMessage</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPTemporaryRedirect.codeMessage" title="Link to this definition">¶</a></dt>
+<dd><p>The message (like <code class="docutils literal notranslate"><span class="pre">Not</span> <span class="pre">Found</span></code>) that goes with the code.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPTemporaryRedirect.description">
+<span class="sig-name descname"><span class="pre">description</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPTemporaryRedirect.description" title="Link to this definition">¶</a></dt>
+<dd><p>Error description.</p>
+<p>Possibly a plain text version of the error description,
+though usually just identical to <cite>htDescription</cite>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPTemporaryRedirect.headers">
+<span class="sig-name descname"><span class="pre">headers</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPTemporaryRedirect.headers" title="Link to this definition">¶</a></dt>
+<dd><p>We include a Location header.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPTemporaryRedirect.htBody">
+<span class="sig-name descname"><span class="pre">htBody</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPTemporaryRedirect.htBody" title="Link to this definition">¶</a></dt>
+<dd><p>The HTML body of the page.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPTemporaryRedirect.htDescription">
+<span class="sig-name descname"><span class="pre">htDescription</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPTemporaryRedirect.htDescription" title="Link to this definition">¶</a></dt>
+<dd><p>HTML error description.</p>
+<p>The HTML description of the error, for presentation
+to the browser user.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPTemporaryRedirect.htTitle">
+<span class="sig-name descname"><span class="pre">htTitle</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPTemporaryRedirect.htTitle" title="Link to this definition">¶</a></dt>
+<dd><p>The title, but it may include HTML markup (like italics).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPTemporaryRedirect.html">
+<span class="sig-name descname"><span class="pre">html</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPTemporaryRedirect.html" title="Link to this definition">¶</a></dt>
+<dd><p>The error page.</p>
+<p>The HTML page that should be sent with the error,
+usually a description of the problem.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPTemporaryRedirect.location">
+<span class="sig-name descname"><span class="pre">location</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPTemporaryRedirect.location" title="Link to this definition">¶</a></dt>
+<dd><p>The location that we will be redirecting to.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPTemporaryRedirect.setTransaction">
+<span class="sig-name descname"><span class="pre">setTransaction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">trans</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPTemporaryRedirect.setTransaction" title="Link to this definition">¶</a></dt>
+<dd><p>Set transaction.</p>
+<p>When the exception is caught by <cite>Application</cite>, it tells
+the exception what the transaction is. This way you
+can resolve relative paths, or otherwise act in a manner
+sensitive of the context of the error.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPTemporaryRedirect.title">
+<span class="sig-name descname"><span class="pre">title</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPTemporaryRedirect.title" title="Link to this definition">¶</a></dt>
+<dd><p>The title used in the HTML page.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPTemporaryRedirect.with_traceback">
+<span class="sig-name descname"><span class="pre">with_traceback</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="positional-only-separator o"><abbr title="Positional-only parameter separator (PEP 570)"><span class="pre">/</span></abbr></span></em><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPTemporaryRedirect.with_traceback" title="Link to this definition">¶</a></dt>
+<dd><p>Exception.with_traceback(tb) –
+set self.__traceback__ to tb and return self.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPUnsupportedMediaType">
+<em class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">HTTPExceptions.</span></span><span class="sig-name descname"><span class="pre">HTTPUnsupportedMediaType</span></span><a class="headerlink" href="#HTTPExceptions.HTTPUnsupportedMediaType" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#HTTPExceptions.HTTPException" title="HTTPExceptions.HTTPException"><code class="xref py py-class docutils literal notranslate"><span class="pre">HTTPException</span></code></a></p>
+<p>HTTPException “unsupported media type” subclass.</p>
+<p>The server is refusing to service the request because the entity
+of the request is in a format not supported by the requested resource
+for the requested method.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPUnsupportedMediaType.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPUnsupportedMediaType.__init__" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPUnsupportedMediaType.add_note">
+<span class="sig-name descname"><span class="pre">add_note</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="positional-only-separator o"><abbr title="Positional-only parameter separator (PEP 570)"><span class="pre">/</span></abbr></span></em><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPUnsupportedMediaType.add_note" title="Link to this definition">¶</a></dt>
+<dd><p>Exception.add_note(note) –
+add a note to the exception</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPUnsupportedMediaType.args">
+<span class="sig-name descname"><span class="pre">args</span></span><a class="headerlink" href="#HTTPExceptions.HTTPUnsupportedMediaType.args" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPUnsupportedMediaType.code">
+<span class="sig-name descname"><span class="pre">code</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPUnsupportedMediaType.code" title="Link to this definition">¶</a></dt>
+<dd><p>The integer code.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPUnsupportedMediaType.codeMessage">
+<span class="sig-name descname"><span class="pre">codeMessage</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPUnsupportedMediaType.codeMessage" title="Link to this definition">¶</a></dt>
+<dd><p>The message (like <code class="docutils literal notranslate"><span class="pre">Not</span> <span class="pre">Found</span></code>) that goes with the code.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPUnsupportedMediaType.description">
+<span class="sig-name descname"><span class="pre">description</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPUnsupportedMediaType.description" title="Link to this definition">¶</a></dt>
+<dd><p>Error description.</p>
+<p>Possibly a plain text version of the error description,
+though usually just identical to <cite>htDescription</cite>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPUnsupportedMediaType.headers">
+<span class="sig-name descname"><span class="pre">headers</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPUnsupportedMediaType.headers" title="Link to this definition">¶</a></dt>
+<dd><p>Get headers.</p>
+<p>Additional headers that should be sent with the
+response, not including the Status header. For instance,
+the redirect exception adds a Location header.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPUnsupportedMediaType.htBody">
+<span class="sig-name descname"><span class="pre">htBody</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPUnsupportedMediaType.htBody" title="Link to this definition">¶</a></dt>
+<dd><p>The HTML body of the page.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPUnsupportedMediaType.htDescription">
+<span class="sig-name descname"><span class="pre">htDescription</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPUnsupportedMediaType.htDescription" title="Link to this definition">¶</a></dt>
+<dd><p>HTML error description.</p>
+<p>The HTML description of the error, for presentation
+to the browser user.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPUnsupportedMediaType.htTitle">
+<span class="sig-name descname"><span class="pre">htTitle</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPUnsupportedMediaType.htTitle" title="Link to this definition">¶</a></dt>
+<dd><p>The title, but it may include HTML markup (like italics).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPUnsupportedMediaType.html">
+<span class="sig-name descname"><span class="pre">html</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPUnsupportedMediaType.html" title="Link to this definition">¶</a></dt>
+<dd><p>The error page.</p>
+<p>The HTML page that should be sent with the error,
+usually a description of the problem.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPUnsupportedMediaType.setTransaction">
+<span class="sig-name descname"><span class="pre">setTransaction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">trans</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPUnsupportedMediaType.setTransaction" title="Link to this definition">¶</a></dt>
+<dd><p>Set transaction.</p>
+<p>When the exception is caught by <cite>Application</cite>, it tells
+the exception what the transaction is. This way you
+can resolve relative paths, or otherwise act in a manner
+sensitive of the context of the error.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPUnsupportedMediaType.title">
+<span class="sig-name descname"><span class="pre">title</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPUnsupportedMediaType.title" title="Link to this definition">¶</a></dt>
+<dd><p>The title used in the HTML page.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPExceptions.HTTPUnsupportedMediaType.with_traceback">
+<span class="sig-name descname"><span class="pre">with_traceback</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="positional-only-separator o"><abbr title="Positional-only parameter separator (PEP 570)"><span class="pre">/</span></abbr></span></em><span class="sig-paren">)</span><a class="headerlink" href="#HTTPExceptions.HTTPUnsupportedMediaType.with_traceback" title="Link to this definition">¶</a></dt>
+<dd><p>Exception.with_traceback(tb) –
+set self.__traceback__ to tb and return self.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../index.html">Webware for Python 3</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../changes.html">List of Changes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../migrate.html">Migration Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../copyright.html">Copyright and License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorial.html">Beginner Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../appdev.html">Application Development</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../config.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../deploy.html">Deployment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../plugins.html">Plug-ins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../style.html">Style Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../psp.html">PSP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../userkit.html">UserKit</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../taskkit.html">TaskKit</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../webutils.html">WebUtils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../miscutils.html">MiscUtils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../testing.html">Testing</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Core Classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../psp/index.html">PSP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../userkit/index.html">UserKit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../taskkit/index.html">TaskKit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../webutils/index.html">WebUtils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../miscutils/index.html">MiscUtils</a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">API Reference</a><ul>
+  <li><a href="index.html">Core Classes</a><ul>
+      <li>Previous: <a href="httpcontent.html" title="previous chapter">HTTPContent</a></li>
+      <li>Next: <a href="httprequest.html" title="next chapter">HTTPRequest</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;1999-2025, Christoph Zwerschke et al.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.2.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+      |
+      <a href="../../_sources/ref/core/httpexceptions.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

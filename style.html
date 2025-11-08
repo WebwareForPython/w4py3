@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Style Guidelines &#8212; Webware for Python 3 3.1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=27fed22d" />
+    <script src="_static/documentation_options.js?v=dd1205ac"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="copyright" title="Copyright" href="copyright.html" />
+    <link rel="next" title="PSP" href="psp.html" />
+    <link rel="prev" title="Plug-ins" href="plugins.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="style-guidelines">
+<span id="id1"></span><h1>Style Guidelines<a class="headerlink" href="#style-guidelines" title="Link to this heading">¶</a></h1>
+<section id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Link to this heading">¶</a></h2>
+<p>Style refers to various aspects of coding including indentation practices, naming conventions, use of design patterns, treatment of constants, etc. One of the goals of Webware war to maintain fairly consistent coding style with respect to certain basics as described in this document.</p>
+<p>This document is therefore important for those who develop Webware itself or who wish to contribute code, although ordinary users may still find it interesting and useful in understanding the Webware APIs.</p>
+<p>Please keep in mind that Webware for Python was developed when modern Python features like properties and style guidelines such as PEP8 did not yet exist. Therefore the API and code style used in Webware for Python may look a bit antiquated today. However, we decided to keep the old API in Webware for Python 3, and still follow most of the original style guidelines, in order to stay backward compatible and make migration of existing Webware for Python apps as painless as possible.</p>
+</section>
+<section id="syntax-and-naming">
+<h2>Syntax and Naming<a class="headerlink" href="#syntax-and-naming" title="Link to this heading">¶</a></h2>
+<section id="methods-and-attributes">
+<h3>Methods and Attributes<a class="headerlink" href="#methods-and-attributes" title="Link to this heading">¶</a></h3>
+<p>Methods and attributes are an important topic because they are used so frequently and therefore have an impact on using the classes, learning them, remembering them, etc.</p>
+<p>The first thing that is important to understand is that Webware is constructed in an object-oriented fashion, including full encapsulation of object attributes. In other words, you communicate and use objects completely via their methods (except that classes and subclasses access their own attributes &amp;ndash; somebody’s got to).</p>
+<p>The primary advantages of using methods are:</p>
+<ul class="simple">
+<li><p>Method implementations can be changed with minimal impact on the users of the class.</p></li>
+<li><p>Subclasses can customize methods to suit their needs and still be used in the usual fashion (as defined by the superclass).</p></li>
+</ul>
+<p>In the case of a method that returns a value, that value may manifest in several ways:</p>
+<ol class="arabic simple">
+<li><p>Stored as attribute.</p></li>
+<li><p>Stored as an attribute, only on demand (e.g., lazy and cached).</p></li>
+<li><p>Computed upon every request.</p></li>
+<li><p>Delegated to another object.</p></li>
+</ol>
+<p>By requiring that object access is done solely through methods, the implementer of the class is free to switch between the techniques above.</p>
+<p>Keeping that in mind, it is apparent that naming conventions are needed for attributes, the methods that return them and the methods that set them. Let’s suppose the basic “thing” is <code class="docutils literal notranslate"><span class="pre">status</span></code>. The convention then is:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">_status</span></code> - the attribute</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">status()</span></code> - the retrieval method</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">setStatus()</span></code> - the setter method</p></li>
+</ul>
+<p>The underscore that precedes the attribute denotes that it is semi-private and allows for a cleanly named retrieval method. The <code class="docutils literal notranslate"><span class="pre">status()</span></code> and <code class="docutils literal notranslate"><span class="pre">setStatus()</span></code> convention originated many years ago with Smalltalk and proved successful with that language as well as others, including Objective-C.</p>
+<p>Some styles prefix the retrieval method with <code class="docutils literal notranslate"><span class="pre">get</span></code>, but Webware does not for the sake of brevity and because there are methods for which it is not always clear if a <code class="docutils literal notranslate"><span class="pre">get</span></code> prefix would make sense.</p>
+<p>Methods that return a Boolean are prefixed with <code class="docutils literal notranslate"><span class="pre">is</span></code> or <code class="docutils literal notranslate"><span class="pre">has</span></code> to make their semantics more obvious. Examples include <code class="docutils literal notranslate"><span class="pre">request.isSecure()</span></code>, <code class="docutils literal notranslate"><span class="pre">user.isActive()</span></code> and <code class="docutils literal notranslate"><span class="pre">response.hasHeader()</span></code>.</p>
+</section>
+<section id="method-categories">
+<h3>Method Categories<a class="headerlink" href="#method-categories" title="Link to this heading">¶</a></h3>
+<p>Webware classes divide their methods into logical groups called categories purely for organizational purposes. This often helps in understanding the interface of a class, especially when looking at its summary.</p>
+<p>Upon installation, Webware generates HTML summaries for each Python source file. See the summary of HTTPResponse for an example.</p>
+<p>By convention, a category is named with a comment beginning with <cite># region</cite> and ending with <cite># endregion</cite>. IDEs such as PyCharm will recognize these sections as foldable blocks.</p>
+</section>
+<section id="abbreviations">
+<h3>Abbreviations<a class="headerlink" href="#abbreviations" title="Link to this heading">¶</a></h3>
+<p>Using abbreviations is a common coding practice to reduce typing and make lines shorter. However, removing random characters to abbreviate is a poor way to go about this. For example, <code class="docutils literal notranslate"><span class="pre">transaction</span></code> could be abbreviated as <code class="docutils literal notranslate"><span class="pre">trnsact</span></code> or <code class="docutils literal notranslate"><span class="pre">trnsactn</span></code>, but which letters are left out is not obvious or easy to remember.</p>
+<p>The typical technique in Webware is to use the first whole syllable of the word. For example, <code class="docutils literal notranslate"><span class="pre">trans</span></code> is easy to remember, pronounce and type.</p>
+<p>Attributes and methods that return the number of some kind of object are quite common. Suppose that the objects in questions are requests. Possible styles include <code class="docutils literal notranslate"><span class="pre">numRequests</span></code>, <code class="docutils literal notranslate"><span class="pre">numberOfRequests</span></code>, <code class="docutils literal notranslate"><span class="pre">requestCount</span></code> and so on. Webware uses the first style in all cases, for consistency:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">numRequests</span>
+</pre></div>
+</div>
+<p>If there is a corresponding attribute, it should have the same name (prefixed by an underscore).</p>
+</section>
+<section id="compound-names">
+<h3>Compound Names<a class="headerlink" href="#compound-names" title="Link to this heading">¶</a></h3>
+<p>Identifiers often consist of multiple names. There are three major styles for handling compound names:</p>
+<ol class="arabic simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">serverSidePath</span></code> - the Webware convention</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">serversidepath</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">server_side_path</span></code></p></li>
+</ol>
+<p>Python itself used all three styles in the past (<code class="docutils literal notranslate"><span class="pre">isSet</span></code>, <code class="docutils literal notranslate"><span class="pre">getattr</span></code>, <code class="docutils literal notranslate"><span class="pre">has_key</span></code>), but Webware uses only the first which is more readable than the second and easier to type that the third.</p>
+<p>This rule also applies to class names such as <code class="docutils literal notranslate"><span class="pre">HTTPRequest</span></code> and <code class="docutils literal notranslate"><span class="pre">ServletFactory</span></code>.</p>
+</section>
+<section id="component-names">
+<h3>Component Names<a class="headerlink" href="#component-names" title="Link to this heading">¶</a></h3>
+<p>Names of object-oriented Webware components are often suffixed with <strong>Kit</strong>, as in <strong>UserKit</strong> and <strong>MiddleKit</strong>.</p>
+<p>The occasional component that serves as a collective library (rather than an OO framework) is suffixed with <strong>Utils</strong>, as in <em>MiscUtils</em> and <em>WebUtils</em>.</p>
+</section>
+<section id="rules">
+<h3>Rules<a class="headerlink" href="#rules" title="Link to this heading">¶</a></h3>
+<p>We follow PEP 8 and usual Python conventions with these exceptions (for historical reasons and to remain backward compatible):</p>
+<ul class="simple">
+<li><p>Filenames are capitalized</p></li>
+<li><p>Method names are camelCase</p></li>
+<li><p>Attributes start with an underscore</p></li>
+<li><p>Getters and Setters for these attributes are ordinary methods.</p></li>
+<li><p>Setters use a “set” prefix, but getters do nt use a “get” prefix.</p></li>
+</ul>
+</section>
+</section>
+<section id="structure-and-patterns">
+<h2>Structure and Patterns<a class="headerlink" href="#structure-and-patterns" title="Link to this heading">¶</a></h2>
+<section id="classes">
+<h3>Classes<a class="headerlink" href="#classes" title="Link to this heading">¶</a></h3>
+<p>Webware overwhelmingly uses classes rather than collections of functions for several reasons:</p>
+<ul class="simple">
+<li><p>Classes allow for subclassing and therefore, a proven method of software extension and customization.</p></li>
+<li><p>Classes allow for creating multiple instances (or objects) to be used in various ways. Examples include caching created objects for increased performance and creating multi-threaded servers.</p></li>
+<li><p>Classes can provide for and encourage encapsulation of data, which gives implementers more freedom to improve their software without breaking what depends on it.</p></li>
+</ul>
+<p>By using classes, all three options above are available to the developer on an on-going basis. By using collections of functions, none of the above are readily available.</p>
+<p>Note that making classes in Python is extraordinarily easy. Doing so requires one line:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">Foo</span><span class="p">(</span><span class="n">SuperFoo</span><span class="p">):</span>
+</pre></div>
+</div>
+<p>and the use of <code class="docutils literal notranslate"><span class="pre">self</span></code> when accessing attributes and methods. The difference in time between creating a class with several methods vs. a set of several functions is essentially zero.</p>
+</section>
+<section id="configuration-files">
+<h3>Configuration Files<a class="headerlink" href="#configuration-files" title="Link to this heading">¶</a></h3>
+<p>Specific numbers and strings often appear in source code for determining things such as the size of a cache, the duration before timeout, the name of the server and so on. Rather than place these values directly in source, Webware provides configuration files that are easily discerned and edited by users, without requiring a walk through the source.</p>
+<p>Webware uses ordinary Python dictionaries for configuration files for several reasons:</p>
+<ul class="simple">
+<li><p>Those who know Python will already understand the syntax.</p></li>
+<li><p>Python dictionaries can be quickly and easily read (via Python’s <code class="docutils literal notranslate"><span class="pre">eval()</span></code> function).</p></li>
+<li><p>Dictionaries can contain nested structures such as lists and other dictionaries, providing a richer configuration language.</p></li>
+</ul>
+<p>By convention, these configuration files:</p>
+<ul class="simple">
+<li><p>Contain a Python dictionary.</p></li>
+<li><p>Use a <code class="docutils literal notranslate"><span class="pre">.config</span></code> extension.</p></li>
+<li><p>Capitalize their keys.</p></li>
+<li><p>Are named after the class that reads them.</p></li>
+<li><p>Are located in a <code class="docutils literal notranslate"><span class="pre">Configs/</span></code> subdirectory or in the same directory as the program.</p></li>
+</ul>
+<p>Webware provides a <code class="docutils literal notranslate"><span class="pre">Configurable</span></code> mix-in class that is used to read configuration files. It allows subclasses to say <code class="docutils literal notranslate"><span class="pre">self.setting('Something')</span></code> so that the use of configuration information is easy and recognizable throughout the code.</p>
+</section>
+<section id="accessing-named-objects">
+<h3>Accessing Named Objects<a class="headerlink" href="#accessing-named-objects" title="Link to this heading">¶</a></h3>
+<p>Several classes in Webware store dictionaries of objects keyed by their name. <code class="docutils literal notranslate"><span class="pre">HTTPRequest</span></code> is one such class which stores a dictionary of form fields. The convention for providing an interface to this information is as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># region Fields</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">field</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="n">_NoDefault</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">hasField</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">fields</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</pre></div>
+</div>
+<p>A typical use would be:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">req</span><span class="o">.</span><span class="n">field</span><span class="p">(</span><span class="s1">&#39;city&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>which returns the field value of the given name or raises an exception if there is none. Like the <code class="docutils literal notranslate"><span class="pre">get()</span></code> method of Python’s dictionary type, a second parameter can be specified which will be returned if the value is not found:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">req</span><span class="o">.</span><span class="n">field</span><span class="p">(</span><span class="s1">&#39;city&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">req.hasField('city')</span></code> is a convenience method that returns <code class="docutils literal notranslate"><span class="pre">True</span></code> if the value exists, <code class="docutils literal notranslate"><span class="pre">False</span></code> otherwise.</p>
+<p><code class="docutils literal notranslate"><span class="pre">req.fields()</span></code> returns the entire dictionary so that users have complete access to the full suite of dictionary methods such as <code class="docutils literal notranslate"><span class="pre">keys()</span></code>, <code class="docutils literal notranslate"><span class="pre">values()</span></code>, <code class="docutils literal notranslate"><span class="pre">items()</span></code>, etc. Users of this method are trusted not to modify the dictionary in any way. A paranoid class may choose to return a copy of the dictionary to help reduce abuse (although Webware classes normally do not for performance reasons).</p>
+<p>In cases where the user of the class should be able to modify the named objects, the following methods are provided:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">setValue</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">delValue</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+</pre></div>
+</div>
+<p>Often Python programmers will provide dictionary-style access to their objects by implementing <code class="docutils literal notranslate"><span class="pre">__getitem__</span></code> so that users may say:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">req</span><span class="p">[</span><span class="s1">&#39;city&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>Webware generally avoids this approach for two reasons. The first and most important is that Webware classes often have more than one set of named objects. For example, HTTPRequest has both fields and cookies. HTTPResponse has both cookies and headers. These objects have their own namespaces, making the semantics of <code class="docutils literal notranslate"><span class="pre">obj['name']</span></code> ambiguous. Also, the occasional class that has only one dictionary could potentially have more in the future.</p>
+<p>The second reason is the readability provided by expressions such as <code class="docutils literal notranslate"><span class="pre">response.cookie(name)</span></code> which states clearly what is being asked for.</p>
+<p>In those cases where objects provide dictionary-like access, the class is typically a lightweight container that is naturally thought of in terms of its dictionary components. Usually these classes inherit from <code class="docutils literal notranslate"><span class="pre">dict</span></code>.</p>
+</section>
+<section id="components">
+<h3>Components<a class="headerlink" href="#components" title="Link to this heading">¶</a></h3>
+<p>Webware consists of multiple components that follow particular conventions, not only for the sake of consistency, but also to enable scripts to manipulate them (such as generating documentation upon installation).</p>
+<p>Example components include PSP, TaskKit and MiscUtils.</p>
+<p>These conventions are not yet formally documented, however if you quickly browse through a couple components, some conventions about directory structure and source code become apparent.</p>
+<p>Also, if a component serves as a Webware plug-in, then there are additional conventions for them to follow in order to work correctly. See the chapter on <a class="reference internal" href="plugins.html#plug-ins"><span class="std std-ref">Plug-ins</span></a> for details.</p>
+</section>
+<section id="breaking-the-rules">
+<h3>Breaking the Rules<a class="headerlink" href="#breaking-the-rules" title="Link to this heading">¶</a></h3>
+<p>Of course, there are times when the rules are broken for good reason. To quote a cliché: “Part of being an expert is knowing when to break the rules.”</p>
+<p>But regarding style, Webware developers do this very infrequently for the reasons stated in the introduction.</p>
+</section>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">Webware for Python 3</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changes.html">List of Changes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="migrate.html">Migration Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="copyright.html">Copyright and License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial.html">Beginner Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="appdev.html">Application Development</a></li>
+<li class="toctree-l1"><a class="reference internal" href="config.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="deploy.html">Deployment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="plugins.html">Plug-ins</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Style Guidelines</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#introduction">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#syntax-and-naming">Syntax and Naming</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#structure-and-patterns">Structure and Patterns</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="psp.html">PSP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="userkit.html">UserKit</a></li>
+<li class="toctree-l1"><a class="reference internal" href="taskkit.html">TaskKit</a></li>
+<li class="toctree-l1"><a class="reference internal" href="webutils.html">WebUtils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="miscutils.html">MiscUtils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="testing.html">Testing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ref/index.html">API Reference</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="plugins.html" title="previous chapter">Plug-ins</a></li>
+      <li>Next: <a href="psp.html" title="next chapter">PSP</a></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;1999-2025, Christoph Zwerschke et al.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.2.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+      |
+      <a href="_sources/style.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

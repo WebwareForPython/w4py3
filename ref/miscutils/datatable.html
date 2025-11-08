@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>DataTable &#8212; Webware for Python 3 3.1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="../../_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="../../_static/alabaster.css?v=27fed22d" />
+    <script src="../../_static/documentation_options.js?v=dd1205ac"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="copyright" title="Copyright" href="../../copyright.html" />
+    <link rel="next" title="DateInterval" href="dateinterval.html" />
+    <link rel="prev" title="CSVParser" href="csvparser.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="module-MiscUtils.DataTable">
+<span id="datatable"></span><h1>DataTable<a class="headerlink" href="#module-MiscUtils.DataTable" title="Link to this heading">¶</a></h1>
+<p>DataTable.py</p>
+<p>INTRODUCTION</p>
+<p>This class is useful for representing a table of data arranged by named
+columns, where each row in the table can be thought of as a record:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">name</span>   <span class="n">phoneNumber</span>
+<span class="o">------</span> <span class="o">-----------</span>
+<span class="n">Chuck</span>  <span class="mi">893</span><span class="o">-</span><span class="mi">3498</span>
+<span class="n">Bill</span>   <span class="mi">893</span><span class="o">-</span><span class="mi">0439</span>
+<span class="n">John</span>   <span class="mi">893</span><span class="o">-</span><span class="mi">5901</span>
+</pre></div>
+</div>
+<p>This data often comes from delimited text files which typically
+have well-defined columns or fields with several rows each of which can
+be thought of as a record.</p>
+<p>Using a DataTable can be as easy as using lists and dictionaries:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">table</span> <span class="o">=</span> <span class="n">DataTable</span><span class="p">(</span><span class="s1">&#39;users.csv&#39;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">table</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">],</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;phoneNumber&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>Or even:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">table</span> <span class="o">=</span> <span class="n">DataTable</span><span class="p">(</span><span class="s1">&#39;users.csv&#39;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">table</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{name}</span><span class="s1"> </span><span class="si">{phoneNumber}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">**</span><span class="n">row</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>The above print statement relies on the fact that rows can be treated
+like dictionaries, using the column headings as keys.</p>
+<p>You can also treat a row like an array:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">table</span> <span class="o">=</span> <span class="n">DataTable</span><span class="p">(</span><span class="s1">&#39;something.tabbed&#39;</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s1">&#39;   &#39;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">table</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">row</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s1">&#39; &#39;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>COLUMNS</p>
+<p>Column headings can have a type specification like so:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">name</span><span class="p">,</span> <span class="n">age</span><span class="p">:</span><span class="nb">int</span><span class="p">,</span> <span class="nb">zip</span><span class="p">:</span><span class="nb">int</span>
+</pre></div>
+</div>
+<p>Possible types include string, int, float and datetime.</p>
+<p>String is assumed if no type is specified but you can set that
+assumption when you create the table:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">table</span> <span class="o">=</span> <span class="n">DataTable</span><span class="p">(</span><span class="n">headings</span><span class="p">,</span> <span class="n">defaultType</span><span class="o">=</span><span class="s1">&#39;float&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Using types like int and float will cause DataTable to actually
+convert the string values (perhaps read from a file) to these types
+so that you can use them in natural operations. For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;age&#39;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">120</span><span class="p">:</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">flagData</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="s1">&#39;age looks high&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>As you can see, each row can be accessed as a dictionary with keys
+according the column headings. Names are case sensitive.</p>
+<p>ADDING ROWS</p>
+<p>Like Python lists, data tables have an append() method. You can append
+TableRecords, or you pass a dictionary, list or object, in which case a
+TableRecord is created based on given values. See the method docs below
+for more details.</p>
+<p>FILES</p>
+<p>By default, the files that DataTable reads from are expected to be
+comma-separated value files.</p>
+<p>Limited comments are supported: A comment is any line whose very first
+character is a #. This allows you to easily comment out lines in your
+data files without having to remove them.</p>
+<p>Whitespace around field values is stripped.</p>
+<p>You can control all this behavior through the arguments found in the
+initializer and the various readFoo() methods:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">...</span><span class="n">delimiter</span><span class="o">=</span><span class="s1">&#39;,&#39;</span><span class="p">,</span> <span class="n">allowComments</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">stripWhite</span><span class="o">=</span><span class="kc">True</span>
+</pre></div>
+</div>
+<p>For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">table</span> <span class="o">=</span> <span class="n">DataTable</span><span class="p">(</span><span class="s1">&#39;foo.tabbed&#39;</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s1">&#39; &#39;</span><span class="p">,</span>
+    <span class="n">allowComments</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">stripWhite</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>You should access these parameters by their name since additional ones
+could appear in the future, thereby changing the order.</p>
+<p>If you are creating these text files, we recommend the
+comma-separated-value format, or CSV. This format is better defined
+than the tab delimited format, and can easily be edited and manipulated
+by popular spreadsheets and databases.</p>
+<p>MICROSOFT EXCEL</p>
+<p>On Microsoft Windows systems with Excel and the PyWin32 package
+(<a class="reference external" href="https://github.com/mhammond/pywin32">https://github.com/mhammond/pywin32</a>), DataTable will use Excel
+(via COM) to read “.xls” files:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">MiscUtils</span><span class="w"> </span><span class="kn">import</span> <span class="n">DataTable</span>
+<span class="k">assert</span> <span class="n">DataTable</span><span class="o">.</span><span class="n">canReadExcel</span><span class="p">()</span>
+<span class="n">table</span> <span class="o">=</span> <span class="n">DataTable</span><span class="o">.</span><span class="n">DataTable</span><span class="p">(</span><span class="s1">&#39;foo.xls&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>With consistency to its CSV processing, DataTable will ignore any row
+whose first cell is ‘#’ and strip surrounding whitespace around strings.</p>
+<p>TABLES FROM SCRATCH</p>
+<p>Here’s an example that constructs a table from scratch:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">table</span> <span class="o">=</span> <span class="n">DataTable</span><span class="p">([</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;age:int&#39;</span><span class="p">])</span>
+<span class="n">table</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="s1">&#39;John&#39;</span><span class="p">,</span> <span class="mi">80</span><span class="p">])</span>
+<span class="n">table</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;John&#39;</span><span class="p">,</span> <span class="s1">&#39;age&#39;</span><span class="p">:</span> <span class="mi">80</span><span class="p">})</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">table</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>QUERIES</p>
+<p>A simple query mechanism is supported for equality of fields:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">matches</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">recordsEqualTo</span><span class="p">({</span><span class="s1">&#39;uid&#39;</span><span class="p">:</span> <span class="mi">5</span><span class="p">})</span>
+<span class="k">if</span> <span class="n">matches</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">match</span> <span class="ow">in</span> <span class="n">matches</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">match</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;No matches.&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>COMMON USES</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Programs can keep configuration and other data in simple comma-
+separated text files and use DataTable to access them. For example, a
+web site could read its sidebar links from such a file, thereby allowing
+people who don’t know Python (or even HTML) to edit these links without
+having to understand other implementation parts of the site.</p></li>
+<li><p>Servers can use DataTable to read and write log files.</p></li>
+</ul>
+</div></blockquote>
+<p>FROM THE COMMAND LINE</p>
+<p>The only purpose in invoking DataTable from the command line is to see
+if it will read a file:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="n">python</span> <span class="n">DataTable</span><span class="o">.</span><span class="n">py</span> <span class="n">foo</span><span class="o">.</span><span class="n">csv</span>
+</pre></div>
+</div>
+<p>The data table is printed to stdout.</p>
+<p>CACHING</p>
+<p>DataTable uses “pickle caching” so that it can read .csv files faster
+on subsequent loads. You can disable this across the board with:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">MiscUtils.DataTable</span><span class="w"> </span><span class="kn">import</span> <span class="n">DataTable</span>
+<span class="n">DataTable</span><span class="o">.</span><span class="n">_usePickleCache</span> <span class="o">=</span> <span class="kc">False</span>
+</pre></div>
+</div>
+<p>Or per instance by passing “usePickleCache=False” to the constructor.</p>
+<p>See the docstring of PickleCache.py for more information.</p>
+<p>MORE DOCS</p>
+<p>Some of the methods in this module have worthwhile doc strings to look at.
+See below.</p>
+<p>TO DO</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Allow callback parameter or setting for parsing CSV records.</p></li>
+<li><p>Perhaps TableRecord should inherit list and dict and override
+methods as appropriate?</p></li>
+<li><p>_types and _blankValues aren’t really packaged, advertised or
+documented for customization by the user of this module.</p></li>
+<li><dl class="simple">
+<dt>DataTable:</dt><dd><ul>
+<li><p>Parameterize the TextColumn class.</p></li>
+<li><p>Parameterize the TableRecord class.</p></li>
+<li><p>More list-like methods such as insert()</p></li>
+<li><p>writeFileNamed() is flawed: it doesn’t write the table column type</p></li>
+<li><p>Should it inherit from list?</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p>Add error checking that a column name is not a number (which could
+cause problems).</p></li>
+<li><p>Reading Excel sheets with xlrd, not only with win32com.</p></li>
+</ul>
+</div></blockquote>
+<dl class="py class">
+<dt class="sig sig-object py" id="MiscUtils.DataTable.DataTable">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">MiscUtils.DataTable.</span></span><span class="sig-name descname"><span class="pre">DataTable</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filenameOrHeadings</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delimiter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">','</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">allowComments</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stripWhite</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">encoding</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">defaultType</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">usePickleCache</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#MiscUtils.DataTable.DataTable" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Representation of a data table.</p>
+<p>See the doc string for this module.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="MiscUtils.DataTable.DataTable.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filenameOrHeadings</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delimiter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">','</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">allowComments</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stripWhite</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">encoding</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">defaultType</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">usePickleCache</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#MiscUtils.DataTable.DataTable.__init__" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="MiscUtils.DataTable.DataTable.append">
+<span class="sig-name descname"><span class="pre">append</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#MiscUtils.DataTable.DataTable.append" title="Link to this definition">¶</a></dt>
+<dd><p>Append an object to the table.</p>
+<p>If obj is not a TableRecord, then one is created,
+passing the object to initialize the TableRecord.
+Therefore, obj can be a TableRecord, list, dictionary or object.
+See TableRecord for details.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="MiscUtils.DataTable.DataTable.canReadExcel">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">canReadExcel</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#MiscUtils.DataTable.DataTable.canReadExcel" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="MiscUtils.DataTable.DataTable.commit">
+<span class="sig-name descname"><span class="pre">commit</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#MiscUtils.DataTable.DataTable.commit" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="MiscUtils.DataTable.DataTable.createNameToIndexMap">
+<span class="sig-name descname"><span class="pre">createNameToIndexMap</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#MiscUtils.DataTable.DataTable.createNameToIndexMap" title="Link to this definition">¶</a></dt>
+<dd><p>Create speed-up index.</p>
+<p>Invoked by self to create the nameToIndexMap after the table’s
+headings have been read/initialized.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="MiscUtils.DataTable.DataTable.dictKeyedBy">
+<span class="sig-name descname"><span class="pre">dictKeyedBy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#MiscUtils.DataTable.DataTable.dictKeyedBy" title="Link to this definition">¶</a></dt>
+<dd><p>Return a dictionary containing the contents of the table.</p>
+<p>The content is indexed by the particular key. This is useful
+for tables that have a column which represents a unique key
+(such as a name, serial number, etc.).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="MiscUtils.DataTable.DataTable.filename">
+<span class="sig-name descname"><span class="pre">filename</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#MiscUtils.DataTable.DataTable.filename" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="MiscUtils.DataTable.DataTable.hasHeading">
+<span class="sig-name descname"><span class="pre">hasHeading</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#MiscUtils.DataTable.DataTable.hasHeading" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="MiscUtils.DataTable.DataTable.heading">
+<span class="sig-name descname"><span class="pre">heading</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#MiscUtils.DataTable.DataTable.heading" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="MiscUtils.DataTable.DataTable.headings">
+<span class="sig-name descname"><span class="pre">headings</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#MiscUtils.DataTable.DataTable.headings" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="MiscUtils.DataTable.DataTable.nameToIndexMap">
+<span class="sig-name descname"><span class="pre">nameToIndexMap</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#MiscUtils.DataTable.DataTable.nameToIndexMap" title="Link to this definition">¶</a></dt>
+<dd><p>Speed-up index.</p>
+<p>Table rows keep a reference to this map in order to speed up
+index-by-names (as in row[‘name’]).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="MiscUtils.DataTable.DataTable.numHeadings">
+<span class="sig-name descname"><span class="pre">numHeadings</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#MiscUtils.DataTable.DataTable.numHeadings" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="MiscUtils.DataTable.DataTable.readExcel">
+<span class="sig-name descname"><span class="pre">readExcel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">worksheet</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">row</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">column</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#MiscUtils.DataTable.DataTable.readExcel" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="MiscUtils.DataTable.DataTable.readFile">
+<span class="sig-name descname"><span class="pre">readFile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delimiter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">','</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">allowComments</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stripWhite</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#MiscUtils.DataTable.DataTable.readFile" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="MiscUtils.DataTable.DataTable.readFileNamed">
+<span class="sig-name descname"><span class="pre">readFileNamed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delimiter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">','</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">allowComments</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stripWhite</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">encoding</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">worksheet</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">row</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">column</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#MiscUtils.DataTable.DataTable.readFileNamed" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="MiscUtils.DataTable.DataTable.readLines">
+<span class="sig-name descname"><span class="pre">readLines</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lines</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delimiter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">','</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">allowComments</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stripWhite</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#MiscUtils.DataTable.DataTable.readLines" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="MiscUtils.DataTable.DataTable.readString">
+<span class="sig-name descname"><span class="pre">readString</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">string</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delimiter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">','</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">allowComments</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stripWhite</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#MiscUtils.DataTable.DataTable.readString" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="MiscUtils.DataTable.DataTable.recordsEqualTo">
+<span class="sig-name descname"><span class="pre">recordsEqualTo</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">record</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#MiscUtils.DataTable.DataTable.recordsEqualTo" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="MiscUtils.DataTable.DataTable.save">
+<span class="sig-name descname"><span class="pre">save</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#MiscUtils.DataTable.DataTable.save" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="MiscUtils.DataTable.DataTable.setHeadings">
+<span class="sig-name descname"><span class="pre">setHeadings</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">headings</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#MiscUtils.DataTable.DataTable.setHeadings" title="Link to this definition">¶</a></dt>
+<dd><p>Set table headings.</p>
+<p>Headings can be a list of strings (like [‘name’, ‘age:int’])
+or a list of TableColumns or None.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="MiscUtils.DataTable.DataTable.writeFile">
+<span class="sig-name descname"><span class="pre">writeFile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#MiscUtils.DataTable.DataTable.writeFile" title="Link to this definition">¶</a></dt>
+<dd><p>Write the table out as a file.</p>
+<p>This doesn’t write the column types (like int) back out.</p>
+<p>It’s notable that a blank numeric value gets read as zero
+and written out that way. Also, values None are written as blanks.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="MiscUtils.DataTable.DataTable.writeFileNamed">
+<span class="sig-name descname"><span class="pre">writeFileNamed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">encoding</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'utf-8'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#MiscUtils.DataTable.DataTable.writeFileNamed" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="MiscUtils.DataTable.DataTableError">
+<em class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">MiscUtils.DataTable.</span></span><span class="sig-name descname"><span class="pre">DataTableError</span></span><a class="headerlink" href="#MiscUtils.DataTable.DataTableError" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+<p>Data table error.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="MiscUtils.DataTable.DataTableError.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#MiscUtils.DataTable.DataTableError.__init__" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="MiscUtils.DataTable.DataTableError.add_note">
+<span class="sig-name descname"><span class="pre">add_note</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="positional-only-separator o"><abbr title="Positional-only parameter separator (PEP 570)"><span class="pre">/</span></abbr></span></em><span class="sig-paren">)</span><a class="headerlink" href="#MiscUtils.DataTable.DataTableError.add_note" title="Link to this definition">¶</a></dt>
+<dd><p>Exception.add_note(note) –
+add a note to the exception</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="MiscUtils.DataTable.DataTableError.args">
+<span class="sig-name descname"><span class="pre">args</span></span><a class="headerlink" href="#MiscUtils.DataTable.DataTableError.args" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="MiscUtils.DataTable.DataTableError.with_traceback">
+<span class="sig-name descname"><span class="pre">with_traceback</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="positional-only-separator o"><abbr title="Positional-only parameter separator (PEP 570)"><span class="pre">/</span></abbr></span></em><span class="sig-paren">)</span><a class="headerlink" href="#MiscUtils.DataTable.DataTableError.with_traceback" title="Link to this definition">¶</a></dt>
+<dd><p>Exception.with_traceback(tb) –
+set self.__traceback__ to tb and return self.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="MiscUtils.DataTable.TableColumn">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">MiscUtils.DataTable.</span></span><span class="sig-name descname"><span class="pre">TableColumn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">spec</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#MiscUtils.DataTable.TableColumn" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Representation of a table column.</p>
+<p>A table column represents a column of the table including name and type.
+It does not contain the actual values of the column. These are stored
+individually in the rows.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="MiscUtils.DataTable.TableColumn.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">spec</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#MiscUtils.DataTable.TableColumn.__init__" title="Link to this definition">¶</a></dt>
+<dd><p>Initialize the table column.</p>
+<p>The spec parameter is a string such as ‘name’ or ‘name:type’.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="MiscUtils.DataTable.TableColumn.name">
+<span class="sig-name descname"><span class="pre">name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#MiscUtils.DataTable.TableColumn.name" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="MiscUtils.DataTable.TableColumn.setType">
+<span class="sig-name descname"><span class="pre">setType</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">type_</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#MiscUtils.DataTable.TableColumn.setType" title="Link to this definition">¶</a></dt>
+<dd><p>Set the type (by a string containing the name) of the heading.</p>
+<p>Usually invoked by DataTable to set the default type for columns
+whose types were not specified.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="MiscUtils.DataTable.TableColumn.type">
+<span class="sig-name descname"><span class="pre">type</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#MiscUtils.DataTable.TableColumn.type" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="MiscUtils.DataTable.TableColumn.valueForRawValue">
+<span class="sig-name descname"><span class="pre">valueForRawValue</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#MiscUtils.DataTable.TableColumn.valueForRawValue" title="Link to this definition">¶</a></dt>
+<dd><p>Set correct type for raw value.</p>
+<p>The rawValue is typically a string or value already of the appropriate
+type. TableRecord invokes this method to ensure that values (especially
+strings that come from files) are the correct types (e.g., ints are
+ints and floats are floats).</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="MiscUtils.DataTable.TableRecord">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">MiscUtils.DataTable.</span></span><span class="sig-name descname"><span class="pre">TableRecord</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">table</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">values</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">headings</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#MiscUtils.DataTable.TableRecord" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Representation of a table record.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="MiscUtils.DataTable.TableRecord.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">table</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">values</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">headings</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#MiscUtils.DataTable.TableRecord.__init__" title="Link to this definition">¶</a></dt>
+<dd><p>Initialize table record.</p>
+<p>Dispatches control to one of the other init methods based on the type
+of values. Values can be one of three things:</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li><p>A TableRecord</p></li>
+<li><p>A list</p></li>
+<li><p>A dictionary</p></li>
+<li><p>Any object responding to hasValueForKey() and valueForKey().</p></li>
+</ol>
+</div></blockquote>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="MiscUtils.DataTable.TableRecord.asDict">
+<span class="sig-name descname"><span class="pre">asDict</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#MiscUtils.DataTable.TableRecord.asDict" title="Link to this definition">¶</a></dt>
+<dd><p>Return a dictionary whose key-values match the table record.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="MiscUtils.DataTable.TableRecord.asList">
+<span class="sig-name descname"><span class="pre">asList</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#MiscUtils.DataTable.TableRecord.asList" title="Link to this definition">¶</a></dt>
+<dd><p>Return a sequence whose values are the same as the record’s.</p>
+<p>The order of the sequence is the one defined by the table.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="MiscUtils.DataTable.TableRecord.get">
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#MiscUtils.DataTable.TableRecord.get" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="MiscUtils.DataTable.TableRecord.has_key">
+<span class="sig-name descname"><span class="pre">has_key</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#MiscUtils.DataTable.TableRecord.has_key" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="MiscUtils.DataTable.TableRecord.initFromDict">
+<span class="sig-name descname"><span class="pre">initFromDict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">values</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#MiscUtils.DataTable.TableRecord.initFromDict" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="MiscUtils.DataTable.TableRecord.initFromObject">
+<span class="sig-name descname"><span class="pre">initFromObject</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#MiscUtils.DataTable.TableRecord.initFromObject" title="Link to this definition">¶</a></dt>
+<dd><p>Initialize from object.</p>
+<p>The object is expected to response to hasValueForKey(name) and
+valueForKey(name) for each of the headings in the table. It’s alright
+if the object returns False for hasValueForKey(). In that case, a
+“blank” value is assumed (such as zero or an empty string). If
+hasValueForKey() returns True, then valueForKey() must return a value.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="MiscUtils.DataTable.TableRecord.initFromSequence">
+<span class="sig-name descname"><span class="pre">initFromSequence</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">values</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#MiscUtils.DataTable.TableRecord.initFromSequence" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="MiscUtils.DataTable.TableRecord.items">
+<span class="sig-name descname"><span class="pre">items</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#MiscUtils.DataTable.TableRecord.items" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="MiscUtils.DataTable.TableRecord.iteritems">
+<span class="sig-name descname"><span class="pre">iteritems</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#MiscUtils.DataTable.TableRecord.iteritems" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="MiscUtils.DataTable.TableRecord.iterkeys">
+<span class="sig-name descname"><span class="pre">iterkeys</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#MiscUtils.DataTable.TableRecord.iterkeys" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="MiscUtils.DataTable.TableRecord.itervalues">
+<span class="sig-name descname"><span class="pre">itervalues</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#MiscUtils.DataTable.TableRecord.itervalues" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="MiscUtils.DataTable.TableRecord.keys">
+<span class="sig-name descname"><span class="pre">keys</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#MiscUtils.DataTable.TableRecord.keys" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="MiscUtils.DataTable.TableRecord.valueForAttr">
+<span class="sig-name descname"><span class="pre">valueForAttr</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">attr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default=&lt;class</span> <span class="pre">'MiscUtils.NoDefault'&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#MiscUtils.DataTable.TableRecord.valueForAttr" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="MiscUtils.DataTable.TableRecord.valueForKey">
+<span class="sig-name descname"><span class="pre">valueForKey</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default=&lt;class</span> <span class="pre">'MiscUtils.NoDefault'&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#MiscUtils.DataTable.TableRecord.valueForKey" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="MiscUtils.DataTable.TableRecord.values">
+<span class="sig-name descname"><span class="pre">values</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#MiscUtils.DataTable.TableRecord.values" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="MiscUtils.DataTable.canReadExcel">
+<span class="sig-prename descclassname"><span class="pre">MiscUtils.DataTable.</span></span><span class="sig-name descname"><span class="pre">canReadExcel</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#MiscUtils.DataTable.canReadExcel" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="MiscUtils.DataTable.main">
+<span class="sig-prename descclassname"><span class="pre">MiscUtils.DataTable.</span></span><span class="sig-name descname"><span class="pre">main</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">args</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#MiscUtils.DataTable.main" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../index.html">Webware for Python 3</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../changes.html">List of Changes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../migrate.html">Migration Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../copyright.html">Copyright and License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorial.html">Beginner Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../appdev.html">Application Development</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../config.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../deploy.html">Deployment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../plugins.html">Plug-ins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../style.html">Style Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../psp.html">PSP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../userkit.html">UserKit</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../taskkit.html">TaskKit</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../webutils.html">WebUtils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../miscutils.html">MiscUtils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../testing.html">Testing</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../core/index.html">Core Classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../psp/index.html">PSP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../userkit/index.html">UserKit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../taskkit/index.html">TaskKit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../webutils/index.html">WebUtils</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">MiscUtils</a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">API Reference</a><ul>
+  <li><a href="index.html">MiscUtils</a><ul>
+      <li>Previous: <a href="csvparser.html" title="previous chapter">CSVParser</a></li>
+      <li>Next: <a href="dateinterval.html" title="next chapter">DateInterval</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;1999-2025, Christoph Zwerschke et al.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.2.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+      |
+      <a href="../../_sources/ref/miscutils/datatable.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

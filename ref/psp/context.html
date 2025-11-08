@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Context &#8212; Webware for Python 3 3.1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="../../_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="../../_static/alabaster.css?v=27fed22d" />
+    <script src="../../_static/documentation_options.js?v=dd1205ac"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="copyright" title="Copyright" href="../../copyright.html" />
+    <link rel="next" title="Generators" href="generators.html" />
+    <link rel="prev" title="BraceConverter" href="braceconverter.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="module-PSP.Context">
+<span id="context"></span><h1>Context<a class="headerlink" href="#module-PSP.Context" title="Link to this heading">¶</a></h1>
+<p>Utility class for keeping track of the context.</p>
+<p>A utility class that holds information about the file we are parsing
+and the environment we are doing it in.</p>
+<p>Copyright (c) by Jay Love, 2000 (<a class="reference external" href="mailto:jsliv&#37;&#52;&#48;jslove&#46;org">mailto:jsliv<span>&#64;</span>jslove<span>&#46;</span>org</a>)</p>
+<p>Permission to use, copy, modify, and distribute this software and its
+documentation for any purpose and without fee or royalty is hereby granted,
+provided that the above copyright notice appear in all copies and that
+both that copyright notice and this permission notice appear in
+supporting documentation or portions thereof, including modifications,
+that you make.</p>
+<p>This software is based in part on work done by the Jakarta group.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="PSP.Context.PSPCLContext">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PSP.Context.</span></span><span class="sig-name descname"><span class="pre">PSPCLContext</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pspfile</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PSP.Context.PSPCLContext" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#PSP.Context.PSPContext" title="PSP.Context.PSPContext"><code class="xref py py-class docutils literal notranslate"><span class="pre">PSPContext</span></code></a></p>
+<p>A context for command line compilation.</p>
+<p>Currently used for both command line and PSPServletEngine compilation.
+This class provides all the information necessary during the parsing
+and page generation steps of the PSP compilation process.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="PSP.Context.PSPCLContext.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pspfile</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PSP.Context.PSPCLContext.__init__" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PSP.Context.PSPCLContext.getBaseUri">
+<span class="sig-name descname"><span class="pre">getBaseUri</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PSP.Context.PSPCLContext.getBaseUri" title="Link to this definition">¶</a></dt>
+<dd><p>Return the base URI for the servlet.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PSP.Context.PSPCLContext.getClassPath">
+<span class="sig-name descname"><span class="pre">getClassPath</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PSP.Context.PSPCLContext.getClassPath" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PSP.Context.PSPCLContext.getFullClassName">
+<span class="sig-name descname"><span class="pre">getFullClassName</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PSP.Context.PSPCLContext.getFullClassName" title="Link to this definition">¶</a></dt>
+<dd><p>Return the class name including package prefixes.</p>
+<p>Won’t use this for now.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PSP.Context.PSPCLContext.getFullPspFileName">
+<span class="sig-name descname"><span class="pre">getFullPspFileName</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PSP.Context.PSPCLContext.getFullPspFileName" title="Link to this definition">¶</a></dt>
+<dd><p>Return the name of the PSP file including its file path.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PSP.Context.PSPCLContext.getOutputDirectory">
+<span class="sig-name descname"><span class="pre">getOutputDirectory</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PSP.Context.PSPCLContext.getOutputDirectory" title="Link to this definition">¶</a></dt>
+<dd><p>Provide directory to dump PSP source file to.</p>
+<p>I am probably doing this in reverse order at the moment.
+I should start with this and get the Python filename from it.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PSP.Context.PSPCLContext.getPspFileName">
+<span class="sig-name descname"><span class="pre">getPspFileName</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PSP.Context.PSPCLContext.getPspFileName" title="Link to this definition">¶</a></dt>
+<dd><p>Return the name of the PSP file from which we are generating.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PSP.Context.PSPCLContext.getPythonFileEncoding">
+<span class="sig-name descname"><span class="pre">getPythonFileEncoding</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PSP.Context.PSPCLContext.getPythonFileEncoding" title="Link to this definition">¶</a></dt>
+<dd><p>Return the encoding of the file that we are generating.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PSP.Context.PSPCLContext.getPythonFileName">
+<span class="sig-name descname"><span class="pre">getPythonFileName</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PSP.Context.PSPCLContext.getPythonFileName" title="Link to this definition">¶</a></dt>
+<dd><p>Return the filename that we are generating to.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PSP.Context.PSPCLContext.getReader">
+<span class="sig-name descname"><span class="pre">getReader</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PSP.Context.PSPCLContext.getReader" title="Link to this definition">¶</a></dt>
+<dd><p>Return the PSPReader object assigned to this context.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PSP.Context.PSPCLContext.getServletClassName">
+<span class="sig-name descname"><span class="pre">getServletClassName</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PSP.Context.PSPCLContext.getServletClassName" title="Link to this definition">¶</a></dt>
+<dd><p>Return the class name of the servlet being generated.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PSP.Context.PSPCLContext.getServletWriter">
+<span class="sig-name descname"><span class="pre">getServletWriter</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PSP.Context.PSPCLContext.getServletWriter" title="Link to this definition">¶</a></dt>
+<dd><p>Return the ServletWriter object assigned to this context.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PSP.Context.PSPCLContext.getWriter">
+<span class="sig-name descname"><span class="pre">getWriter</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PSP.Context.PSPCLContext.getWriter" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PSP.Context.PSPCLContext.resolveRelativeURI">
+<span class="sig-name descname"><span class="pre">resolveRelativeURI</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">uri</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PSP.Context.PSPCLContext.resolveRelativeURI" title="Link to this definition">¶</a></dt>
+<dd><p>This is used mainly for including files.</p>
+<p>It simply returns the location relative to the base context
+directory, ie Examples/. If the filename has a leading /,
+it is assumed to be an absolute path.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PSP.Context.PSPCLContext.setClassName">
+<span class="sig-name descname"><span class="pre">setClassName</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PSP.Context.PSPCLContext.setClassName" title="Link to this definition">¶</a></dt>
+<dd><p>Set the class name to create.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PSP.Context.PSPCLContext.setPSPReader">
+<span class="sig-name descname"><span class="pre">setPSPReader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">reader</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PSP.Context.PSPCLContext.setPSPReader" title="Link to this definition">¶</a></dt>
+<dd><p>Set the PSPReader for this context.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PSP.Context.PSPCLContext.setPythonFileEncoding">
+<span class="sig-name descname"><span class="pre">setPythonFileEncoding</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">encoding</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PSP.Context.PSPCLContext.setPythonFileEncoding" title="Link to this definition">¶</a></dt>
+<dd><p>Set the encoding of the .py file to generate.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PSP.Context.PSPCLContext.setPythonFileName">
+<span class="sig-name descname"><span class="pre">setPythonFileName</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PSP.Context.PSPCLContext.setPythonFileName" title="Link to this definition">¶</a></dt>
+<dd><p>Set the name of the .py file to generate.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PSP.Context.PSPCLContext.setServletWriter">
+<span class="sig-name descname"><span class="pre">setServletWriter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">writer</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PSP.Context.PSPCLContext.setServletWriter" title="Link to this definition">¶</a></dt>
+<dd><p>Set the ServletWriter instance for this context.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="PSP.Context.PSPContext">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PSP.Context.</span></span><span class="sig-name descname"><span class="pre">PSPContext</span></span><a class="headerlink" href="#PSP.Context.PSPContext" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>PSPContext is an abstract base class for Context classes.</p>
+<p>Holds all the common stuff that various parts of the compilation
+will need access to. The items in this class will be used by both
+the compiler and the class generator.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="PSP.Context.PSPContext.getClassPath">
+<span class="sig-name descname"><span class="pre">getClassPath</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PSP.Context.PSPContext.getClassPath" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PSP.Context.PSPContext.getFullClassName">
+<span class="sig-name descname"><span class="pre">getFullClassName</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PSP.Context.PSPContext.getFullClassName" title="Link to this definition">¶</a></dt>
+<dd><p>Return the class name including package prefixes.</p>
+<p>Won’t use this for now.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PSP.Context.PSPContext.getOutputDirectory">
+<span class="sig-name descname"><span class="pre">getOutputDirectory</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PSP.Context.PSPContext.getOutputDirectory" title="Link to this definition">¶</a></dt>
+<dd><p>Provide directory to dump PSP source file to.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PSP.Context.PSPContext.getPythonFileEncoding">
+<span class="sig-name descname"><span class="pre">getPythonFileEncoding</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PSP.Context.PSPContext.getPythonFileEncoding" title="Link to this definition">¶</a></dt>
+<dd><p>Return the encoding of the file that we are generating.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PSP.Context.PSPContext.getPythonFileName">
+<span class="sig-name descname"><span class="pre">getPythonFileName</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PSP.Context.PSPContext.getPythonFileName" title="Link to this definition">¶</a></dt>
+<dd><p>Return the filename that we are generating to.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PSP.Context.PSPContext.getReader">
+<span class="sig-name descname"><span class="pre">getReader</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PSP.Context.PSPContext.getReader" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PSP.Context.PSPContext.getServletClassName">
+<span class="sig-name descname"><span class="pre">getServletClassName</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PSP.Context.PSPContext.getServletClassName" title="Link to this definition">¶</a></dt>
+<dd><p>Return the class name of the servlet being generated.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PSP.Context.PSPContext.getWriter">
+<span class="sig-name descname"><span class="pre">getWriter</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PSP.Context.PSPContext.getWriter" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PSP.Context.PSPContext.setPSPReader">
+<span class="sig-name descname"><span class="pre">setPSPReader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">reader</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PSP.Context.PSPContext.setPSPReader" title="Link to this definition">¶</a></dt>
+<dd><p>Set the PSPReader for this context.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PSP.Context.PSPContext.setPythonFileEncoding">
+<span class="sig-name descname"><span class="pre">setPythonFileEncoding</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">encoding</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PSP.Context.PSPContext.setPythonFileEncoding" title="Link to this definition">¶</a></dt>
+<dd><p>Set the encoding of the .py file to generate.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PSP.Context.PSPContext.setPythonFileName">
+<span class="sig-name descname"><span class="pre">setPythonFileName</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PSP.Context.PSPContext.setPythonFileName" title="Link to this definition">¶</a></dt>
+<dd><p>Set the name of the .py file to generate.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PSP.Context.PSPContext.setServletWriter">
+<span class="sig-name descname"><span class="pre">setServletWriter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">writer</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PSP.Context.PSPContext.setServletWriter" title="Link to this definition">¶</a></dt>
+<dd><p>Set the PSPWriter instance for this context.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../index.html">Webware for Python 3</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../changes.html">List of Changes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../migrate.html">Migration Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../copyright.html">Copyright and License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorial.html">Beginner Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../appdev.html">Application Development</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../config.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../deploy.html">Deployment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../plugins.html">Plug-ins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../style.html">Style Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../psp.html">PSP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../userkit.html">UserKit</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../taskkit.html">TaskKit</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../webutils.html">WebUtils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../miscutils.html">MiscUtils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../testing.html">Testing</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../core/index.html">Core Classes</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">PSP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../userkit/index.html">UserKit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../taskkit/index.html">TaskKit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../webutils/index.html">WebUtils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../miscutils/index.html">MiscUtils</a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">API Reference</a><ul>
+  <li><a href="index.html">PSP</a><ul>
+      <li>Previous: <a href="braceconverter.html" title="previous chapter">BraceConverter</a></li>
+      <li>Next: <a href="generators.html" title="next chapter">Generators</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;1999-2025, Christoph Zwerschke et al.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.2.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+      |
+      <a href="../../_sources/ref/psp/context.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

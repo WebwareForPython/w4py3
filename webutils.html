@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>WebUtils &#8212; Webware for Python 3 3.1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=27fed22d" />
+    <script src="_static/documentation_options.js?v=dd1205ac"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="copyright" title="Copyright" href="copyright.html" />
+    <link rel="next" title="MiscUtils" href="miscutils.html" />
+    <link rel="prev" title="TaskKit" href="taskkit.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="webutils">
+<span id="module-WebUtils"></span><span id="id1"></span><h1>WebUtils<a class="headerlink" href="#webutils" title="Link to this heading">¶</a></h1>
+<p>The WebUtils package is a basic set of modules for common web related programming tasks such as encoding/decoding HTML, dealing with Cookies, etc.</p>
+<p>See the <a class="reference internal" href="ref/webutils/index.html#ref-webutils"><span class="std std-ref">reference documentation</span></a> for an overview of the available functions.</p>
+<section id="htmlforexception">
+<h2>HTMLForException<a class="headerlink" href="#htmlforexception" title="Link to this heading">¶</a></h2>
+<p>This module defines a function by the same name:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">htmlForException</span><span class="p">(</span><span class="n">excInfo</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="o">...</span>
+</pre></div>
+</div>
+<p>htmlForException returns an HTML string that presents useful information to the developer about the exception. The first argument is a tuple such as returned by <code class="docutils literal notranslate"><span class="pre">sys.exc_info()</span></code> which is in fact, invoked if the tuple isn’t provided. The options parameter can be a dictionary to override the color options in <code class="docutils literal notranslate"><span class="pre">HTMLForExceptionOptions</span></code> which is currently defined as:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">HTMLForExceptionOptions</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;table&#39;</span><span class="p">:</span> <span class="s1">&#39;background-color:#f0f0f0&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;default&#39;</span><span class="p">:</span> <span class="s1">&#39;color:#000&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;row.location&#39;</span><span class="p">:</span> <span class="s1">&#39;color:#009&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;row.code&#39;</span><span class="p">:</span> <span class="s1">&#39;color:#900&#39;</span><span class="p">,</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>A sample HTML exception string looks like this:</p>
+<table style="background-color:#f0f0f0:width:100%"><tr><td>
+<pre style="color:#000">Traceback (most recent call last):
+<span style="color:#009">  File "Application.py", line 90, in dispatchRequest</span>
+<span style="color:#900">    self.respond(context, response)</span>
+<span style="color:#009">  File "Application.py", line 112, in respond</span>
+<span style="color:#900">    ctx.component().respond(ctx, response)</span>
+<span style="color:#009">  File "HTTPComponent.py", line 30, in respond</span>
+<span style="color:#900">    method(ctx, response)</span>
+<span style="color:#009">  File "/home/echuck/Webware/Examples/Introspect.py", line 9, in respondToGet</span>
+<span style="color:#900">    self.write('&lt;table %s&gt;' % tableOptions)</span>
+NameError: tableOptions</pre>
+</td></tr></table></section>
+<section id="httpstatuscodes">
+<h2>HTTPStatusCodes<a class="headerlink" href="#httpstatuscodes" title="Link to this heading">¶</a></h2>
+<p>This module provides a list of well known HTTP status codes in list form and in a dictionary that can be keyed by code number or identifier.</p>
+<p>You can index the HTTPStatusCodes dictionary by code number such as <code class="docutils literal notranslate"><span class="pre">200</span></code>, or identifier such as <code class="docutils literal notranslate"><span class="pre">OK</span></code>. The dictionary returned has keys <code class="docutils literal notranslate"><span class="pre">'code'</span></code>, <code class="docutils literal notranslate"><span class="pre">'identifier'</span></code> and <code class="docutils literal notranslate"><span class="pre">'htmlMsg'</span></code>. An <code class="docutils literal notranslate"><span class="pre">'asciiMsg'</span></code> key is provided, however, the HTML tags are not yet actually stripped out.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">htmlTableOfHTTPStatusCodes()</span></code> function returns a string which is exactly that: a table containing the <code class="docutils literal notranslate"><span class="pre">HTTPStatusCodes</span></code> defined by the module. You can affect the formatting of the table by specifying values for the arguments. It’s highly recommended that you use <code class="docutils literal notranslate"><span class="pre">key=value</span></code> arguments since the number and order could easily change in future versions. The definition is:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">htmlTableOfHTTPStatusCodes</span><span class="p">(</span>
+        <span class="n">codes</span><span class="o">=</span><span class="n">HTTPStatusCodeList</span><span class="p">,</span>
+        <span class="n">tableArgs</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">rowArgs</span><span class="o">=</span><span class="s1">&#39;style=&quot;vertical-align:top&quot;&#39;</span><span class="p">,</span>
+        <span class="n">colArgs</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">headingArgs</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">):</span>
+    <span class="o">...</span>
+</pre></div>
+</div>
+<p>If you run the script, it will invoke <code class="docutils literal notranslate"><span class="pre">htmlTableOfHTTPStatusCodes()</span></code> and print its contents with some minimal HTML wrapping. You could do this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="n">cd</span> <span class="n">Webware</span><span class="o">/</span><span class="n">Projects</span><span class="o">/</span><span class="n">WebUtils</span>
+<span class="o">&gt;</span> <span class="n">python</span> <span class="n">HTTPStatusCodes</span><span class="o">.</span><span class="n">py</span> <span class="o">&gt;</span> <span class="n">HTTPStatusCodes</span><span class="o">.</span><span class="n">html</span>
+</pre></div>
+</div>
+<p>And then open the HTML file in your favorite browser.</p>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">Webware for Python 3</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changes.html">List of Changes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="migrate.html">Migration Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="copyright.html">Copyright and License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial.html">Beginner Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="appdev.html">Application Development</a></li>
+<li class="toctree-l1"><a class="reference internal" href="config.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="deploy.html">Deployment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="plugins.html">Plug-ins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="style.html">Style Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="psp.html">PSP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="userkit.html">UserKit</a></li>
+<li class="toctree-l1"><a class="reference internal" href="taskkit.html">TaskKit</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">WebUtils</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#htmlforexception">HTMLForException</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#httpstatuscodes">HTTPStatusCodes</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="miscutils.html">MiscUtils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="testing.html">Testing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ref/index.html">API Reference</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="taskkit.html" title="previous chapter">TaskKit</a></li>
+      <li>Next: <a href="miscutils.html" title="next chapter">MiscUtils</a></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;1999-2025, Christoph Zwerschke et al.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.2.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+      |
+      <a href="_sources/webutils.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

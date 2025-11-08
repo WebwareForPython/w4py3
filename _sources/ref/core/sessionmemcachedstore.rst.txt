@@ -1,0 +1,4 @@
+SessionMemcachedStore
+---------------------
+
+.. automodule:: SessionMemcachedStore

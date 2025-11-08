@@ -1,0 +1,4 @@
+RoleUser
+--------
+
+.. automodule:: UserKit.RoleUser

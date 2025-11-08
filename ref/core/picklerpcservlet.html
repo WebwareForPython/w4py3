@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>PickleRPCServlet &#8212; Webware for Python 3 3.1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="../../_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="../../_static/alabaster.css?v=27fed22d" />
+    <script src="../../_static/documentation_options.js?v=dd1205ac"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="copyright" title="Copyright" href="../../copyright.html" />
+    <link rel="next" title="PlugIn" href="plugin.html" />
+    <link rel="prev" title="Page" href="page.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="module-PickleRPCServlet">
+<span id="picklerpcservlet"></span><h1>PickleRPCServlet<a class="headerlink" href="#module-PickleRPCServlet" title="Link to this heading">¶</a></h1>
+<p>Dict-RPC servlets.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="PickleRPCServlet.PickleRPCServlet">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PickleRPCServlet.</span></span><span class="sig-name descname"><span class="pre">PickleRPCServlet</span></span><a class="headerlink" href="#PickleRPCServlet.PickleRPCServlet" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="rpcservlet.html#RPCServlet.RPCServlet" title="RPCServlet.RPCServlet"><code class="xref py py-class docutils literal notranslate"><span class="pre">RPCServlet</span></code></a>, <a class="reference internal" href="../miscutils/picklerpc.html#MiscUtils.PickleRPC.SafeUnpickler" title="MiscUtils.PickleRPC.SafeUnpickler"><code class="xref py py-class docutils literal notranslate"><span class="pre">SafeUnpickler</span></code></a></p>
+<p>PickleRPCServlet is a base class for Dict-RPC servlets.</p>
+<p>The “Pickle” refers to Python’s pickle module. This class is
+similar to XMLRPCServlet. By using Python pickles you get their
+convenience (assuming the client is Pythonic), but lose
+language independence. Some of us don’t mind that last one.  ;-)</p>
+<p>Conveniences over XML-RPC include the use of all of the following:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Any pickle-able Python type (datetime for example)</p></li>
+<li><p>Python instances (aka objects)</p></li>
+<li><p>None</p></li>
+<li><p>Longs that are outside the 32-bit int boundaries</p></li>
+<li><p>Keyword arguments</p></li>
+</ul>
+</div></blockquote>
+<p>Pickles should also be faster than XML, especially now that
+we support binary pickling and compression.</p>
+<p>To make your own <cite>PickleRPCServlet</cite>, create a subclass and implement a
+method which is then named in <cite>exposedMethods()</cite>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">PickleRPCServlet</span><span class="w"> </span><span class="kn">import</span> <span class="n">PickleRPCServlet</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">Math</span><span class="p">(</span><span class="n">PickleRPCServlet</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">multiply</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">x</span> <span class="o">*</span> <span class="n">y</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">exposedMethods</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[</span><span class="s1">&#39;multiply&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>To make a PickleRPC call from another Python program, do this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">MiscUtils.PickleRPC</span><span class="w"> </span><span class="kn">import</span> <span class="n">Server</span>
+<span class="n">server</span> <span class="o">=</span> <span class="n">Server</span><span class="p">(</span><span class="s1">&#39;http://localhost/Webware/Context/Math&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">server</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>     <span class="c1"># 12</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">server</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>  <span class="c1"># ----------</span>
+</pre></div>
+</div>
+<p>If a request error is raised by the server, then
+<cite>MiscUtils.PickleRPC.RequestError</cite> is raised. If an unhandled
+exception is raised by the server, or the server response is
+malformed, then <cite>MiscUtils.PickleRPC.ResponseError</cite> (or one of
+its subclasses) is raised.</p>
+<p>Tip: If you want callers of the RPC servlets to be able to
+introspect what methods are available, then include
+‘exposedMethods’ in <cite>exposedMethods()</cite>.</p>
+<p>If you wanted the actual response dictionary for some reason:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">server</span><span class="o">.</span><span class="n">_request</span><span class="p">(</span><span class="s1">&#39;multiply&#39;</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+<span class="c1"># {&#39;value&#39;: 12, &#39;timeReceived&#39;: ...}</span>
+</pre></div>
+</div>
+<p>In which case, an exception is not purposefully raised if the
+dictionary contains one. Instead, examine the dictionary.</p>
+<p>For the dictionary formats and more information see the docs
+for <cite>MiscUtils.PickleRPC</cite>.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="PickleRPCServlet.PickleRPCServlet.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PickleRPCServlet.PickleRPCServlet.__init__" title="Link to this definition">¶</a></dt>
+<dd><p>Subclasses must invoke super.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PickleRPCServlet.PickleRPCServlet.allowedGlobals">
+<span class="sig-name descname"><span class="pre">allowedGlobals</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PickleRPCServlet.PickleRPCServlet.allowedGlobals" title="Link to this definition">¶</a></dt>
+<dd><p>Allowed class names.</p>
+<p>Must return a list of (moduleName, klassName) tuples for all
+classes that you want to allow to be unpickled.</p>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">return</span> <span class="p">[(</span><span class="s1">&#39;datetime&#39;</span><span class="p">,</span> <span class="s1">&#39;date&#39;</span><span class="p">)]</span>
+</pre></div>
+</div>
+<p>Allows datetime.date instances to be unpickled.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PickleRPCServlet.PickleRPCServlet.awake">
+<span class="sig-name descname"><span class="pre">awake</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">transaction</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PickleRPCServlet.PickleRPCServlet.awake" title="Link to this definition">¶</a></dt>
+<dd><p>Begin transaction.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PickleRPCServlet.PickleRPCServlet.call">
+<span class="sig-name descname"><span class="pre">call</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">methodName</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">keywords</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PickleRPCServlet.PickleRPCServlet.call" title="Link to this definition">¶</a></dt>
+<dd><p>Call custom method.</p>
+<p>Subclasses may override this class for custom handling of methods.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PickleRPCServlet.PickleRPCServlet.canBeReused">
+<span class="sig-name descname"><span class="pre">canBeReused</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PickleRPCServlet.PickleRPCServlet.canBeReused" title="Link to this definition">¶</a></dt>
+<dd><p>Returns whether a single servlet instance can be reused.</p>
+<p>The default is True, but subclasses con override to return False.
+Keep in mind that performance may seriously be degraded if instances
+can’t be reused. Also, there’s no known good reasons not to reuse
+an instance. Remember the awake() and sleep() methods are invoked
+for every transaction. But just in case, your servlet can refuse
+to be reused.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PickleRPCServlet.PickleRPCServlet.canBeThreaded">
+<span class="sig-name descname"><span class="pre">canBeThreaded</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PickleRPCServlet.PickleRPCServlet.canBeThreaded" title="Link to this definition">¶</a></dt>
+<dd><p>Return whether the servlet can be multithreaded.</p>
+<p>This value should not change during the lifetime of the object.
+The default implementation returns False.
+Note: This is not currently used.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PickleRPCServlet.PickleRPCServlet.close">
+<span class="sig-name descname"><span class="pre">close</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PickleRPCServlet.PickleRPCServlet.close" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PickleRPCServlet.PickleRPCServlet.exposedMethods">
+<span class="sig-name descname"><span class="pre">exposedMethods</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PickleRPCServlet.PickleRPCServlet.exposedMethods" title="Link to this definition">¶</a></dt>
+<dd><p>Get exposed methods.</p>
+<p>Subclasses should return a list of methods that will be exposed
+through XML-RPC.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PickleRPCServlet.PickleRPCServlet.findGlobal">
+<span class="sig-name descname"><span class="pre">findGlobal</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">module</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">klass</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PickleRPCServlet.PickleRPCServlet.findGlobal" title="Link to this definition">¶</a></dt>
+<dd><p>Find class name.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PickleRPCServlet.PickleRPCServlet.handleException">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">handleException</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">transaction</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PickleRPCServlet.PickleRPCServlet.handleException" title="Link to this definition">¶</a></dt>
+<dd><p>Handle exception.</p>
+<p>If ReportRPCExceptionsInWebware is set to True, then flush the response
+(because we don’t want the standard HTML traceback to be appended to
+the response) and then handle the exception in the standard Webware
+way. This means logging it to the console, storing it in the error log,
+sending error email, etc. depending on the settings.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PickleRPCServlet.PickleRPCServlet.lastModified">
+<span class="sig-name descname"><span class="pre">lastModified</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">_trans</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PickleRPCServlet.PickleRPCServlet.lastModified" title="Link to this definition">¶</a></dt>
+<dd><p>Get time of last modification.</p>
+<p>Return this object’s Last-Modified time (as a float),
+or None (meaning don’t know or not applicable).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PickleRPCServlet.PickleRPCServlet.load">
+<span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PickleRPCServlet.PickleRPCServlet.load" title="Link to this definition">¶</a></dt>
+<dd><p>Unpickle a file.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PickleRPCServlet.PickleRPCServlet.loads">
+<span class="sig-name descname"><span class="pre">loads</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">s</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PickleRPCServlet.PickleRPCServlet.loads" title="Link to this definition">¶</a></dt>
+<dd><p>Unpickle a string.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PickleRPCServlet.PickleRPCServlet.log">
+<span class="sig-name descname"><span class="pre">log</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PickleRPCServlet.PickleRPCServlet.log" title="Link to this definition">¶</a></dt>
+<dd><p>Log a message.</p>
+<p>This can be invoked to print messages concerning the servlet.
+This is often used by self to relay important information back
+to developers.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PickleRPCServlet.PickleRPCServlet.name">
+<span class="sig-name descname"><span class="pre">name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PickleRPCServlet.PickleRPCServlet.name" title="Link to this definition">¶</a></dt>
+<dd><p>Return the name which is simple the name of the class.</p>
+<p>Subclasses should <em>not</em> override this method.
+It is used for logging and debugging.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PickleRPCServlet.PickleRPCServlet.notImplemented">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">notImplemented</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">trans</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PickleRPCServlet.PickleRPCServlet.notImplemented" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PickleRPCServlet.PickleRPCServlet.open">
+<span class="sig-name descname"><span class="pre">open</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PickleRPCServlet.PickleRPCServlet.open" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PickleRPCServlet.PickleRPCServlet.respond">
+<span class="sig-name descname"><span class="pre">respond</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">transaction</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PickleRPCServlet.PickleRPCServlet.respond" title="Link to this definition">¶</a></dt>
+<dd><p>Respond to a request.</p>
+<p>Invokes the appropriate respondToSomething() method depending on the
+type of request (e.g., GET, POST, PUT, …).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PickleRPCServlet.PickleRPCServlet.respondToHead">
+<span class="sig-name descname"><span class="pre">respondToHead</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">trans</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PickleRPCServlet.PickleRPCServlet.respondToHead" title="Link to this definition">¶</a></dt>
+<dd><p>Respond to a HEAD request.</p>
+<p>A correct but inefficient implementation.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PickleRPCServlet.PickleRPCServlet.respondToPost">
+<span class="sig-name descname"><span class="pre">respondToPost</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">trans</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PickleRPCServlet.PickleRPCServlet.respondToPost" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PickleRPCServlet.PickleRPCServlet.resultForException">
+<span class="sig-name descname"><span class="pre">resultForException</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">e</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">trans</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PickleRPCServlet.PickleRPCServlet.resultForException" title="Link to this definition">¶</a></dt>
+<dd><p>Get text for exception.</p>
+<p>Given an unhandled exception, returns the string that should be
+sent back in the RPC response as controlled by the
+RPCExceptionReturn setting.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PickleRPCServlet.PickleRPCServlet.runMethodForTransaction">
+<span class="sig-name descname"><span class="pre">runMethodForTransaction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">transaction</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kw</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PickleRPCServlet.PickleRPCServlet.runMethodForTransaction" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PickleRPCServlet.PickleRPCServlet.runTransaction">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">runTransaction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">transaction</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PickleRPCServlet.PickleRPCServlet.runTransaction" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PickleRPCServlet.PickleRPCServlet.sendOK">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">sendOK</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">contentType</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">contents</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">trans</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">contentEncoding</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PickleRPCServlet.PickleRPCServlet.sendOK" title="Link to this definition">¶</a></dt>
+<dd><p>Send a 200 OK response with the given contents.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PickleRPCServlet.PickleRPCServlet.sendResponse">
+<span class="sig-name descname"><span class="pre">sendResponse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">trans</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">response</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PickleRPCServlet.PickleRPCServlet.sendResponse" title="Link to this definition">¶</a></dt>
+<dd><p>Timestamp the response dict and send it.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PickleRPCServlet.PickleRPCServlet.serverSidePath">
+<span class="sig-name descname"><span class="pre">serverSidePath</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PickleRPCServlet.PickleRPCServlet.serverSidePath" title="Link to this definition">¶</a></dt>
+<dd><p>Return the filesystem path of the page on the server.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PickleRPCServlet.PickleRPCServlet.setFactory">
+<span class="sig-name descname"><span class="pre">setFactory</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">factory</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PickleRPCServlet.PickleRPCServlet.setFactory" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PickleRPCServlet.PickleRPCServlet.sleep">
+<span class="sig-name descname"><span class="pre">sleep</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">transaction</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PickleRPCServlet.PickleRPCServlet.sleep" title="Link to this definition">¶</a></dt>
+<dd><p>End transaction.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PickleRPCServlet.PickleRPCServlet.transaction">
+<span class="sig-name descname"><span class="pre">transaction</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PickleRPCServlet.PickleRPCServlet.transaction" title="Link to this definition">¶</a></dt>
+<dd><p>Get the corresponding transaction.</p>
+<p>Most uses of RPC will not need this.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PickleRPCServlet.PickleRPCServlet.useBinaryPickle">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">useBinaryPickle</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PickleRPCServlet.PickleRPCServlet.useBinaryPickle" title="Link to this definition">¶</a></dt>
+<dd><p>Determine whether binary pickling format shall be used.</p>
+<p>When this returns True, the highest available binary pickling format
+will be used. Override this to return False to use the less-efficient
+text pickling format.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../index.html">Webware for Python 3</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../changes.html">List of Changes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../migrate.html">Migration Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../copyright.html">Copyright and License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorial.html">Beginner Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../appdev.html">Application Development</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../config.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../deploy.html">Deployment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../plugins.html">Plug-ins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../style.html">Style Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../psp.html">PSP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../userkit.html">UserKit</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../taskkit.html">TaskKit</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../webutils.html">WebUtils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../miscutils.html">MiscUtils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../testing.html">Testing</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Core Classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../psp/index.html">PSP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../userkit/index.html">UserKit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../taskkit/index.html">TaskKit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../webutils/index.html">WebUtils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../miscutils/index.html">MiscUtils</a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">API Reference</a><ul>
+  <li><a href="index.html">Core Classes</a><ul>
+      <li>Previous: <a href="page.html" title="previous chapter">Page</a></li>
+      <li>Next: <a href="plugin.html" title="next chapter">PlugIn</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;1999-2025, Christoph Zwerschke et al.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.2.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+      |
+      <a href="../../_sources/ref/core/picklerpcservlet.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

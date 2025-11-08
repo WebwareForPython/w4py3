@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>RPCServlet &#8212; Webware for Python 3 3.1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="../../_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="../../_static/alabaster.css?v=27fed22d" />
+    <script src="../../_static/documentation_options.js?v=dd1205ac"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="copyright" title="Copyright" href="../../copyright.html" />
+    <link rel="next" title="Servlet" href="servlet.html" />
+    <link rel="prev" title="Response" href="response.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="module-RPCServlet">
+<span id="rpcservlet"></span><h1>RPCServlet<a class="headerlink" href="#module-RPCServlet" title="Link to this heading">¶</a></h1>
+<p>RPC servlets.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="RPCServlet.RPCServlet">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">RPCServlet.</span></span><span class="sig-name descname"><span class="pre">RPCServlet</span></span><a class="headerlink" href="#RPCServlet.RPCServlet" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="httpservlet.html#HTTPServlet.HTTPServlet" title="HTTPServlet.HTTPServlet"><code class="xref py py-class docutils literal notranslate"><span class="pre">HTTPServlet</span></code></a></p>
+<p>RPCServlet is a base class for RPC servlets.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="RPCServlet.RPCServlet.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPCServlet.RPCServlet.__init__" title="Link to this definition">¶</a></dt>
+<dd><p>Subclasses must invoke super.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPCServlet.RPCServlet.awake">
+<span class="sig-name descname"><span class="pre">awake</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">transaction</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPCServlet.RPCServlet.awake" title="Link to this definition">¶</a></dt>
+<dd><p>Begin transaction.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPCServlet.RPCServlet.call">
+<span class="sig-name descname"><span class="pre">call</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">methodName</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">keywords</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPCServlet.RPCServlet.call" title="Link to this definition">¶</a></dt>
+<dd><p>Call custom method.</p>
+<p>Subclasses may override this class for custom handling of methods.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPCServlet.RPCServlet.canBeReused">
+<span class="sig-name descname"><span class="pre">canBeReused</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPCServlet.RPCServlet.canBeReused" title="Link to this definition">¶</a></dt>
+<dd><p>Returns whether a single servlet instance can be reused.</p>
+<p>The default is True, but subclasses con override to return False.
+Keep in mind that performance may seriously be degraded if instances
+can’t be reused. Also, there’s no known good reasons not to reuse
+an instance. Remember the awake() and sleep() methods are invoked
+for every transaction. But just in case, your servlet can refuse
+to be reused.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPCServlet.RPCServlet.canBeThreaded">
+<span class="sig-name descname"><span class="pre">canBeThreaded</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPCServlet.RPCServlet.canBeThreaded" title="Link to this definition">¶</a></dt>
+<dd><p>Return whether the servlet can be multithreaded.</p>
+<p>This value should not change during the lifetime of the object.
+The default implementation returns False.
+Note: This is not currently used.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPCServlet.RPCServlet.close">
+<span class="sig-name descname"><span class="pre">close</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPCServlet.RPCServlet.close" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPCServlet.RPCServlet.exposedMethods">
+<span class="sig-name descname"><span class="pre">exposedMethods</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPCServlet.RPCServlet.exposedMethods" title="Link to this definition">¶</a></dt>
+<dd><p>Get exposed methods.</p>
+<p>Subclasses should return a list of methods that will be exposed
+through XML-RPC.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPCServlet.RPCServlet.handleException">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">handleException</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">transaction</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPCServlet.RPCServlet.handleException" title="Link to this definition">¶</a></dt>
+<dd><p>Handle exception.</p>
+<p>If ReportRPCExceptionsInWebware is set to True, then flush the response
+(because we don’t want the standard HTML traceback to be appended to
+the response) and then handle the exception in the standard Webware
+way. This means logging it to the console, storing it in the error log,
+sending error email, etc. depending on the settings.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPCServlet.RPCServlet.lastModified">
+<span class="sig-name descname"><span class="pre">lastModified</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">_trans</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPCServlet.RPCServlet.lastModified" title="Link to this definition">¶</a></dt>
+<dd><p>Get time of last modification.</p>
+<p>Return this object’s Last-Modified time (as a float),
+or None (meaning don’t know or not applicable).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPCServlet.RPCServlet.log">
+<span class="sig-name descname"><span class="pre">log</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPCServlet.RPCServlet.log" title="Link to this definition">¶</a></dt>
+<dd><p>Log a message.</p>
+<p>This can be invoked to print messages concerning the servlet.
+This is often used by self to relay important information back
+to developers.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPCServlet.RPCServlet.name">
+<span class="sig-name descname"><span class="pre">name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPCServlet.RPCServlet.name" title="Link to this definition">¶</a></dt>
+<dd><p>Return the name which is simple the name of the class.</p>
+<p>Subclasses should <em>not</em> override this method.
+It is used for logging and debugging.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPCServlet.RPCServlet.notImplemented">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">notImplemented</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">trans</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPCServlet.RPCServlet.notImplemented" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPCServlet.RPCServlet.open">
+<span class="sig-name descname"><span class="pre">open</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPCServlet.RPCServlet.open" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPCServlet.RPCServlet.respond">
+<span class="sig-name descname"><span class="pre">respond</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">transaction</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPCServlet.RPCServlet.respond" title="Link to this definition">¶</a></dt>
+<dd><p>Respond to a request.</p>
+<p>Invokes the appropriate respondToSomething() method depending on the
+type of request (e.g., GET, POST, PUT, …).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPCServlet.RPCServlet.respondToHead">
+<span class="sig-name descname"><span class="pre">respondToHead</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">trans</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPCServlet.RPCServlet.respondToHead" title="Link to this definition">¶</a></dt>
+<dd><p>Respond to a HEAD request.</p>
+<p>A correct but inefficient implementation.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPCServlet.RPCServlet.resultForException">
+<span class="sig-name descname"><span class="pre">resultForException</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">e</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">trans</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPCServlet.RPCServlet.resultForException" title="Link to this definition">¶</a></dt>
+<dd><p>Get text for exception.</p>
+<p>Given an unhandled exception, returns the string that should be
+sent back in the RPC response as controlled by the
+RPCExceptionReturn setting.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPCServlet.RPCServlet.runMethodForTransaction">
+<span class="sig-name descname"><span class="pre">runMethodForTransaction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">transaction</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kw</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPCServlet.RPCServlet.runMethodForTransaction" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPCServlet.RPCServlet.runTransaction">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">runTransaction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">transaction</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPCServlet.RPCServlet.runTransaction" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPCServlet.RPCServlet.sendOK">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">sendOK</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">contentType</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">contents</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">trans</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">contentEncoding</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPCServlet.RPCServlet.sendOK" title="Link to this definition">¶</a></dt>
+<dd><p>Send a 200 OK response with the given contents.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPCServlet.RPCServlet.serverSidePath">
+<span class="sig-name descname"><span class="pre">serverSidePath</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPCServlet.RPCServlet.serverSidePath" title="Link to this definition">¶</a></dt>
+<dd><p>Return the filesystem path of the page on the server.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPCServlet.RPCServlet.setFactory">
+<span class="sig-name descname"><span class="pre">setFactory</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">factory</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPCServlet.RPCServlet.setFactory" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPCServlet.RPCServlet.sleep">
+<span class="sig-name descname"><span class="pre">sleep</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">transaction</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPCServlet.RPCServlet.sleep" title="Link to this definition">¶</a></dt>
+<dd><p>End transaction.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPCServlet.RPCServlet.transaction">
+<span class="sig-name descname"><span class="pre">transaction</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPCServlet.RPCServlet.transaction" title="Link to this definition">¶</a></dt>
+<dd><p>Get the corresponding transaction.</p>
+<p>Most uses of RPC will not need this.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../index.html">Webware for Python 3</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../changes.html">List of Changes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../migrate.html">Migration Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../copyright.html">Copyright and License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorial.html">Beginner Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../appdev.html">Application Development</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../config.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../deploy.html">Deployment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../plugins.html">Plug-ins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../style.html">Style Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../psp.html">PSP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../userkit.html">UserKit</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../taskkit.html">TaskKit</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../webutils.html">WebUtils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../miscutils.html">MiscUtils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../testing.html">Testing</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Core Classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../psp/index.html">PSP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../userkit/index.html">UserKit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../taskkit/index.html">TaskKit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../webutils/index.html">WebUtils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../miscutils/index.html">MiscUtils</a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">API Reference</a><ul>
+  <li><a href="index.html">Core Classes</a><ul>
+      <li>Previous: <a href="response.html" title="previous chapter">Response</a></li>
+      <li>Next: <a href="servlet.html" title="next chapter">Servlet</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;1999-2025, Christoph Zwerschke et al.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.2.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+      |
+      <a href="../../_sources/ref/core/rpcservlet.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

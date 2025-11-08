@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>DBPool &#8212; Webware for Python 3 3.1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="../../_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="../../_static/alabaster.css?v=27fed22d" />
+    <script src="../../_static/documentation_options.js?v=dd1205ac"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="copyright" title="Copyright" href="../../copyright.html" />
+    <link rel="next" title="DictForArgs" href="dictforargs.html" />
+    <link rel="prev" title="DateParser" href="dateparser.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="module-MiscUtils.DBPool">
+<span id="dbpool"></span><h1>DBPool<a class="headerlink" href="#module-MiscUtils.DBPool" title="Link to this heading">¶</a></h1>
+<p>DBPool.py</p>
+<p>Implements a pool of cached connections to a database for any DB-API 2
+compliant database module. This should result in a speedup for persistent
+applications like Webware. The pool of connections is threadsafe regardless
+of whether the used DB-API 2 general has a threadsafety of 1 or 2.</p>
+<p>For more information on the DB-API 2 specification, see <a class="reference external" href="https://www.python.org/dev/peps/pep-0249/">PEP 249</a>.</p>
+<p>The idea behind DBPool is that it’s completely seamless, so once you have
+established your connection, use it just as you would any other DB-API 2
+compliant module. For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pgdb</span>  <span class="c1"># import used DB-API 2 module</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">MiscUtils.DBPool</span><span class="w"> </span><span class="kn">import</span> <span class="n">DBPool</span>
+<span class="n">dbpool</span> <span class="o">=</span> <span class="n">DBPool</span><span class="p">(</span><span class="n">pgdb</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="n">host</span><span class="o">=...</span><span class="p">,</span> <span class="n">database</span><span class="o">=...</span><span class="p">,</span> <span class="n">user</span><span class="o">=...</span><span class="p">,</span> <span class="o">...</span><span class="p">)</span>
+<span class="n">db</span> <span class="o">=</span> <span class="n">dbpool</span><span class="o">.</span><span class="n">connection</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Now use “db” exactly as if it were a pgdb connection. It’s really
+just a proxy class.</p>
+<p>db.close() will return the connection to the pool, not actually
+close it. This is so your existing code works nicely.</p>
+<p>DBPool is actually intended to be a demonstration of concept not to be
+used in a productive environment. It is really a very simple solution with
+several drawbacks. For instance, pooled database connections which have
+become invalid are not automatically recovered. For a more sophisticated
+solution, please have a look at the <a class="reference external" href="https://webwareforpython.github.io/dbutils/">DBUtils</a> package.</p>
+<p>CREDIT</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Contributed by Dan Green.</p></li>
+<li><p>Thread safety bug found by Tom Schwaller.</p></li>
+<li><p>Fixes by Geoff Talvola (thread safety in <cite>_threadsafe_get_connection()</cite>).</p></li>
+<li><p>Clean up by Chuck Esterbrook.</p></li>
+<li><p>Fix unthreadsafe functions which were leaking, Jay Love.</p></li>
+<li><p>Eli Green’s webware-discuss comments were lifted for additional docs.</p></li>
+<li><p>Coding and comment clean-up by Christoph Zwerschke.</p></li>
+</ul>
+</div></blockquote>
+<dl class="py class">
+<dt class="sig sig-object py" id="MiscUtils.DBPool.DBPool">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">MiscUtils.DBPool.</span></span><span class="sig-name descname"><span class="pre">DBPool</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dbapi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">maxconnections</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#MiscUtils.DBPool.DBPool" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="MiscUtils.DBPool.DBPool.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dbapi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">maxconnections</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#MiscUtils.DBPool.DBPool.__init__" title="Link to this definition">¶</a></dt>
+<dd><p>Set up the database connection pool.</p>
+<dl class="simple">
+<dt><cite>dbapi</cite>:</dt><dd><p>the DB-API 2 compliant module you want to use</p>
+</dd>
+<dt><cite>maxconnections</cite>:</dt><dd><p>the number of connections cached in the pool</p>
+</dd>
+<dt><cite>args</cite>, <cite>kwargs</cite>:</dt><dd><p>the parameters that shall be used to establish the database
+connections using <code class="docutils literal notranslate"><span class="pre">dbapi.connect()</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="MiscUtils.DBPool.DBPool.close">
+<span class="sig-name descname"><span class="pre">close</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#MiscUtils.DBPool.DBPool.close" title="Link to this definition">¶</a></dt>
+<dd><p>Close all connections in the pool.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="MiscUtils.DBPool.DBPoolError">
+<em class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">MiscUtils.DBPool.</span></span><span class="sig-name descname"><span class="pre">DBPoolError</span></span><a class="headerlink" href="#MiscUtils.DBPool.DBPoolError" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+<p>General database pooling error.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="MiscUtils.DBPool.DBPoolError.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#MiscUtils.DBPool.DBPoolError.__init__" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="MiscUtils.DBPool.DBPoolError.add_note">
+<span class="sig-name descname"><span class="pre">add_note</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="positional-only-separator o"><abbr title="Positional-only parameter separator (PEP 570)"><span class="pre">/</span></abbr></span></em><span class="sig-paren">)</span><a class="headerlink" href="#MiscUtils.DBPool.DBPoolError.add_note" title="Link to this definition">¶</a></dt>
+<dd><p>Exception.add_note(note) –
+add a note to the exception</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="MiscUtils.DBPool.DBPoolError.args">
+<span class="sig-name descname"><span class="pre">args</span></span><a class="headerlink" href="#MiscUtils.DBPool.DBPoolError.args" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="MiscUtils.DBPool.DBPoolError.with_traceback">
+<span class="sig-name descname"><span class="pre">with_traceback</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="positional-only-separator o"><abbr title="Positional-only parameter separator (PEP 570)"><span class="pre">/</span></abbr></span></em><span class="sig-paren">)</span><a class="headerlink" href="#MiscUtils.DBPool.DBPoolError.with_traceback" title="Link to this definition">¶</a></dt>
+<dd><p>Exception.with_traceback(tb) –
+set self.__traceback__ to tb and return self.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="MiscUtils.DBPool.NotSupportedError">
+<em class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">MiscUtils.DBPool.</span></span><span class="sig-name descname"><span class="pre">NotSupportedError</span></span><a class="headerlink" href="#MiscUtils.DBPool.NotSupportedError" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#MiscUtils.DBPool.DBPoolError" title="MiscUtils.DBPool.DBPoolError"><code class="xref py py-class docutils literal notranslate"><span class="pre">DBPoolError</span></code></a></p>
+<p>Missing support from database module error.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="MiscUtils.DBPool.NotSupportedError.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#MiscUtils.DBPool.NotSupportedError.__init__" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="MiscUtils.DBPool.NotSupportedError.add_note">
+<span class="sig-name descname"><span class="pre">add_note</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="positional-only-separator o"><abbr title="Positional-only parameter separator (PEP 570)"><span class="pre">/</span></abbr></span></em><span class="sig-paren">)</span><a class="headerlink" href="#MiscUtils.DBPool.NotSupportedError.add_note" title="Link to this definition">¶</a></dt>
+<dd><p>Exception.add_note(note) –
+add a note to the exception</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="MiscUtils.DBPool.NotSupportedError.args">
+<span class="sig-name descname"><span class="pre">args</span></span><a class="headerlink" href="#MiscUtils.DBPool.NotSupportedError.args" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="MiscUtils.DBPool.NotSupportedError.with_traceback">
+<span class="sig-name descname"><span class="pre">with_traceback</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="positional-only-separator o"><abbr title="Positional-only parameter separator (PEP 570)"><span class="pre">/</span></abbr></span></em><span class="sig-paren">)</span><a class="headerlink" href="#MiscUtils.DBPool.NotSupportedError.with_traceback" title="Link to this definition">¶</a></dt>
+<dd><p>Exception.with_traceback(tb) –
+set self.__traceback__ to tb and return self.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="MiscUtils.DBPool.PooledConnection">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">MiscUtils.DBPool.</span></span><span class="sig-name descname"><span class="pre">PooledConnection</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pool</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">con</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#MiscUtils.DBPool.PooledConnection" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>A wrapper for database connections to help with DBPool.</p>
+<p>You don’t normally deal with this class directly,
+but use DBPool to get new connections.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="MiscUtils.DBPool.PooledConnection.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pool</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">con</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#MiscUtils.DBPool.PooledConnection.__init__" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="MiscUtils.DBPool.PooledConnection.close">
+<span class="sig-name descname"><span class="pre">close</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#MiscUtils.DBPool.PooledConnection.close" title="Link to this definition">¶</a></dt>
+<dd><p>Close the pooled connection.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../index.html">Webware for Python 3</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../changes.html">List of Changes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../migrate.html">Migration Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../copyright.html">Copyright and License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorial.html">Beginner Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../appdev.html">Application Development</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../config.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../deploy.html">Deployment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../plugins.html">Plug-ins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../style.html">Style Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../psp.html">PSP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../userkit.html">UserKit</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../taskkit.html">TaskKit</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../webutils.html">WebUtils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../miscutils.html">MiscUtils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../testing.html">Testing</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../core/index.html">Core Classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../psp/index.html">PSP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../userkit/index.html">UserKit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../taskkit/index.html">TaskKit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../webutils/index.html">WebUtils</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">MiscUtils</a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">API Reference</a><ul>
+  <li><a href="index.html">MiscUtils</a><ul>
+      <li>Previous: <a href="dateparser.html" title="previous chapter">DateParser</a></li>
+      <li>Next: <a href="dictforargs.html" title="next chapter">DictForArgs</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;1999-2025, Christoph Zwerschke et al.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.2.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+      |
+      <a href="../../_sources/ref/miscutils/dbpool.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

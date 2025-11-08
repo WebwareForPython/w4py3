@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Quickstart &#8212; Webware for Python 3 3.1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=27fed22d" />
+    <script src="_static/documentation_options.js?v=dd1205ac"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="copyright" title="Copyright" href="copyright.html" />
+    <link rel="next" title="Beginner Tutorial" href="tutorial.html" />
+    <link rel="prev" title="Copyright and License" href="copyright.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="quickstart">
+<span id="id1"></span><h1>Quickstart<a class="headerlink" href="#quickstart" title="Link to this heading">¶</a></h1>
+<p>In this chapter we will show how you can create and run a “hello world” application with Webware for Python 3, and try out the example servlets provided with Webware. In the next chapter, we will then go into a little bit more detail and create a slightly more complex application.</p>
+<p>We assume you have already installed Webware for Python 3 into a virtual environment as explained in the chapter on <a class="reference internal" href="install.html#installation"><span class="std std-ref">Installation</span></a>.</p>
+<section id="the-webware-cli">
+<h2>The Webware CLI<a class="headerlink" href="#the-webware-cli" title="Link to this heading">¶</a></h2>
+<p>Webware for Python 3 comes with a command line tool named “webware” that helps creating a new projects and starting a development web server. You can run <code class="docutils literal notranslate"><span class="pre">webware</span></code> with the <code class="docutils literal notranslate"><span class="pre">--help</span></code> option to see the available subcommands:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">webware</span> <span class="o">--</span><span class="n">help</span>
+</pre></div>
+</div>
+<p>Remember that you need to activate the virtual environment where you installed Webware for Python 3 first if you haven’t installed it globally.</p>
+</section>
+<section id="creating-a-working-directory">
+<h2>Creating a Working Directory<a class="headerlink" href="#creating-a-working-directory" title="Link to this heading">¶</a></h2>
+<p>You can use the subcommand <code class="docutils literal notranslate"><span class="pre">make</span></code> to start making a new Webware for Python application. This subcommand will create a new Webware for Python 3 application working directory with subdirectories for your Webware contexts, configuration, etc. and will also generate some boilerplate files to get you started. Again, use the <code class="docutils literal notranslate"><span class="pre">--help</span></code> option to see all available options:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">webware</span> <span class="n">make</span> <span class="o">--</span><span class="n">help</span>
+</pre></div>
+</div>
+<p>Let’s start a simple “hello world” project using the <code class="docutils literal notranslate"><span class="pre">make</span></code> command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">webware</span> <span class="n">make</span> <span class="n">HelloWorld</span>
+</pre></div>
+</div>
+<p>You should see some output on the console explaining what has been created for your. Particularly, you should now have a subdirectory “HelloWorld” in your current directory.</p>
+<p>Each Webware application consists of one ore more “contexts”, which correspond to different URL prefixes. Some contexts such as the “example” and “admin” contexts are already provided with Webware for Python by default.</p>
+</section>
+<section id="running-the-webware-examples">
+<h2>Running the Webware Examples<a class="headerlink" href="#running-the-webware-examples" title="Link to this heading">¶</a></h2>
+<p>You need to <code class="docutils literal notranslate"><span class="pre">cd</span></code> into the newly created application working directory first:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="n">HelloWorld</span>
+</pre></div>
+</div>
+<p>Now you can run the application with the following command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">webware</span> <span class="n">serve</span> <span class="o">-</span><span class="n">b</span>
+</pre></div>
+</div>
+<p>The “serve” subcommand will start the development server, and the <code class="docutils literal notranslate"><span class="pre">-b</span></code> option will open your standard web browser with the base URL of the application – by default this is <code class="docutils literal notranslate"><span class="pre">http://localhost:8080/</span></code>. You should see a simple web page with the heading “Welcome to Webware for Python!” in your browser.</p>
+<p>You should also a link to the “Exmples” context located at the URL <code class="docutils literal notranslate"><span class="pre">http://localhost:8080/Examples/</span></code>. This context features several example servlets which you can select in the navigation side bar on the left side. Note that some of the examples need additional packages which should be installed as “extras” as explained in the chapter on <a class="reference internal" href="install.html#installation"><span class="std std-ref">Installation</span></a>.</p>
+<p>Try one of the example now, e.g. the <a class="reference external" href="http://localhost:8080/Examples/CountVisits">CountVisits</a> servlet. This example demonstrates how to use Webware Sessions to keep application state. In the navigation bar you will also find a link to <a class="reference external" href="http://localhost:8080/Examples/View?filename=CountVisits.py">view the source of CountVisits</a>. You will find that the source code for this servlet is very simple. It inherits from the <code class="docutils literal notranslate"><span class="pre">ExamplePage</span></code> servlet.</p>
+</section>
+<section id="using-the-admin-context">
+<h2>Using the Admin Context<a class="headerlink" href="#using-the-admin-context" title="Link to this heading">¶</a></h2>
+<p>Besides the “Examples” context, Webware for Python also provides an “Admin” context out of the box. By default it is located at the URL <code class="docutils literal notranslate"><span class="pre">http://localhost:8080/Admin/</span></code>. You will notice an error message that says you first need to add an admin password using the <code class="docutils literal notranslate"><span class="pre">AdminPassword</span></code> setting in the <code class="docutils literal notranslate"><span class="pre">Application.config</span></code> configuration file.</p>
+<p>You will find the configuration file in the <code class="docutils literal notranslate"><span class="pre">Configs</span></code> subdirectory of your application working directory. The configuration file defines all settings for the running Webware application using standard Python syntax. Try changing the <code class="docutils literal notranslate"><span class="pre">AdminPassword</span></code> defined at the top. You will notice that if you reload the admin context in your browser, you will still see the message about a missing admin password. You need to restart the application in order to make the changed application configuration effective. To do so, stop the running Webware application in your console with the Ctrl-C key combination, and start it again.</p>
+<p>You can use the <code class="docutils literal notranslate"><span class="pre">-r</span></code> option to automatically restart the development server when files used in your application are changed:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">webware</span> <span class="n">serve</span> <span class="o">-</span><span class="n">r</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">serve</span></code> subcommands has a few more options which you can see by running it with the <code class="docutils literal notranslate"><span class="pre">--help</span></code> option:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">webware</span> <span class="n">serve</span> <span class="o">--</span><span class="n">help</span>
+</pre></div>
+</div>
+<p>After adding an admin password, you should be able to log in to the admin context using the user name “admin” and the admin password you selected.</p>
+<p>In the navigation bar on the left side you now see several admin servlets. For example, the “Plug-ins” servlet lists all the Webware for Python plug-ins currently installed.</p>
+</section>
+<section id="a-hello-world-example">
+<h2>A “Hello World” Example<a class="headerlink" href="#a-hello-world-example" title="Link to this heading">¶</a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">make</span></code> subcommand also created a subdirectory <code class="docutils literal notranslate"><span class="pre">MyContext</span></code> that serves as the default context for your application. You can rename this context in the <code class="docutils literal notranslate"><span class="pre">Application.config</span></code> file, or give it a different name with the <code class="docutils literal notranslate"><span class="pre">-c</span></code> option of the <code class="docutils literal notranslate"><span class="pre">make</span></code> subcommand. Let’s leave the name for now – since it is the default context, you do not need to pass it in the URL.</p>
+<p>A newly created default context already contains one servlet <code class="docutils literal notranslate"><span class="pre">Main.py</span></code>. Again, you don’t need to pass this name in the URL, because it is the default name for the directory index, defined in the <code class="docutils literal notranslate"><span class="pre">DirectoryFile</span></code> setting of the application configuration file.</p>
+<p>Let’s add another very simple servlet <code class="docutils literal notranslate"><span class="pre">HelloWorld.py</span></code> to our default context. But first, let’s add a link to this servlet to the <code class="docutils literal notranslate"><span class="pre">Main</span></code> servlet. Open the <code class="docutils literal notranslate"><span class="pre">MyContext/Main.py</span></code> file in your editor and add the following line at the bottom of the method <code class="docutils literal notranslate"><span class="pre">writeContent()</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="bp">self</span><span class="o">.</span><span class="n">writeln</span><span class="p">(</span><span class="s1">&#39;&lt;ul&gt;&lt;li&gt;&lt;a href=&quot;HelloWorld&quot;&gt;Hello, World!&lt;/a&gt;&lt;/li&gt;&lt;/ul&gt;&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Everything that you pass to the <code class="docutils literal notranslate"><span class="pre">writeln()</span></code> method is written onto the current page. This is the main method you will be using in Webware for Python to create dynamic HTML pages. You can also use the <code class="docutils literal notranslate"><span class="pre">write()</span></code> method which does the same without appending a new-line character at the end. This approach is very similar to writing CGI applications. However, the servlets are kept in memory and not reloaded every time you visit a page, so Webware for Python is much more efficient. Also, servlets classes allow a much better structuring of your application using object oriented programming.</p>
+<p>When you navigate to the start page of your application, you should now already see this link. For now, you will get an “Error 404” when trying to click on this link. In order to make it operational, save the following file as <code class="docutils literal notranslate"><span class="pre">MyContext/HelloWorld.py</span></code> in your application working directory:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">Page</span><span class="w"> </span><span class="kn">import</span> <span class="n">Page</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">HelloWorld</span><span class="p">(</span><span class="n">Page</span><span class="p">):</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">title</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s1">&#39;Hello World Example&#39;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">writeContent</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">writeln</span><span class="p">(</span><span class="s1">&#39;&lt;h1&gt;Hello, World!&lt;/h1&gt;&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Now the link on the start page should work and you should see “Hello World!” on your page and whatever more you want to write in the <cite>writeContent()</cite> method above.</p>
+<p>If you want to change the style of the page, use different colors or larger letters, you should use the <code class="docutils literal notranslate"><span class="pre">writeStyleSheet()</span></code> method to define an inline style sheet or link to a static CSS file. For example, try adding the following method to your <cite>HelloWorld</cite> class above:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="k">def</span><span class="w"> </span><span class="nf">writeStyleSheet</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">writeln</span><span class="p">(</span><span class="s1">&#39;&#39;&#39;&lt;style&gt;</span>
+<span class="s1">h1 {</span>
+<span class="s1">    color: blue;</span>
+<span class="s1">    font-size: 40px;</span>
+<span class="s1">    font-family: sans-serif;</span>
+<span class="s1">    text-align: center;</span>
+<span class="s1">}</span>
+<span class="s1">&lt;/style&gt;&#39;&#39;&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">Webware for Python 3</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changes.html">List of Changes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="migrate.html">Migration Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="copyright.html">Copyright and License</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Quickstart</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#the-webware-cli">The Webware CLI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#creating-a-working-directory">Creating a Working Directory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#running-the-webware-examples">Running the Webware Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#using-the-admin-context">Using the Admin Context</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#a-hello-world-example">A “Hello World” Example</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial.html">Beginner Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="appdev.html">Application Development</a></li>
+<li class="toctree-l1"><a class="reference internal" href="config.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="deploy.html">Deployment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="plugins.html">Plug-ins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="style.html">Style Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="psp.html">PSP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="userkit.html">UserKit</a></li>
+<li class="toctree-l1"><a class="reference internal" href="taskkit.html">TaskKit</a></li>
+<li class="toctree-l1"><a class="reference internal" href="webutils.html">WebUtils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="miscutils.html">MiscUtils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="testing.html">Testing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ref/index.html">API Reference</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="copyright.html" title="previous chapter">Copyright and License</a></li>
+      <li>Next: <a href="tutorial.html" title="next chapter">Beginner Tutorial</a></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;1999-2025, Christoph Zwerschke et al.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.2.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+      |
+      <a href="_sources/quickstart.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

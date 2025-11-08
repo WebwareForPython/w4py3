@@ -1,0 +1,4 @@
+StreamReader
+------------
+
+.. automodule:: PSP.StreamReader

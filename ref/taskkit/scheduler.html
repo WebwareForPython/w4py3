@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Scheduler &#8212; Webware for Python 3 3.1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="../../_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="../../_static/alabaster.css?v=27fed22d" />
+    <script src="../../_static/documentation_options.js?v=dd1205ac"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="copyright" title="Copyright" href="../../copyright.html" />
+    <link rel="next" title="Task" href="task.html" />
+    <link rel="prev" title="TaskKit" href="index.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="module-TaskKit.Scheduler">
+<span id="scheduler"></span><h1>Scheduler<a class="headerlink" href="#module-TaskKit.Scheduler" title="Link to this heading">¶</a></h1>
+<p>This is the task manager Python package.</p>
+<p>It provides a system for running any number of predefined tasks in separate
+threads in an organized and controlled manner.</p>
+<p>A task in this package is a class derived from the Task class. The task
+should have a run method that, when called, performs some task.</p>
+<p>The Scheduler class is the organizing object. It manages the addition,
+execution, deletion, and well being of a number of tasks. Once you have
+created your task class, you call the Scheduler to get it added to the
+tasks to be run.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="TaskKit.Scheduler.Scheduler">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">TaskKit.Scheduler.</span></span><span class="sig-name descname"><span class="pre">Scheduler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">daemon</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exceptionHandler</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#TaskKit.Scheduler.Scheduler" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Thread</span></code></p>
+<p>The top level class of the task manager system.</p>
+<p>The Scheduler is a thread that handles organizing and running tasks.
+The Scheduler class should be instantiated to start a task manager session.
+Its start method should be called to start the task manager.
+Its stop method should be called to end the task manager session.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="TaskKit.Scheduler.Scheduler.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">daemon</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exceptionHandler</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#TaskKit.Scheduler.Scheduler.__init__" title="Link to this definition">¶</a></dt>
+<dd><p>This constructor should always be called with keyword arguments. Arguments are:</p>
+<p><em>group</em> should be None; reserved for future extension when a ThreadGroup
+class is implemented.</p>
+<p><em>target</em> is the callable object to be invoked by the run()
+method. Defaults to None, meaning nothing is called.</p>
+<p><em>name</em> is the thread name. By default, a unique name is constructed of
+the form “Thread-N” where N is a small decimal number.</p>
+<p><em>args</em> is a list or tuple of arguments for the target invocation. Defaults to ().</p>
+<p><em>kwargs</em> is a dictionary of keyword arguments for the target
+invocation. Defaults to {}.</p>
+<p>If a subclass overrides the constructor, it must make sure to invoke
+the base class constructor (Thread.__init__()) before doing anything
+else to the thread.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="TaskKit.Scheduler.Scheduler.addActionOnDemand">
+<span class="sig-name descname"><span class="pre">addActionOnDemand</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">task</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#TaskKit.Scheduler.Scheduler.addActionOnDemand" title="Link to this definition">¶</a></dt>
+<dd><p>Add a task to be run only on demand.</p>
+<p>Adds a task to the scheduler that will not be scheduled
+until specifically requested.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="TaskKit.Scheduler.Scheduler.addDailyAction">
+<span class="sig-name descname"><span class="pre">addDailyAction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hour</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">minute</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">task</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#TaskKit.Scheduler.Scheduler.addDailyAction" title="Link to this definition">¶</a></dt>
+<dd><p>Add an action to be run every day at a specific time.</p>
+<p>If a task with the given name is already registered with the
+scheduler, that task will be removed from the scheduling queue
+and registered anew as a periodic task.</p>
+<p>Can we make this addCalendarAction? What if we want to run
+something once a week? We probably don’t need that for Webware,
+but this is a more generally useful module. This could be a
+difficult function, though. Particularly without mxDateTime.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="TaskKit.Scheduler.Scheduler.addPeriodicAction">
+<span class="sig-name descname"><span class="pre">addPeriodicAction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">start</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">period</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">task</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#TaskKit.Scheduler.Scheduler.addPeriodicAction" title="Link to this definition">¶</a></dt>
+<dd><p>Add a task to be run periodically.</p>
+<p>Adds an action to be run at a specific initial time,
+and every period thereafter.</p>
+<p>The scheduler will not reschedule a task until the last
+scheduled instance of the task has completed.</p>
+<p>If a task with the given name is already registered with
+the scheduler, that task will be removed from the scheduling
+queue and registered anew as a periodic task.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="TaskKit.Scheduler.Scheduler.addTimedAction">
+<span class="sig-name descname"><span class="pre">addTimedAction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">actionTime</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">task</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#TaskKit.Scheduler.Scheduler.addTimedAction" title="Link to this definition">¶</a></dt>
+<dd><p>Add a task to be run once, at a specific time.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="TaskKit.Scheduler.Scheduler.daemon">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">daemon</span></span><a class="headerlink" href="#TaskKit.Scheduler.Scheduler.daemon" title="Link to this definition">¶</a></dt>
+<dd><p>A boolean value indicating whether this thread is a daemon thread.</p>
+<p>This must be set before start() is called, otherwise RuntimeError is
+raised. Its initial value is inherited from the creating thread; the
+main thread is not a daemon thread and therefore all threads created in
+the main thread default to daemon = False.</p>
+<p>The entire Python program exits when only daemon threads are left.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="TaskKit.Scheduler.Scheduler.delOnDemand">
+<span class="sig-name descname"><span class="pre">delOnDemand</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#TaskKit.Scheduler.Scheduler.delOnDemand" title="Link to this definition">¶</a></dt>
+<dd><p>Delete a task with the given name from the on demand list.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="TaskKit.Scheduler.Scheduler.delRunning">
+<span class="sig-name descname"><span class="pre">delRunning</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#TaskKit.Scheduler.Scheduler.delRunning" title="Link to this definition">¶</a></dt>
+<dd><p>Delete a task from the running list.</p>
+<p>Used internally.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="TaskKit.Scheduler.Scheduler.delScheduled">
+<span class="sig-name descname"><span class="pre">delScheduled</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#TaskKit.Scheduler.Scheduler.delScheduled" title="Link to this definition">¶</a></dt>
+<dd><p>Delete a task with the given name from the scheduled list.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="TaskKit.Scheduler.Scheduler.demandTask">
+<span class="sig-name descname"><span class="pre">demandTask</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#TaskKit.Scheduler.Scheduler.demandTask" title="Link to this definition">¶</a></dt>
+<dd><p>Demand execution of a task.</p>
+<p>Allow the server to request that a task listed as being registered
+on-demand be run as soon as possible.</p>
+<p>If the task is currently running, it will be flagged to run again
+as soon as the current run completes.</p>
+<p>Returns False if the task name could not be found on the on-demand
+or currently running lists.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="TaskKit.Scheduler.Scheduler.disableTask">
+<span class="sig-name descname"><span class="pre">disableTask</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#TaskKit.Scheduler.Scheduler.disableTask" title="Link to this definition">¶</a></dt>
+<dd><p>Specify that a task be suspended.</p>
+<p>Suspended tasks will not be scheduled until later enabled.
+If the task is currently running, it will not be interfered
+with, but the task will not be scheduled for execution in
+future until re-enabled.</p>
+<p>Returns True if the task was found and disabled.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="TaskKit.Scheduler.Scheduler.enableTask">
+<span class="sig-name descname"><span class="pre">enableTask</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#TaskKit.Scheduler.Scheduler.enableTask" title="Link to this definition">¶</a></dt>
+<dd><p>Enable a task again.</p>
+<p>This method is provided to specify that a task be re-enabled
+after a suspension. A re-enabled task will be scheduled for
+execution according to its original schedule, with any runtimes
+that would have been issued during the time the task was suspended
+simply skipped.</p>
+<p>Returns True if the task was found and enabled.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="TaskKit.Scheduler.Scheduler.getName">
+<span class="sig-name descname"><span class="pre">getName</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#TaskKit.Scheduler.Scheduler.getName" title="Link to this definition">¶</a></dt>
+<dd><p>Return a string used for identification purposes only.</p>
+<p>This method is deprecated, use the name attribute instead.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="TaskKit.Scheduler.Scheduler.hasOnDemand">
+<span class="sig-name descname"><span class="pre">hasOnDemand</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#TaskKit.Scheduler.Scheduler.hasOnDemand" title="Link to this definition">¶</a></dt>
+<dd><p>Checks whether task with given name is in the on demand list.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="TaskKit.Scheduler.Scheduler.hasRunning">
+<span class="sig-name descname"><span class="pre">hasRunning</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#TaskKit.Scheduler.Scheduler.hasRunning" title="Link to this definition">¶</a></dt>
+<dd><p>Check to see if a task with the given name is currently running.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="TaskKit.Scheduler.Scheduler.hasScheduled">
+<span class="sig-name descname"><span class="pre">hasScheduled</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#TaskKit.Scheduler.Scheduler.hasScheduled" title="Link to this definition">¶</a></dt>
+<dd><p>Checks whether task with given name is in the scheduled list.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="TaskKit.Scheduler.Scheduler.ident">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ident</span></span><a class="headerlink" href="#TaskKit.Scheduler.Scheduler.ident" title="Link to this definition">¶</a></dt>
+<dd><p>Thread identifier of this thread or None if it has not been started.</p>
+<p>This is a nonzero integer. See the get_ident() function. Thread
+identifiers may be recycled when a thread exits and another thread is
+created. The identifier is available even after the thread has exited.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="TaskKit.Scheduler.Scheduler.isDaemon">
+<span class="sig-name descname"><span class="pre">isDaemon</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#TaskKit.Scheduler.Scheduler.isDaemon" title="Link to this definition">¶</a></dt>
+<dd><p>Return whether this thread is a daemon.</p>
+<p>This method is deprecated, use the daemon attribute instead.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="TaskKit.Scheduler.Scheduler.isRunning">
+<span class="sig-name descname"><span class="pre">isRunning</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#TaskKit.Scheduler.Scheduler.isRunning" title="Link to this definition">¶</a></dt>
+<dd><p>Check whether thread is running.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="TaskKit.Scheduler.Scheduler.is_alive">
+<span class="sig-name descname"><span class="pre">is_alive</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#TaskKit.Scheduler.Scheduler.is_alive" title="Link to this definition">¶</a></dt>
+<dd><p>Return whether the thread is alive.</p>
+<p>This method returns True just before the run() method starts until just
+after the run() method terminates. See also the module function
+enumerate().</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="TaskKit.Scheduler.Scheduler.join">
+<span class="sig-name descname"><span class="pre">join</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">timeout</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#TaskKit.Scheduler.Scheduler.join" title="Link to this definition">¶</a></dt>
+<dd><p>Wait until the thread terminates.</p>
+<p>This blocks the calling thread until the thread whose join() method is
+called terminates – either normally or through an unhandled exception
+or until the optional timeout occurs.</p>
+<p>When the timeout argument is present and not None, it should be a
+floating-point number specifying a timeout for the operation in seconds
+(or fractions thereof). As join() always returns None, you must call
+is_alive() after join() to decide whether a timeout happened – if the
+thread is still alive, the join() call timed out.</p>
+<p>When the timeout argument is not present or None, the operation will
+block until the thread terminates.</p>
+<p>A thread can be join()ed many times.</p>
+<p>join() raises a RuntimeError if an attempt is made to join the current
+thread as that would cause a deadlock. It is also an error to join() a
+thread before it has been started and attempts to do so raises the same
+exception.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="TaskKit.Scheduler.Scheduler.name">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><a class="headerlink" href="#TaskKit.Scheduler.Scheduler.name" title="Link to this definition">¶</a></dt>
+<dd><p>A string used for identification purposes only.</p>
+<p>It has no semantics. Multiple threads may be given the same name. The
+initial name is set by the constructor.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="TaskKit.Scheduler.Scheduler.native_id">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">native_id</span></span><a class="headerlink" href="#TaskKit.Scheduler.Scheduler.native_id" title="Link to this definition">¶</a></dt>
+<dd><p>Native integral thread ID of this thread, or None if it has not been started.</p>
+<p>This is a non-negative integer. See the get_native_id() function.
+This represents the Thread ID as reported by the kernel.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="TaskKit.Scheduler.Scheduler.nextTime">
+<span class="sig-name descname"><span class="pre">nextTime</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#TaskKit.Scheduler.Scheduler.nextTime" title="Link to this definition">¶</a></dt>
+<dd><p>Get next execution time.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="TaskKit.Scheduler.Scheduler.notify">
+<span class="sig-name descname"><span class="pre">notify</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#TaskKit.Scheduler.Scheduler.notify" title="Link to this definition">¶</a></dt>
+<dd><p>Wake up scheduler by sending a notify even.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="TaskKit.Scheduler.Scheduler.notifyCompletion">
+<span class="sig-name descname"><span class="pre">notifyCompletion</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">handle</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#TaskKit.Scheduler.Scheduler.notifyCompletion" title="Link to this definition">¶</a></dt>
+<dd><p>Notify completion of a task.</p>
+<p>Used by instances of TaskHandler to let the Scheduler thread know
+when their tasks have run to completion. This method is responsible
+for rescheduling the task if it is a periodic task.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="TaskKit.Scheduler.Scheduler.notifyFailure">
+<span class="sig-name descname"><span class="pre">notifyFailure</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">handle</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#TaskKit.Scheduler.Scheduler.notifyFailure" title="Link to this definition">¶</a></dt>
+<dd><p>Notify failure of a task.</p>
+<p>Used by instances of TaskHandler to let the Scheduler thread know
+if an exception has occurred within the task thread.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="TaskKit.Scheduler.Scheduler.onDemand">
+<span class="sig-name descname"><span class="pre">onDemand</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#TaskKit.Scheduler.Scheduler.onDemand" title="Link to this definition">¶</a></dt>
+<dd><p>Return a task from the onDemand list.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="TaskKit.Scheduler.Scheduler.onDemandTasks">
+<span class="sig-name descname"><span class="pre">onDemandTasks</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#TaskKit.Scheduler.Scheduler.onDemandTasks" title="Link to this definition">¶</a></dt>
+<dd><p>Return all on demand tasks.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="TaskKit.Scheduler.Scheduler.run">
+<span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#TaskKit.Scheduler.Scheduler.run" title="Link to this definition">¶</a></dt>
+<dd><p>The main method of the scheduler running as a background thread.</p>
+<p>This method is responsible for carrying out the scheduling work of
+this class on a background thread. The basic logic is to wait until
+the next action is due to run, move the task from our scheduled
+list to our running list, and run it. Other synchronized methods
+such as runTask(), scheduleTask(), and notifyCompletion(), may
+be called while this method is waiting for something to happen.
+These methods modify the data structures that run() uses to
+determine its scheduling needs.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="TaskKit.Scheduler.Scheduler.runTask">
+<span class="sig-name descname"><span class="pre">runTask</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">handle</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#TaskKit.Scheduler.Scheduler.runTask" title="Link to this definition">¶</a></dt>
+<dd><p>Run a task.</p>
+<p>Used by the Scheduler thread’s main loop to put a task in
+the scheduled hash onto the run hash.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="TaskKit.Scheduler.Scheduler.runTaskNow">
+<span class="sig-name descname"><span class="pre">runTaskNow</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#TaskKit.Scheduler.Scheduler.runTaskNow" title="Link to this definition">¶</a></dt>
+<dd><p>Allow a registered task to be immediately executed.</p>
+<p>Returns True if the task is either currently running or was started,
+or False if the task could not be found in the list of currently
+registered tasks.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="TaskKit.Scheduler.Scheduler.running">
+<span class="sig-name descname"><span class="pre">running</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#TaskKit.Scheduler.Scheduler.running" title="Link to this definition">¶</a></dt>
+<dd><p>Return running task with given name.</p>
+<p>Returns a task with the given name from the “running” list,
+if it is present there.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="TaskKit.Scheduler.Scheduler.runningTasks">
+<span class="sig-name descname"><span class="pre">runningTasks</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#TaskKit.Scheduler.Scheduler.runningTasks" title="Link to this definition">¶</a></dt>
+<dd><p>Return all running tasks.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="TaskKit.Scheduler.Scheduler.scheduleTask">
+<span class="sig-name descname"><span class="pre">scheduleTask</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">handle</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#TaskKit.Scheduler.Scheduler.scheduleTask" title="Link to this definition">¶</a></dt>
+<dd><p>Schedule a task.</p>
+<p>This method takes a task that needs to be scheduled and adds it
+to the scheduler. All scheduling additions or changes are handled
+by this method. This is the only Scheduler method that can notify
+the run() method that it may need to wake up early to handle a
+newly registered task.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="TaskKit.Scheduler.Scheduler.scheduled">
+<span class="sig-name descname"><span class="pre">scheduled</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#TaskKit.Scheduler.Scheduler.scheduled" title="Link to this definition">¶</a></dt>
+<dd><p>Return a task from the scheduled list.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="TaskKit.Scheduler.Scheduler.scheduledTasks">
+<span class="sig-name descname"><span class="pre">scheduledTasks</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#TaskKit.Scheduler.Scheduler.scheduledTasks" title="Link to this definition">¶</a></dt>
+<dd><p>Return all scheduled tasks.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="TaskKit.Scheduler.Scheduler.setDaemon">
+<span class="sig-name descname"><span class="pre">setDaemon</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">daemonic</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#TaskKit.Scheduler.Scheduler.setDaemon" title="Link to this definition">¶</a></dt>
+<dd><p>Set whether this thread is a daemon.</p>
+<p>This method is deprecated, use the .daemon property instead.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="TaskKit.Scheduler.Scheduler.setName">
+<span class="sig-name descname"><span class="pre">setName</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#TaskKit.Scheduler.Scheduler.setName" title="Link to this definition">¶</a></dt>
+<dd><p>Set the name string for this thread.</p>
+<p>This method is deprecated, use the name attribute instead.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="TaskKit.Scheduler.Scheduler.setNextTime">
+<span class="sig-name descname"><span class="pre">setNextTime</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nextTime</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#TaskKit.Scheduler.Scheduler.setNextTime" title="Link to this definition">¶</a></dt>
+<dd><p>Set next execution time.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="TaskKit.Scheduler.Scheduler.setOnDemand">
+<span class="sig-name descname"><span class="pre">setOnDemand</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">handle</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#TaskKit.Scheduler.Scheduler.setOnDemand" title="Link to this definition">¶</a></dt>
+<dd><p>Add the given task to the on demand list.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="TaskKit.Scheduler.Scheduler.setRunning">
+<span class="sig-name descname"><span class="pre">setRunning</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">handle</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#TaskKit.Scheduler.Scheduler.setRunning" title="Link to this definition">¶</a></dt>
+<dd><p>Add a task to the running dictionary.</p>
+<p>Used internally only.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="TaskKit.Scheduler.Scheduler.setScheduled">
+<span class="sig-name descname"><span class="pre">setScheduled</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">handle</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#TaskKit.Scheduler.Scheduler.setScheduled" title="Link to this definition">¶</a></dt>
+<dd><p>Add the given task to the scheduled list.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="TaskKit.Scheduler.Scheduler.start">
+<span class="sig-name descname"><span class="pre">start</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#TaskKit.Scheduler.Scheduler.start" title="Link to this definition">¶</a></dt>
+<dd><p>Start the scheduler’s activity.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="TaskKit.Scheduler.Scheduler.stop">
+<span class="sig-name descname"><span class="pre">stop</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#TaskKit.Scheduler.Scheduler.stop" title="Link to this definition">¶</a></dt>
+<dd><p>Terminate the scheduler and its associated tasks.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="TaskKit.Scheduler.Scheduler.stopAllTasks">
+<span class="sig-name descname"><span class="pre">stopAllTasks</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#TaskKit.Scheduler.Scheduler.stopAllTasks" title="Link to this definition">¶</a></dt>
+<dd><p>Terminate all running tasks.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="TaskKit.Scheduler.Scheduler.stopTask">
+<span class="sig-name descname"><span class="pre">stopTask</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#TaskKit.Scheduler.Scheduler.stopTask" title="Link to this definition">¶</a></dt>
+<dd><p>Put an immediate halt to a running background task.</p>
+<p>Returns True if the task was either not running, or was
+running and was told to stop.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="TaskKit.Scheduler.Scheduler.unregisterTask">
+<span class="sig-name descname"><span class="pre">unregisterTask</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#TaskKit.Scheduler.Scheduler.unregisterTask" title="Link to this definition">¶</a></dt>
+<dd><p>Unregisters the named task.</p>
+<p>After that it can be rescheduled with different parameters,
+or simply removed.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="TaskKit.Scheduler.Scheduler.wait">
+<span class="sig-name descname"><span class="pre">wait</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">seconds</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#TaskKit.Scheduler.Scheduler.wait" title="Link to this definition">¶</a></dt>
+<dd><p>Our own version of wait().</p>
+<p>When called, it waits for the specified number of seconds, or until
+it is notified that it needs to wake up, through the notify event.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../index.html">Webware for Python 3</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../changes.html">List of Changes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../migrate.html">Migration Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../copyright.html">Copyright and License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorial.html">Beginner Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../appdev.html">Application Development</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../config.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../deploy.html">Deployment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../plugins.html">Plug-ins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../style.html">Style Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../psp.html">PSP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../userkit.html">UserKit</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../taskkit.html">TaskKit</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../webutils.html">WebUtils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../miscutils.html">MiscUtils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../testing.html">Testing</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../core/index.html">Core Classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../psp/index.html">PSP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../userkit/index.html">UserKit</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">TaskKit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../webutils/index.html">WebUtils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../miscutils/index.html">MiscUtils</a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">API Reference</a><ul>
+  <li><a href="index.html">TaskKit</a><ul>
+      <li>Previous: <a href="index.html" title="previous chapter">TaskKit</a></li>
+      <li>Next: <a href="task.html" title="next chapter">Task</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;1999-2025, Christoph Zwerschke et al.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.2.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+      |
+      <a href="../../_sources/ref/taskkit/scheduler.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

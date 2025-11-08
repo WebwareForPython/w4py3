@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Plug-ins &#8212; Webware for Python 3 3.1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=27fed22d" />
+    <script src="_static/documentation_options.js?v=dd1205ac"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="copyright" title="Copyright" href="copyright.html" />
+    <link rel="next" title="Style Guidelines" href="style.html" />
+    <link rel="prev" title="Deployment" href="deploy.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="plug-ins">
+<span id="id1"></span><h1>Plug-ins<a class="headerlink" href="#plug-ins" title="Link to this heading">¶</a></h1>
+<p>Webware for Python supports “plug-ins” to extend the framework and provide additional capabilities.</p>
+<p>In Webware for Python 3, plug-ins are implemented as packages with metadata (“entry points”) through which they can be automatically discovered, even if they have been installed independetly of Webware. You only need to specify which plug-ins shall be loaded in the <code class="docutils literal notranslate"><span class="pre">PlugIns</span></code> configuration setting, and Webware will automatically load them if they are installed.</p>
+<p>Every Webware plug-in is a Python package, i.e. a directory that contains a <code class="docutils literal notranslate"><span class="pre">__init__.py</span></code> file and optionally other files. As a Webware plugin, it must also contain a special <code class="docutils literal notranslate"><span class="pre">Properties.py</span></code> file. You can disable a specific plug-in by placing a <code class="docutils literal notranslate"><span class="pre">dontload</span></code> file in its package directory.</p>
+<p>If you want to distribute a Webware plug-in, you should advertize it as an entry point using the <code class="docutils literal notranslate"><span class="pre">webware.plugins</span></code> identifier in the <code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code> file used to install the plug-in.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">__init.py__</span></code> file of the plug-in must contain at least a function like this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">installInWebware</span><span class="p">(</span><span class="n">application</span><span class="p">):</span>
+    <span class="k">pass</span>
+</pre></div>
+</div>
+<p>The function doesn’t need to do anything, but this gives it the opportunity to do something with the global Webware <code class="docutils literal notranslate"><span class="pre">Application</span></code> object. For instance, the PSP plugin uses <code class="docutils literal notranslate"><span class="pre">addServletFactory.addServletFactory</span></code> to add a handler for <code class="docutils literal notranslate"><span class="pre">.psp</span></code> files.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">Properties.py</span></code> file should contain a number of assignments:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;Plugin name&quot;</span>
+<span class="n">version</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="n">status</span> <span class="o">=</span> <span class="s1">&#39;beta&#39;</span>
+<span class="n">requiredPyVersion</span> <span class="o">=</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+<span class="n">requiredOpSys</span> <span class="o">=</span> <span class="s1">&#39;posix&#39;</span>
+<span class="n">synopsis</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;A paragraph-long description of the plugin&quot;&quot;&quot;</span>
+<span class="n">webwareConfig</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;examplePages&#39;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="s1">&#39;Example1&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;ComplexExample&#39;</span><span class="p">,</span>
+        <span class="p">]</span>
+    <span class="p">}</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">willRunFunc</span><span class="p">():</span>
+    <span class="k">if</span> <span class="n">softwareNotInstalled</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">&quot;some message to that effect&quot;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span>
+</pre></div>
+</div>
+<p>If you want to provide some examples for using your plug-in, they should be put in an <code class="docutils literal notranslate"><span class="pre">Examples/</span></code> subdirectory.</p>
+<p>A plugin who’s <code class="docutils literal notranslate"><span class="pre">requiredPyVersion</span></code> or <code class="docutils literal notranslate"><span class="pre">requiredOpSys</span></code> aren’t satisfied will simply be ignored.  <code class="docutils literal notranslate"><span class="pre">requiredOpSys</span></code> should be something returned by <code class="docutils literal notranslate"><span class="pre">os.name</span></code>, like <code class="docutils literal notranslate"><span class="pre">posix</span></code> or <code class="docutils literal notranslate"><span class="pre">nt</span></code>.  Or you can define a function <code class="docutils literal notranslate"><span class="pre">willRunFunc</span></code> to test.  If there aren’t requirements you can leave these variables and functions out.</p>
+<p>If you plan to write your own Webware plug-in, also have a look at our <a class="reference internal" href="style.html#style-guidelines"><span class="std std-ref">Style Guidelines</span></a> and the source code of the built-in plug-ins (PSP, TaskKit, UserKit, WebUtils, MiscUtils) which can serve as examples. We also recommend to add some tests to your plug-in, see the section on <a class="reference internal" href="testing.html#testing"><span class="std std-ref">Testing</span></a>.</p>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">Webware for Python 3</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changes.html">List of Changes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="migrate.html">Migration Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="copyright.html">Copyright and License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial.html">Beginner Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="appdev.html">Application Development</a></li>
+<li class="toctree-l1"><a class="reference internal" href="config.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="deploy.html">Deployment</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Plug-ins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="style.html">Style Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="psp.html">PSP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="userkit.html">UserKit</a></li>
+<li class="toctree-l1"><a class="reference internal" href="taskkit.html">TaskKit</a></li>
+<li class="toctree-l1"><a class="reference internal" href="webutils.html">WebUtils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="miscutils.html">MiscUtils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="testing.html">Testing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ref/index.html">API Reference</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="deploy.html" title="previous chapter">Deployment</a></li>
+      <li>Next: <a href="style.html" title="next chapter">Style Guidelines</a></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;1999-2025, Christoph Zwerschke et al.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.2.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+      |
+      <a href="_sources/plugins.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

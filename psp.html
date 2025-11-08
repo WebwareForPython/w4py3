@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>PSP &#8212; Webware for Python 3 3.1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=27fed22d" />
+    <script src="_static/documentation_options.js?v=dd1205ac"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="copyright" title="Copyright" href="copyright.html" />
+    <link rel="next" title="UserKit" href="userkit.html" />
+    <link rel="prev" title="Style Guidelines" href="style.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="psp">
+<span id="module-PSP"></span><span id="id1"></span><h1>PSP<a class="headerlink" href="#psp" title="Link to this heading">¶</a></h1>
+<section id="summary">
+<h2>Summary<a class="headerlink" href="#summary" title="Link to this heading">¶</a></h2>
+<p>Python Server Pages (PSP) provides the capability for producing dynamic web pages for use with the Webware Python Servlet engine simply by writing standard HTML. The HTML code is interspersed with special tags that indicate special actions that should be taken when the page is served. The general syntax for PSP has been based on the popular Java Server Pages specification used with the Java Servlet framework.</p>
+<p>Since the Webware Servlets are analogous to Java Servlets, PSP provides a scripting language for use with it that includes all of the power of Python. You will find that PSP compares favorably to other server side web scripting languages, such as ASP, PHP and JSP.</p>
+<p>Features of PSP include:</p>
+<ul class="simple">
+<li><p>Familiar Syntax (ASP, JSP, PHP)</p></li>
+<li><p>The power of Python as the scripting language</p></li>
+<li><p>Full access to the Webware Servlet API</p></li>
+<li><p>Flexible PSP Base Class framework</p></li>
+<li><p>Ability to add additional methods to the class produced by PSP</p></li>
+</ul>
+</section>
+<section id="feedback">
+<h2>Feedback<a class="headerlink" href="#feedback" title="Link to this heading">¶</a></h2>
+<p>The PSP for Webware project is fully open source. Help in all areas is encouraged and appreciated. Comments should be directed to the Webware Discussion mailing list. This is a relatively low volume list and you are encouraged to join the list if you wish to participate in the development of PSP or Webware, or if you plan on developing an application using the framework.</p>
+</section>
+<section id="general-overview">
+<h2>General Overview<a class="headerlink" href="#general-overview" title="Link to this heading">¶</a></h2>
+<p>The general process for creating PSP files is similar to creating an HTML page. Simply create a standard HTML page, interspersed with the special PSP tags that your needs require. The file should be saved with an extension of <code class="docutils literal notranslate"><span class="pre">.psp</span></code>. Place this file in a directory that is served by Webware. When a request comes in for this page, it will be dynamically compiled into a Webware servlet class, and an instance of this class will be instantiated to serve requests for that page.</p>
+<p>There are two general types of PSP tags, <code class="docutils literal notranslate"><span class="pre">&lt;%...%&gt;</span></code> and <code class="docutils literal notranslate"><span class="pre">&lt;psp:...&gt;</span></code>. Each of these tags have special characteristics, described below.</p>
+<p>Whether or not you will need to include standard HTML tags in the start of your PSP page, such as <code class="docutils literal notranslate"><span class="pre">&lt;html&gt;</span></code>, <code class="docutils literal notranslate"><span class="pre">&lt;head&gt;</span></code> etc. depends on the base class you choose for your PSP class. The default setup does not output any of those tags automatically.</p>
+</section>
+<section id="psp-tags">
+<h2>PSP Tags<a class="headerlink" href="#psp-tags" title="Link to this heading">¶</a></h2>
+<p>The following tags are supported by the current PSP implementation.</p>
+<section id="expression-tag-expression">
+<h3>Expression Tag – <code class="docutils literal notranslate"><span class="pre">&lt;%=</span> <span class="pre">expression</span> <span class="pre">%&gt;</span></code><a class="headerlink" href="#expression-tag-expression" title="Link to this heading">¶</a></h3>
+<p>The expression tag simply evaluates some Python code and inserts its text representation into the HTML response. You may include anything that will evaluate to a value that can be represented as a string inside the tag.</p>
+<p><strong>Example</strong>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">The</span> <span class="n">current</span> <span class="n">time</span> <span class="ow">is</span> <span class="o">&lt;%=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>When the PSP parsing engine encounters Expression tags, it wraps the contents in a call to the Python <code class="docutils literal notranslate"><span class="pre">str()</span></code> function. Multiple lines are not supported in a PSP expression tag.</p>
+</section>
+<section id="script-tag-script-code">
+<h3>Script Tag – <code class="docutils literal notranslate"><span class="pre">&lt;%</span> <span class="pre">script</span> <span class="pre">code</span> <span class="pre">%&gt;</span></code><a class="headerlink" href="#script-tag-script-code" title="Link to this heading">¶</a></h3>
+<p>The script tag is used to enclose Python code that should be run by the Webware Servlet runner when requests are processed by the Servlet which this PSP page produces. Any valid Python code can be used in Script tags. Inside a script tag, indentation is up to the author, and is used just like in regular Python (more info on blocks below). The PSP Engine actually just outputs the strings in a Script tag into the method body that is being produced by this PSP page.</p>
+<p><strong>Example</strong>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;%</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">):</span>
+    <span class="n">res</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;&lt;b&gt;This is number&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;&lt;/b&gt;&lt;br&gt;&quot;</span><span class="p">)</span> <span class="o">%&gt;</span>
+</pre></div>
+</div>
+<p>The Python code within script tags has access to all local and class variables declared in the PSP page, as well as to all variables of the enclosing class of this PSP page.</p>
+<p>Special local variables that will be available in all PSP pages are:</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">req</span></code></dt><dd><p>The HTTRequest object for this page.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">res</span></code></dt><dd><p>The HTTPResponse object for this page.
+The HTTPResponse object includes the <em>write</em> method that is used to output HTML to the client.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">trans</span></code></dt><dd><p>The Transaction object for this client request.
+The Transaction object provides access to the objects involved in servicing this client request.</p>
+</dd>
+</dl>
+<section id="python-code-blocks-that-span-psp-script-tags">
+<h4>Python Code Blocks that span PSP Script Tags<a class="headerlink" href="#python-code-blocks-that-span-psp-script-tags" title="Link to this heading">¶</a></h4>
+<p>The Python code structure, which uses whitespace to signify blocks of code, presents a special challenge in PSP pages. In order to allow for readable HTML code that does not impose restrictions on straight HTML within PSP pages, PSP uses a special syntax to handle Python blocks that span script tags.</p>
+</section>
+<section id="automatic-blocks">
+<h4>Automatic Blocks<a class="headerlink" href="#automatic-blocks" title="Link to this heading">¶</a></h4>
+<p>Any script tag with Python code that ends with a colon (:) is considered to begin a block. A comment tag may follow the colon. After this tag, any following HTML is considered to be part of the block begun within the previous script tag. To end the block, insert a new script tag with the word “end” as the only statement.</p>
+<p><strong>Example of Script/HTML block</strong>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;%</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">):</span> <span class="o">%&gt;</span>  <span class="c1"># the blocks starts here, no need for indenting the following HTML</span>
+<span class="o">&lt;</span><span class="n">tr</span><span class="o">&gt;&lt;</span><span class="n">td</span><span class="o">&gt;&lt;%=</span> <span class="n">i</span><span class="o">%&gt;&lt;/</span><span class="n">td</span><span class="o">&gt;&lt;/</span><span class="n">tr</span><span class="o">&gt;</span>
+<span class="o">&lt;%</span> <span class="n">end</span> <span class="o">%&gt;</span> <span class="n">The</span> <span class="s2">&quot;end&quot;</span> <span class="n">statement</span> <span class="n">ends</span> <span class="n">the</span> <span class="n">block</span>
+</pre></div>
+</div>
+<p>These blocks can be nested, with no need for special indentation, and each script tag that only contains a solitary end statement will reduce the block indent by one.</p>
+</section>
+<section id="manual-blocks">
+<h4>Manual Blocks<a class="headerlink" href="#manual-blocks" title="Link to this heading">¶</a></h4>
+<p>It is also possible to force a block of HTML statements to be included in a block. You might want to do this if your start a loop of some kind in a script tag, but need the first line of the loop to also be inside the script tag. In this case, the automatic indenting described above wouldn’t notice the block, because the last line in the script tag wouldn’t be a “:”. In this case, you need to end the script tag with <code class="docutils literal notranslate"><span class="pre">$%&gt;</span></code>. When a script tag ends with <code class="docutils literal notranslate"><span class="pre">$%&gt;</span></code>, the PSP Parser will indent the following HTML at the same level as the last line of the script tag. To end this level of indentation, just start another script tag. Easy.</p>
+<p><strong>Example of Manual Indention Script/HTML block</strong>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>&lt;% for i in range(5):
+    icubed = i*i $%&gt;  # The following lines of straight HTML will be included in the same block this line is on
+  &lt;tr&gt;&lt;td&gt;&lt;%= icubed%&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;% pass %&gt;  # Any new script statement resets the HTML indentation level
+</pre></div>
+</div>
+<p>You could also start a new script block that just continues at the same indentation level that the HTML and the previous script block were at.</p>
+</section>
+<section id="braces">
+<h4>Braces<a class="headerlink" href="#braces" title="Link to this heading">¶</a></h4>
+<p>PSP also supports using braces to handle indentation. This goes against the grain of Python, we know, but is useful for this specific application. To use this feature, specify it as you indentation style in a page directive, like so:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;%</span><span class="nd">@page</span> <span class="n">indentType</span><span class="o">=</span><span class="s2">&quot;braces&quot;</span> <span class="o">%&gt;</span>
+</pre></div>
+</div>
+<p>Now use braces to signify the start and end of blocks. The braces can span multiple script tags. No automatic indentation will occur. However, you must use braces for all blocks! Tabs and spaces at the start of lines will be ignored and removed!</p>
+<p><strong>Example</strong>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>This is &lt;i&gt;Straight HTML&lt;/i&gt;&lt;br&gt;
+&lt;%
+  for i in range(5): { %&gt;  # Now I&#39;m starting a block for this loop
+  z = i*i
+%&gt;
+&lt;!-- Now I&#39;m ending the scripting tag that started the block,
+but the following lines are still in the block --&gt;
+More straight HTML. But this is inside the loop started above.&lt;br&gt;
+My i value is now &lt;%= i %&gt;&lt;br&gt;
+Now I will process it again.&lt;br&gt;
+&lt;%
+  v = z*z
+%&gt;
+Now it is &lt;%=v %&gt;
+&lt;% } %&gt;  # End the block
+</pre></div>
+</div>
+</section>
+</section>
+<section id="file-and-class-level-code-psp-file-and-psp-class">
+<h3>File and Class Level Code – <code class="docutils literal notranslate"><span class="pre">&lt;psp:file&gt;</span></code> and <code class="docutils literal notranslate"><span class="pre">&lt;psp:class&gt;</span></code><a class="headerlink" href="#file-and-class-level-code-psp-file-and-psp-class" title="Link to this heading">¶</a></h3>
+<p>The file and class level script tag allows you to write Python code at the file (module) level or class level. For example, at the file level, you might do imports statements, and some initialization that occurs only when the PSP file is loaded the first time. You can even define other classes that are used in your PSP file.</p>
+<p><strong>Example</strong>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">psp</span><span class="p">:</span><span class="n">file</span><span class="o">&gt;</span>
+  <span class="c1"># Since this is at the module level, _log is only defined once for this file</span>
+  <span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+  <span class="n">_log</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span> <span class="vm">__name__</span> <span class="p">)</span>
+<span class="o">&lt;/</span><span class="n">psp</span><span class="p">:</span><span class="n">file</span><span class="o">&gt;</span>
+<span class="o">&lt;</span><span class="n">html</span><span class="o">&gt;</span>
+  <span class="o">&lt;%</span> <span class="n">_log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;Okay, Ive been called.&#39;</span><span class="p">)</span> <span class="o">%&gt;</span>
+  <span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="n">Write</span> <span class="n">stuff</span> <span class="n">here</span><span class="o">.&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+<span class="o">&lt;/</span><span class="n">html</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>At the class level you can define methods using ordinary Python syntax instead of the &lt;psp:method &gt; syntax below.</p>
+<p><strong>Example</strong>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">psp</span><span class="p">:</span><span class="n">class</span><span class="o">&gt;</span>
+  <span class="k">def</span><span class="w"> </span><span class="nf">writeNavBar</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">uri</span><span class="p">,</span> <span class="n">title</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">menuPages</span><span class="p">():</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">write</span><span class="p">(</span> <span class="s2">&quot;&lt;a href=&quot;</span><span class="o">%</span><span class="n">s</span><span class="s2">&quot;&gt;</span><span class="si">%s</span><span class="s2">&lt;/a&gt;&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">uri</span><span class="p">,</span> <span class="n">title</span><span class="p">)</span> <span class="p">)</span>
+<span class="o">&lt;/</span><span class="n">psp</span><span class="p">:</span><span class="n">class</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>Indentation is adjusted within the file and class blocks. Just make your indentation consistent with the block, and PSP will adjust the whole block to be properly indented for either the class or the file. For example file level Python would normally have no indentation. But in PSP pages, you might want some indentation to show it is inside of the <code class="docutils literal notranslate"><span class="pre">&lt;psp:file&gt;...&lt;/psp:file&gt;</span></code> tags. That is no problem, PSP will adjust accordingly.</p>
+<p>There is one special case with adding methods via the <code class="docutils literal notranslate"><span class="pre">&lt;psp:class&gt;</span></code> tag. The <code class="docutils literal notranslate"><span class="pre">awake()</span></code> method requires special handling, so you should always use the <code class="docutils literal notranslate"><span class="pre">&lt;psp:method&gt;</span></code> tag below if you want to override the <code class="docutils literal notranslate"><span class="pre">awake()</span></code> method.</p>
+</section>
+<section id="method-tag-psp-method">
+<h3>Method Tag – <code class="docutils literal notranslate"><span class="pre">&lt;psp:method</span> <span class="pre">...&gt;</span></code><a class="headerlink" href="#method-tag-psp-method" title="Link to this heading">¶</a></h3>
+<p>The Method tag is used to declare new methods of the Servlet class this page is producing. It will generally be more effective to place method declarations in a Servlet class and then have the PSP page inherit from that class, but this tag is here for quick methods. The Method tag may also be useful for over-riding the default functionality of a base class method, as opposed to creating a Servlet class with only a slight change from another.</p>
+<p>The syntax for PSP methods is a little different from that of other tags. The PSP Method declaration uses a compound tag. There is a beginning tag <code class="docutils literal notranslate"><span class="pre">&lt;psp:method</span> <span class="pre">name=&quot;methname&quot;</span> <span class="pre">params=&quot;param1,</span> <span class="pre">param2&quot;&gt;</span></code> that designates the start of the method definition and defines the method name and the names of its parameters. The text following this tag is the actual Python code for the method. This is standard Python code, with indentation used to mark blocks and no raw HTML support. It is not necessary to start the method definition with indentation, the first level of indention is provided by PSP.</p>
+<p>To end the method definition block, the close tag <code class="docutils literal notranslate"><span class="pre">&lt;/psp:method&gt;</span></code> is used.</p>
+<p><strong>Example</strong>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">psp</span><span class="p">:</span><span class="n">method</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;MyClassMethod&quot;</span> <span class="n">params</span><span class="o">=</span><span class="s2">&quot;var1, var2&quot;</span><span class="o">&gt;</span>
+  <span class="kn">import</span><span class="w"> </span><span class="nn">string</span>
+  <span class="k">return</span> <span class="n">string</span><span class="o">.</span><span class="n">join</span><span class="p">((</span><span class="n">var1</span><span class="p">,</span><span class="n">var2</span><span class="p">),</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+<span class="o">&lt;/</span><span class="n">psp</span><span class="p">:</span><span class="n">method</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>This is a silly function that just joins two strings. Please note that it is not necessary to declare the self parameter as one of the function’s parameters. This will be done automatically in the code that PSP generates.</p>
+<p>A PSP:Method can be declared anywhere in the psp sourcefile and will be available throughout the PSP file through the standard <code class="docutils literal notranslate"><span class="pre">self.PSPMethodName(parameters)</span></code> syntax.</p>
+</section>
+<section id="include-tag-psp-include">
+<h3>Include Tag – <code class="docutils literal notranslate"><span class="pre">&lt;psp:include</span> <span class="pre">...&gt;</span></code><a class="headerlink" href="#include-tag-psp-include" title="Link to this heading">¶</a></h3>
+<p>The include tag pauses processing on the page and immediately passes the request on the the specified URL. The output of that URL will be inserted into the output stream, and then processing will continue on the original page. The main parameter is <code class="docutils literal notranslate"><span class="pre">path</span></code>, which should be set to the path to the resources to be included. This will be relative to the current page, unless the path is specified as absolute by having the first character as “/”. The path parameter can point to any valid url on this Webware application. This functionality is accomplished using the Webware Application’s forwardRequestFast function, which means that the current Request, Response and Session objects will also be used by the URL to which this request is sent.</p>
+<p><strong>Example</strong>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">psp</span><span class="p">:</span><span class="n">include</span> <span class="n">path</span><span class="o">=</span><span class="s2">&quot;myfile.html&quot;</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+</section>
+<section id="insert-tag-psp-insert">
+<h3>Insert Tag – <code class="docutils literal notranslate"><span class="pre">&lt;psp:insert</span> <span class="pre">...&gt;</span></code><a class="headerlink" href="#insert-tag-psp-insert" title="Link to this heading">¶</a></h3>
+<p>The insert tag inserts a file into the output stream that the psp page will produce, but does not parse that included file for psp content. The main parameter is <code class="docutils literal notranslate"><span class="pre">file</span></code>, which should be set to the filename to be inserted. If the filename starts with a “/”, it is assumed to be an absolute path. If it doesn’t start with a “/”, the file path is assumed to be relative to the psp file. The contents of the insert file will not be escaped in any way except for triple-double-quotes (&amp;quot;&amp;quot;&amp;quot;), which will be escaped.</p>
+<p>At every request of this servlet, this file will be read from disk and sent along with the rest of the output of the page.</p>
+<p>This tag accepts one additional parameter, “static”, which can be set to “True” or “1”. Setting this attribute to True will cause the inserted file’s contents to be embedded in the PSP class at generation time. Any subsequent changes to the file will not be seen by the servlet.</p>
+<p><strong>Example</strong>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">psp</span><span class="p">:</span><span class="n">insert</span> <span class="n">file</span><span class="o">=</span><span class="s2">&quot;myfile.html&quot;</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="directives">
+<h2>Directives<a class="headerlink" href="#directives" title="Link to this heading">¶</a></h2>
+<p>Directives are not output into the HTML output, but instead tell the PSP parser to do something special. Directives have at least two elements, the type of directive, and one or more parameters in the form of <code class="docutils literal notranslate"><span class="pre">param=&quot;value&quot;</span></code> pairs.</p>
+<p>Supported Directives include:</p>
+<section id="page-directive-page">
+<h3>Page Directive – <code class="docutils literal notranslate"><span class="pre">&lt;%&#64;</span> <span class="pre">page</span> <span class="pre">...</span> <span class="pre">%&gt;</span></code><a class="headerlink" href="#page-directive-page" title="Link to this heading">¶</a></h3>
+<p>The page directive tells the PSP parser about special requirements of this page, or sets some optional output options for this page. Directives set in <code class="docutils literal notranslate"><span class="pre">page</span></code> apply to the elements in the current PSP source file and to any included files.</p>
+<p>Supported Page parameters:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">imports</span></code> –
+The imports attribute of the page directive tells the PSP parser to import certain Python modules into the PSP class source file.</p>
+<p>The format of this directive is as follows:</p>
+<p><strong>Example</strong>: <code class="docutils literal notranslate"><span class="pre">&lt;%&#64;</span> <span class="pre">page</span> <span class="pre">imports=&quot;sys,os&quot;%&gt;</span></code></p>
+<p>The value of the imports parameter may have multiple, comma separated items.</p>
+<p><code class="docutils literal notranslate"><span class="pre">from</span> <span class="pre">X</span> <span class="pre">import</span> <span class="pre">Y</span></code> is supported by separating the source package from the object to be imported with a colon (:), like this:</p>
+<p><strong>Example</strong>: <code class="docutils literal notranslate"><span class="pre">&lt;%&#64;</span> <span class="pre">page</span> <span class="pre">imports=&quot;os:path&quot;</span> <span class="pre">%&gt;</span></code></p>
+<p>This will import the path object from the os module.</p>
+<p>Please note the <code class="docutils literal notranslate"><span class="pre">=</span></code> sign used in this directive. Those who are used to Python might try to skip it.</p>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">extends</span></code> –
+The extends attribute of the page tells the PSP parser what base class this Servlet should be derived from.</p>
+<p>The PSP servlet produced by parsing the PSP file will inherit all of the attributes and methods of the base class.</p>
+<p>The Servlet will have access to each of those attributes and methods. They will still need to be accessed using the “self” syntax of Python.</p>
+<p><strong>Example</strong>: <code class="docutils literal notranslate"><span class="pre">&lt;%&#64;</span> <span class="pre">page</span> <span class="pre">extends=&quot;MyPSPBaseClass&quot;%&gt;</span></code></p>
+<p>This is a very powerful feature of PSP and Webware. The developer can code a series of Servlets that have common functionality for a series of pages, and then use PSP and the extends attribute to change only the pieces of that base servlet that are specific to a certain page. In conjunction with the <code class="docutils literal notranslate"><span class="pre">method</span></code> page attribute, described below, and/or the <code class="docutils literal notranslate"><span class="pre">&lt;psp:method</span> <span class="pre">...&gt;</span></code> tag, entire sites can be based on a few custom PSP base classes. The default base class is <code class="docutils literal notranslate"><span class="pre">PSPPage.py</span></code>, which is inherited from the standard Webware <code class="docutils literal notranslate"><span class="pre">Page.py</span></code> servlet.</p>
+<p>You can also have your PSP inherit from multiple base classes. To do this, separate the base classes using commas, for example <code class="docutils literal notranslate"><span class="pre">&lt;%&#64;</span> <span class="pre">page</span> <span class="pre">extends=&quot;BaseClass1,BaseClass2&quot;%&gt;</span></code>. If you use a base class in <code class="docutils literal notranslate"><span class="pre">&lt;%&#64;</span> <span class="pre">page</span> <span class="pre">extends=&quot;...&quot;%&gt;</span></code> that is not specifically imported in a <code class="docutils literal notranslate"><span class="pre">&lt;%&#64;</span> <span class="pre">page</span> <span class="pre">imports=&quot;...&quot;%&gt;</span></code> directive, the base class will be assumed to follow the servlet convention of being in a file of the same name as the base class plus the “.py” extension.</p>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">method</span></code> –
+The <code class="docutils literal notranslate"><span class="pre">method</span></code> attribute of the <code class="docutils literal notranslate"><span class="pre">page</span></code> directive tells the PSP parser which method of the base class the HTML of this PSP page should be placed in and override.</p>
+<p><strong>Example</strong>: <code class="docutils literal notranslate"><span class="pre">&lt;%&#64;</span> <span class="pre">page</span> <span class="pre">method=&quot;WriteHTML&quot;%&gt;</span></code></p>
+<p>Standard methods are <code class="docutils literal notranslate"><span class="pre">WriteHTML</span></code>, of the standard <code class="docutils literal notranslate"><span class="pre">HTTPServlet</span></code> class, and <code class="docutils literal notranslate"><span class="pre">writeBody</span></code>, of the <code class="docutils literal notranslate"><span class="pre">Page</span></code> and <code class="docutils literal notranslate"><span class="pre">PSPPage</span></code> classes. The default is <code class="docutils literal notranslate"><span class="pre">writeBody</span></code>. However, depending on the base class you choose for your PSP class, you may want to override some other method.</p>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">isThreadSafe</span></code> –
+The <code class="docutils literal notranslate"><span class="pre">isThreadSafe</span></code> attribute of <code class="docutils literal notranslate"><span class="pre">page</span></code> tells the PSP parser whether the class it is producing can be utilized by multiple threads simultaneously. This is analogous to the <code class="docutils literal notranslate"><span class="pre">isThreadSafe</span></code> function in Webware servlets.</p>
+<p><strong>Example</strong>: <code class="docutils literal notranslate"><span class="pre">&lt;%&#64;</span> <span class="pre">page</span> <span class="pre">isThreadSafe=&quot;yes&quot;%&gt;</span></code></p>
+<p>Valid values are “yes” and “no”. The default is “no”.</p>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">isInstanceSafe</span></code> –
+The <code class="docutils literal notranslate"><span class="pre">isInstanceSafe</span></code> attribute of the <code class="docutils literal notranslate"><span class="pre">page</span></code> directive tells the PSP parser   whether one instance of the class being produced may be used multiple times. This is analogous to the isInstanceSafe function of Webware Servlets.</p>
+<p><strong>Example</strong>: <code class="docutils literal notranslate"><span class="pre">&lt;%&#64;</span> <span class="pre">page</span> <span class="pre">isInstanceSafe=&quot;yes&quot;%&gt;</span></code></p>
+<p>Valid values are “yes” and “no”. The default is “yes”.</p>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">indentType</span></code> –
+The <code class="docutils literal notranslate"><span class="pre">indentType</span></code> attribute of the <code class="docutils literal notranslate"><span class="pre">page</span></code> directive tells the parser how to handle block indention in the Python sourcefile it creates. The <code class="docutils literal notranslate"><span class="pre">indentType</span></code> attribute sets whether the sourcefile will be indented with tabs or spaces, or braces. Valid values are “tabs”, “spaces” or “braces”. If this is set to “spaces”, see <code class="docutils literal notranslate"><span class="pre">indentSpaces</span></code> for setting the number of spaces to be used (also, see blocks, below). The default is “spaces”.</p>
+<p><strong>Example</strong>: <code class="docutils literal notranslate"><span class="pre">&lt;%&#64;</span> <span class="pre">page</span> <span class="pre">indentType=&quot;tabs&quot;%&gt;</span></code></p>
+<p>This is a bit of a tricky item, because many editors will automatically replace tabs with spaces in their output, without the user realizing it. If you are having trouble with complex blocks, look at that first.</p>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">indentSpaces</span></code> –
+Sets the number of spaces to be used for indentation when <code class="docutils literal notranslate"><span class="pre">indentType</span></code> is set to spaces. The default is “4”.</p>
+<p><strong>Example</strong>: <code class="docutils literal notranslate"><span class="pre">&lt;%&#64;</span> <span class="pre">page</span> <span class="pre">indentSpaces=&quot;8&quot;</span> <span class="pre">%&gt;</span></code></p>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">gobbleWhitespace</span></code> –
+The <code class="docutils literal notranslate"><span class="pre">gobblewhitespace</span></code> attribute of the <code class="docutils literal notranslate"><span class="pre">page</span></code> directive tells the PSP parser whether it can safely assume that whitespace characters that it finds between two script tags can be safely ignored. This is a special case directive. It applies when there are two script tags of some kind, and there is only whitespace characters between the two tags. If there is only whitespace, the parser will ignore the whitespace. This is necessary for multipart blocks to function correctly. For example, if you are writing an if/else block, you would have your first script block that starts the if, and then you would end that block and start a new script block that contains the else portion. If there is any whitespace between these two script blocks, and <code class="docutils literal notranslate"><span class="pre">gobbleWhitespace</span></code> is turned off, then the parser will add a write statement between the two blocks to output the whitespace into the page. The problem is that the write statement will have the indentation level of the start of the if block. So when the else statement starts, it will not be properly associated with the preceding if, and you’ll get an error.</p>
+<p>If you do need whitespace between two script blocks, use the <code class="docutils literal notranslate"><span class="pre">&amp;nbsp;</span></code> code.</p>
+<p><strong>Example</strong>: <code class="docutils literal notranslate"><span class="pre">&lt;%&#64;</span> <span class="pre">page</span> <span class="pre">gobbleWhitspace=&quot;No&quot;%&gt;</span></code></p>
+<p>Valid values are “yes” and “no”. The default is “yes”.</p>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">formatter</span></code> –
+The <code class="docutils literal notranslate"><span class="pre">formatter</span></code> attribute of the <code class="docutils literal notranslate"><span class="pre">page</span></code> directive can be used to specify an alternative formatter function for <code class="docutils literal notranslate"><span class="pre">&lt;%=</span> <span class="pre">...</span> <span class="pre">%&gt;</span></code> expression blocks. The default value is <code class="docutils literal notranslate"><span class="pre">str</span></code>. You might want to use this if certain types need to be formatted in a certain way across an entire page; for example, if you want all integers to be formatted with commas like “1,234,567” you could make that happen by specifying a custom formatter.</p>
+<p><strong>Example</strong>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;%@</span> <span class="n">page</span> <span class="n">imports</span><span class="o">=</span><span class="s2">&quot;MyUtils&quot;</span> <span class="o">%&gt;</span>
+<span class="o">&lt;%@</span> <span class="n">page</span> <span class="n">formatter</span><span class="o">=</span><span class="s2">&quot;MyUtils.myFormatter&quot;</span> <span class="o">%&gt;</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</section>
+<section id="include-directive-include">
+<h3>Include Directive – <code class="docutils literal notranslate"><span class="pre">&lt;%&#64;</span> <span class="pre">include</span> <span class="pre">...</span> <span class="pre">%&gt;</span></code><a class="headerlink" href="#include-directive-include" title="Link to this heading">¶</a></h3>
+<p>The include directive tells the parser to insert another file at this point in the page and to parse it for psp content. It is generally no problem to include an html file this way. However, if you do not want your include file to be parsed, you may use the <code class="docutils literal notranslate"><span class="pre">&lt;psp:include</span> <span class="pre">...&gt;</span></code> tag described above.</p>
+<p><strong>Example</strong>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;%@</span> <span class="n">include</span> <span class="n">file</span><span class="o">=</span><span class="s2">&quot;myfile.txt&quot;</span><span class="o">%&gt;</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="other-tags">
+<h2>Other Tags<a class="headerlink" href="#other-tags" title="Link to this heading">¶</a></h2>
+<ul class="simple">
+<li><p><strong>Declaration</strong> (<code class="docutils literal notranslate"><span class="pre">&lt;%!</span> <span class="pre">...</span> <span class="pre">%&gt;</span></code>) – No need for this tag. Simply use script tags to declare local variables.</p></li>
+<li><p><strong>Forwarding</strong> functionality is now available in Webware, but no tag based support has been added to PSP yet.</p></li>
+</ul>
+</section>
+<section id="developers">
+<h2>Developers<a class="headerlink" href="#developers" title="Link to this heading">¶</a></h2>
+<p>The original author of PSP is Jay Love and the project was later maintained by Jay and Geoff Talvola. The contributions of the entire Webware community have been invaluable in improving this software.</p>
+<p>Some architectural aspects of PSP were inspired by the Jakarta Project.</p>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">Webware for Python 3</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changes.html">List of Changes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="migrate.html">Migration Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="copyright.html">Copyright and License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial.html">Beginner Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="appdev.html">Application Development</a></li>
+<li class="toctree-l1"><a class="reference internal" href="config.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="deploy.html">Deployment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="plugins.html">Plug-ins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="style.html">Style Guidelines</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">PSP</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#summary">Summary</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#feedback">Feedback</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#general-overview">General Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#psp-tags">PSP Tags</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#directives">Directives</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#other-tags">Other Tags</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#developers">Developers</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="userkit.html">UserKit</a></li>
+<li class="toctree-l1"><a class="reference internal" href="taskkit.html">TaskKit</a></li>
+<li class="toctree-l1"><a class="reference internal" href="webutils.html">WebUtils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="miscutils.html">MiscUtils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="testing.html">Testing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ref/index.html">API Reference</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="style.html" title="previous chapter">Style Guidelines</a></li>
+      <li>Next: <a href="userkit.html" title="next chapter">UserKit</a></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;1999-2025, Christoph Zwerschke et al.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.2.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+      |
+      <a href="_sources/psp.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

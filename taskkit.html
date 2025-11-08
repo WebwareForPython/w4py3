@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>TaskKit &#8212; Webware for Python 3 3.1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=27fed22d" />
+    <script src="_static/documentation_options.js?v=dd1205ac"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="copyright" title="Copyright" href="copyright.html" />
+    <link rel="next" title="WebUtils" href="webutils.html" />
+    <link rel="prev" title="UserKit" href="userkit.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="taskkit">
+<span id="module-TaskKit"></span><span id="id1"></span><h1>TaskKit<a class="headerlink" href="#taskkit" title="Link to this heading">¶</a></h1>
+<p>TaskKit provides a framework for the scheduling and management of tasks which can be triggered periodically or at specific times. Tasks can also be forced to execute immediately, set on hold or rescheduled with a different period (even dynamically).</p>
+<p>To understand how TaskKit works, please read the following quick start article and have a look at the <a class="reference internal" href="ref/taskkit/index.html#ref-taskkit"><span class="std std-ref">reference documentation</span></a>. Also, in the “Task” subdirectory of Webware, you will find a real world use of this kit.</p>
+<section id="scheduling-with-python-and-webware">
+<h2>Scheduling with Python and Webware<a class="headerlink" href="#scheduling-with-python-and-webware" title="Link to this heading">¶</a></h2>
+<p>The Webware for Python web application framework comes with a scheduling plug-in called TaskKit. This quick start guide describes how to use it in your daily work with Webware and also with normal Python programs (slightly updated version of an article contributed by Tom Schwaller in March 2001).</p>
+<p>Scheduling periodic tasks is a very common activity for users of a modern operating system. System administrators for example know very well how to start new <code class="docutils literal notranslate"><span class="pre">cron</span></code> jobs or the corresponding Windows analogues. So, why does a web application framework like Webware need its own scheduling framework? The answer is simple: Because it knows better how to react to a failed job, has access to internal data structures, which otherwise would have to be exposed to the outside world and last but not least it needs scheduling capabilities anyway (e.g. for session sweeping and other memory cleaning operations).</p>
+<p>Webware is developed with the object oriented scripting language Python, so it seemed natural to write a general purpose Python based scheduling framework. One could think that this problem is already solved (remember the Python slogan: batteries included), but strange enough there has not much work been done in this area. The two standard Python modules <code class="docutils literal notranslate"><span class="pre">sched.py</span></code> and <code class="docutils literal notranslate"><span class="pre">bisect.py</span></code> are way too simple, not really object oriented and also not multithreaded. This was the reason to develop a new scheduling framework, which can not only be used with Webware but also with general purpose Python programs. Unfortunately scheduling has an annoying side effect. The more you delve into the subject the more it becomes difficult.</p>
+<p>After some test implementations I discovered the Java scheduling framework of the “Ganymede” network directory management system and took it as a model for the Python implementation. Like any other Webware plug-in the TaskKit is self contained and can be used in other Python projects. This modularity is one of the real strengths of Webware and in sharp contrast to Zope where people tend to think in Zope and not in Python terms. In a perfect world one should be able to use web wrappers (for Zope, Webware, Quixote, …) around clearly designed Python classes and not be forced to use one framework. Time will tell if this is just a dream or if people will reinvent the “Python wheels” over and over again.</p>
+</section>
+<section id="tasks">
+<h2>Tasks<a class="headerlink" href="#tasks" title="Link to this heading">¶</a></h2>
+<p>The TaskKit implements the three classes <code class="docutils literal notranslate"><span class="pre">Scheduler,</span> <span class="pre">TaskHandler</span></code> and <code class="docutils literal notranslate"><span class="pre">Task</span></code>. Let’s begin with the simplest one, i.e. Task. It’s an abstract base class, from which you have to derive your own task classes by overriding the <code class="docutils literal notranslate"><span class="pre">run()</span></code>-method like in the following example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">time</span><span class="w"> </span><span class="kn">import</span> <span class="n">strftime</span><span class="p">,</span> <span class="n">localtime</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">TaskKit.Task</span><span class="w"> </span><span class="kn">import</span> <span class="n">Task</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">SimpleTask</span><span class="p">(</span><span class="n">Task</span><span class="p">):</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">print</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">(),</span> <span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%H:%M:%S&quot;</span><span class="p">,</span> <span class="n">localtime</span><span class="p">())</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">self.name()</span></code> returns the name under which the task was registered by the scheduler. It is unique among all tasks and scheduling tasks with the same name will delete the old task with that name (so beware of that feature!). Another simple example which is used by Webware itself is found in <code class="docutils literal notranslate"><span class="pre">Tasks/SessionTask.py</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">TaskKit.Task</span><span class="w"> </span><span class="kn">import</span> <span class="n">Task</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">SessionTask</span><span class="p">(</span><span class="n">Task</span><span class="p">):</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sessions</span><span class="p">):</span>
+        <span class="n">Task</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_sessionstore</span> <span class="o">=</span> <span class="n">sessions</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">proceed</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_sessionstore</span><span class="o">.</span><span class="n">cleanStaleSessions</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Here you see the <code class="docutils literal notranslate"><span class="pre">proceed()</span></code> method in action. It can be used by long running tasks to check if they should terminate. This is the case when the scheduler or the task itself has been stopped. The latter is achieved with a <code class="docutils literal notranslate"><span class="pre">stopTask()</span></code> call which is not recommended though. It’s generally better to let the task finish and use the <code class="docutils literal notranslate"><span class="pre">unregister()</span></code> and <code class="docutils literal notranslate"><span class="pre">disable()</span></code> methods of the task handler. The first really deletes the task after termination while the second only disables its rescheduling. You can still use it afterwards. The implementation of <code class="docutils literal notranslate"><span class="pre">proceed()</span></code> is very simple:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">proceed</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Check whether this task should continue running.</span>
+
+<span class="sd">    Should be called periodically by long tasks to check if the system</span>
+<span class="sd">    wants them to exit. Returns True if its OK to continue, False if</span>
+<span class="sd">    it&#39;s time to quit.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_handle</span><span class="o">.</span><span class="n">_isRunning</span>
+</pre></div>
+</div>
+<p>Take a look at the <code class="docutils literal notranslate"><span class="pre">SimpleTask</span></code> class at the end of this article for an example of using <code class="docutils literal notranslate"><span class="pre">proceed()</span></code>. Another thing to remember about tasks is, that they know nothing about scheduling, how often they will run (periodically or just once) or if they are on hold. All this is managed by the task wrapper class <code class="docutils literal notranslate"><span class="pre">TaskHandler</span></code>, which will be discussed shortly. Let’s look at some more examples first.</p>
+</section>
+<section id="generating-static-pages">
+<h2>Generating static pages<a class="headerlink" href="#generating-static-pages" title="Link to this heading">¶</a></h2>
+<p>On a high traffic web site (like <a class="reference external" href="https://slashdot.org">slashdot</a>) it’s common practice to use semi-static page generation techniques. For example you can generate the entry page as a static page once per minute. During this time the content will not be completely accurate (e.g. the number of comments will certainly increase), but nobody really cares about that. The benefit is a dramatic reduction of database requests. For other pages (like older news with comments attached) it makes more sense to generate static versions on demand. This is the case when the discussion has come to an end, but somebody adds a comment afterwards and implicitly changes the page by this action. Generating a static version will happen very seldom after the “hot phase” when getting data directly out of the database is more appropriate. So you need a periodic task which checks if there are new “dead” stories (e.g. no comments for 2 days) and marks them with a flag for static generation on demand. It should be clear by now, that an integrated Webware scheduling mechnism is very useful for this kind of things and the better approach than external <code class="docutils literal notranslate"><span class="pre">cron</span></code> jobs. Let’s look a little bit closer at the static generation technique now. First of all we need a <code class="docutils literal notranslate"><span class="pre">PageGenerator</span></code> class. To keep the example simple we just write the actual date into a file. In real life you will assemble much more complex data into such static pages.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">time</span><span class="w"> </span><span class="kn">import</span> <span class="n">asctime</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">TaskKit.Task</span><span class="w"> </span><span class="kn">import</span> <span class="n">Task</span>
+
+<span class="n">html</span> <span class="o">=</span> <span class="s1">&#39;&#39;&#39;&lt;html&gt;</span>
+<span class="s1">&lt;head&gt;&lt;title&gt;</span><span class="si">%s</span><span class="s1">&lt;/title&gt;&lt;/head&gt;</span>
+<span class="s1">&lt;body bgcolor=&quot;white&quot;&gt;</span>
+<span class="s1">&lt;h1&gt;</span><span class="si">%s</span><span class="s1">&lt;/h1&gt;</span>
+<span class="s1">&lt;/body&gt;</span>
+<span class="s1">&lt;/html&gt;</span>
+<span class="s1">&#39;&#39;&#39;</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">PageGenerator</span><span class="p">(</span><span class="n">Task</span><span class="p">):</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
+        <span class="n">Task</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_filename</span> <span class="o">=</span> <span class="n">filename</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_filename</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">html</span> <span class="o">%</span> <span class="p">(</span><span class="s1">&#39;Static Page&#39;</span><span class="p">,</span>  <span class="n">asctime</span><span class="p">()))</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+<section id="scheduling">
+<h3>Scheduling<a class="headerlink" href="#scheduling" title="Link to this heading">¶</a></h3>
+<p>That was easy. Now it’s time to schedule our task. In the following example you can see how this is accomplished with TaskKit. As a general recommendation you should put all your tasks in a separate folder (with an empty <code class="docutils literal notranslate"><span class="pre">__init__.py</span></code> file to make this folder a Python package). First of all we create a new <code class="docutils literal notranslate"><span class="pre">Scheduler</span></code> object, start it as a thread and add a periodic page generation object (of type <code class="docutils literal notranslate"><span class="pre">PageGenerator</span></code>) with the <code class="docutils literal notranslate"><span class="pre">addPeriodicAction</span></code> method. The first parameter here is the first execution time (which can be in the future), the second is the period (in seconds), the third an instance of our task class and the last parameter is a unique task name which allows us to find the task later on (e.g. if we want to change the period or put the task on hold).</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">time</span><span class="w"> </span><span class="kn">import</span> <span class="n">sleep</span><span class="p">,</span> <span class="n">time</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">TaskKit.Scheduler</span><span class="w"> </span><span class="kn">import</span> <span class="n">Scheduler</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">Tasks.PageGenerator</span><span class="w"> </span><span class="kn">import</span> <span class="n">PageGenerator</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">main</span><span class="p">():</span>
+    <span class="n">scheduler</span> <span class="o">=</span> <span class="n">Scheduler</span><span class="p">()</span>
+    <span class="n">scheduler</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+    <span class="n">scheduler</span><span class="o">.</span><span class="n">addPeriodicAction</span><span class="p">(</span><span class="n">time</span><span class="p">(),</span> <span class="mi">5</span><span class="p">,</span> <span class="n">PageGenerator</span><span class="p">(</span><span class="s1">&#39;static.html&#39;</span><span class="p">),</span> <span class="s1">&#39;PageGenerator&#39;</span><span class="p">)</span>
+    <span class="n">sleep</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span>
+    <span class="n">scheduler</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">main</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>When you fire up this example you will notice that the timing is not 100% accurate. The reason for this seems to be an imprecise <code class="docutils literal notranslate"><span class="pre">wait()</span></code> function in the Python <code class="docutils literal notranslate"><span class="pre">threading</span></code> module. Unfortunately this method is indispensible because we need to be able to wake up a sleeping scheduler when scheduling new tasks with first execution times smaller than <code class="docutils literal notranslate"><span class="pre">scheduler.nextTime()</span></code>. This is achieved through the <code class="docutils literal notranslate"><span class="pre">notify()</span></code> method, which sets the <code class="docutils literal notranslate"><span class="pre">notifyEvent</span></code> (<code class="docutils literal notranslate"><span class="pre">scheduler._notifyEvent.set()</span></code>). On Unix we could use <code class="docutils literal notranslate"><span class="pre">sleep</span></code> and a <code class="docutils literal notranslate"><span class="pre">signal</span></code> to interrupt this system call, but TaskKit has to be plattform independent to be of any use. But don’t worry; this impreciseness is not important for normal usage, because we are talking about scheduling in the minute (not second) range here. Unix <code class="docutils literal notranslate"><span class="pre">cron</span></code> jobs have a granularity of one minute, which is a good value for TaskKit too. Of course nobody can stop you starting tasks with a period of one second (but you have been warned that this is not a good idea, except for testing purposes).</p>
+</section>
+</section>
+<section id="generating-static-pages-again">
+<h2>Generating static pages again<a class="headerlink" href="#generating-static-pages-again" title="Link to this heading">¶</a></h2>
+<p>Let’s refine our example a little bit and plug it into Webware. We will write a Python servlet which loks like this:</p>
+<div style="font-family: sans-serif;font-size:12px">
+<table><tr><td class="center">
+<form method="post">
+<input type="submit" name="_action_" value="Generate">
+<input type="text" name="filename" value="static.html" size="16"> every
+<input type="text" name="seconds" value="60" size="4"> seconds</form>
+
+<table style="width:28em;margin-top:6px">
+<tr style="background-color:#009">
+<th colspan="2" style="color:#fff">Task List</th></tr>
+<tr style="background-color:#ddd">
+<td><b>Task Name</b></td>
+<td><b>Period</b></td></tr>
+<tr><td>SessionSweeper</td><td>360</td></tr>
+<tr><td>PageGenerator for static3.html</td><td>30</td></tr>
+<tr><td>PageGenerator for static1.html</td><td>60</td></tr>
+<tr><td>PageGenerator for static2.html</td><td>120</td></tr>
+</table>
+</td></tr></table>
+</div><p>When you click on the <code class="docutils literal notranslate"><span class="pre">Generate</span></code> button a new periodic <code class="docutils literal notranslate"><span class="pre">PageGenerator</span></code> task will be added to the Webware scheduler. Remember that this will generate a static page <code class="docutils literal notranslate"><span class="pre">static.html</span></code> every 60 seconds (if you use the default values). The new task name is <code class="docutils literal notranslate"><span class="pre">&quot;PageGenerator</span> <span class="pre">for</span> <span class="pre">filename&quot;</span></code>, so you can use this servlet to change the settings of already scheduled tasks (by rescheduling) or add new <code class="docutils literal notranslate"><span class="pre">PageGenerator</span></code> tasks with different filenames. This is quite useless here, but as soon as you begin to parametrize your <code class="docutils literal notranslate"><span class="pre">Task</span></code> classes this approach can become quite powerful (consider for example a mail reminder form or collecting news from different news channels as periodic tasks with user defined parameters). In any case, don’t be shy and contribute other interesting examples (the sky’s the limit!).</p>
+<p>Finally we come to the servlet code, which should be more or less self explanatory, except for the <code class="docutils literal notranslate"><span class="pre">_action_</span></code> construct which is very well explained in the Webware documentation though (just in case you forgot that). <code class="docutils literal notranslate"><span class="pre">app.taskManager()</span></code> gives you the Webware scheduler, which can be used to add new tasks. In real life you will have to make the scheduling information persistent and reschedule all tasks after a Webware server restart because it would be quite annoying to enter this data again and again.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">time</span><span class="w"> </span><span class="kn">import</span> <span class="n">time</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">ExamplePage</span><span class="w"> </span><span class="kn">import</span> <span class="n">ExamplePage</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">Tasks.PageGenerator</span><span class="w"> </span><span class="kn">import</span> <span class="n">PageGenerator</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">Schedule</span><span class="p">(</span><span class="n">ExamplePage</span><span class="p">):</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">writeContent</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;&#39;&#39;</span>
+<span class="s1">            &lt;center&gt;&lt;form method=&quot;post&quot;&gt;</span>
+<span class="s1">            &lt;input type=&quot;submit&quot; name=&quot;_action_ value=Generate&quot;&gt;</span>
+<span class="s1">            &lt;input type=&quot;text&quot; name=&quot;filename&quot; value=&quot;static.html&quot; size=&quot;16&quot;&gt; every</span>
+<span class="s1">            &lt;input type=&quot;text&quot; name=&quot;seconds&quot; value=&quot;60&quot; size=&quot;4&quot;&gt; seconds</span>
+<span class="s1">            &lt;/form&gt;</span>
+<span class="s1">            &lt;table style=&quot;width:28em;margin-top:6px&quot;&gt;</span>
+<span class="s1">            &lt;tr style=&quot;background-color:009&quot;&gt;</span>
+<span class="s1">            &lt;th colspan=&quot;2&quot; style=&quot;color:#fff&quot;&gt;Task List&lt;/th&gt;&lt;/tr&gt;</span>
+<span class="s1">            &lt;tr style=&quot;background-color:#ddd&quot;&gt;</span>
+<span class="s1">            &lt;td&gt;&lt;b&gt;Task Name&lt;/b&gt;&lt;/td&gt;</span>
+<span class="s1">            &lt;td&gt;&lt;b&gt;Period&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;&#39;&#39;&#39;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">taskname</span><span class="p">,</span> <span class="n">handler</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">application</span><span class="p">()</span><span class="o">.</span><span class="n">taskManager</span><span class="p">()</span><span class="o">.</span><span class="n">scheduledTasks</span><span class="p">()</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;&#39;&#39;</span>
+<span class="s1">                &lt;tr&gt;&lt;td&gt;</span><span class="si">%s</span><span class="s1">&lt;/td&gt;&lt;td&gt;</span><span class="si">%s</span><span class="s1">&lt;/td&gt;&lt;/tr&gt;&#39;&#39;&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">taskname</span><span class="p">,</span> <span class="n">handler</span><span class="o">.</span><span class="n">period</span><span class="p">()))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;&#39;&#39;</span>
+<span class="s1">            &lt;/table&gt;&lt;/center&gt;&#39;&#39;&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">generate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">trans</span><span class="p">):</span>
+        <span class="n">app</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">application</span><span class="p">()</span>
+        <span class="n">tm</span> <span class="o">=</span> <span class="n">app</span><span class="o">.</span><span class="n">taskManager</span><span class="p">()</span>
+        <span class="n">req</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">request</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">req</span><span class="o">.</span><span class="n">hasField</span><span class="p">(</span><span class="s1">&#39;filename&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">req</span><span class="o">.</span><span class="n">hasField</span><span class="p">(</span><span class="s1">&#39;seconds&#39;</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_filename</span> <span class="o">=</span> <span class="n">req</span><span class="o">.</span><span class="n">field</span><span class="p">(</span><span class="s1">&#39;filename&#39;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_seconds</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">req</span><span class="o">.</span><span class="n">field</span><span class="p">(</span><span class="s1">&#39;seconds&#39;</span><span class="p">))</span>
+            <span class="n">task</span> <span class="o">=</span> <span class="n">PageGenerator</span><span class="p">(</span><span class="n">app</span><span class="o">.</span><span class="n">serverSidePath</span><span class="p">(</span><span class="s1">&#39;Examples/&#39;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_filename</span><span class="p">))</span>
+            <span class="n">taskname</span> <span class="o">=</span> <span class="s1">&#39;PageGenerator for &#39;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_filename</span>
+            <span class="n">tm</span><span class="o">.</span><span class="n">addPeriodicAction</span><span class="p">(</span><span class="n">time</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_seconds</span><span class="p">,</span> <span class="n">task</span><span class="p">,</span> <span class="n">taskname</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">writeBody</span><span class="p">()</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">methodNameForAction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">actions</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">ExamplePage</span><span class="o">.</span><span class="n">actions</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">+</span> <span class="p">[</span><span class="s1">&#39;generate&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</section>
+<section id="the-scheduler">
+<h2>The Scheduler<a class="headerlink" href="#the-scheduler" title="Link to this heading">¶</a></h2>
+<p>Now it’s time to take a closer look at the <code class="docutils literal notranslate"><span class="pre">Scheduler</span></code> class itself. As you have seen in the examples above, writing tasks is only a matter of overloading the <code class="docutils literal notranslate"><span class="pre">run()</span></code> method in a derived class and adding it to the scheduler with <code class="docutils literal notranslate"><span class="pre">addTimedAction,</span> <span class="pre">addActionOnDemand,</span> <span class="pre">addDailyAction</span></code> or <code class="docutils literal notranslate"><span class="pre">addPeriodicAction</span></code>. The scheduler will wrap the Task in a <code class="docutils literal notranslate"><span class="pre">TaskHandler</span></code> structure which knows all the scheduling details and add it to its <code class="docutils literal notranslate"><span class="pre">_scheduled</span></code> or <code class="docutils literal notranslate"><span class="pre">_onDemand</span></code> dictionaries. The latter is populated by <code class="docutils literal notranslate"><span class="pre">addActionOnDemand</span></code> and contains tasks which can be called any time by <code class="docutils literal notranslate"><span class="pre">scheduler.runTaskNow('taskname')</span></code> as you can see in the following example. After that the task has gone.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">scheduler</span> <span class="o">=</span> <span class="n">Scheduler</span><span class="p">()</span>
+<span class="n">scheduler</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+<span class="n">scheduler</span><span class="o">.</span><span class="n">addActionOnDemand</span><span class="p">(</span><span class="n">SimpleTask</span><span class="p">(),</span> <span class="s1">&#39;SimpleTask&#39;</span><span class="p">)</span>
+<span class="n">sleep</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+<span class="nb">print</span> <span class="s2">&quot;Demanding SimpleTask&quot;</span>
+<span class="n">scheduler</span><span class="o">.</span><span class="n">runTaskNow</span><span class="p">(</span><span class="s1">&#39;SimpleTask&#39;</span><span class="p">)</span>
+<span class="n">sleep</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">scheduler</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>If you need a task more than one time it’s better to start it regularly with one of the <code class="docutils literal notranslate"><span class="pre">add*Action</span></code> methods first. It will be added to the <code class="docutils literal notranslate"><span class="pre">_scheduled</span></code> dictionary. If you do not need the task for a certain time disable it with <code class="docutils literal notranslate"><span class="pre">scheduler.disableTask('taskname')</span></code> and enable it later with <code class="docutils literal notranslate"><span class="pre">scheduler.enableTask('taskname')</span></code>. There are some more methods (e.g. <code class="docutils literal notranslate"><span class="pre">demandTask(),</span> <span class="pre">stopTask(),</span> <span class="pre">...</span></code>) in the <code class="docutils literal notranslate"><span class="pre">Scheduler</span></code> class which are all documented by docstrings. Take a look at them and write your own examples to understand the methods.</p>
+<p>When a periodic task is scheduled it is added in a wrapped version to the <code class="docutils literal notranslate"><span class="pre">_scheduled</span></code> dictionary first. The (most of the time sleeping) scheduler thread always knows when to wake up and start the next task whose wrapper is moved to the <code class="docutils literal notranslate"><span class="pre">_runnning</span></code> dictionary. After completion of the task thread the handler reschedules the task (by putting it back from <code class="docutils literal notranslate"><span class="pre">_running</span></code> to <code class="docutils literal notranslate"><span class="pre">_scheduled</span></code>), calculating the next execution time <code class="docutils literal notranslate"><span class="pre">nextTime</span></code> and possibly waking up the scheduler. It is important to know that you can manipulate the handle while the task is running, e.g. change the period or call <code class="docutils literal notranslate"><span class="pre">runOnCompletion</span></code> to request that a task be re-run after its current completion. For normal use you will probably not need the handles at all, but the more you want to manipulate the task execution, the more you will appreciate the TaskHandler API. You get all the available handles from the scheduler with the <code class="docutils literal notranslate"><span class="pre">running('taskname'),</span> <span class="pre">scheduled('taskname')</span></code> and <code class="docutils literal notranslate"><span class="pre">onDemand('taskname')</span></code> methods.</p>
+<p>In our last example which was contributed by Jay Love, who debugged, stress tested and contributed a lot of refinements to TaskKit, you see how to write a period modifying Task. This is quite weird but shows the power of handle manipulations. The last thing to remember is that the scheduler does not start a separate thread for each periodic task. It uses a thread for each task run instead and at any time keeps the number of threads as small as possible.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">SimpleTask</span><span class="p">(</span><span class="n">Task</span><span class="p">):</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">proceed</span><span class="p">():</span>
+            <span class="nb">print</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">(),</span> <span class="n">time</span><span class="p">()</span>
+            <span class="nb">print</span> <span class="s2">&quot;Increasing period&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">handle</span><span class="p">()</span><span class="o">.</span><span class="n">setPeriod</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">handle</span><span class="p">()</span><span class="o">.</span><span class="n">period</span><span class="p">()</span> <span class="o">+</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nb">print</span> <span class="s2">&quot;Should not proceed&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>As you can see, the TaskKit framework is quite sophisticated and will hopefully be used by many people from the Python community. If you have further question, please feel free to ask them on the Webware mailing list.</p>
+</section>
+<section id="credit">
+<h2>Credit<a class="headerlink" href="#credit" title="Link to this heading">¶</a></h2>
+<p>Authors: Tom Schwaller, Jay Love</p>
+<p>Based on code from the Ganymede Directory Management System written by Jonathan Abbey.</p>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">Webware for Python 3</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changes.html">List of Changes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="migrate.html">Migration Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="copyright.html">Copyright and License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial.html">Beginner Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="appdev.html">Application Development</a></li>
+<li class="toctree-l1"><a class="reference internal" href="config.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="deploy.html">Deployment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="plugins.html">Plug-ins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="style.html">Style Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="psp.html">PSP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="userkit.html">UserKit</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">TaskKit</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#scheduling-with-python-and-webware">Scheduling with Python and Webware</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#tasks">Tasks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#generating-static-pages">Generating static pages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#generating-static-pages-again">Generating static pages again</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#the-scheduler">The Scheduler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#credit">Credit</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="webutils.html">WebUtils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="miscutils.html">MiscUtils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="testing.html">Testing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ref/index.html">API Reference</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="userkit.html" title="previous chapter">UserKit</a></li>
+      <li>Next: <a href="webutils.html" title="next chapter">WebUtils</a></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;1999-2025, Christoph Zwerschke et al.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.2.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+      |
+      <a href="_sources/taskkit.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

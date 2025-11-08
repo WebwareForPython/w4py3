@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Application &#8212; Webware for Python 3 3.1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="../../_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="../../_static/alabaster.css?v=27fed22d" />
+    <script src="../../_static/documentation_options.js?v=dd1205ac"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="copyright" title="Copyright" href="../../copyright.html" />
+    <link rel="next" title="ConfigurableForServerSidePath" href="configurableforserversidepath.html" />
+    <link rel="prev" title="Core Classes" href="index.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="module-Application">
+<span id="application"></span><h1>Application<a class="headerlink" href="#module-Application" title="Link to this heading">¶</a></h1>
+<p>The Application singleton.</p>
+<p><cite>Application</cite> is the main class that sets up and dispatches requests.
+This is done using the WSGI protocol, so an <cite>AppServer</cite> class is not
+needed and not contained in Webware for Python anymore.
+<cite>Application</cite> receives the input via WSGI and turns it into <cite>Transaction</cite>,
+<cite>HTTPRequest</cite>, <cite>HTTPResponse</cite>, and <cite>Session</cite>.</p>
+<p>Settings for Application are taken from <code class="docutils literal notranslate"><span class="pre">Configs/Application.config</span></code>,
+which is used for many global settings, even if they aren’t closely tied
+to the Application object itself.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="Application.Application">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">Application.</span></span><span class="sig-name descname"><span class="pre">Application</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">settings</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">development</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Application.Application" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="configurableforserversidepath.html#ConfigurableForServerSidePath.ConfigurableForServerSidePath" title="ConfigurableForServerSidePath.ConfigurableForServerSidePath"><code class="xref py py-class docutils literal notranslate"><span class="pre">ConfigurableForServerSidePath</span></code></a></p>
+<p>The Application singleton.</p>
+<p>Purpose and usage are explained in the module docstring.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="Application.Application.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">settings</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">development</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Application.Application.__init__" title="Link to this definition">¶</a></dt>
+<dd><p>Sets up the Application.</p>
+<p>You can specify the path of the application working directory,
+a dictionary of settings to override in the configuration,
+and whether the application should run in development mode.</p>
+<p>In the setting ‘ApplicationConfigFilename’ you can also specify
+a different location of the application configuration file.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Application.Application.addContext">
+<span class="sig-name descname"><span class="pre">addContext</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Application.Application.addContext" title="Link to this definition">¶</a></dt>
+<dd><p>Add a context by named <cite>name</cite>, rooted at <cite>path</cite>.</p>
+<p>This gets imported as a package, and the last directory
+of <cite>path</cite> does not have to match the context name.
+(The package will be named <cite>name</cite>, regardless of <cite>path</cite>).</p>
+<p>Delegated to <cite>URLParser.ContextParser</cite>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Application.Application.addServletFactory">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">addServletFactory</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">factory</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Application.Application.addServletFactory" title="Link to this definition">¶</a></dt>
+<dd><p>Add a ServletFactory.</p>
+<p>Delegated to the <cite>URLParser.ServletFactoryManager</cite> singleton.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Application.Application.addShutDownHandler">
+<span class="sig-name descname"><span class="pre">addShutDownHandler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">func</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Application.Application.addShutDownHandler" title="Link to this definition">¶</a></dt>
+<dd><p>Add a shutdown handler.</p>
+<p>Functions added through <cite>addShutDownHandler</cite> will be called when
+the Application is shutting down. You can use this hook to close
+database connections, clean up resources, save data to disk, etc.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Application.Application.callMethodOfServlet">
+<span class="sig-name descname"><span class="pre">callMethodOfServlet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">trans</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">url</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kw</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Application.Application.callMethodOfServlet" title="Link to this definition">¶</a></dt>
+<dd><p>Call method of another servlet.</p>
+<p>Call a method of the servlet referred to by the URL. Calls sleep()
+and awake() before and after the method call. Or, if the servlet
+defines it, then <cite>runMethodForTransaction</cite> is used (analogous to the
+use of <cite>runTransaction</cite> in <cite>forward</cite>).</p>
+<p>The entire process is similar to <cite>forward</cite>, except that instead of
+<cite>respond</cite>, <cite>method</cite> is called (<cite>method</cite> should be a string,
+<cite>*args</cite> and <cite>**kw</cite> are passed as arguments to that method).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Application.Application.commandLineConfig">
+<span class="sig-name descname"><span class="pre">commandLineConfig</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Application.Application.commandLineConfig" title="Link to this definition">¶</a></dt>
+<dd><p>Return the settings that came from the command-line.</p>
+<p>These settings come via addCommandLineSetting().</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Application.Application.config">
+<span class="sig-name descname"><span class="pre">config</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Application.Application.config" title="Link to this definition">¶</a></dt>
+<dd><p>Return the configuration of the object as a dictionary.</p>
+<p>This is a combination of defaultConfig() and userConfig().
+This method caches the config.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Application.Application.configFilename">
+<span class="sig-name descname"><span class="pre">configFilename</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Application.Application.configFilename" title="Link to this definition">¶</a></dt>
+<dd><p>The configuration file path.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Application.Application.configName">
+<span class="sig-name descname"><span class="pre">configName</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Application.Application.configName" title="Link to this definition">¶</a></dt>
+<dd><p>Return the name of the configuration file without the extension.</p>
+<p>This is the portion of the config file name before the ‘.config’.
+This is used on the command-line.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Application.Application.configReplacementValues">
+<span class="sig-name descname"><span class="pre">configReplacementValues</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Application.Application.configReplacementValues" title="Link to this definition">¶</a></dt>
+<dd><p>Get config values that need to be escaped.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Application.Application.contexts">
+<span class="sig-name descname"><span class="pre">contexts</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Application.Application.contexts" title="Link to this definition">¶</a></dt>
+<dd><p>Return a dictionary of context-name: context-path.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Application.Application.createRequestForDict">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">createRequestForDict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">requestDict</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Application.Application.createRequestForDict" title="Link to this definition">¶</a></dt>
+<dd><p>Create request object for a given dictionary.</p>
+<p>Create a request object (subclass of <cite>Request</cite>) given the raw
+dictionary as passed by the web server via WSGI.</p>
+<p>The class of the request may be based on the contents of the
+dictionary (though only <cite>HTTPRequest</cite> is currently created),
+and the request will later determine the class of the response.</p>
+<p>Called by <cite>dispatchRawRequest</cite>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Application.Application.createSessionForTransaction">
+<span class="sig-name descname"><span class="pre">createSessionForTransaction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">trans</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Application.Application.createSessionForTransaction" title="Link to this definition">¶</a></dt>
+<dd><p>Get the session object for the transaction.</p>
+<p>If the session already exists, returns that, otherwise creates
+a new session.</p>
+<p>Finding the session ID is done in <cite>Transaction.sessionId</cite>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Application.Application.createSessionWithID">
+<span class="sig-name descname"><span class="pre">createSessionWithID</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">trans</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sessionID</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Application.Application.createSessionWithID" title="Link to this definition">¶</a></dt>
+<dd><p>Create a session object with our session ID.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Application.Application.defaultConfig">
+<span class="sig-name descname"><span class="pre">defaultConfig</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Application.Application.defaultConfig" title="Link to this definition">¶</a></dt>
+<dd><p>The default Application.config.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Application.Application.development">
+<span class="sig-name descname"><span class="pre">development</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Application.Application.development" title="Link to this definition">¶</a></dt>
+<dd><p>Whether the application shall run in development mode</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Application.Application.dispatchRawRequest">
+<span class="sig-name descname"><span class="pre">dispatchRawRequest</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">requestDict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">strmOut</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Application.Application.dispatchRawRequest" title="Link to this definition">¶</a></dt>
+<dd><p>Dispatch a raw request.</p>
+<p>Dispatch a request as passed from the web server via WSGI.</p>
+<p>This method creates the request, response, and transaction objects,
+then runs (via <cite>runTransaction</cite>) the transaction. It also catches any
+exceptions, which are then passed on to <cite>handleExceptionInTransaction</cite>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Application.Application.errorPage">
+<span class="sig-name descname"><span class="pre">errorPage</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">errorClass</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Application.Application.errorPage" title="Link to this definition">¶</a></dt>
+<dd><p>Get the error page url corresponding to an error class.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Application.Application.forward">
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">trans</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">url</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Application.Application.forward" title="Link to this definition">¶</a></dt>
+<dd><p>Forward the request to a different (internal) URL.</p>
+<p>The transaction’s URL is changed to point to the new servlet,
+and the transaction is simply run again.</p>
+<p>Output is _not_ accumulated, so if the original servlet had any output,
+the new output will _replace_ the old output.</p>
+<p>You can change the request in place to control the servlet you are
+forwarding to – using methods like <cite>HTTPRequest.setField</cite>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Application.Application.handleException">
+<span class="sig-name descname"><span class="pre">handleException</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Application.Application.handleException" title="Link to this definition">¶</a></dt>
+<dd><p>Handle exceptions.</p>
+<p>This should only be used in cases where there is no transaction object,
+for example if an exception occurs when attempting to save a session
+to disk.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Application.Application.handleExceptionInTransaction">
+<span class="sig-name descname"><span class="pre">handleExceptionInTransaction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">excInfo</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">trans</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Application.Application.handleExceptionInTransaction" title="Link to this definition">¶</a></dt>
+<dd><p>Handle exception with info.</p>
+<p>Handles exception <cite>excInfo</cite> (as returned by <cite>sys.exc_info()</cite>)
+that was generated by <cite>transaction</cite>. It may display the exception
+report, email the report, etc., handled by
+<cite>ExceptionHandler.ExceptionHandler</cite>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Application.Application.handleMissingPathSession">
+<span class="sig-name descname"><span class="pre">handleMissingPathSession</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">trans</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Application.Application.handleMissingPathSession" title="Link to this definition">¶</a></dt>
+<dd><p>Redirect requests without session info in the path.</p>
+<p>If UseAutomaticPathSessions is enabled in Application.config
+we redirect the browser to an absolute url with SID in path
+<a class="reference external" href="http://gandalf/a/_SID_=2001080221301877755/Examples/">http://gandalf/a/_SID_=2001080221301877755/Examples/</a>
+_SID_ is extracted and removed from path in HTTPRequest.py</p>
+<p>This is for convenient building of webapps that must not
+depend on cookie support.</p>
+<p>Note that we create an absolute URL with scheme and hostname
+because otherwise IIS will only cause an internal redirect.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Application.Application.handlePathSession">
+<span class="sig-name descname"><span class="pre">handlePathSession</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">trans</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Application.Application.handlePathSession" title="Link to this definition">¶</a></dt>
+<dd><p>Handle the session identifier that has been found in the path.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Application.Application.handleUnnecessaryPathSession">
+<span class="sig-name descname"><span class="pre">handleUnnecessaryPathSession</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">trans</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Application.Application.handleUnnecessaryPathSession" title="Link to this definition">¶</a></dt>
+<dd><p>Redirect request with unnecessary session info in the path.</p>
+<p>This is called if it has been determined that the request has a path
+session, but also cookies. In that case we redirect to eliminate the
+unnecessary path session.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Application.Application.hasContext">
+<span class="sig-name descname"><span class="pre">hasContext</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Application.Application.hasContext" title="Link to this definition">¶</a></dt>
+<dd><p>Checks whether context <cite>name</cite> exist.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Application.Application.hasSession">
+<span class="sig-name descname"><span class="pre">hasSession</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sessionId</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Application.Application.hasSession" title="Link to this definition">¶</a></dt>
+<dd><p>Check whether session <cite>sessionId</cite> exists.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Application.Application.hasSetting">
+<span class="sig-name descname"><span class="pre">hasSetting</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Application.Application.hasSetting" title="Link to this definition">¶</a></dt>
+<dd><p>Check whether a configuration setting has been changed.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Application.Application.includeURL">
+<span class="sig-name descname"><span class="pre">includeURL</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">trans</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">url</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Application.Application.includeURL" title="Link to this definition">¶</a></dt>
+<dd><p>Include another servlet.</p>
+<p>Include the servlet given by the URL. Like <cite>forward</cite>,
+except control is ultimately returned to the servlet.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Application.Application.initErrorPage">
+<span class="sig-name descname"><span class="pre">initErrorPage</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Application.Application.initErrorPage" title="Link to this definition">¶</a></dt>
+<dd><p>Initialize the error page related attributes.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Application.Application.initSessions">
+<span class="sig-name descname"><span class="pre">initSessions</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Application.Application.initSessions" title="Link to this definition">¶</a></dt>
+<dd><p>Initialize all session related attributes.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Application.Application.initVersions">
+<span class="sig-name descname"><span class="pre">initVersions</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Application.Application.initVersions" title="Link to this definition">¶</a></dt>
+<dd><p>Get and store versions.</p>
+<p>Initialize attributes that stores the Webware version as
+both tuple and string. These are stored in the Properties.py files.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Application.Application.loadPlugIn">
+<span class="sig-name descname"><span class="pre">loadPlugIn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">module</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Application.Application.loadPlugIn" title="Link to this definition">¶</a></dt>
+<dd><p>Load and return the given plug-in.</p>
+<p>May return None if loading was unsuccessful (in which case this method
+prints a message saying so). Used by <cite>loadPlugIns</cite> (note the <strong>s</strong>).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Application.Application.loadPlugIns">
+<span class="sig-name descname"><span class="pre">loadPlugIns</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Application.Application.loadPlugIns" title="Link to this definition">¶</a></dt>
+<dd><p>Load all plug-ins.</p>
+<p>A plug-in allows you to extend the functionality of Webware without
+necessarily having to modify its source. Plug-ins are loaded by
+Application at startup time, just before listening for requests.
+See the docs in <cite>PlugIn</cite> for more info.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Application.Application.makeDirs">
+<span class="sig-name descname"><span class="pre">makeDirs</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Application.Application.makeDirs" title="Link to this definition">¶</a></dt>
+<dd><p>Make sure some standard directories are always available.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Application.Application.name">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Application.Application.name" title="Link to this definition">¶</a></dt>
+<dd><p>The name by which this was started. Usually <cite>Application</cite>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Application.Application.numRequests">
+<span class="sig-name descname"><span class="pre">numRequests</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Application.Application.numRequests" title="Link to this definition">¶</a></dt>
+<dd><p>Return the number of requests.</p>
+<p>Returns the number of requests received by this application
+since it was launched.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Application.Application.outputEncoding">
+<span class="sig-name descname"><span class="pre">outputEncoding</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Application.Application.outputEncoding" title="Link to this definition">¶</a></dt>
+<dd><p>Get the default output encoding of this application.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Application.Application.plugIn">
+<span class="sig-name descname"><span class="pre">plugIn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default=&lt;class</span> <span class="pre">'MiscUtils.NoDefault'&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Application.Application.plugIn" title="Link to this definition">¶</a></dt>
+<dd><p>Return the plug-in with the given name.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Application.Application.plugIns">
+<span class="sig-name descname"><span class="pre">plugIns</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Application.Application.plugIns" title="Link to this definition">¶</a></dt>
+<dd><p>Return a dictionary of the plug-ins loaded by the application.</p>
+<p>Each plug-in is a PlugIn object with an underlying Python package.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Application.Application.printConfig">
+<span class="sig-name descname"><span class="pre">printConfig</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dest</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Application.Application.printConfig" title="Link to this definition">¶</a></dt>
+<dd><p>Print the configuration to the given destination.</p>
+<p>The default destination is stdout. A fixed with font is assumed
+for aligning the values to start at the same column.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Application.Application.printStartUpMessage">
+<span class="sig-name descname"><span class="pre">printStartUpMessage</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Application.Application.printStartUpMessage" title="Link to this definition">¶</a></dt>
+<dd><p>Print a little intro to the activity log.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Application.Application.readConfig">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">readConfig</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Application.Application.readConfig" title="Link to this definition">¶</a></dt>
+<dd><p>Read the configuration from the file with the given name.</p>
+<p>Raises an UIError if the configuration cannot be read.</p>
+<p>This implementation assumes the file is stored in utf-8 encoding with
+possible BOM at the start, but also tries to read as latin-1 if it
+cannot be decoded as utf-8. Subclasses can override this behavior.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Application.Application.registerShutDownHandler">
+<span class="sig-name descname"><span class="pre">registerShutDownHandler</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Application.Application.registerShutDownHandler" title="Link to this definition">¶</a></dt>
+<dd><p>Register shutdown handler in various ways.</p>
+<p>We want to make sure the shutdown handler is called, so that the
+application can save the sessions to disk and do cleanup tasks.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Application.Application.removePathSession">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">removePathSession</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">trans</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Application.Application.removePathSession" title="Link to this definition">¶</a></dt>
+<dd><p>Remove a possible session identifier from the path.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Application.Application.resolveInternalRelativePath">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">resolveInternalRelativePath</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">trans</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">url</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Application.Application.resolveInternalRelativePath" title="Link to this definition">¶</a></dt>
+<dd><p>Return the absolute internal path.</p>
+<p>Given a URL, return the absolute internal URL.
+URLs are assumed relative to the current URL.
+Absolute paths are returned unchanged.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Application.Application.returnServlet">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">returnServlet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">servlet</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Application.Application.returnServlet" title="Link to this definition">¶</a></dt>
+<dd><p>Return the servlet to its pool.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Application.Application.rootURLParser">
+<span class="sig-name descname"><span class="pre">rootURLParser</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Application.Application.rootURLParser" title="Link to this definition">¶</a></dt>
+<dd><p>Accessor: the Root URL parser.</p>
+<p>URL parsing (as defined by subclasses of <cite>URLParser.URLParser</cite>)
+starts here. Other parsers are called in turn by this parser.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Application.Application.runTransaction">
+<span class="sig-name descname"><span class="pre">runTransaction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">trans</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Application.Application.runTransaction" title="Link to this definition">¶</a></dt>
+<dd><p>Run transaction.</p>
+<p>Executes the transaction, handling HTTPException errors.
+Finds the servlet (using the root parser, probably
+<cite>URLParser.ContextParser</cite>, to find the servlet for the transaction,
+then calling <cite>runTransactionViaServlet</cite>.</p>
+<p>Called by <cite>dispatchRawRequest</cite>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Application.Application.runTransactionViaServlet">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">runTransactionViaServlet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">servlet</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">trans</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Application.Application.runTransactionViaServlet" title="Link to this definition">¶</a></dt>
+<dd><p>Execute the transaction using the servlet.</p>
+<p>This is the <cite>awake</cite>/<cite>respond</cite>/<cite>sleep</cite> sequence of calls, or if
+the servlet supports it, a single <cite>runTransaction</cite> call (which is
+presumed to make the awake/respond/sleep calls on its own). Using
+<cite>runTransaction</cite> allows the servlet to override the basic call
+sequence, or catch errors from that sequence.</p>
+<p>Called by <cite>runTransaction</cite>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Application.Application.serverSidePath">
+<span class="sig-name descname"><span class="pre">serverSidePath</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Application.Application.serverSidePath" title="Link to this definition">¶</a></dt>
+<dd><p>Get the server-side path.</p>
+<p>Returns the absolute server-side path of the Webware application.
+If the optional path is passed in, then it is joined with the
+server side directory to form a path relative to the working directory.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Application.Application.session">
+<span class="sig-name descname"><span class="pre">session</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sessionId</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default=&lt;class</span> <span class="pre">'MiscUtils.NoDefault'&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Application.Application.session" title="Link to this definition">¶</a></dt>
+<dd><p>The session object for <cite>sessionId</cite>.</p>
+<p>Raises <cite>KeyError</cite> if session not found and no default is given.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Application.Application.sessionCookiePath">
+<span class="sig-name descname"><span class="pre">sessionCookiePath</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">trans</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Application.Application.sessionCookiePath" title="Link to this definition">¶</a></dt>
+<dd><p>Get the cookie path for this transaction.</p>
+<p>If not path is specified in the configuration setting,
+the servlet path is used for security reasons, see:
+<a class="reference external" href="https://www.helpnetsecurity.com/2004/06/27/cookie-path-best-practice/">https://www.helpnetsecurity.com/2004/06/27/cookie-path-best-practice/</a></p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Application.Application.sessionName">
+<span class="sig-name descname"><span class="pre">sessionName</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">_trans</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Application.Application.sessionName" title="Link to this definition">¶</a></dt>
+<dd><p>Get the name of the field holding the session ID.</p>
+<p>Overwrite to make this transaction dependent.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Application.Application.sessionPrefix">
+<span class="sig-name descname"><span class="pre">sessionPrefix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">_trans</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Application.Application.sessionPrefix" title="Link to this definition">¶</a></dt>
+<dd><p>Get the prefix string for the session ID.</p>
+<p>Overwrite to make this transaction dependent.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Application.Application.sessionTimeout">
+<span class="sig-name descname"><span class="pre">sessionTimeout</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">_trans</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Application.Application.sessionTimeout" title="Link to this definition">¶</a></dt>
+<dd><p>Get the timeout (in seconds) for a user session.</p>
+<p>Overwrite to make this transaction dependent.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Application.Application.sessions">
+<span class="sig-name descname"><span class="pre">sessions</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Application.Application.sessions" title="Link to this definition">¶</a></dt>
+<dd><p>A dictionary of all the session objects.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Application.Application.setSetting">
+<span class="sig-name descname"><span class="pre">setSetting</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Application.Application.setSetting" title="Link to this definition">¶</a></dt>
+<dd><p>Set a particular configuration setting.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Application.Application.setting">
+<span class="sig-name descname"><span class="pre">setting</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default=&lt;class</span> <span class="pre">'MiscUtils.NoDefault'&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Application.Application.setting" title="Link to this definition">¶</a></dt>
+<dd><p>Return setting, using the server side path when indicated.</p>
+<p>Returns the setting, filtered by <cite>self.serverSidePath()</cite>,
+if the name ends with <code class="docutils literal notranslate"><span class="pre">Filename</span></code> or <code class="docutils literal notranslate"><span class="pre">Dir</span></code>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Application.Application.shutDown">
+<span class="sig-name descname"><span class="pre">shutDown</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Application.Application.shutDown" title="Link to this definition">¶</a></dt>
+<dd><p>Shut down the application.</p>
+<p>Called when the interpreter is terminated.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Application.Application.sigTerm">
+<span class="sig-name descname"><span class="pre">sigTerm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">_signum</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">_frame</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Application.Application.sigTerm" title="Link to this definition">¶</a></dt>
+<dd><p>Signal handler for terminating the process.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Application.Application.startSessionSweeper">
+<span class="sig-name descname"><span class="pre">startSessionSweeper</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Application.Application.startSessionSweeper" title="Link to this definition">¶</a></dt>
+<dd><p>Start session sweeper.</p>
+<p>Starts the session sweeper, <cite>Tasks.SessionTask</cite>, which deletes
+session objects (and disk copies of those objects) that have expired.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Application.Application.startTime">
+<span class="sig-name descname"><span class="pre">startTime</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Application.Application.startTime" title="Link to this definition">¶</a></dt>
+<dd><p>Return the time the application was started.</p>
+<p>The time is given as seconds, like time().</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Application.Application.taskManager">
+<span class="sig-name descname"><span class="pre">taskManager</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Application.Application.taskManager" title="Link to this definition">¶</a></dt>
+<dd><p>Accessor: <cite>TaskKit.Scheduler</cite> instance.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Application.Application.userConfig">
+<span class="sig-name descname"><span class="pre">userConfig</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Application.Application.userConfig" title="Link to this definition">¶</a></dt>
+<dd><p>Return the user config overrides.</p>
+<p>These settings can be found in the optional config file.
+Returns {} if there is no such file.</p>
+<p>The config filename is taken from configFilename().</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Application.Application.webwarePath">
+<span class="sig-name descname"><span class="pre">webwarePath</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Application.Application.webwarePath" title="Link to this definition">¶</a></dt>
+<dd><p>Return the Webware path.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Application.Application.webwareVersion">
+<span class="sig-name descname"><span class="pre">webwareVersion</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Application.Application.webwareVersion" title="Link to this definition">¶</a></dt>
+<dd><p>Return the Webware version as a tuple.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Application.Application.webwareVersionString">
+<span class="sig-name descname"><span class="pre">webwareVersionString</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Application.Application.webwareVersionString" title="Link to this definition">¶</a></dt>
+<dd><p>Return the Webware version as a printable string.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Application.Application.writeActivityLog">
+<span class="sig-name descname"><span class="pre">writeActivityLog</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">trans</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Application.Application.writeActivityLog" title="Link to this definition">¶</a></dt>
+<dd><p>Write an entry to the activity log.</p>
+<p>Writes an entry to the script log file. Uses settings
+<code class="docutils literal notranslate"><span class="pre">ActivityLogFilename</span></code> and <code class="docutils literal notranslate"><span class="pre">ActivityLogColumns</span></code>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Application.Application.writeExceptionReport">
+<span class="sig-name descname"><span class="pre">writeExceptionReport</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">handler</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Application.Application.writeExceptionReport" title="Link to this definition">¶</a></dt>
+<dd><p>Write extra information to the exception report.</p>
+<p>See <cite>ExceptionHandler</cite> for more information.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="Application.EndResponse">
+<em class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">Application.</span></span><span class="sig-name descname"><span class="pre">EndResponse</span></span><a class="headerlink" href="#Application.EndResponse" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+<p>End response exception.</p>
+<p>Used to prematurely break out of the <cite>awake()</cite>/<cite>respond()</cite>/<cite>sleep()</cite>
+cycle without reporting a traceback. During servlet processing,
+if this exception is caught during <cite>awake()</cite> or <cite>respond()</cite> then <cite>sleep()</cite>
+is called and the response is sent. If caught during <cite>sleep()</cite>,
+processing ends and the response is sent.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="Application.EndResponse.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Application.EndResponse.__init__" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Application.EndResponse.add_note">
+<span class="sig-name descname"><span class="pre">add_note</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="positional-only-separator o"><abbr title="Positional-only parameter separator (PEP 570)"><span class="pre">/</span></abbr></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Application.EndResponse.add_note" title="Link to this definition">¶</a></dt>
+<dd><p>Exception.add_note(note) –
+add a note to the exception</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Application.EndResponse.args">
+<span class="sig-name descname"><span class="pre">args</span></span><a class="headerlink" href="#Application.EndResponse.args" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Application.EndResponse.with_traceback">
+<span class="sig-name descname"><span class="pre">with_traceback</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="positional-only-separator o"><abbr title="Positional-only parameter separator (PEP 570)"><span class="pre">/</span></abbr></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Application.EndResponse.with_traceback" title="Link to this definition">¶</a></dt>
+<dd><p>Exception.with_traceback(tb) –
+set self.__traceback__ to tb and return self.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../index.html">Webware for Python 3</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../changes.html">List of Changes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../migrate.html">Migration Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../copyright.html">Copyright and License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorial.html">Beginner Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../appdev.html">Application Development</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../config.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../deploy.html">Deployment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../plugins.html">Plug-ins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../style.html">Style Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../psp.html">PSP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../userkit.html">UserKit</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../taskkit.html">TaskKit</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../webutils.html">WebUtils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../miscutils.html">MiscUtils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../testing.html">Testing</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Core Classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../psp/index.html">PSP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../userkit/index.html">UserKit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../taskkit/index.html">TaskKit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../webutils/index.html">WebUtils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../miscutils/index.html">MiscUtils</a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">API Reference</a><ul>
+  <li><a href="index.html">Core Classes</a><ul>
+      <li>Previous: <a href="index.html" title="previous chapter">Core Classes</a></li>
+      <li>Next: <a href="configurableforserversidepath.html" title="next chapter">ConfigurableForServerSidePath</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;1999-2025, Christoph Zwerschke et al.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.2.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+      |
+      <a href="../../_sources/ref/core/application.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

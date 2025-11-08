@@ -1,0 +1,4 @@
+ExceptionHandler
+----------------
+
+.. automodule:: ExceptionHandler

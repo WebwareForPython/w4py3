@@ -1,0 +1,4 @@
+SidebarPage
+-----------
+
+.. automodule:: SidebarPage

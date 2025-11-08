@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Beginner Tutorial &#8212; Webware for Python 3 3.1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=27fed22d" />
+    <script src="_static/documentation_options.js?v=dd1205ac"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="copyright" title="Copyright" href="copyright.html" />
+    <link rel="next" title="Application Development" href="appdev.html" />
+    <link rel="prev" title="Quickstart" href="quickstart.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="beginner-tutorial">
+<span id="id1"></span><h1>Beginner Tutorial<a class="headerlink" href="#beginner-tutorial" title="Link to this heading">¶</a></h1>
+<p>In this tutorial we will show how to write a very simple Webware application.</p>
+<p>Again, we assume that you have Webware for Python 3 already installed in a virtual environment, and activate the virtual environment as explained in the chapter on <a class="reference internal" href="install.html#installation"><span class="std std-ref">Installation</span></a>.</p>
+<section id="creating-a-working-directory">
+<h2>Creating a Working Directory<a class="headerlink" href="#creating-a-working-directory" title="Link to this heading">¶</a></h2>
+<p>We’ll first set up a directory dedicated to your application, the so-called “application working directory”. Change into your home directory or wherever you want to create that working directory. We recommend creating the virtual environment and the application working directory as siblings in a dedicated base directory, which can be the home directory of a dedicated user that acts as “owner” of the application. Then run this command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">webware</span> <span class="n">make</span> <span class="o">-</span><span class="n">c</span> <span class="n">Context</span> <span class="o">-</span><span class="n">l</span> <span class="n">Lib</span> <span class="n">WebwareTest</span>
+</pre></div>
+</div>
+<p>You’ll now have a directory “WebwareTest” in the current directory. Inside this directory will be several subdirectories and a couple files. The directories of interest are <code class="docutils literal notranslate"><span class="pre">Context</span></code> (that you specified with <code class="docutils literal notranslate"><span class="pre">-c</span> <span class="pre">context</span></code>) where you’ll be putting your servlets; <code class="docutils literal notranslate"><span class="pre">Configs</span></code> that holds some configuration files; and <code class="docutils literal notranslate"><span class="pre">Lib</span></code> where you can put your non-servlet code.</p>
+<p>For more information about the working directory and setting up the file structure for your application, see <a class="reference internal" href="appdev.html#application-development"><span class="std std-ref">Application Development</span></a>.</p>
+</section>
+<section id="changing-the-webware-configuration">
+<h2>Changing the Webware Configuration<a class="headerlink" href="#changing-the-webware-configuration" title="Link to this heading">¶</a></h2>
+<p>For the most part the configuration is fine, but we’ll make a couple changes to make it easier to develop. For more information on configuration see the chapter on <a class="reference internal" href="config.html#configuration"><span class="std std-ref">Configuration</span></a>.</p>
+<p>One change you may want to make to allow you to use more interesting URLs. In <code class="docutils literal notranslate"><span class="pre">Application.config</span></code>, change the <code class="docutils literal notranslate"><span class="pre">ExtraPathInfo</span></code> setting from <code class="docutils literal notranslate"><span class="pre">False</span></code> (the default) to <code class="docutils literal notranslate"><span class="pre">True</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ExtraPathInfo</span> <span class="o">=</span> <span class="kc">True</span>
+</pre></div>
+</div>
+<p>Otherwise the settings should be appropriate already for our purposes.</p>
+</section>
+<section id="creating-and-understanding-the-servlet">
+<h2>Creating and Understanding the Servlet<a class="headerlink" href="#creating-and-understanding-the-servlet" title="Link to this heading">¶</a></h2>
+<p>Webware’s core concept for serving pages is the <em>servlet</em>. This is a class that creates a response given a request.</p>
+<p>The core classes to understanding the servlet are <code class="docutils literal notranslate"><span class="pre">Servlet</span></code>, <code class="docutils literal notranslate"><span class="pre">HTTPServlet</span></code>, and <code class="docutils literal notranslate"><span class="pre">Page</span></code>. Also of interest would be the request (<code class="docutils literal notranslate"><span class="pre">Request</span></code> and <code class="docutils literal notranslate"><span class="pre">HTTPRequest</span></code>) and the response (<code class="docutils literal notranslate"><span class="pre">Response</span></code> and <code class="docutils literal notranslate"><span class="pre">HTTPResponse</span></code>)
+– the <code class="docutils literal notranslate"><span class="pre">HTTP-</span></code> versions of these classes are more interesting. There is also a <code class="docutils literal notranslate"><span class="pre">Transaction</span></code> object, which is solely a container for the request and response.</p>
+<p>While there are several levels you can work on while creating your servlet, in this tutorial we will work solely with subclassing the <code class="docutils literal notranslate"><span class="pre">Page</span></code> class. This class defines a more high-level interface, appropriate for generating HTML (though it can be used with any content type). It also provides a number of convenience methods.</p>
+</section>
+<section id="a-brief-introduction-to-the-servlet">
+<h2>A Brief Introduction to the Servlet<a class="headerlink" href="#a-brief-introduction-to-the-servlet" title="Link to this heading">¶</a></h2>
+<p>Each servlet is a plain Python class. There is no Webware magic (except perhaps for the level one <em>import module based on URL</em> spell). <a class="reference internal" href="psp.html#psp"><span class="std std-ref">PSP</span></a> has more magic, but that’s a topic for another chapter.</p>
+<p>An extremely simple servlet might look like:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">Page</span><span class="w"> </span><span class="kn">import</span> <span class="n">Page</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">MyServlet</span><span class="p">(</span><span class="n">Page</span><span class="p">):</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">title</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s1">&#39;My Sample Servlet&#39;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">writeContent</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;Hello world!&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This would be placed in a file <code class="docutils literal notranslate"><span class="pre">MyServlet.py</span></code>. Webware will create a pool of <code class="docutils literal notranslate"><span class="pre">MyServlet</span></code> instances, which will be reused. Servlets “write” the text of the response, like you see in the <code class="docutils literal notranslate"><span class="pre">writeContent()</span></code> method above.</p>
+<p>Webware calls the servlet like this:</p>
+<ul class="simple">
+<li><p>An unused servlet is taken from the pool, or another servlet is created.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">awake(transaction)</span></code> is called. This is a good place to set up data for your servlet. You can put information in instance variables for use later on. But be warned – those instance variables will hang around potentially for a long time if you don’t delete them later (in <code class="docutils literal notranslate"><span class="pre">sleep</span></code>).</p></li>
+<li><p>Several low-level methods are called, which Page isolates you from. We will ignore these.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">writeHTML()</span></code> is called. <code class="docutils literal notranslate"><span class="pre">Page</span></code> implements this just fine, but you can override it if you want total control, or if you want to output something other than HTML.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">writeDocType()</span></code> would write something like <code class="docutils literal notranslate"><span class="pre">&lt;!DOCTYPE</span> <span class="pre">html&gt;</span></code>.</p></li>
+<li><p>The &lt;head&gt; section of the page is written. <code class="docutils literal notranslate"><span class="pre">title()</span></code> gives the title, and you probably want to override it.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">writeStyleSheet()</span></code> is called, if you want to write that or anything else in the <code class="docutils literal notranslate"><span class="pre">&lt;head&gt;</span></code> section.</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">&lt;body&gt;</span></code> tag is written. Have <code class="docutils literal notranslate"><span class="pre">htBodyArgs()</span></code> return anything you want in the <code class="docutils literal notranslate"><span class="pre">&lt;body&gt;</span></code> tag (like <code class="docutils literal notranslate"><span class="pre">onLoad=&quot;loadImages()&quot;</span></code>).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">writeBodyParts()</span></code> is called, which you may want to override if you want to create a template for other servlets.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">writeContent()</span></code> should write the main content for the page. This is where you do most of your display work.</p></li>
+<li><p>The response is packaged up, the headers put on the front, cookies handled, and it’s sent to the browser. This is all done for you.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">sleep(transaction)</span></code> is called. This is where you should clean up anything you might have set up earlier – open files, open database connections, etc. Often it’s empty. Note that <code class="docutils literal notranslate"><span class="pre">sleep()</span></code> is called even if an exception was raised at any point in the servlet processing, so it should (if necessary) check that each resource was in fact acquired before trying to release it.</p></li>
+<li><p>The servlet is placed back into the pool, to be used again. This only happens after the transaction is complete – the servlet won’t get reused any earlier.</p></li>
+</ul>
+<p>You only have to override the portions that you want to. It is not uncommon to only override the <code class="docutils literal notranslate"><span class="pre">writeContent()</span></code> method in a servlet, for instance.</p>
+<p>You’ll notice a file <code class="docutils literal notranslate"><span class="pre">Context/Main.py</span></code> in your working directory. You can look at it to get a feel for what a servlet might look like. (As an aside, a servlet called <code class="docutils literal notranslate"><span class="pre">Main</span></code> or <code class="docutils literal notranslate"><span class="pre">index</span></code> will be used analogous to the <code class="docutils literal notranslate"><span class="pre">index.html</span></code> file). You can look at it for a place to start experimenting, but here we’ll work on developing an entire (small) application, introducing the other concepts as we go along.</p>
+</section>
+<section id="a-photo-album">
+<h2>A Photo Album<a class="headerlink" href="#a-photo-album" title="Link to this heading">¶</a></h2>
+<p>If you look online, you’ll see a huge number of web applications available for an online photo album. The world needs one more!</p>
+<p>You will need the <a class="reference external" href="https://python-pillow.org/">Pillow</a> library installed for this example. If you installed Webware for Python 3 with the “examples” or “test” option, as recommended in the chapter on <a class="reference internal" href="install.html#installation"><span class="std std-ref">Installation</span></a>, this should be already the case. First we’ll use this library to find the sizes of the images, and later we will use it to create thumbnails.</p>
+<p>We’ll develop the application in two iterations.</p>
+<section id="iteration-1-displaying-files">
+<h3>Iteration 1: Displaying files<a class="headerlink" href="#iteration-1-displaying-files" title="Link to this heading">¶</a></h3>
+<p>For simplicity, we will store image files in a subdirectory <code class="docutils literal notranslate"><span class="pre">Pics</span></code> of the default context directory <code class="docutils literal notranslate"><span class="pre">WebwareTest/Context</span></code> and let the development server deliver the files. In a production environment, you would place the <code class="docutils literal notranslate"><span class="pre">Pics</span></code> directory outside of the context and let the web server deliver the files directly.</p>
+<p>For the first iteration, we’ll display files that you upload by hand to the <code class="docutils literal notranslate"><span class="pre">Pics</span></code> directory.</p>
+<p>We do this with two servlets – one servlet <code class="docutils literal notranslate"><span class="pre">Main.py</span></code> to show the entire album, and another <code class="docutils literal notranslate"><span class="pre">View.py</span></code> for individual pictures. Place these two servlets in the default context directory. First, <code class="docutils literal notranslate"><span class="pre">Main.py</span></code> (replacing the example servlet that has already been crated):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">PIL</span><span class="w"> </span><span class="kn">import</span> <span class="n">Image</span>  <span class="c1"># this is from the Pillow library</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">Page</span><span class="w"> </span><span class="kn">import</span> <span class="n">Page</span>  <span class="c1"># the base class for web pages</span>
+
+<span class="nb">dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="vm">__file__</span><span class="p">),</span> <span class="s1">&#39;Pics&#39;</span><span class="p">)</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">Main</span><span class="p">(</span><span class="n">Page</span><span class="p">):</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">title</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># It&#39;s nice to give a real title, otherwise &quot;Main&quot; would be used.</span>
+        <span class="k">return</span> <span class="s1">&#39;Photo Album&#39;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">writeContent</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># We&#39;ll format these simply, one thumbnail per line:</span>
+        <span class="k">for</span> <span class="n">filename</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="nb">dir</span><span class="p">):</span>
+            <span class="n">im</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">dir</span><span class="p">,</span> <span class="n">filename</span><span class="p">))</span>
+            <span class="n">w</span><span class="p">,</span> <span class="n">h</span> <span class="o">=</span> <span class="n">im</span><span class="o">.</span><span class="n">size</span>
+            <span class="c1"># Here we figure out the scaled-down size of the image,</span>
+            <span class="c1"># so that we preserve the aspect ratio. We&#39;ll use fake</span>
+            <span class="c1"># thumbnails, where the image is scaled down by the browser.</span>
+            <span class="n">w</span><span class="p">,</span> <span class="n">h</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">w</span> <span class="o">*</span> <span class="mi">100</span> <span class="o">/</span> <span class="n">h</span><span class="p">)),</span> <span class="mi">100</span>
+            <span class="c1"># Note that we are just using f-strings to generate the HTML.</span>
+            <span class="c1"># There&#39;s other ways, but this works well enough.</span>
+            <span class="c1"># We&#39;re linking to the View servlet which we&#39;ll show later.</span>
+            <span class="c1"># Notice we use urlencode -- otherwise we&#39;ll encounter bugs if</span>
+            <span class="c1"># there are file names with spaces or other problematic chars.</span>
+            <span class="n">url</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">urlEncode</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">writeln</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;&lt;p&gt;&lt;a href=&quot;View?filename=</span><span class="si">{</span><span class="n">url</span><span class="si">}</span><span class="s1">&quot;&gt;&#39;</span>
+                <span class="sa">f</span><span class="s1">&#39;&lt;img src=&quot;Pics/</span><span class="si">{</span><span class="n">url</span><span class="si">}</span><span class="s1">&quot; width=&quot;</span><span class="si">{</span><span class="n">w</span><span class="si">}</span><span class="s1">&quot; height=&quot;</span><span class="si">{</span><span class="n">h</span><span class="si">}</span><span class="s1">&quot;&gt;&lt;/a&gt;&lt;/p&gt;&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The servlet <code class="docutils literal notranslate"><span class="pre">View.py</span></code> takes one URL parameter of <code class="docutils literal notranslate"><span class="pre">filename</span></code>. You can get the value of a URL parameter like <code class="docutils literal notranslate"><span class="pre">self.request().field('filename')</span></code> or, if you want a default value, you can use <code class="docutils literal notranslate"><span class="pre">self.request().field('filename',</span> <span class="pre">defaultValue)</span></code>. In the likely case you don’t want to write <code class="docutils literal notranslate"><span class="pre">self.request()</span></code> before retrieving each value, do:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">req</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">request</span><span class="p">()</span>
+<span class="bp">self</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">req</span><span class="o">.</span><span class="n">field</span><span class="p">(</span><span class="s1">&#39;username&#39;</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>If you need the request only once, you can write it even more compactly:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">field</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">request</span><span class="p">()</span><span class="o">.</span><span class="n">field</span>
+<span class="bp">self</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">field</span><span class="p">(</span><span class="s1">&#39;username&#39;</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>So here is our complete <code class="docutils literal notranslate"><span class="pre">View</span></code> servlet:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">PIL</span><span class="w"> </span><span class="kn">import</span> <span class="n">Image</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">Page</span><span class="w"> </span><span class="kn">import</span> <span class="n">Page</span>
+
+<span class="nb">dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="vm">__file__</span><span class="p">),</span> <span class="s1">&#39;Pics&#39;</span><span class="p">)</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">View</span><span class="p">(</span><span class="n">Page</span><span class="p">):</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">title</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s1">&#39;View: &#39;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">htmlEncode</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">request</span><span class="p">()</span><span class="o">.</span><span class="n">field</span><span class="p">(</span><span class="s1">&#39;filename&#39;</span><span class="p">))</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">writeContent</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">filename</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">request</span><span class="p">()</span><span class="o">.</span><span class="n">field</span><span class="p">(</span><span class="s1">&#39;filename&#39;</span><span class="p">)</span>
+        <span class="n">im</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">dir</span><span class="p">,</span> <span class="n">filename</span><span class="p">))</span>
+        <span class="n">wr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">writeln</span>
+        <span class="n">wr</span><span class="p">(</span><span class="s1">&#39;&lt;div style=&quot;text-align:center&quot;&gt;&#39;</span><span class="p">)</span>
+        <span class="n">wr</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;&lt;h4&gt;</span><span class="si">{</span><span class="n">filename</span><span class="si">}</span><span class="s1">&lt;/h4&gt;&#39;</span><span class="p">)</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">urlEncode</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+        <span class="n">w</span><span class="p">,</span> <span class="n">h</span> <span class="o">=</span> <span class="n">im</span><span class="o">.</span><span class="n">size</span>
+        <span class="n">wr</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;&lt;img src=&quot;Pics/</span><span class="si">{</span><span class="n">url</span><span class="si">}</span><span class="s1">&quot; width=&quot;</span><span class="si">{</span><span class="n">w</span><span class="si">}</span><span class="s1">&quot; height=&quot;</span><span class="si">{</span><span class="n">h</span><span class="si">}</span><span class="s1">&quot;&gt;&#39;</span><span class="p">)</span>
+        <span class="n">wr</span><span class="p">(</span><span class="s1">&#39;&lt;p&gt;&lt;a href=&quot;Main&quot;&gt;Return to Index&lt;/a&gt;&lt;/p&gt;&#39;</span><span class="p">)</span>
+        <span class="n">wr</span><span class="p">(</span><span class="s1">&#39;&lt;/div&gt;&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="iteration-2-uploading-files">
+<h3>Iteration 2: Uploading Files<a class="headerlink" href="#iteration-2-uploading-files" title="Link to this heading">¶</a></h3>
+<p>That was fairly simple – but usually you want to upload files, potentially through a web interface. Along the way we’ll add thumbnail generation using Pillow, and slightly improve the image index.</p>
+<p>We’ll generate thumbnails kind of on demand, so you can still upload files manually – thumbnails will be put in the directory <code class="docutils literal notranslate"><span class="pre">Thumbs</span></code> and have <code class="docutils literal notranslate"><span class="pre">-tn</span></code> appended to the name just to avoid confusion:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">PIL</span><span class="w"> </span><span class="kn">import</span> <span class="n">Image</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">Page</span><span class="w"> </span><span class="kn">import</span> <span class="n">Page</span>
+
+<span class="n">baseDir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span>
+<span class="n">picsDir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">baseDir</span><span class="p">,</span> <span class="s1">&#39;Pics&#39;</span><span class="p">)</span>
+<span class="n">thumbsDir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">baseDir</span><span class="p">,</span> <span class="s1">&#39;Thumbs&#39;</span><span class="p">)</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">Main</span><span class="p">(</span><span class="n">Page</span><span class="p">):</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">title</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s1">&#39;Photo Album&#39;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">writeContent</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># The heading:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">writeln</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;&lt;h1 style=&quot;text-align:center&quot;&gt;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">title</span><span class="p">()</span><span class="si">}</span><span class="s1">&lt;/h1&gt;&#39;</span><span class="p">)</span>
+        <span class="c1"># We&#39;ll format these in a table, two columns wide</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">writeln</span><span class="p">(</span><span class="s1">&#39;&lt;table width=&quot;100%&quot;&gt;&#39;</span><span class="p">)</span>
+        <span class="n">col</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># will be 0 for the left and 1 for the right column</span>
+        <span class="n">filenames</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">picsDir</span><span class="p">)</span>
+        <span class="c1"># We&#39;ll sort the files, case-insensitive</span>
+        <span class="n">filenames</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">filename</span><span class="p">:</span> <span class="n">filename</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span>
+        <span class="k">for</span> <span class="n">filename</span> <span class="ow">in</span> <span class="n">filenames</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">col</span><span class="p">:</span>  <span class="c1"># left column</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;&lt;tr style=&quot;text-align:center&quot;&gt;&#39;</span><span class="p">)</span>
+            <span class="n">thumbFilename</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+            <span class="n">thumbFilename</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{}</span><span class="s1">-tn</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">*</span><span class="n">thumbFilename</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">thumbsDir</span><span class="p">,</span> <span class="n">thumbFilename</span><span class="p">)):</span>
+                <span class="c1"># No thumbnail exists -- we have to generate one</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">thumbsDir</span><span class="p">):</span>
+                    <span class="c1"># Not even the Thumbs directory exists -- make it</span>
+                    <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">thumbsDir</span><span class="p">)</span>
+                <span class="n">im</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">picsDir</span><span class="p">,</span> <span class="n">filename</span><span class="p">))</span>
+                <span class="n">im</span><span class="o">.</span><span class="n">thumbnail</span><span class="p">((</span><span class="mi">250</span><span class="p">,</span> <span class="mi">100</span><span class="p">))</span>
+                <span class="n">im</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">thumbsDir</span><span class="p">,</span> <span class="n">thumbFilename</span><span class="p">))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">im</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">thumbsDir</span><span class="p">,</span> <span class="n">thumbFilename</span><span class="p">))</span>
+            <span class="n">url</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">urlEncode</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+            <span class="n">w</span><span class="p">,</span> <span class="n">h</span> <span class="o">=</span> <span class="n">im</span><span class="o">.</span><span class="n">size</span>
+            <span class="n">size</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">stat</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">picsDir</span><span class="p">,</span> <span class="n">filename</span><span class="p">))</span><span class="o">.</span><span class="n">st_size</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">writeln</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;&lt;td&gt;&lt;p&gt;&lt;a href=&quot;View?filename=</span><span class="si">{</span><span class="n">url</span><span class="si">}</span><span class="s1">&quot;&gt;&#39;</span>
+                <span class="sa">f</span><span class="s1">&#39;&lt;img src=&quot;Pics/</span><span class="si">{</span><span class="n">url</span><span class="si">}</span><span class="s1">&quot; width=&quot;</span><span class="si">{</span><span class="n">w</span><span class="si">}</span><span class="s1">&quot; height=&quot;</span><span class="si">{</span><span class="n">h</span><span class="si">}</span><span class="s1">&quot;&gt;&lt;/a&gt;&lt;/p&gt;&#39;</span>
+                <span class="sa">f</span><span class="s1">&#39;&lt;p&gt;Filename: </span><span class="si">{</span><span class="n">filename</span><span class="si">}</span><span class="s1">&lt;br&gt;Size: </span><span class="si">{</span><span class="n">size</span><span class="si">}</span><span class="s1"> Bytes&lt;/p&gt;&#39;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">col</span><span class="p">:</span>  <span class="c1"># right column</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">writeln</span><span class="p">(</span><span class="s1">&#39;&lt;/tr&gt;&#39;</span><span class="p">)</span>
+            <span class="n">col</span> <span class="o">=</span> <span class="ow">not</span> <span class="n">col</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;&lt;/table&gt;&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;&lt;p style=&quot;text-align:center&quot;&gt;&#39;</span>
+            <span class="s1">&#39;&lt;a href=&quot;Upload&quot;&gt;Upload an image&lt;/a&gt;&lt;/p&gt;&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>In a real application, you would probably style the image more nicely using CSS, maybe using a flexbox or grid layout instead of using a table. You can add a CSS style sheet for this purpose with the <code class="docutils literal notranslate"><span class="pre">writeStyleSheet()</span></code> method.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">View</span></code> servlet we’ll leave just like it was.</p>
+<p>We’ll add an <code class="docutils literal notranslate"><span class="pre">Upload</span></code> servlet. Notice we use <code class="docutils literal notranslate"><span class="pre">enctype=&quot;multipart/form-data&quot;</span></code> in the <code class="docutils literal notranslate"><span class="pre">&lt;form&gt;</span></code> tag – this is an HTMLism for file uploading (otherwise
+you’ll just get the filename and not the file contents). Finally, when the form is finished and we have uploaded the image, we redirect them to the viewing
+page by using <code class="docutils literal notranslate"><span class="pre">self.response().sendRedirect(url)</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">Page</span><span class="w"> </span><span class="kn">import</span> <span class="n">Page</span>
+
+<span class="nb">dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="vm">__file__</span><span class="p">),</span> <span class="s1">&#39;Pics&#39;</span><span class="p">)</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">Upload</span><span class="p">(</span><span class="n">Page</span><span class="p">):</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">writeContent</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">request</span><span class="p">()</span><span class="o">.</span><span class="n">hasField</span><span class="p">(</span><span class="s1">&#39;imageFile&#39;</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">doUpload</span><span class="p">()</span>
+            <span class="k">return</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">writeln</span><span class="p">(</span><span class="s1">&#39;&#39;&#39;</span>
+<span class="s1">        &lt;h3&gt;Upload your image:&lt;/h3&gt;</span>
+<span class="s1">        &lt;form action=&quot;Upload&quot; method=&quot;post&quot; enctype=&quot;multipart/form-data&quot;&gt;</span>
+<span class="s1">        &lt;input type=&quot;file&quot; name=&quot;imageFile&quot;&gt;</span>
+<span class="s1">        &lt;input type=&quot;submit&quot; value=&quot;Upload&quot;&gt;</span>
+<span class="s1">        &lt;/form&gt;&#39;&#39;&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">doUpload</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">file</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">request</span><span class="p">()</span><span class="o">.</span><span class="n">field</span><span class="p">(</span><span class="s1">&#39;imageFile&#39;</span><span class="p">)</span>
+        <span class="c1"># Because it&#39;s a file upload, we don&#39;t get a string back.</span>
+        <span class="c1"># So to get the value we do this:</span>
+        <span class="n">filename</span><span class="p">,</span> <span class="n">contents</span> <span class="o">=</span> <span class="n">file</span><span class="o">.</span><span class="n">filename</span><span class="p">,</span> <span class="n">file</span><span class="o">.</span><span class="n">value</span>
+        <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">dir</span><span class="p">,</span> <span class="n">filename</span><span class="p">),</span> <span class="s1">&#39;wb&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">contents</span><span class="p">)</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="s1">&#39;View?filename=&#39;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">urlEncode</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">response</span><span class="p">()</span><span class="o">.</span><span class="n">sendRedirect</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Using the “upload” button it should now be possible to upload images to the <code class="docutils literal notranslate"><span class="pre">Pics</span></code> directory.</p>
+</section>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">Webware for Python 3</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changes.html">List of Changes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="migrate.html">Migration Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="copyright.html">Copyright and License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Beginner Tutorial</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#creating-a-working-directory">Creating a Working Directory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#changing-the-webware-configuration">Changing the Webware Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#creating-and-understanding-the-servlet">Creating and Understanding the Servlet</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#a-brief-introduction-to-the-servlet">A Brief Introduction to the Servlet</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#a-photo-album">A Photo Album</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="appdev.html">Application Development</a></li>
+<li class="toctree-l1"><a class="reference internal" href="config.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="deploy.html">Deployment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="plugins.html">Plug-ins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="style.html">Style Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="psp.html">PSP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="userkit.html">UserKit</a></li>
+<li class="toctree-l1"><a class="reference internal" href="taskkit.html">TaskKit</a></li>
+<li class="toctree-l1"><a class="reference internal" href="webutils.html">WebUtils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="miscutils.html">MiscUtils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="testing.html">Testing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ref/index.html">API Reference</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="quickstart.html" title="previous chapter">Quickstart</a></li>
+      <li>Next: <a href="appdev.html" title="next chapter">Application Development</a></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;1999-2025, Christoph Zwerschke et al.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.2.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+      |
+      <a href="_sources/tutorial.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

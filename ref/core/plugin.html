@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>PlugIn &#8212; Webware for Python 3 3.1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="../../_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="../../_static/alabaster.css?v=27fed22d" />
+    <script src="../../_static/documentation_options.js?v=dd1205ac"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="copyright" title="Copyright" href="../../copyright.html" />
+    <link rel="next" title="Properties" href="properties.html" />
+    <link rel="prev" title="PickleRPCServlet" href="picklerpcservlet.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="module-PlugIn">
+<span id="plugin"></span><h1>PlugIn<a class="headerlink" href="#module-PlugIn" title="Link to this heading">¶</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="PlugIn.PlugIn">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PlugIn.</span></span><span class="sig-name descname"><span class="pre">PlugIn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">application</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">module</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PlugIn.PlugIn" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Template for Webware Plug-ins.</p>
+<p>A plug-in is a software component that is loaded by Webware in order to
+provide additional Webware functionality without necessarily having to
+modify Webware’s source. The most infamous plug-in is PSP (Python Server
+Pages) which ships with Webware.</p>
+<p>Plug-ins often provide additional servlet factories, servlet subclasses,
+examples and documentation. Ultimately, it is the plug-in author’s choice
+as to what to provide and in what manner.</p>
+<p>Instances of this class represent plug-ins which are ultimately Python
+packages.</p>
+<p>A plug-in must also be a Webware component which means that it will have
+a Properties.py file advertising its name, version, requirements, etc.
+You can ask a plug-in for its properties().</p>
+<p>The plug-in/package must have an __init__.py which must contain the
+following function:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">installInWebware</span><span class="p">(</span><span class="n">application</span><span class="p">):</span>
+    <span class="o">...</span>
+</pre></div>
+</div>
+<p>This function is invoked to take whatever actions are needed to plug the
+new component into Webware. See PSP for an example.</p>
+<p>If you ask an Application for its plugIns(), you will get a list of
+instances of this class.</p>
+<p>The path of the plug-in is added to sys.path, if it’s not already there.
+This is convenient, but we may need a more sophisticated solution in the
+future to avoid name collisions between plug-ins.</p>
+<p>Note that this class is hardly ever subclassed. The software in the
+plug-in package is what provides new functionality and there is currently
+no way to tell the Application to use custom subclasses of this class on a
+case-by-case basis (and so far there is currently no need).</p>
+<p>Instructions for invoking:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># &#39;self&#39; is typically Application. It gets passed to installInWebware()</span>
+<span class="n">p</span> <span class="o">=</span> <span class="n">PlugIn</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;Foo&#39;</span><span class="p">,</span> <span class="s1">&#39;../Foo&#39;</span><span class="p">)</span>
+<span class="n">willNotLoadReason</span> <span class="o">=</span> <span class="n">plugIn</span><span class="o">.</span><span class="n">load</span><span class="p">()</span>
+<span class="k">if</span> <span class="n">willNotLoadReason</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Plug-in </span><span class="si">{</span><span class="n">path</span><span class="si">}</span><span class="s1"> cannot be loaded because:&#39;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">willNotLoadReason</span><span class="p">)</span>
+    <span class="k">return</span> <span class="kc">None</span>
+<span class="n">p</span><span class="o">.</span><span class="n">install</span><span class="p">()</span>
+<span class="c1"># Note that load() and install() could raise exceptions.</span>
+<span class="c1"># You should expect this.</span>
+</pre></div>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="PlugIn.PlugIn.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">application</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">module</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PlugIn.PlugIn.__init__" title="Link to this definition">¶</a></dt>
+<dd><p>Initializes the plug-in with basic information.</p>
+<p>This lightweight constructor does not access the file system.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PlugIn.PlugIn.directory">
+<span class="sig-name descname"><span class="pre">directory</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PlugIn.PlugIn.directory" title="Link to this definition">¶</a></dt>
+<dd><p>Return the directory in which the plug-in resides. Example: ‘..’</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PlugIn.PlugIn.examplePages">
+<span class="sig-name descname"><span class="pre">examplePages</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PlugIn.PlugIn.examplePages" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PlugIn.PlugIn.examplePagesContext">
+<span class="sig-name descname"><span class="pre">examplePagesContext</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PlugIn.PlugIn.examplePagesContext" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PlugIn.PlugIn.hasExamplePages">
+<span class="sig-name descname"><span class="pre">hasExamplePages</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PlugIn.PlugIn.hasExamplePages" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PlugIn.PlugIn.install">
+<span class="sig-name descname"><span class="pre">install</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PlugIn.PlugIn.install" title="Link to this definition">¶</a></dt>
+<dd><p>Install plug-in by invoking its installInWebware() function.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PlugIn.PlugIn.load">
+<span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PlugIn.PlugIn.load" title="Link to this definition">¶</a></dt>
+<dd><p>Loads the plug-in into memory, but does not yet install it.</p>
+<p>Will return None on success, otherwise a message (string) that says
+why the plug-in could not be loaded.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PlugIn.PlugIn.module">
+<span class="sig-name descname"><span class="pre">module</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PlugIn.PlugIn.module" title="Link to this definition">¶</a></dt>
+<dd><p>Return the Python module object of the plug-in.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PlugIn.PlugIn.name">
+<span class="sig-name descname"><span class="pre">name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PlugIn.PlugIn.name" title="Link to this definition">¶</a></dt>
+<dd><p>Return the name of the plug-in. Example: ‘Foo’</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PlugIn.PlugIn.path">
+<span class="sig-name descname"><span class="pre">path</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PlugIn.PlugIn.path" title="Link to this definition">¶</a></dt>
+<dd><p>Return the full path of the plug-in. Example: ‘../Foo’</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PlugIn.PlugIn.properties">
+<span class="sig-name descname"><span class="pre">properties</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PlugIn.PlugIn.properties" title="Link to this definition">¶</a></dt>
+<dd><p>Return the properties.</p>
+<p>This is a dictionary-like object, of the plug-in which comes
+from its Properties.py file. See MiscUtils.PropertiesObject.py.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PlugIn.PlugIn.serverSidePath">
+<span class="sig-name descname"><span class="pre">serverSidePath</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PlugIn.PlugIn.serverSidePath" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PlugIn.PlugIn.setUpExamplePages">
+<span class="sig-name descname"><span class="pre">setUpExamplePages</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PlugIn.PlugIn.setUpExamplePages" title="Link to this definition">¶</a></dt>
+<dd><p>Add a context for the examples.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="PlugIn.PlugInError">
+<em class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PlugIn.</span></span><span class="sig-name descname"><span class="pre">PlugInError</span></span><a class="headerlink" href="#PlugIn.PlugInError" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+<p>Plug-in error.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="PlugIn.PlugInError.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PlugIn.PlugInError.__init__" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PlugIn.PlugInError.add_note">
+<span class="sig-name descname"><span class="pre">add_note</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="positional-only-separator o"><abbr title="Positional-only parameter separator (PEP 570)"><span class="pre">/</span></abbr></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PlugIn.PlugInError.add_note" title="Link to this definition">¶</a></dt>
+<dd><p>Exception.add_note(note) –
+add a note to the exception</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PlugIn.PlugInError.args">
+<span class="sig-name descname"><span class="pre">args</span></span><a class="headerlink" href="#PlugIn.PlugInError.args" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PlugIn.PlugInError.with_traceback">
+<span class="sig-name descname"><span class="pre">with_traceback</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="positional-only-separator o"><abbr title="Positional-only parameter separator (PEP 570)"><span class="pre">/</span></abbr></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PlugIn.PlugInError.with_traceback" title="Link to this definition">¶</a></dt>
+<dd><p>Exception.with_traceback(tb) –
+set self.__traceback__ to tb and return self.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../index.html">Webware for Python 3</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../changes.html">List of Changes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../migrate.html">Migration Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../copyright.html">Copyright and License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorial.html">Beginner Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../appdev.html">Application Development</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../config.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../deploy.html">Deployment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../plugins.html">Plug-ins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../style.html">Style Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../psp.html">PSP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../userkit.html">UserKit</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../taskkit.html">TaskKit</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../webutils.html">WebUtils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../miscutils.html">MiscUtils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../testing.html">Testing</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Core Classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../psp/index.html">PSP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../userkit/index.html">UserKit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../taskkit/index.html">TaskKit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../webutils/index.html">WebUtils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../miscutils/index.html">MiscUtils</a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">API Reference</a><ul>
+  <li><a href="index.html">Core Classes</a><ul>
+      <li>Previous: <a href="picklerpcservlet.html" title="previous chapter">PickleRPCServlet</a></li>
+      <li>Next: <a href="properties.html" title="next chapter">Properties</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;1999-2025, Christoph Zwerschke et al.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.2.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+      |
+      <a href="../../_sources/ref/core/plugin.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

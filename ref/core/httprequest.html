@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>HTTPRequest &#8212; Webware for Python 3 3.1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="../../_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="../../_static/alabaster.css?v=27fed22d" />
+    <script src="../../_static/documentation_options.js?v=dd1205ac"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="copyright" title="Copyright" href="../../copyright.html" />
+    <link rel="next" title="HTTPResponse" href="httpresponse.html" />
+    <link rel="prev" title="HTTPExceptions" href="httpexceptions.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="module-HTTPRequest">
+<span id="httprequest"></span><h1>HTTPRequest<a class="headerlink" href="#module-HTTPRequest" title="Link to this heading">¶</a></h1>
+<p>HTTP requests</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="HTTPRequest.HTTPRequest">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">HTTPRequest.</span></span><span class="sig-name descname"><span class="pre">HTTPRequest</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">requestDict</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#HTTPRequest.HTTPRequest" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="request.html#Request.Request" title="Request.Request"><code class="xref py py-class docutils literal notranslate"><span class="pre">Request</span></code></a></p>
+<p>The base class for HTTP requests.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPRequest.HTTPRequest.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">requestDict</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#HTTPRequest.HTTPRequest.__init__" title="Link to this definition">¶</a></dt>
+<dd><p>Initialize the request.</p>
+<p>Subclasses are responsible for invoking super
+and initializing self._time.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPRequest.HTTPRequest.accept">
+<span class="sig-name descname"><span class="pre">accept</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">which</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#HTTPRequest.HTTPRequest.accept" title="Link to this definition">¶</a></dt>
+<dd><p>Return preferences as requested by the user agent.</p>
+<p>The accepted preferences are returned as a list of codes
+in the same order as they appeared in the header.
+In other words, the explicit weighting criteria are ignored.</p>
+<p>If you do not define otherwise which preferences you are
+interested in (‘language’, ‘charset’, ‘encoding’), by default
+you will get the user preferences for the content types.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPRequest.HTTPRequest.clearTransaction">
+<span class="sig-name descname"><span class="pre">clearTransaction</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPRequest.HTTPRequest.clearTransaction" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPRequest.HTTPRequest.contextName">
+<span class="sig-name descname"><span class="pre">contextName</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPRequest.HTTPRequest.contextName" title="Link to this definition">¶</a></dt>
+<dd><p>Return the name of the context of this request.</p>
+<p>This isn’t necessarily the same as the name of the directory
+containing the context.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPRequest.HTTPRequest.contextPath">
+<span class="sig-name descname"><span class="pre">contextPath</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPRequest.HTTPRequest.contextPath" title="Link to this definition">¶</a></dt>
+<dd><p>Return the portion of the URI that is the context of the request.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPRequest.HTTPRequest.cookie">
+<span class="sig-name descname"><span class="pre">cookie</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default=&lt;class</span> <span class="pre">'MiscUtils.NoDefault'&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#HTTPRequest.HTTPRequest.cookie" title="Link to this definition">¶</a></dt>
+<dd><p>Return the value of the specified cookie.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPRequest.HTTPRequest.cookies">
+<span class="sig-name descname"><span class="pre">cookies</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPRequest.HTTPRequest.cookies" title="Link to this definition">¶</a></dt>
+<dd><p>Return a dict of all cookies the client sent with this request.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPRequest.HTTPRequest.delField">
+<span class="sig-name descname"><span class="pre">delField</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#HTTPRequest.HTTPRequest.delField" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPRequest.HTTPRequest.environ">
+<span class="sig-name descname"><span class="pre">environ</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPRequest.HTTPRequest.environ" title="Link to this definition">¶</a></dt>
+<dd><p>Get the environment for the request.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPRequest.HTTPRequest.extraURLPath">
+<span class="sig-name descname"><span class="pre">extraURLPath</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPRequest.HTTPRequest.extraURLPath" title="Link to this definition">¶</a></dt>
+<dd><p>Return additional path components in the URL.</p>
+<p>Only works if the Application.config setting “ExtraPathInfo”
+is set to true; otherwise you will get a page not found error.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPRequest.HTTPRequest.field">
+<span class="sig-name descname"><span class="pre">field</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default=&lt;class</span> <span class="pre">'MiscUtils.NoDefault'&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#HTTPRequest.HTTPRequest.field" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPRequest.HTTPRequest.fieldStorage">
+<span class="sig-name descname"><span class="pre">fieldStorage</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPRequest.HTTPRequest.fieldStorage" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPRequest.HTTPRequest.fields">
+<span class="sig-name descname"><span class="pre">fields</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPRequest.HTTPRequest.fields" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPRequest.HTTPRequest.hasCookie">
+<span class="sig-name descname"><span class="pre">hasCookie</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#HTTPRequest.HTTPRequest.hasCookie" title="Link to this definition">¶</a></dt>
+<dd><p>Return whether a cookie with the given name exists.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPRequest.HTTPRequest.hasField">
+<span class="sig-name descname"><span class="pre">hasField</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#HTTPRequest.HTTPRequest.hasField" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPRequest.HTTPRequest.hasValue">
+<span class="sig-name descname"><span class="pre">hasValue</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#HTTPRequest.HTTPRequest.hasValue" title="Link to this definition">¶</a></dt>
+<dd><p>Check whether there is a value with the given name.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPRequest.HTTPRequest.hostAndPort">
+<span class="sig-name descname"><span class="pre">hostAndPort</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPRequest.HTTPRequest.hostAndPort" title="Link to this definition">¶</a></dt>
+<dd><p>Return the hostname and port part from the URL of this request.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPRequest.HTTPRequest.htmlInfo">
+<span class="sig-name descname"><span class="pre">htmlInfo</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPRequest.HTTPRequest.htmlInfo" title="Link to this definition">¶</a></dt>
+<dd><p>Return a single HTML string that represents info().</p>
+<p>Useful for inspecting objects via web browsers.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPRequest.HTTPRequest.info">
+<span class="sig-name descname"><span class="pre">info</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPRequest.HTTPRequest.info" title="Link to this definition">¶</a></dt>
+<dd><p>Return request info.</p>
+<p>Return a list of tuples where each tuple has a key/label (a string)
+and a value (any kind of object).</p>
+<p>Values are typically atomic values such as numbers and strings or
+another list of tuples in the same fashion. This is for debugging only.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPRequest.HTTPRequest.input">
+<span class="sig-name descname"><span class="pre">input</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPRequest.HTTPRequest.input" title="Link to this definition">¶</a></dt>
+<dd><p>Return a file-style object that the contents can be read from.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPRequest.HTTPRequest.isSecure">
+<span class="sig-name descname"><span class="pre">isSecure</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPRequest.HTTPRequest.isSecure" title="Link to this definition">¶</a></dt>
+<dd><p>Check whether this is a HTTPS connection.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPRequest.HTTPRequest.isSessionExpired">
+<span class="sig-name descname"><span class="pre">isSessionExpired</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPRequest.HTTPRequest.isSessionExpired" title="Link to this definition">¶</a></dt>
+<dd><p>Return whether the request originally had an expired session ID.</p>
+<p>Only works if the Application.config setting “IgnoreInvalidSession”
+is set to true; otherwise you get a canned error page on an invalid
+session, so your servlet never gets processed.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPRequest.HTTPRequest.localAddress">
+<span class="sig-name descname"><span class="pre">localAddress</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPRequest.HTTPRequest.localAddress" title="Link to this definition">¶</a></dt>
+<dd><p>Get local address.</p>
+<p>Returns a string containing the Internet Protocol (IP) address
+of the local host (e.g., the server) that received the request.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPRequest.HTTPRequest.localName">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">localName</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPRequest.HTTPRequest.localName" title="Link to this definition">¶</a></dt>
+<dd><p>Get local name.</p>
+<p>Returns the fully qualified name of the local host (e.g., the server)
+that received the request.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPRequest.HTTPRequest.localPort">
+<span class="sig-name descname"><span class="pre">localPort</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPRequest.HTTPRequest.localPort" title="Link to this definition">¶</a></dt>
+<dd><p>Get local port.</p>
+<p>Returns the port of the local host (e.g., the server)
+that received the request.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPRequest.HTTPRequest.method">
+<span class="sig-name descname"><span class="pre">method</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPRequest.HTTPRequest.method" title="Link to this definition">¶</a></dt>
+<dd><p>Return the HTTP request method (in all uppercase).</p>
+<p>Typically from the set GET, POST, PUT, DELETE, OPTIONS and TRACE.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPRequest.HTTPRequest.originalContextName">
+<span class="sig-name descname"><span class="pre">originalContextName</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPRequest.HTTPRequest.originalContextName" title="Link to this definition">¶</a></dt>
+<dd><p>Return the name of the original context before any forwarding.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPRequest.HTTPRequest.originalServlet">
+<span class="sig-name descname"><span class="pre">originalServlet</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPRequest.HTTPRequest.originalServlet" title="Link to this definition">¶</a></dt>
+<dd><p>Get original servlet before any forwarding.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPRequest.HTTPRequest.originalURI">
+<span class="sig-name descname"><span class="pre">originalURI</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPRequest.HTTPRequest.originalURI" title="Link to this definition">¶</a></dt>
+<dd><p>Get URI of the original servlet before any forwarding.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPRequest.HTTPRequest.originalURLPath">
+<span class="sig-name descname"><span class="pre">originalURLPath</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPRequest.HTTPRequest.originalURLPath" title="Link to this definition">¶</a></dt>
+<dd><p>Get URL path of the original servlet before any forwarding.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPRequest.HTTPRequest.parent">
+<span class="sig-name descname"><span class="pre">parent</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPRequest.HTTPRequest.parent" title="Link to this definition">¶</a></dt>
+<dd><p>Get the servlet that passed this request to us, if any.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPRequest.HTTPRequest.parents">
+<span class="sig-name descname"><span class="pre">parents</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPRequest.HTTPRequest.parents" title="Link to this definition">¶</a></dt>
+<dd><p>Get the list of all previous servlets.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPRequest.HTTPRequest.pathInfo">
+<span class="sig-name descname"><span class="pre">pathInfo</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPRequest.HTTPRequest.pathInfo" title="Link to this definition">¶</a></dt>
+<dd><p>Return any extra path information as sent by the client.</p>
+<p>This is anything after the servlet name but before the query string.
+Equivalent to the CGI variable PATH_INFO.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPRequest.HTTPRequest.pathTranslated">
+<span class="sig-name descname"><span class="pre">pathTranslated</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPRequest.HTTPRequest.pathTranslated" title="Link to this definition">¶</a></dt>
+<dd><p>Return extra path information translated as file system path.</p>
+<p>This is the same as pathInfo() but translated to the file system.
+Equivalent to the CGI variable PATH_TRANSLATED.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPRequest.HTTPRequest.pop">
+<span class="sig-name descname"><span class="pre">pop</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPRequest.HTTPRequest.pop" title="Link to this definition">¶</a></dt>
+<dd><p>Pop URL path and servlet from the stack, returning the servlet.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPRequest.HTTPRequest.previousContextName">
+<span class="sig-name descname"><span class="pre">previousContextName</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPRequest.HTTPRequest.previousContextName" title="Link to this definition">¶</a></dt>
+<dd><p>Get the previous context name, if any.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPRequest.HTTPRequest.previousContextNames">
+<span class="sig-name descname"><span class="pre">previousContextNames</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPRequest.HTTPRequest.previousContextNames" title="Link to this definition">¶</a></dt>
+<dd><p>Get the list of all previous context names.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPRequest.HTTPRequest.previousServlet">
+<span class="sig-name descname"><span class="pre">previousServlet</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPRequest.HTTPRequest.previousServlet" title="Link to this definition">¶</a></dt>
+<dd><p>Get the servlet that passed this request to us, if any.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPRequest.HTTPRequest.previousServlets">
+<span class="sig-name descname"><span class="pre">previousServlets</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPRequest.HTTPRequest.previousServlets" title="Link to this definition">¶</a></dt>
+<dd><p>Get the list of all previous servlets.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPRequest.HTTPRequest.previousURI">
+<span class="sig-name descname"><span class="pre">previousURI</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPRequest.HTTPRequest.previousURI" title="Link to this definition">¶</a></dt>
+<dd><p>Get the previous URI, if any.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPRequest.HTTPRequest.previousURIs">
+<span class="sig-name descname"><span class="pre">previousURIs</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPRequest.HTTPRequest.previousURIs" title="Link to this definition">¶</a></dt>
+<dd><p>Get the list of all previous URIs.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPRequest.HTTPRequest.previousURLPath">
+<span class="sig-name descname"><span class="pre">previousURLPath</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPRequest.HTTPRequest.previousURLPath" title="Link to this definition">¶</a></dt>
+<dd><p>Get the previous URL path, if any.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPRequest.HTTPRequest.previousURLPaths">
+<span class="sig-name descname"><span class="pre">previousURLPaths</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPRequest.HTTPRequest.previousURLPaths" title="Link to this definition">¶</a></dt>
+<dd><p>Get the list of all previous URL paths.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPRequest.HTTPRequest.protocol">
+<span class="sig-name descname"><span class="pre">protocol</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPRequest.HTTPRequest.protocol" title="Link to this definition">¶</a></dt>
+<dd><p>Return the name and version of the protocol.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPRequest.HTTPRequest.push">
+<span class="sig-name descname"><span class="pre">push</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">servlet</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">url</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#HTTPRequest.HTTPRequest.push" title="Link to this definition">¶</a></dt>
+<dd><p>Push servlet and URL path on a stack, setting a new URL.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPRequest.HTTPRequest.queryString">
+<span class="sig-name descname"><span class="pre">queryString</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPRequest.HTTPRequest.queryString" title="Link to this definition">¶</a></dt>
+<dd><p>Return the query string portion of the URL for this request.</p>
+<p>Equivalent to the CGI variable QUERY_STRING.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPRequest.HTTPRequest.rawInput">
+<span class="sig-name descname"><span class="pre">rawInput</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rewind</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#HTTPRequest.HTTPRequest.rawInput" title="Link to this definition">¶</a></dt>
+<dd><p>Get the raw input from the request.</p>
+<p>This gives you a file-like object for the data that was sent with
+the request (e.g., the body of a POST request, or the document
+uploaded in a PUT request).</p>
+<p>The file might not be rewound to the beginning if there was valid,
+form-encoded POST data. Pass rewind=True if you want to be sure
+you get the entire body of the request.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPRequest.HTTPRequest.remoteAddress">
+<span class="sig-name descname"><span class="pre">remoteAddress</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPRequest.HTTPRequest.remoteAddress" title="Link to this definition">¶</a></dt>
+<dd><p>Return a string containing the IP address of the client.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPRequest.HTTPRequest.remoteName">
+<span class="sig-name descname"><span class="pre">remoteName</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPRequest.HTTPRequest.remoteName" title="Link to this definition">¶</a></dt>
+<dd><p>Return the fully qualified name of the client that sent the request.</p>
+<p>Returns the IP address of the client if the name cannot be determined.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPRequest.HTTPRequest.remoteUser">
+<span class="sig-name descname"><span class="pre">remoteUser</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPRequest.HTTPRequest.remoteUser" title="Link to this definition">¶</a></dt>
+<dd><p>Always returns None since authentication is not yet supported.</p>
+<p>Take from CGI variable REMOTE_USER.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPRequest.HTTPRequest.requestID">
+<span class="sig-name descname"><span class="pre">requestID</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPRequest.HTTPRequest.requestID" title="Link to this definition">¶</a></dt>
+<dd><p>Return the request ID.</p>
+<p>The request ID is a serial number unique to this request
+(at least unique for one run of the Application).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPRequest.HTTPRequest.responseClass">
+<span class="sig-name descname"><span class="pre">responseClass</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPRequest.HTTPRequest.responseClass" title="Link to this definition">¶</a></dt>
+<dd><p>Get the corresponding response class.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPRequest.HTTPRequest.scheme">
+<span class="sig-name descname"><span class="pre">scheme</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPRequest.HTTPRequest.scheme" title="Link to this definition">¶</a></dt>
+<dd><p>Return the URI scheme of the request (http or https).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPRequest.HTTPRequest.scriptFileName">
+<span class="sig-name descname"><span class="pre">scriptFileName</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPRequest.HTTPRequest.scriptFileName" title="Link to this definition">¶</a></dt>
+<dd><p>Return the filesystem path of the WSGI script.</p>
+<p>Equivalent to the CGI variable SCRIPT_FILENAME.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPRequest.HTTPRequest.scriptName">
+<span class="sig-name descname"><span class="pre">scriptName</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPRequest.HTTPRequest.scriptName" title="Link to this definition">¶</a></dt>
+<dd><p>Return the name of the WSGI script as it appears in the URL.</p>
+<p>Example: ‘/Webware’
+Does not reflect redirection by the web server.
+Equivalent to the CGI variable SCRIPT_NAME.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPRequest.HTTPRequest.serverDictionary">
+<span class="sig-name descname"><span class="pre">serverDictionary</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPRequest.HTTPRequest.serverDictionary" title="Link to this definition">¶</a></dt>
+<dd><p>Return a dictionary with the data the web server gave us.</p>
+<p>This data includes HTTP_HOST and HTTP_USER_AGENT, for example.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPRequest.HTTPRequest.serverPath">
+<span class="sig-name descname"><span class="pre">serverPath</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPRequest.HTTPRequest.serverPath" title="Link to this definition">¶</a></dt>
+<dd><p>Return the web server URL path of this request.</p>
+<p>This is the URL that was actually received by the web server
+before any rewriting took place.</p>
+<p>Same as serverURL, but without scheme and host.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPRequest.HTTPRequest.serverPathDir">
+<span class="sig-name descname"><span class="pre">serverPathDir</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPRequest.HTTPRequest.serverPathDir" title="Link to this definition">¶</a></dt>
+<dd><p>Return the directory of the web server URL path.</p>
+<p>Same as serverPath, but removes the actual page.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPRequest.HTTPRequest.serverSideContextPath">
+<span class="sig-name descname"><span class="pre">serverSideContextPath</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#HTTPRequest.HTTPRequest.serverSideContextPath" title="Link to this definition">¶</a></dt>
+<dd><p>Return the absolute server-side path of the context of this request.</p>
+<p>If the optional path is passed in, then it is joined with the server
+side context directory to form a path relative to the object.</p>
+<p>This directory could be different from the result of serverSidePath()
+if the request is in a subdirectory of the main context directory.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPRequest.HTTPRequest.serverSidePath">
+<span class="sig-name descname"><span class="pre">serverSidePath</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#HTTPRequest.HTTPRequest.serverSidePath" title="Link to this definition">¶</a></dt>
+<dd><p>Return the absolute server-side path of the request.</p>
+<p>If the optional path is passed in, then it is joined with the
+server side directory to form a path relative to the object.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPRequest.HTTPRequest.serverURL">
+<span class="sig-name descname"><span class="pre">serverURL</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">canonical</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#HTTPRequest.HTTPRequest.serverURL" title="Link to this definition">¶</a></dt>
+<dd><p>Return the full Internet path to this request.</p>
+<p>This is the URL that was actually received by the web server
+before any rewriting took place. If canonical is set to true,
+then the canonical hostname of the server is used if possible.</p>
+<p>The path is returned without any extra path info or query strings,
+i.e. <a class="reference external" href="https://www.my.own.host.com:8080/Webware/TestPage.py">https://www.my.own.host.com:8080/Webware/TestPage.py</a></p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPRequest.HTTPRequest.serverURLDir">
+<span class="sig-name descname"><span class="pre">serverURLDir</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPRequest.HTTPRequest.serverURLDir" title="Link to this definition">¶</a></dt>
+<dd><p>Return the directory of the URL in full Internet form.</p>
+<p>Same as serverURL, but removes the actual page.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPRequest.HTTPRequest.servlet">
+<span class="sig-name descname"><span class="pre">servlet</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPRequest.HTTPRequest.servlet" title="Link to this definition">¶</a></dt>
+<dd><p>Get current servlet for this request.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPRequest.HTTPRequest.servletPath">
+<span class="sig-name descname"><span class="pre">servletPath</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPRequest.HTTPRequest.servletPath" title="Link to this definition">¶</a></dt>
+<dd><p>Return the base URL for the servlets, sans host.</p>
+<p>This is useful in cases when you are constructing URLs.
+See Testing/Main.py for an example use.</p>
+<p>Roughly equivalent to the CGI variable SCRIPT_NAME,
+but reflects redirection by the web server.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPRequest.HTTPRequest.servletPathFromSiteRoot">
+<span class="sig-name descname"><span class="pre">servletPathFromSiteRoot</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPRequest.HTTPRequest.servletPathFromSiteRoot" title="Link to this definition">¶</a></dt>
+<dd><p>Return the “servlet path” of this servlet relative to the siteRoot.</p>
+<p>In other words, everything after the name of the context (if present).
+If you append this to the result of self.siteRoot() you get back to
+the current servlet. This is useful for saving the path to the current
+servlet in a database, for example.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPRequest.HTTPRequest.servletURI">
+<span class="sig-name descname"><span class="pre">servletURI</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPRequest.HTTPRequest.servletURI" title="Link to this definition">¶</a></dt>
+<dd><p>Return servlet URI without any query strings or extra path info.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPRequest.HTTPRequest.session">
+<span class="sig-name descname"><span class="pre">session</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPRequest.HTTPRequest.session" title="Link to this definition">¶</a></dt>
+<dd><p>Return the session associated with this request.</p>
+<p>The session is either as specified by sessionId() or newly created.
+This is a convenience for transaction.session()</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPRequest.HTTPRequest.sessionId">
+<span class="sig-name descname"><span class="pre">sessionId</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPRequest.HTTPRequest.sessionId" title="Link to this definition">¶</a></dt>
+<dd><p>Return a string with the session ID specified by the client.</p>
+<p>Returns None if there is no session ID.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPRequest.HTTPRequest.setField">
+<span class="sig-name descname"><span class="pre">setField</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#HTTPRequest.HTTPRequest.setField" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPRequest.HTTPRequest.setSessionExpired">
+<span class="sig-name descname"><span class="pre">setSessionExpired</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sessionExpired</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#HTTPRequest.HTTPRequest.setSessionExpired" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPRequest.HTTPRequest.setSessionId">
+<span class="sig-name descname"><span class="pre">setSessionId</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sessionID</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">force</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#HTTPRequest.HTTPRequest.setSessionId" title="Link to this definition">¶</a></dt>
+<dd><p>Set the session ID.</p>
+<p>This needs to be called _before_ attempting to use the session.
+This would be useful if the session ID is being passed in through
+unusual means, for example via a field in an XML-RPC request.</p>
+<p>Pass in force=True if you want to force this session ID to be used
+even if the session doesn’t exist. This would be useful in unusual
+circumstances where the client is responsible for creating the unique
+session ID rather than the server.
+Be sure to use only legal filename characters in the session ID –
+0-9, a-z, A-Z, _, -, and . are OK but everything else will be rejected,
+as will identifiers longer than 80 characters.
+(Without passing in force=True, a random session ID will be generated
+if that session ID isn’t already present in the session store.)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPRequest.HTTPRequest.setTransaction">
+<span class="sig-name descname"><span class="pre">setTransaction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">trans</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#HTTPRequest.HTTPRequest.setTransaction" title="Link to this definition">¶</a></dt>
+<dd><p>Set a transaction container.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPRequest.HTTPRequest.setURLPath">
+<span class="sig-name descname"><span class="pre">setURLPath</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#HTTPRequest.HTTPRequest.setURLPath" title="Link to this definition">¶</a></dt>
+<dd><p>Set the URL path of the request.</p>
+<p>There is rarely a need to do this. Proceed with caution.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPRequest.HTTPRequest.siteRoot">
+<span class="sig-name descname"><span class="pre">siteRoot</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPRequest.HTTPRequest.siteRoot" title="Link to this definition">¶</a></dt>
+<dd><p>Return the relative URL path of the home location.</p>
+<p>This includes all URL path components necessary to get back home
+from the current location.</p>
+<dl class="simple">
+<dt>Examples:</dt><dd><p>‘’
+‘../’
+‘../../’</p>
+</dd>
+</dl>
+<p>You can use this as a prefix to a URL that you know is based off
+the home location. Any time you are in a servlet that may have been
+forwarded to from another servlet at a different level, you should
+prefix your URL’s with this. That is, if servlet “Foo/Bar” forwards
+to “Qux”, then the qux servlet should use siteRoot() to construct all
+links to avoid broken links. This works properly because this method
+computes the path based on the _original_ servlet, not the location
+of the servlet that you have forwarded to.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPRequest.HTTPRequest.siteRootFromCurrentServlet">
+<span class="sig-name descname"><span class="pre">siteRootFromCurrentServlet</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPRequest.HTTPRequest.siteRootFromCurrentServlet" title="Link to this definition">¶</a></dt>
+<dd><p>Return relative URL path to home seen from the current servlet.</p>
+<p>This includes all URL path components necessary to get back home
+from the current servlet (not from the original request).</p>
+<p>Similar to siteRoot() but instead, it returns the site root
+relative to the _current_ servlet, not the _original_ servlet.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPRequest.HTTPRequest.time">
+<span class="sig-name descname"><span class="pre">time</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPRequest.HTTPRequest.time" title="Link to this definition">¶</a></dt>
+<dd><p>Return the time that the request was received.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPRequest.HTTPRequest.timeStamp">
+<span class="sig-name descname"><span class="pre">timeStamp</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPRequest.HTTPRequest.timeStamp" title="Link to this definition">¶</a></dt>
+<dd><p>Return time() as human readable string for logging and debugging.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPRequest.HTTPRequest.transaction">
+<span class="sig-name descname"><span class="pre">transaction</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPRequest.HTTPRequest.transaction" title="Link to this definition">¶</a></dt>
+<dd><p>Get the transaction container.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPRequest.HTTPRequest.uri">
+<span class="sig-name descname"><span class="pre">uri</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPRequest.HTTPRequest.uri" title="Link to this definition">¶</a></dt>
+<dd><p>Return the URI for this request (everything after the host name).</p>
+<p>This is the URL that was actually received by the web server
+before any rewriting took place, including the query string.
+Equivalent to the CGI variable REQUEST_URI.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPRequest.HTTPRequest.uriWebwareRoot">
+<span class="sig-name descname"><span class="pre">uriWebwareRoot</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPRequest.HTTPRequest.uriWebwareRoot" title="Link to this definition">¶</a></dt>
+<dd><p>Return relative URL path of the Webware root location.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPRequest.HTTPRequest.urlPath">
+<span class="sig-name descname"><span class="pre">urlPath</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPRequest.HTTPRequest.urlPath" title="Link to this definition">¶</a></dt>
+<dd><p>Get the URL path relative to the mount point, without query string.</p>
+<p>This is actually the same as pathInfo().</p>
+<p>For example, <a class="reference external" href="https://host/Webware/Context/Servlet?x=1">https://host/Webware/Context/Servlet?x=1</a>
+yields ‘/Context/Servlet’.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPRequest.HTTPRequest.urlPathDir">
+<span class="sig-name descname"><span class="pre">urlPathDir</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPRequest.HTTPRequest.urlPathDir" title="Link to this definition">¶</a></dt>
+<dd><p>Same as urlPath, but only gives the directory.</p>
+<p>For example, <a class="reference external" href="https://host/Webware/Context/Servlet?x=1">https://host/Webware/Context/Servlet?x=1</a>
+yields ‘/Context’.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPRequest.HTTPRequest.value">
+<span class="sig-name descname"><span class="pre">value</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default=&lt;class</span> <span class="pre">'MiscUtils.NoDefault'&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#HTTPRequest.HTTPRequest.value" title="Link to this definition">¶</a></dt>
+<dd><p>Return the value with the given name.</p>
+<p>Values are fields or cookies.
+Use this method when you’re field/cookie agnostic.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPRequest.HTTPRequest.writeExceptionReport">
+<span class="sig-name descname"><span class="pre">writeExceptionReport</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">handler</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#HTTPRequest.HTTPRequest.writeExceptionReport" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="HTTPRequest.htmlInfo">
+<span class="sig-prename descclassname"><span class="pre">HTTPRequest.</span></span><span class="sig-name descname"><span class="pre">htmlInfo</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">info</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#HTTPRequest.htmlInfo" title="Link to this definition">¶</a></dt>
+<dd><p>Return a single HTML string that represents the info structure.</p>
+<p>Useful for inspecting objects via web browsers.</p>
+</dd></dl>
+
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../index.html">Webware for Python 3</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../changes.html">List of Changes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../migrate.html">Migration Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../copyright.html">Copyright and License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorial.html">Beginner Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../appdev.html">Application Development</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../config.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../deploy.html">Deployment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../plugins.html">Plug-ins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../style.html">Style Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../psp.html">PSP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../userkit.html">UserKit</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../taskkit.html">TaskKit</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../webutils.html">WebUtils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../miscutils.html">MiscUtils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../testing.html">Testing</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Core Classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../psp/index.html">PSP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../userkit/index.html">UserKit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../taskkit/index.html">TaskKit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../webutils/index.html">WebUtils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../miscutils/index.html">MiscUtils</a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">API Reference</a><ul>
+  <li><a href="index.html">Core Classes</a><ul>
+      <li>Previous: <a href="httpexceptions.html" title="previous chapter">HTTPExceptions</a></li>
+      <li>Next: <a href="httpresponse.html" title="next chapter">HTTPResponse</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;1999-2025, Christoph Zwerschke et al.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.2.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+      |
+      <a href="../../_sources/ref/core/httprequest.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

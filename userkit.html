@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>UserKit &#8212; Webware for Python 3 3.1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=27fed22d" />
+    <script src="_static/documentation_options.js?v=dd1205ac"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="copyright" title="Copyright" href="copyright.html" />
+    <link rel="next" title="TaskKit" href="taskkit.html" />
+    <link rel="prev" title="PSP" href="psp.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="userkit">
+<span id="module-UserKit"></span><span id="id1"></span><h1>UserKit<a class="headerlink" href="#userkit" title="Link to this heading">¶</a></h1>
+<p>UserKit provides for the management of users including passwords, user data, server-side archiving and caching. Users can be persisted on the server side via files or the external MiddleKit plug-in.</p>
+<section id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Link to this heading">¶</a></h2>
+<p>UserKit is a self contained library and is generally not dependent on the rest of Webware. It does use a few functions in MiscUtils. The objects of interest in UserKit are Users, UserMangers, and Roles.</p>
+<p><a class="reference internal" href="ref/userkit/user.html#module-UserKit.User" title="UserKit.User"><code class="xref py py-class docutils literal notranslate"><span class="pre">User</span></code></a> – This represents a particular user and has a name, password, and various flags like <code class="docutils literal notranslate"><span class="pre">user.isActive()</span></code>.</p>
+<p><a class="reference internal" href="ref/userkit/usermanager.html#module-UserKit.UserManager" title="UserKit.UserManager"><code class="xref py py-class docutils literal notranslate"><span class="pre">UserManager</span></code></a> – Your application will create one instance of a UserManager and use it to create and retrieve Users by name. The UserManager comes in several flavors depending on support for Roles, and where user data is stored. For storage, UserManagers can save the user records to either a flat file or a MiddleKit store. Also user managers may support Roles or not. If you don’t need any roles and want the simplest UserManager, choose the UserManagerToFile which saves its data to a file. If you want hierarchical roles and persistence to MiddleKit, choose RoleUserManagerToMiddleKit.</p>
+<p><a class="reference internal" href="ref/userkit/role.html#module-UserKit.Role" title="UserKit.Role"><code class="xref py py-class docutils literal notranslate"><span class="pre">Role</span></code></a> – A role represents a permission that users may be granted. A user may belong to several roles, and this is queried using the method <code class="docutils literal notranslate"><span class="pre">roleUser.playsRole(role)</span></code>. Roles can be hierarchical. For example a customers role may indicate permissions that customers have. A staff role may include the customers role, meaning that members of staff may also do anything that customers can do.</p>
+</section>
+<section id="examples-and-more-details">
+<h2>Examples and More Details<a class="headerlink" href="#examples-and-more-details" title="Link to this heading">¶</a></h2>
+<p>The docstrings in <a class="reference internal" href="ref/userkit/usermanager.html#module-UserKit.UserManager" title="UserKit.UserManager"><code class="xref py py-class docutils literal notranslate"><span class="pre">UserManager</span></code></a> is the first place to start. It describes all the methods in <a class="reference internal" href="ref/userkit/usermanager.html#module-UserKit.UserManager" title="UserKit.UserManager"><code class="xref py py-class docutils literal notranslate"><span class="pre">UserManager</span></code></a>. Then go to the file <code class="docutils literal notranslate"><span class="pre">Tests/TestExample.py</span></code> which demonstrates how to create users, log them in, and see if they are members of a particular role.</p>
+<p>Once you get the idea, the docstrings in the various files may be perused for more details. See also the <a class="reference internal" href="ref/userkit/index.html#ref-userkit"><span class="std std-ref">reference documentation</span></a> for an overview of the available classes and methods.</p>
+</section>
+<section id="encryption-of-passwords">
+<h2>Encryption of Passwords<a class="headerlink" href="#encryption-of-passwords" title="Link to this heading">¶</a></h2>
+<p>Generally one should never save users’ passwords anywhere in plain text. However UserKit intentionally does no support encryption of passwords. That is left to how you use UserKit in your application. See <code class="docutils literal notranslate"><span class="pre">TestExample.py</span></code>, for a demonstration of how easy this is using SHA digests to encrypt passwords. Basically you encrypt your password before you give it to UserKit. It is as simple as this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">usermanager</span><span class="o">.</span><span class="n">createUser</span><span class="p">(</span><span class="s1">&#39;johndoe&#39;</span><span class="p">,</span> <span class="n">sha</span><span class="p">(</span><span class="s1">&#39;buster&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">())</span>
+</pre></div>
+</div>
+<p>This design decision is to decouple UserKit from your particular encryption requirements, and allows you to use more advanced algorithms as they become available.</p>
+</section>
+<section id="credit">
+<h2>Credit<a class="headerlink" href="#credit" title="Link to this heading">¶</a></h2>
+<p>Author: Chuck Esterbrook, and a cast of dozens of volunteers.
+Thanks to Tom Schwaller for design help.</p>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">Webware for Python 3</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changes.html">List of Changes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="migrate.html">Migration Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="copyright.html">Copyright and License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial.html">Beginner Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="appdev.html">Application Development</a></li>
+<li class="toctree-l1"><a class="reference internal" href="config.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="deploy.html">Deployment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="plugins.html">Plug-ins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="style.html">Style Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="psp.html">PSP</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">UserKit</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#introduction">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#examples-and-more-details">Examples and More Details</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#encryption-of-passwords">Encryption of Passwords</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#credit">Credit</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="taskkit.html">TaskKit</a></li>
+<li class="toctree-l1"><a class="reference internal" href="webutils.html">WebUtils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="miscutils.html">MiscUtils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="testing.html">Testing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ref/index.html">API Reference</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="psp.html" title="previous chapter">PSP</a></li>
+      <li>Next: <a href="taskkit.html" title="next chapter">TaskKit</a></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;1999-2025, Christoph Zwerschke et al.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.2.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+      |
+      <a href="_sources/userkit.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

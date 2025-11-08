@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Deployment &#8212; Webware for Python 3 3.1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=27fed22d" />
+    <script src="_static/documentation_options.js?v=dd1205ac"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="copyright" title="Copyright" href="copyright.html" />
+    <link rel="next" title="Plug-ins" href="plugins.html" />
+    <link rel="prev" title="Configuration" href="config.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="deployment">
+<span id="id1"></span><h1>Deployment<a class="headerlink" href="#deployment" title="Link to this heading">¶</a></h1>
+<p>Webware for Python 3 uses the Web Server Gateway Interface (<a class="reference external" href="https://wsgi.readthedocs.io/en/latest/learn.html">WSGI</a>) which allows deploying Webware apps with any available <a class="reference external" href="https://www.fullstackpython.com/wsgi-servers.html">WSGI server</a>.</p>
+<p>If your performance requirements are not that high, you can use <a class="reference external" href="https://docs.pylonsproject.org/projects/waitress/">waitress</a> as WSGI server, which is used as the development server for Webware, to serve your application on a production system as well. If your performance requirements are higher, we recommend serving Webware applications using <a class="reference external" href="https://httpd.apache.org/">Apache</a> and <a class="reference external" href="https://modwsgi.readthedocs.io">mod_wsgi</a>. But there are also many other options, and you can add  <a class="reference external" href="https://www.mnot.net/cache_docs/">caching</a>, <a class="reference external" href="https://en.wikipedia.org/wiki/Load_balancing_(computing)">load balancing</a> and other techniques or use a <a class="reference external" href="https://en.wikipedia.org/wiki/Content_delivery_network">CDN</a> to improve performance.</p>
+<section id="installation-on-the-production-system">
+<h2>Installation on the Production System<a class="headerlink" href="#installation-on-the-production-system" title="Link to this heading">¶</a></h2>
+<p>In order to install your Webware for Python 3 application on the production system, first make sure the minimum required Python version is already installed. One popular and recommended option is running a Linux distribution on your production system - see <a class="reference external" href="https://docs.python-guide.org/starting/install3/linux/">Installing Python 3 on Linux</a>.</p>
+<p>Note that Webware for Python 3.0 supports Python 3.6 to 3.12, and Webware for Python 3.1 supports Python 3.10 to 3.14.</p>
+<p>Next, we recommend creating a virtual environment for your Webware for Python 3 application. We also recommend creating a dedicated user as owner of your application, and placing the virtual environment into the home directory of that user. When you are logged in as that user under Linux, you can create the virtual environment with the following command. If you get an error, you may need to install <code class="docutils literal notranslate"><span class="pre">python3-venv</span></code> as an additional Linux package before you can run this command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python3</span> <span class="o">-</span><span class="n">m</span> <span class="n">venv</span> <span class="o">.</span><span class="n">venv</span>
+</pre></div>
+</div>
+<p>This will create the virtual environment in the subdirectory <code class="docutils literal notranslate"><span class="pre">.venv</span></code>. Of course, you can also use a different name for that directory. Now, install Webware for Python 3 into that virtual environment. Under Linux, you can do this as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">.</span> <span class="o">.</span><span class="n">venv</span><span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">activate</span>
+<span class="n">pip</span> <span class="n">install</span> <span class="s2">&quot;Webware-for-Python&gt;=3&quot;</span>
+</pre></div>
+</div>
+<p>You will also need to install other Python packages required by your application into the virtual environment with pip, unless these are provided as part of the application, e.g. in a <code class="docutils literal notranslate"><span class="pre">Lib</span></code> subdirectory of the application working directory. If you want to use a Python-based WSGI server such as waitress, you need to install it into this virtual environment as well:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">waitress</span>
+</pre></div>
+</div>
+<p>As the next step, you need to copy the application working directory containing your Webware for Python 3 application to your production system. We recommend putting it into the directory where you created the virtual environment, so that both are siblings. It is important that the application working directory is readable for the user that will run the WSGI server, but not writable. For security reasons, we recommend running the WSGI server with as a dedicated user with low privileges who is not the owner of the application working directory. The directory should also not be readable to other users. The subdirectories of the application working directory should be readable only as well, except for the <code class="docutils literal notranslate"><span class="pre">Cache</span></code>, <code class="docutils literal notranslate"><span class="pre">ErrorMsgs</span></code>, <code class="docutils literal notranslate"><span class="pre">Logs</span></code> and <code class="docutils literal notranslate"><span class="pre">Sessions</span></code> subdirectories, which must be writable. You can use the <code class="docutils literal notranslate"><span class="pre">webware</span> <span class="pre">make</span></code> command to change the ownership of the application working directory to a certain user or group. You can also run this command on an existing working directory that you copied to the production server. For instance, assuming you activated the virtual environment with Webware for Python, and you have superuser privileges, you could make the application accessible to the group <code class="docutils literal notranslate"><span class="pre">www-data</span></code> like this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">webware</span> <span class="n">make</span> <span class="o">-</span><span class="n">g</span> <span class="n">www</span><span class="o">-</span><span class="n">data</span> <span class="n">path</span><span class="o">-</span><span class="n">to</span><span class="o">-</span><span class="n">app</span><span class="o">-</span><span class="n">work</span><span class="o">-</span><span class="nb">dir</span>
+</pre></div>
+</div>
+<p>We recommend using an automatic deployment solution such as <a class="reference external" href="https://www.fabfile.org/">Fabric</a> for copying your application working directory from your development or staging server to your production server. It is also possible to use <a class="reference external" href="https://git-scm.com/">Git</a> hooks to <a class="reference external" href="https://buddy.works/blog/how-deploy-projects-with-git">deploy your application with Git</a>.</p>
+<p>Also, make sure the virtual environment you created above is readable by the user running the WSGI server, e.g. by using the same group ownership as above:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">chgrp</span> <span class="o">-</span><span class="n">R</span> <span class="n">www</span><span class="o">-</span><span class="n">data</span> <span class="o">.</span><span class="n">venv</span>
+</pre></div>
+</div>
+</section>
+<section id="starting-the-wsgi-server-on-boot">
+<h2>Starting the WSGI Server on Boot<a class="headerlink" href="#starting-the-wsgi-server-on-boot" title="Link to this heading">¶</a></h2>
+<p>On a production system, you want to set up your system so that the WSGI server starts automatically when the system boots. If you are using Apache and mod_wsgi, as explained further below, then you only need to make sure Apache starts automatically, and you can skip this step.</p>
+<p>There are a lot of options to start applications at boot time. First, you can use the startup system of your operating system directly. We will show how this works using <a class="reference external" href="https://github.com/systemd/systemd">systemd</a> as an example. Second, you can use one of the many available process managers to start and control the WSGI server. We will show how this works using <a class="reference external" href="http://supervisord.org/">Supervisor</a>.</p>
+<section id="using-systemd">
+<h3>Using systemd<a class="headerlink" href="#using-systemd" title="Link to this heading">¶</a></h3>
+<p>We assume that you have already copied your application working directory to the production system as explained above, and we assume you’re using waitress as your WSGI server. In order to make your application available as a <a class="reference external" href="https://github.com/systemd/systemd">systemd</a> service, you only need to add the following service file into the directory <code class="docutils literal notranslate"><span class="pre">/etc/systemd/system</span></code>. The service file should be named something like <code class="docutils literal notranslate"><span class="pre">webware.service</span></code> or <code class="docutils literal notranslate"><span class="pre">name-of-your-app.service</span></code> if you’re running multiple Webware applications:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">Unit</span><span class="p">]</span>
+<span class="n">Description</span><span class="o">=</span><span class="n">My</span> <span class="n">Webware</span> <span class="n">application</span>
+<span class="n">After</span><span class="o">=</span><span class="n">network</span><span class="o">.</span><span class="n">target</span>
+<span class="n">StartLimitIntervalSec</span><span class="o">=</span><span class="mi">0</span>
+
+<span class="p">[</span><span class="n">Service</span><span class="p">]</span>
+<span class="n">Type</span><span class="o">=</span><span class="n">simple</span>
+<span class="n">Restart</span><span class="o">=</span><span class="n">on</span><span class="o">-</span><span class="n">failure</span>
+<span class="n">RestartSec</span><span class="o">=</span><span class="mi">1</span>
+<span class="n">User</span><span class="o">=</span><span class="n">www</span><span class="o">-</span><span class="n">data</span>
+<span class="n">Group</span><span class="o">=</span><span class="n">www</span><span class="o">-</span><span class="n">data</span>
+<span class="n">ExecStart</span><span class="o">=</span><span class="n">path</span><span class="o">-</span><span class="n">to</span><span class="o">-</span><span class="n">virtual</span><span class="o">-</span><span class="n">env</span><span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">webware</span> <span class="n">serve</span> <span class="o">--</span><span class="n">prod</span>
+<span class="n">WorkingDirectory</span><span class="o">=</span><span class="n">path</span><span class="o">-</span><span class="n">to</span><span class="o">-</span><span class="n">app</span><span class="o">-</span><span class="n">work</span><span class="o">-</span><span class="nb">dir</span>
+
+<span class="p">[</span><span class="n">Install</span><span class="p">]</span>
+<span class="n">WantedBy</span><span class="o">=</span><span class="n">multi</span><span class="o">-</span><span class="n">user</span><span class="o">.</span><span class="n">target</span>
+</pre></div>
+</div>
+<p>Adapt the options as needed. <code class="docutils literal notranslate"><span class="pre">Description</span></code> should be a meaningful description of your Webware application. With <code class="docutils literal notranslate"><span class="pre">User</span></code> and <code class="docutils literal notranslate"><span class="pre">Group</span></code> you specify under which user and group your Webware application shall run, see the remarks above. Adapt the <code class="docutils literal notranslate"><span class="pre">EexecStart</span></code> option so that it uses the path to your virtual environment, and specify the path to your application working directory as the <code class="docutils literal notranslate"><span class="pre">WorkingDirectory</span></code> option. You can change the host address, port and add other options to <code class="docutils literal notranslate"><span class="pre">webware</span> <span class="pre">serve</span></code> in the <code class="docutils literal notranslate"><span class="pre">ExecStart</span></code> option. By default, the server runs on port 8080, but you can specify a different port using the <code class="docutils literal notranslate"><span class="pre">-p</span></code> option. If you want to run waitress behind a reverse proxy, for instance because you want to run on port 80 which needs superuser privileges or you need TLS support which is not provided by waitress, then you you need to serve only on the local interface, using options such as <code class="docutils literal notranslate"><span class="pre">-l</span> <span class="pre">127.0.0.1</span> <span class="pre">-p</span> <span class="pre">8080</span></code>. The <code class="docutils literal notranslate"><span class="pre">--prod</span></code> option tells Webware to run in production mode.</p>
+<p>Note that if you use the <code class="docutils literal notranslate"><span class="pre">--reload</span></code> option with <code class="docutils literal notranslate"><span class="pre">webware</span> <span class="pre">serve</span></code> in <code class="docutils literal notranslate"><span class="pre">ExecStart</span></code>, then you should also set <code class="docutils literal notranslate"><span class="pre">KillMode=process</span></code> and <code class="docutils literal notranslate"><span class="pre">ExecStopPost=/bin/sleep</span> <span class="pre">1</span></code> in the service file to make sure that Webware can be shut down properly.</p>
+<p>After adding or changing the service file, you need to run the following command so that systemd refreshes its configuration:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">systemctl</span> <span class="n">daemon</span><span class="o">-</span><span class="n">reload</span>
+</pre></div>
+</div>
+<p>You tell systemd to automatically run your service file on system boot by enabling the service with the following command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">systemctl</span> <span class="n">enable</span> <span class="n">webware</span>
+</pre></div>
+</div>
+<p>If you named your service file differently, you need to specify that name instead of <code class="docutils literal notranslate"><span class="pre">webware</span></code> in this command. Likewise, you can disable the service with:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">systemctl</span> <span class="n">disable</span> <span class="n">webware</span>
+</pre></div>
+</div>
+<p>To start the service manually, run this command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">systemctl</span> <span class="n">start</span> <span class="n">webware</span>
+</pre></div>
+</div>
+<p>You can list errors that appeared while running the service using this command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">journalctl</span> <span class="o">-</span><span class="n">ru</span> <span class="n">webware</span>
+</pre></div>
+</div>
+<p>The output of your application will be logged to the file <code class="docutils literal notranslate"><span class="pre">Logs/Application.log</span></code> inside the application working directory if you did not specify anything else in the Webware application configuration.</p>
+<p>To restart the service, you need to do this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">systemctl</span> <span class="n">restart</span> <span class="n">webware</span>
+</pre></div>
+</div>
+<p>If you want to automatically restart the service whenever there are changes in the application working directory, you can install a systemd <a class="reference external" href="https://www.redhat.com/sysadmin/introduction-path-units">path unit</a> to watch the directory and run the above command whenever something changes. Alternatively, you can run <code class="docutils literal notranslate"><span class="pre">webware</span> <span class="pre">serve</span></code> with the <code class="docutils literal notranslate"><span class="pre">--reload</span></code> option. In that case, you also need to install <a class="reference external" href="https://github.com/Pylons/hupper">hupper</a> into the virtual environment where you installed Webware, because it is used to implement the <code class="docutils literal notranslate"><span class="pre">reload</span></code> functionality. If you are using a deployment tool such as <a class="reference external" href="https://www.fabfile.org/">Fabric</a>, you can  simply run the above command after deploying the application instead of watching the directory for changes.</p>
+</section>
+<section id="using-supervisor">
+<h3>Using Supervisor<a class="headerlink" href="#using-supervisor" title="Link to this heading">¶</a></h3>
+<p>You can also use <a class="reference external" href="http://supervisord.org/">Supervisor</a> to control your WSGI server. On many Linux distributions, Supervisor can be installed with the package manager, but you can also install it manually using:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">supervisor</span>
+</pre></div>
+</div>
+<p>The disadvantage of such a manual installation is that you will also need to integrate it into the service management infrastructure of your system manually, e.g. using a service file as explained above. Therefore we recommend that you install the Linux package if it is available. For instance, on Ubuntu you would do this with:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">install</span> <span class="n">supervisor</span>
+</pre></div>
+</div>
+<p>In the following, we assume that you installed Supervisor like this. You will then usually have a directory <code class="docutils literal notranslate"><span class="pre">/etc/supervisor</span></code> with a subdirectory <code class="docutils literal notranslate"><span class="pre">conf.d</span></code>. Inside this subdirectory, create the following configuration file.  The configuration file should be name something like <code class="docutils literal notranslate"><span class="pre">webware.conf</span></code> or <code class="docutils literal notranslate"><span class="pre">name-of-your-app.conf</span></code> if you’re running multiple Webware applications:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">program</span><span class="p">:</span><span class="n">webware</span><span class="p">]</span>
+<span class="n">user</span><span class="o">=</span><span class="n">www</span><span class="o">-</span><span class="n">data</span>
+<span class="n">command</span><span class="o">=</span><span class="n">path</span><span class="o">-</span><span class="n">to</span><span class="o">-</span><span class="n">virtual</span><span class="o">-</span><span class="n">env</span><span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">webware</span> <span class="n">serve</span> <span class="o">--</span><span class="n">prod</span>
+<span class="n">directory</span><span class="o">=</span><span class="n">path</span><span class="o">-</span><span class="n">to</span><span class="o">-</span><span class="n">app</span><span class="o">-</span><span class="n">work</span><span class="o">-</span><span class="nb">dir</span>
+</pre></div>
+</div>
+<p>You can add many more options to the configuration. Adapt the options above and add other options as needed. You may want to change the section header <code class="docutils literal notranslate"><span class="pre">[program:webware]</span></code> to a more specific name if you are running multiple Webware applications. The <code class="docutils literal notranslate"><span class="pre">user</span></code> options specifies which user shall run your Webware application. Adapt the <code class="docutils literal notranslate"><span class="pre">command</span></code> option so that it uses the path to your virtual environment, and specify the path to your application working directory as the <code class="docutils literal notranslate"><span class="pre">directory</span></code> option. You can change the host address, port and add other options to <code class="docutils literal notranslate"><span class="pre">webware</span> <span class="pre">serve</span></code> in the <code class="docutils literal notranslate"><span class="pre">command</span></code> option. By default, the server runs on port 8080, but you can specify a different port using the <code class="docutils literal notranslate"><span class="pre">-p</span></code> option. If you want to run waitress behind a reverse proxy, for instance because you want to run on port 80 which needs superuser privileges or you need TLS support which is not provided by waitress, then you you need to serve only on the local interface, using options such as <code class="docutils literal notranslate"><span class="pre">-l</span> <span class="pre">127.0.0.1</span> <span class="pre">-p</span> <span class="pre">8080</span></code>. The <code class="docutils literal notranslate"><span class="pre">--prod</span></code> option tells Webware to run in production mode.</p>
+<p>Reload the Supervisor configuration file and restart affected programs like this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">supervisorctl</span> <span class="n">reread</span>
+<span class="n">supervisorctl</span> <span class="n">update</span>
+</pre></div>
+</div>
+<p>This should automatically start the Webware application.</p>
+<p>By default, the output of your application will be redirected to the file <code class="docutils literal notranslate"><span class="pre">Logs/Application.log</span></code> inside the application working directory by Webware. You can change the location of this file using the Webware application configuration, or you can also use Supervisor options to redirect the output to a log file and control that log file.</p>
+<p>To show the process status of your application, run this command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">supervisorctl</span> <span class="n">status</span> <span class="n">webware</span>
+</pre></div>
+</div>
+<p>If you named the configuration section differently, you need to specify that name instead of <code class="docutils literal notranslate"><span class="pre">webware</span></code> in this command. In order to restart the application, run this command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">supervisorctl</span> <span class="n">restart</span> <span class="n">webware</span>
+</pre></div>
+</div>
+<p>If you want to automatically restart whenever there are changes in the application working directory, you can for example use Supervisor to run a separate program that watches the directory using <a class="reference external" href="https://www.linuxjournal.com/content/linux-filesystem-events-inotify">inotify</a>, and runs the above command whenever something changes, or you can run <code class="docutils literal notranslate"><span class="pre">webware</span> <span class="pre">serve</span></code> with the <code class="docutils literal notranslate"><span class="pre">--reload</span></code> option. In that case, as explained above, you also need to install <a class="reference external" href="https://github.com/Pylons/hupper">hupper</a> into the virtual environment where you installed Webware. If you are using a deployment tool such as <a class="reference external" href="https://www.fabfile.org/">Fabric</a>, you can  simply run the above command after deploying the application instead of watching the directory for changes.</p>
+</section>
+</section>
+<section id="logfile-rotation">
+<h2>Logfile Rotation<a class="headerlink" href="#logfile-rotation" title="Link to this heading">¶</a></h2>
+<p>The application log file (which you will find in <code class="docutils literal notranslate"><span class="pre">Logs/Application.log</span></code> inside the application working directory by default) will increase in size over time. We recommend configuring <a class="reference external" href="https://github.com/logrotate/logrotate">logrotate</a> to rotate this log file, since this does not happen automatically. On most Linux distributions, logrotate is already pre-installed and you just need to put a configuration file like this into the folder <code class="docutils literal notranslate"><span class="pre">/etc/logrotate.d</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">path</span><span class="o">-</span><span class="n">to</span><span class="o">-</span><span class="n">app</span><span class="o">-</span><span class="n">work</span><span class="o">-</span><span class="nb">dir</span><span class="o">/</span><span class="n">Logs</span><span class="o">/</span><span class="n">Application</span><span class="o">.</span><span class="n">log</span> <span class="p">{</span>
+  <span class="n">weekly</span>
+  <span class="n">rotate</span> <span class="mi">9</span>
+  <span class="n">copytruncate</span>
+  <span class="n">compress</span>
+  <span class="n">dateext</span>
+  <span class="n">missingok</span>
+  <span class="n">notifempty</span>
+  <span class="n">su</span> <span class="n">www</span><span class="o">-</span><span class="n">data</span> <span class="n">www</span><span class="o">-</span><span class="n">data</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Modify the configuration as you see fit. The <code class="docutils literal notranslate"><span class="pre">su</span></code> directive should specify the user and the group under which the WSGI server is running. Note that you can specify more than one log path and/or use wildcards, so that you can apply the same configuration to several Webware applications and avoid repeating the same options.</p>
+<p>Assuming you created the configuration file as <code class="docutils literal notranslate"><span class="pre">/etc/logrotate.d/webware</span></code>, you can test it with this command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">logrotate</span> <span class="o">-</span><span class="n">f</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">logrotate</span><span class="o">.</span><span class="n">d</span><span class="o">/</span><span class="n">webware</span>
+</pre></div>
+</div>
+</section>
+<section id="running-behind-a-reverse-proxy">
+<h2>Running behind a Reverse Proxy<a class="headerlink" href="#running-behind-a-reverse-proxy" title="Link to this heading">¶</a></h2>
+<p>There are several reasons why you may want to run the WSGI server that is serving your Webware application behind a reverse proxy. First, it can serve as a kind of load balancer, redirecting traffic to other applications or static files away from your Webware application and request the WSGI server only for the dynamic content where it is really needed. Second, it can provide TLS encryption in order to support HTTPS connections, compress data going in and out the server, and cache frequently used content, and is optimized to do all of this very quickly. If you’re using the waitress WSGI server, this is an important issue, since waitress itself does not provide TLS support. Third, a reverse proxy also adds another security layer to your production system. In the following we show how you can use <a class="reference external" href="https://httpd.apache.org/">Apache</a> and <a class="reference external" href="https://www.nginx.com/">NGINX</a> as reverse proxy for your Webware application.</p>
+<p>Again, if you are using Apache and mod_wsgi, as explained further below, then you normally don’t need a separate proxy server, and you can skip this step.</p>
+<section id="using-apache-as-reverse-proxy">
+<h3>Using Apache as Reverse Proxy<a class="headerlink" href="#using-apache-as-reverse-proxy" title="Link to this heading">¶</a></h3>
+<p>The first thing you need to do after installing <a class="reference external" href="https://httpd.apache.org/">Apache</a> is to enable the Apache <a class="reference external" href="https://httpd.apache.org/docs/current/mod/mod_proxy.html">mod_proxy</a> and <a class="reference external" href="https://httpd.apache.org/docs/current/mod/mod_proxy_http.html">mod_proxy_http</a> modules. You can usually do this as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">a2enmod</span> <span class="n">proxy</span> <span class="n">proxy_http</span>
+</pre></div>
+</div>
+<p>At this point, you may want to enable other Apache modules as well. For instance, if you want to use encryption with TLS (HTTPS connections), you need to also enable the <a class="reference external" href="https://httpd.apache.org/docs/current/mod/mod_ssl.html">mod_ssl</a> module:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">a2enmod</span> <span class="n">ssl</span>
+</pre></div>
+</div>
+<p>Maybe you want to enable some more modules providing load balancing capabilities, such as <a class="reference external" href="https://httpd.apache.org/docs/current/mod/mod_proxy_balancer.html">mod_proxy_balancer</a> and <a class="reference external" href="https://httpd.apache.org/docs/current/mod/mod_lbmethod_byrequests.html">mod_lbmethod_byrequests</a>. We won’t cover these modules in this deployment guide, but keep in mind that they are available if you need to scale up.</p>
+<p>Assuming you configured the WSGI server to run on port 8080 using the localhost interface 127.0.0.1, you now need to add the following directives to your Apache configuration:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ProxyPass</span> <span class="o">/</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="mf">127.0.0.1</span><span class="p">:</span><span class="mi">8080</span><span class="o">/</span>
+<span class="n">ProxyPassReverse</span> <span class="o">/</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="mf">127.0.0.1</span><span class="p">:</span><span class="mi">8080</span><span class="o">/</span>
+</pre></div>
+</div>
+<p>Note: Do <em>not</em> set <code class="docutils literal notranslate"><span class="pre">SSLProxyEngine</span> <span class="pre">On</span></code>, even if you want to communicate via HTTPS with your clients. You would only need this when the communication between Apache and the WSGI server is encrypted as well, which is usually not necessary, particularly if you run the reverse proxy and the WSGI server on the same machine, and would only work with WSGI servers that support encryption.</p>
+<p>If you want to support encryption, you also need to create a server certificate and specify it in your Apache configuration. For testing only, a self-signed certificate will do, which may be already installed and configured. In the Internet you will find many instructions for creating a real server certificate and configuring Apache to use it.</p>
+<p>Reload Apache after any changes you make to the configuration, e.g. with <code class="docutils literal notranslate"><span class="pre">systemctl</span> <span class="pre">reload</span> <span class="pre">apache2</span></code> or <code class="docutils literal notranslate"><span class="pre">apachectl</span> <span class="pre">-k</span> <span class="pre">graceful</span></code>.</p>
+<p>The two lines of configuration above make Apache work as a reverse proxy for any URL, i.e. all traffic is passed on to the WSGI server. This means that the WSGI server will also deliver any static assets that are part of your application, like images, CSS scripts, JavaScript files or static HTML pages. This is inefficient and creates an unnecessary load on the WSGI server. It is much more efficient if you let Apache serve the static assets. To achieve this, use the following Apache configuration:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Alias /static path-to-app-work-dir/Static
+&lt;Directory path-to-app-work-dir/Static&gt;
+    Require all granted
+&lt;/Directory&gt;
+ProxyPass /static !
+ProxyPass / http://127.0.0.1:8080/
+ProxyPassReverse / http://127.0.0.1:8080/
+</pre></div>
+</div>
+<p>With this configuration, you can access the static assets in the <code class="docutils literal notranslate"><span class="pre">Static</span></code> subdirectory of the application working directory with the URL prefix <code class="docutils literal notranslate"><span class="pre">/static</span></code>, while everything else will be passed on to the WSGI server and handled by Webware for Python.</p>
+<p>You can also do it the other way around, e.g. let everything behind the prefix <code class="docutils literal notranslate"><span class="pre">/app</span></code> be handled by Webware for Python, and everything else looked up as a static asset in the <code class="docutils literal notranslate"><span class="pre">Static</span></code> subdirectory of the application working directory, using a configuration like this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">DocumentRoot</span> <span class="n">path</span><span class="o">-</span><span class="n">to</span><span class="o">-</span><span class="n">app</span><span class="o">-</span><span class="n">work</span><span class="o">-</span><span class="nb">dir</span><span class="o">/</span><span class="n">Static</span>
+<span class="o">&lt;</span><span class="n">Directory</span> <span class="n">path</span><span class="o">-</span><span class="n">to</span><span class="o">-</span><span class="n">app</span><span class="o">-</span><span class="n">work</span><span class="o">-</span><span class="nb">dir</span><span class="o">/</span><span class="n">Static</span><span class="o">&gt;</span>
+    <span class="n">Require</span> <span class="nb">all</span> <span class="n">granted</span>
+<span class="o">&lt;/</span><span class="n">Directory</span><span class="o">&gt;</span>
+<span class="n">ProxyPass</span> <span class="o">/</span><span class="n">app</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="mf">127.0.0.1</span><span class="p">:</span><span class="mi">8080</span><span class="o">/</span>
+<span class="n">ProxyPassReverse</span> <span class="o">/</span><span class="n">app</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="mf">127.0.0.1</span><span class="p">:</span><span class="mi">8080</span><span class="o">/</span>
+</pre></div>
+</div>
+<p>In this case, you should also tell the Webware application that you are using the <code class="docutils literal notranslate"><span class="pre">/app</span></code> prefix. If you are running the waitress server with <code class="docutils literal notranslate"><span class="pre">webware</span> <span class="pre">serve</span></code> you can do so using the <code class="docutils literal notranslate"><span class="pre">--url-prefix</span></code> command line option:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">webware</span> <span class="n">serve</span> <span class="o">-</span><span class="n">l</span> <span class="mf">127.0.0.1</span> <span class="o">-</span><span class="n">p</span> <span class="mi">8080</span> <span class="o">--</span><span class="n">url</span><span class="o">-</span><span class="n">prefix</span> <span class="o">/</span><span class="n">app</span> <span class="o">--</span><span class="n">prod</span>
+</pre></div>
+</div>
+<p>This prefix will then be passed to Webware in the <code class="docutils literal notranslate"><span class="pre">SCRIPT_NAME</span></code> environment variable, which is used when determining the <code class="docutils literal notranslate"><span class="pre">servletPath()</span></code> of a Webware <code class="docutils literal notranslate"><span class="pre">HTTPRequest</span></code>.</p>
+<p>Similarly, to tell Webware that you are using HTTPS connections, you can use the <code class="docutils literal notranslate"><span class="pre">--url-scheme</span></code> command line option:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">webware</span> <span class="n">serve</span> <span class="o">-</span><span class="n">l</span> <span class="mf">127.0.0.1</span> <span class="o">-</span><span class="n">p</span> <span class="mi">8080</span> <span class="o">--</span><span class="n">url</span><span class="o">-</span><span class="n">schema</span> <span class="n">https</span> <span class="o">--</span><span class="n">prod</span>
+</pre></div>
+</div>
+<p>You should then also add the following line to the Apache configuration:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">RequestHeader</span> <span class="nb">set</span> <span class="n">X</span><span class="o">-</span><span class="n">Forwarded</span><span class="o">-</span><span class="n">Proto</span> <span class="n">https</span>
+</pre></div>
+</div>
+<p>If you want to override WSGI environment variables using proxy headers, you need to add the options <code class="docutils literal notranslate"><span class="pre">--trusted-proxy</span></code> and <code class="docutils literal notranslate"><span class="pre">trusted-proxy-headers</span></code> to the <code class="docutils literal notranslate"><span class="pre">webware</span> <span class="pre">serve</span></code> command.</p>
+<p>See also the remarks on <a class="reference external" href="https://docs.pylonsproject.org/projects/waitress/en/stable/reverse-proxy.html">running behind a reverse proxy</a> in the <a class="reference external" href="https://docs.pylonsproject.org/projects/waitress/">waitress documentation</a>.</p>
+</section>
+<section id="using-nginx-as-a-reverse-proxy">
+<h3>Using NGINX as a Reverse Proxy<a class="headerlink" href="#using-nginx-as-a-reverse-proxy" title="Link to this heading">¶</a></h3>
+<p>Frequently, <a class="reference external" href="https://www.nginx.com/">NGINX</a> is used instead of Apache as a reverse proxy, because it is more lightweight and performs a bit better when serving static content. Contrary to Apache, you don’t need to enable any additional modules to make NGINX work as a reverse proxy.</p>
+<p>After <a class="reference external" href="https://docs.nginx.com/nginx/admin-guide/installing-nginx/installing-nginx-open-source/">installing NGINX</a> and configuring the WSGI server to run on port 8080 using the localhost interface 127.0.0.1, you now need to add the following lines to your NGINX configuration:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>location /static {
+   alias path-to-app-work-dir/Static;
+}
+
+location / {
+   proxy_pass http://127.0.0.1:8080/;
+
+   proxy_set_header Host $host;
+   proxy_set_header X-Forwarded-Proto $scheme;
+   proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+   proxy_set_header X-Forwarded-Host $host;
+   proxy_set_header X-Forwarded-Port $server_port;
+   proxy_set_header X-Real-IP $remote_addr;
+}
+</pre></div>
+</div>
+<p>If you want to support encryption, you also need to create a server certificate and specify it in your NGINX configuration. For testing only, a self-signed certificate will do, which may be already installed. In the Internet you will find many instructions for creating a real server certificate and configuring NGINX to use it.</p>
+<p>After reloading the NGINX configuration, e.g. with <code class="docutils literal notranslate"><span class="pre">nginx</span> <span class="pre">-s</span> <span class="pre">reload</span></code>, NGINX should now act as a reverse proxy and deliver your Webware application at the root URL, and static content in the <code class="docutils literal notranslate"><span class="pre">Static</span></code> subdirectory of the application working directory with the URL prefix <code class="docutils literal notranslate"><span class="pre">/static</span></code>.</p>
+<p>If you want to do it the other way around, i.e. serve any static assets at the root URL, and your Webware application with the URL prefix <code class="docutils literal notranslate"><span class="pre">/app</span></code>, use this configuration instead:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>root path-to-app-work-dir/Static
+
+location / {
+}
+
+location /app {
+   proxy_pass http://127.0.0.1:8080/;
+
+   proxy_set_header Host $host;
+   proxy_set_header X-Forwarded-Proto $scheme;
+   proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+   proxy_set_header X-Forwarded-Host $host;
+   proxy_set_header X-Forwarded-Port $server_port;
+   proxy_set_header X-Real-IP $remote_addr;
+}
+</pre></div>
+</div>
+<p>In this case, you should also tell the Webware application that you are using the <code class="docutils literal notranslate"><span class="pre">/app</span></code> prefix. If you are running the waitress server with <code class="docutils literal notranslate"><span class="pre">webware</span> <span class="pre">serve</span></code> you can do so using the <code class="docutils literal notranslate"><span class="pre">--url-prefix</span></code> command line option:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">webware</span> <span class="n">serve</span> <span class="o">-</span><span class="n">l</span> <span class="mf">127.0.0.1</span> <span class="o">-</span><span class="n">p</span> <span class="mi">8080</span> <span class="o">--</span><span class="n">url</span><span class="o">-</span><span class="n">prefix</span> <span class="o">/</span><span class="n">app</span> <span class="o">--</span><span class="n">prod</span>
+</pre></div>
+</div>
+<p>This prefix will then be passed to Webware in the <code class="docutils literal notranslate"><span class="pre">SCRIPT_NAME</span></code> environment variable, which is used when determining the <code class="docutils literal notranslate"><span class="pre">servletPath()</span></code> of a Webware <code class="docutils literal notranslate"><span class="pre">HTTPRequest</span></code>.</p>
+<p>If you want to override WSGI environment variables using proxy headers, you need to add the options <code class="docutils literal notranslate"><span class="pre">--trusted-proxy</span></code> and <code class="docutils literal notranslate"><span class="pre">trusted-proxy-headers</span></code> to the <code class="docutils literal notranslate"><span class="pre">webware</span> <span class="pre">serve</span></code> command.</p>
+<p>See also the remarks on <a class="reference external" href="https://docs.pylonsproject.org/projects/waitress/en/stable/reverse-proxy.html">running behind a reverse proxy</a> in the <a class="reference external" href="https://docs.pylonsproject.org/projects/waitress/">waitress documentation</a>.</p>
+</section>
+</section>
+<section id="using-apache-and-mod-wsgi">
+<h2>Using Apache and mod_wsgi<a class="headerlink" href="#using-apache-and-mod-wsgi" title="Link to this heading">¶</a></h2>
+<p>While you can deploy Webware applications using the waitress WSGI server, as explained above, or run the application with other possibly better performing WSGI servers, as explained further below, our recommended way of deploying Webware application is using <a class="reference external" href="https://httpd.apache.org/">Apache</a> and <a class="reference external" href="https://modwsgi.readthedocs.io">mod_wsgi</a>, since it combines excellent performance with low installation and maintenance effort. In particular, you will not need to care about running a separate WSGI server and starting it automatically, because this is handled by mod_wsgi already, and you will not need to install a reverse proxy, because you can use Apache to server the static content and dispatch to Webware via mod_wsgi for the dynamic content. The Apache web server can also care about everything that is needed to serve your content securely via HTTPS.</p>
+<p>The first thing you need is to make sure that Apache is installed on your production system with the <a class="reference external" href="https://httpd.apache.org/docs/current/mod/worker.html">“worker” MPM module</a>. On some systems, the “prefork” MPM module is still the default, but “worker” is much better suited for our purposes. See also the section on <a class="reference external" href="https://modwsgi.readthedocs.io/en/develop/user-guides/processes-and-threading.html">processes and threading</a> in the <a class="reference external" href="https://modwsgi.readthedocs.io/">mod_wsgi documentation</a>.</p>
+<p>Next you will need to install mod_wsgi. If possible, install a version that is available as a binary package for your system. There may be different versions of mod_wsgi available. Make sure you install the one for the Apache version running on your system and the Python version you are using in your Webware application. The package may be called something like “apache2-mod_wsgi-python3” or “libapache2-mod-wsgi-py3”. If no suitable, current version of mod_wsgi is available, you will need to <a class="reference external" href="https://modwsgi.readthedocs.io/en/develop/user-guides/quick-installation-guide.html">install mood_wsgi from source</a>.</p>
+<p>After installation, the module should be already enabled, but to be sure, enable the mod_wsgi Apache module with the following command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">a2enmod</span> <span class="n">wsgi</span>
+</pre></div>
+</div>
+<p>At this point, you may want to enable other Apache modules as well. For instance, if you want to use encryption with TLS (HTTPS connections), you need to also enable the <a class="reference external" href="https://httpd.apache.org/docs/current/mod/mod_ssl.html">mod_ssl</a> module:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">a2enmod</span> <span class="n">ssl</span>
+</pre></div>
+</div>
+<p>In that case, you also need to create a server certificate and specify it in your Apache configuration. For testing only, a self-signed certificate will do, which may be already installed and configured. In the Internet you will find many instructions for creating a real server certificate and configuring Apache to use it.</p>
+<p>Add the following lines to your Apache configuration in order to serve your Webware application under the root URL, and static assets under the URL prefix <code class="docutils literal notranslate"><span class="pre">/static</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Alias</span> <span class="o">/</span><span class="n">static</span> <span class="n">path</span><span class="o">-</span><span class="n">to</span><span class="o">-</span><span class="n">app</span><span class="o">-</span><span class="n">work</span><span class="o">-</span><span class="nb">dir</span><span class="o">/</span><span class="n">Static</span>
+
+<span class="o">&lt;</span><span class="n">Directory</span> <span class="n">path</span><span class="o">-</span><span class="n">to</span><span class="o">-</span><span class="n">app</span><span class="o">-</span><span class="n">work</span><span class="o">-</span><span class="nb">dir</span><span class="o">/</span><span class="n">Static</span><span class="o">&gt;</span>
+    <span class="n">Require</span> <span class="nb">all</span> <span class="n">granted</span>
+<span class="o">&lt;/</span><span class="n">Directory</span><span class="o">&gt;</span>
+
+<span class="n">WSGIDaemonProcess</span> <span class="n">webware</span> <span class="n">threads</span><span class="o">=</span><span class="mi">20</span> <span class="n">python</span><span class="o">-</span><span class="n">home</span><span class="o">=</span><span class="n">path</span><span class="o">-</span><span class="n">to</span><span class="o">-</span><span class="n">virtual</span><span class="o">-</span><span class="n">env</span>
+<span class="n">WSGIProcessGroup</span> <span class="n">webware</span>
+
+<span class="n">WSGIScriptAlias</span> <span class="o">/</span> <span class="n">path</span><span class="o">-</span><span class="n">to</span><span class="o">-</span><span class="n">app</span><span class="o">-</span><span class="n">work</span><span class="o">-</span><span class="nb">dir</span><span class="o">/</span><span class="n">Scripts</span><span class="o">/</span><span class="n">WSGIScript</span><span class="o">.</span><span class="n">py</span>
+
+<span class="o">&lt;</span><span class="n">Directory</span> <span class="n">path</span><span class="o">-</span><span class="n">to</span><span class="o">-</span><span class="n">app</span><span class="o">-</span><span class="n">work</span><span class="o">-</span><span class="nb">dir</span><span class="o">/</span><span class="n">Scripts</span><span class="o">&gt;</span>
+    <span class="n">Require</span> <span class="nb">all</span> <span class="n">granted</span>
+<span class="o">&lt;/</span><span class="n">Directory</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>Note that <code class="docutils literal notranslate"><span class="pre">path-to-virtual-env</span></code> should really be the path of the directory containing the virtual environment where you installed Webware for Python 3 and other requirements for your Webware application, not the path to the Python interpreter.</p>
+<p>Reload Apache after any changes you make to the configuration, e.g. with <code class="docutils literal notranslate"><span class="pre">systemctl</span> <span class="pre">reload</span> <span class="pre">apache2</span></code> or <code class="docutils literal notranslate"><span class="pre">apachectl</span> <span class="pre">-k</span> <span class="pre">graceful</span></code>.</p>
+<p>If you want to do it the other way around, i.e. serve any static assets at the root URL, and your Webware application with the URL prefix <code class="docutils literal notranslate"><span class="pre">/app</span></code>, use this configuration instead:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">DocumentRoot</span> <span class="n">path</span><span class="o">-</span><span class="n">to</span><span class="o">-</span><span class="n">app</span><span class="o">-</span><span class="n">work</span><span class="o">-</span><span class="nb">dir</span><span class="o">/</span><span class="n">Static</span>
+
+<span class="o">&lt;</span><span class="n">Directory</span> <span class="n">path</span><span class="o">-</span><span class="n">to</span><span class="o">-</span><span class="n">app</span><span class="o">-</span><span class="n">work</span><span class="o">-</span><span class="nb">dir</span><span class="o">/</span><span class="n">Static</span><span class="o">&gt;</span>
+    <span class="n">Require</span> <span class="nb">all</span> <span class="n">granted</span>
+<span class="o">&lt;/</span><span class="n">Directory</span><span class="o">&gt;</span>
+
+<span class="n">WSGIDaemonProcess</span> <span class="n">webware</span> <span class="n">threads</span><span class="o">=</span><span class="mi">20</span> <span class="n">python</span><span class="o">-</span><span class="n">home</span><span class="o">=</span><span class="n">path</span><span class="o">-</span><span class="n">to</span><span class="o">-</span><span class="n">virtual</span><span class="o">-</span><span class="n">env</span>
+<span class="n">WSGIProcessGroup</span> <span class="n">webware</span>
+
+<span class="n">WSGIScriptAlias</span> <span class="o">/</span><span class="n">app</span> <span class="n">path</span><span class="o">-</span><span class="n">to</span><span class="o">-</span><span class="n">app</span><span class="o">-</span><span class="n">work</span><span class="o">-</span><span class="nb">dir</span><span class="o">/</span><span class="n">Scripts</span><span class="o">/</span><span class="n">WSGIScript</span><span class="o">.</span><span class="n">py</span>
+
+<span class="o">&lt;</span><span class="n">Directory</span> <span class="n">path</span><span class="o">-</span><span class="n">to</span><span class="o">-</span><span class="n">app</span><span class="o">-</span><span class="n">work</span><span class="o">-</span><span class="nb">dir</span><span class="o">/</span><span class="n">Scripts</span><span class="o">&gt;</span>
+    <span class="n">Require</span> <span class="nb">all</span> <span class="n">granted</span>
+<span class="o">&lt;/</span><span class="n">Directory</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>In this case, the prefix <code class="docutils literal notranslate"><span class="pre">/app</span></code> will be also passed to Webware by mod_wsgi in the <code class="docutils literal notranslate"><span class="pre">SCRIPT_NAME</span></code> environment variable, and is considered when determining the <code class="docutils literal notranslate"><span class="pre">servletPath()</span></code> of a Webware <code class="docutils literal notranslate"><span class="pre">HTTPRequest</span></code>.</p>
+<p>You can test the Apache configuration for errors with the command <code class="docutils literal notranslate"><span class="pre">apache2ctl</span> <span class="pre">configtest</span></code>.  To debug problems with mod_wsgi, you can also use these settings in the Apache configuration:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">LogLevel</span> <span class="n">info</span>
+<span class="n">WSGIVerboseDebugging</span> <span class="n">On</span>
+</pre></div>
+</div>
+<p>A frequent problem is that the virtual environment into which you installed Webware uses a different Python version than the one that the currently enabled mod_wsgi module was built for. In this case, re-create the virtual environment with the proper Python version, or install a mod_wsgi module that was built for the Python version you are using in your Webware application.</p>
+<p>The output of your application will be logged to the file <code class="docutils literal notranslate"><span class="pre">Logs/Application.log</span></code> inside the application working directory if you did not specify anything else in the Webware application configuration (see also <a class="reference internal" href="#logfile-rotation">Logfile Rotation</a>).</p>
+<p>Note that mod_wsgi can be operated in two modes, “embedded mode” and “daemon mode”. The above configuration uses “daemon mode” which is the recommended mode for running Webware applications, even if “embedded mode” is the default mode for historical reasons. The configuration creates one “process group” called “webware”. You can adapt and optimize the configuration by setting various options, like this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">WSGIDaemonProcess</span> <span class="n">webware</span> \
+<span class="n">user</span><span class="o">=</span><span class="n">www</span><span class="o">-</span><span class="n">data</span> <span class="n">group</span><span class="o">=</span><span class="n">www</span><span class="o">-</span><span class="n">data</span> \
+<span class="n">threads</span><span class="o">=</span><span class="mi">15</span> \
+<span class="n">python</span><span class="o">-</span><span class="n">home</span><span class="o">=</span><span class="n">path</span><span class="o">-</span><span class="n">to</span><span class="o">-</span><span class="n">virtual</span><span class="o">-</span><span class="n">env</span> \
+<span class="n">display</span><span class="o">-</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;%</span><span class="si">{GROUP}</span><span class="s1">&#39;</span> \
+<span class="n">lang</span><span class="o">=</span><span class="s1">&#39;de_DE.UTF-8&#39;</span> <span class="n">locale</span><span class="o">=</span><span class="s1">&#39;de_DE.UTF-8&#39;</span> \
+<span class="n">queue</span><span class="o">-</span><span class="n">timeout</span><span class="o">=</span><span class="mi">45</span> <span class="n">socket</span><span class="o">-</span><span class="n">timeout</span><span class="o">=</span><span class="mi">60</span> <span class="n">connect</span><span class="o">-</span><span class="n">timeout</span><span class="o">=</span><span class="mi">15</span> \
+<span class="n">request</span><span class="o">-</span><span class="n">timeout</span><span class="o">=</span><span class="mi">60</span> <span class="n">inactivity</span><span class="o">-</span><span class="n">timeout</span><span class="o">=</span><span class="mi">0</span> <span class="n">startup</span><span class="o">-</span><span class="n">timeout</span><span class="o">=</span><span class="mi">15</span> \
+<span class="n">deadlock</span><span class="o">-</span><span class="n">timeout</span><span class="o">=</span><span class="mi">60</span> <span class="n">graceful</span><span class="o">-</span><span class="n">timeout</span><span class="o">=</span><span class="mi">15</span> <span class="n">eviction</span><span class="o">-</span><span class="n">timeout</span><span class="o">=</span><span class="mi">0</span> \
+<span class="n">restart</span><span class="o">-</span><span class="n">interval</span><span class="o">=</span><span class="mi">0</span> <span class="n">shutdown</span><span class="o">-</span><span class="n">timeout</span><span class="o">=</span><span class="mi">5</span> <span class="n">maximum</span><span class="o">-</span><span class="n">requests</span><span class="o">=</span><span class="mi">0</span>
+</pre></div>
+</div>
+<p>You can also define more than one process group, and use different process groups for different applications. In this case, <a class="reference external" href="https://httpd.apache.org/docs/current/mod/mod_macro.html">mod_macro</a> can be useful to avoid specifying the same options multiple times. It can be used like this to define different groups with a different number of threads that are created in each daemon process:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>&lt;Macro WSGIProcess $name $threads&gt;
+    WSGIDaemonProcess $name \
+    user=www-data group=www-data \
+    threads=$threads \
+    display-name=&#39;%{GROUP}&#39; \
+    python-home=path-to-common-virtual-env \
+    lang=&#39;de_DE.UTF-8&#39; locale=&#39;de_DE.UTF-8&#39; \
+    queue-timeout=45 socket-timeout=60 connect-timeout=15 \
+    request-timeout=60 inactivity-timeout=0 startup-timeout=15 \
+    deadlock-timeout=60 graceful-timeout=15 eviction-timeout=0 \
+    restart-interval=0 shutdown-timeout=5 maximum-requests=0
+&lt;/Macro&gt;
+
+Use WSGIProcess app1 25
+
+WSGIScriptAlias /app1 \
+    path-to-app1-work-dir/Scripts/WSGIScript.py process-group=app1
+
+&lt;Directory path-to-app1-work-dir/Scripts&gt;
+    Require all granted
+&lt;/Directory&gt;
+
+Use WSGIProcess app2 10
+
+WSGIScriptAlias /app2 \
+    path-to-app2-work-dir/Scripts/WSGIScript.py process-group=app2
+
+&lt;Directory path-to-app2-work-dir/Scripts&gt;
+    Require all granted
+&lt;/Directory&gt;
+</pre></div>
+</div>
+<p>In the above configurations, we are running only one process per process group, but multiple threads. The first app will use 25 threads, while the second app will use only 10. The WSGI environment variable <code class="docutils literal notranslate"><span class="pre">wsgi.multithread</span></code> will be set to <code class="docutils literal notranslate"><span class="pre">True</span></code>, while <code class="docutils literal notranslate"><span class="pre">wsgi.multiprocess</span></code> will be set to <code class="docutils literal notranslate"><span class="pre">False</span></code>. You can check these settings in your Webware application. The ThreadedAppServer of the legacy Webware for Python 2 used the same single process, multiple threads model, and is the recommended, tried and tested way to run Webware applications. But with Webware for Python 3, you can also configure mod_wsgi and other WSGI servers to run Webware applications using multiple processes, each using one or more threads. This may achieve better performance if you have many requests and your application is CPU-bound, because the <a class="reference external" href="https://realpython.com/python-gil/">GIL</a> in Python prevents CPU-bound threads from executing in parallel. For typical I/O-bound web application, which spend most of their time waiting for the database, this is usually not a big problem. For certain applications you may want to try out the multi process model, but you need to be aware of special precautions and limitations that must be considered in this case. See the section <a class="reference internal" href="#caveats-of-multiprocessing-mode">Caveats of Multiprocessing Mode</a> below and the section on <a class="reference external" href="https://modwsgi.readthedocs.io/en/develop/user-guides/processes-and-threading.html">processes and threading</a> in the <a class="reference external" href="https://modwsgi.readthedocs.io/">mod_wsgi documentation</a>.</p>
+<p>If you want to restart the daemon process after deploying a new version of the Webware application to the application working directory, you can do so by changing (touching) the WSGI file:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">touch</span> <span class="n">Scripts</span><span class="o">/</span><span class="n">WSGIScript</span><span class="o">.</span><span class="n">py</span>
+</pre></div>
+</div>
+<p>The mod_wsgi documentation also explains how to <a class="reference external" href="https://modwsgi.readthedocs.io/en/develop/user-guides/reloading-source-code.html#restarting-daemon-processes">restart daemon processes</a> by sending a <cite>SIGINT</cite> signal, which can be also done by the Webware application itself, and it also explains how you can <a class="reference external" href="https://modwsgi.readthedocs.io/en/develop/user-guides/reloading-source-code.html#monitoring-for-code-changes">monitor your application for code changes</a> and automatically restart in that case.</p>
+</section>
+<section id="other-wsgi-servers">
+<h2>Other WSGI servers<a class="headerlink" href="#other-wsgi-servers" title="Link to this heading">¶</a></h2>
+<p>Depending on your production environment and the type of your application, it may make sense to deploy Webware applications with <a class="reference external" href="https://wsgi.readthedocs.io/en/latest/servers.html">other WSGI servers</a>. In the following we will give some advice for configuring some of the more popular WSGI servers to run Webware applications.</p>
+<section id="using-bjoern-as-wsgi-server">
+<h3>Using Bjoern as WSGI server<a class="headerlink" href="#using-bjoern-as-wsgi-server" title="Link to this heading">¶</a></h3>
+<p><a class="reference external" href="https://github.com/jonashaag/bjoern">Bjoern</a> is a fast, lightweight WSGI server for Python, written in C using Marc Lehmann’s high performance <a class="reference external" href="http://software.schmorp.de/pkg/libev.html">libev</a> event loop and Ryan Dahl’s <a class="reference external" href="https://github.com/nodejs/http-parser">http-parser</a>.</p>
+<p>You first need to install <code class="docutils literal notranslate"><span class="pre">libev4</span></code> and <code class="docutils literal notranslate"><span class="pre">libev-devel</span></code>, then you can <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">bjoern</span></code> into the virtual environment where you already installed Webware.</p>
+<p>In order to make use of Bjoern, you need to add the following at the end of the <code class="docutils literal notranslate"><span class="pre">Scripts\WSGIScript.py</span></code> file in the application working directory:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">bjoern</span><span class="w"> </span><span class="kn">import</span> <span class="n">run</span>
+
+<span class="n">run</span><span class="p">(</span><span class="n">application</span><span class="p">,</span> <span class="s1">&#39;localhost&#39;</span><span class="p">,</span> <span class="mi">8088</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Since Bjoern does not support the WSGI <code class="docutils literal notranslate"><span class="pre">write()</span></code> callable, you must configure Webware to not use this mechanism, by using the following settings at the top of the <code class="docutils literal notranslate"><span class="pre">Scripts\WSGIScript.py</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">settings</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;WSGIWrite&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>A systemd unit file at <code class="docutils literal notranslate"><span class="pre">/etc/systemd/system/bjoern.service</span></code> could look like this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">Unit</span><span class="p">]</span>
+<span class="n">Description</span><span class="o">=</span><span class="n">Bjoern</span> <span class="n">WSGI</span> <span class="n">server</span> <span class="n">running</span> <span class="n">Webware</span> <span class="n">application</span>
+<span class="n">After</span><span class="o">=</span><span class="n">network</span><span class="o">.</span><span class="n">target</span>
+<span class="n">StartLimitIntervalSec</span><span class="o">=</span><span class="mi">0</span>
+
+<span class="p">[</span><span class="n">Install</span><span class="p">]</span>
+<span class="n">WantedBy</span><span class="o">=</span><span class="n">multi</span><span class="o">-</span><span class="n">user</span><span class="o">.</span><span class="n">target</span>
+
+<span class="p">[</span><span class="n">Service</span><span class="p">]</span>
+<span class="n">User</span><span class="o">=</span><span class="n">www</span><span class="o">-</span><span class="n">data</span>
+<span class="n">Group</span><span class="o">=</span><span class="n">www</span><span class="o">-</span><span class="n">data</span>
+<span class="n">PermissionsStartOnly</span><span class="o">=</span><span class="n">true</span>
+<span class="n">WorkingDirectory</span><span class="o">=</span><span class="n">path</span><span class="o">-</span><span class="n">to</span><span class="o">-</span><span class="n">app</span><span class="o">-</span><span class="n">work</span><span class="o">-</span><span class="nb">dir</span>
+<span class="n">ExecStart</span><span class="o">=</span><span class="n">path</span><span class="o">-</span><span class="n">to</span><span class="o">-</span><span class="n">virtual</span><span class="o">-</span><span class="n">env</span><span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">python</span> <span class="n">Scripts</span><span class="o">/</span><span class="n">WSGIScript</span><span class="o">.</span><span class="n">py</span>
+<span class="n">TimeoutSec</span><span class="o">=</span><span class="mi">600</span>
+<span class="n">Restart</span><span class="o">=</span><span class="n">on</span><span class="o">-</span><span class="n">failure</span>
+<span class="n">RuntimeDirectoryMode</span><span class="o">=</span><span class="mi">775</span>
+</pre></div>
+</div>
+<p>You can then enable and run the service as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">systemctl</span> <span class="n">enable</span> <span class="n">bjoern</span>
+<span class="n">systemctl</span> <span class="n">start</span> <span class="n">bjoern</span>
+</pre></div>
+</div>
+</section>
+<section id="using-meinheld-as-wsgi-server">
+<h3>Using MeinHeld as WSGI server<a class="headerlink" href="#using-meinheld-as-wsgi-server" title="Link to this heading">¶</a></h3>
+<p><a class="reference external" href="https://github.com/mopemope/meinheld">MeinHeld</a> is another lightweight, high performance WSGI server.</p>
+<p>You first need to <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">meinheld</span></code> into the virtual environment where you already installed Webware.</p>
+<p>Add the following at the end of the <code class="docutils literal notranslate"><span class="pre">Scripts\WSGIScript.py</span></code> file in the application working directory in order to use MeinHeld:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">meinheld</span><span class="w"> </span><span class="kn">import</span> <span class="n">server</span>
+
+<span class="n">server</span><span class="o">.</span><span class="n">listen</span><span class="p">((</span><span class="s2">&quot;127.0.0.1&quot;</span><span class="p">,</span> <span class="mi">8080</span><span class="p">))</span>
+<span class="n">server</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">application</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Similarly to Bjoern, you need to also adapt the settings at the top of the <code class="docutils literal notranslate"><span class="pre">Scripts\WSGIScript.py</span></code> file:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">settings</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;WSGIWrite&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="using-cherrypy-as-wsgi-server">
+<h3>Using CherryPy as WSGI server<a class="headerlink" href="#using-cherrypy-as-wsgi-server" title="Link to this heading">¶</a></h3>
+<p><a class="reference external" href="https://cherrypy.org/">Cherrypy</a> is a minimalist Python web framework that also contains a reliable, HTTP/1.1-compliant, WSGI thread-pooled webserver.</p>
+<p>TO make use of CherryPy’s WSGI server, add the following at the end of the <code class="docutils literal notranslate"><span class="pre">Scripts\WSGIScript.py</span></code> file in the application working directory:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">cherrypy</span>
+
+<span class="n">cherrypy</span><span class="o">.</span><span class="n">tree</span><span class="o">.</span><span class="n">graft</span><span class="p">(</span><span class="n">application</span><span class="p">,</span> <span class="s1">&#39;/&#39;</span><span class="p">)</span>
+<span class="n">cherrypy</span><span class="o">.</span><span class="n">server</span><span class="o">.</span><span class="n">unsubscribe</span><span class="p">()</span>
+<span class="n">server</span> <span class="o">=</span> <span class="n">cherrypy</span><span class="o">.</span><span class="n">_cpserver</span><span class="o">.</span><span class="n">Server</span><span class="p">()</span>
+<span class="n">server</span><span class="o">.</span><span class="n">socket_host</span> <span class="o">=</span> <span class="s1">&#39;127.0.0.1&#39;</span>
+<span class="n">server</span><span class="o">.</span><span class="n">socket_port</span> <span class="o">=</span> <span class="mi">8080</span>
+<span class="n">server</span><span class="o">.</span><span class="n">thread_pool</span> <span class="o">=</span> <span class="mi">30</span>
+<span class="n">server</span><span class="o">.</span><span class="n">subscribe</span><span class="p">()</span>
+<span class="n">cherrypy</span><span class="o">.</span><span class="n">engine</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+<span class="n">cherrypy</span><span class="o">.</span><span class="n">engine</span><span class="o">.</span><span class="n">block</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+<section id="using-uwsgi-as-wsgi-server">
+<h3>Using uWSGI as WSGI server<a class="headerlink" href="#using-uwsgi-as-wsgi-server" title="Link to this heading">¶</a></h3>
+<p>The <a class="reference external" href="https://uwsgi-docs.readthedocs.io/en/latest/WSGIquickstart.html">uWSGI</a> project aims at developing a full stack for building hosting services, and it also contains a WSGI server component.</p>
+<p>You first need to <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">uwsgi</span></code> into the virtual environment where you already installed Webware.</p>
+<p>You can start the uWSGI server component as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="n">path</span><span class="o">-</span><span class="n">to</span><span class="o">-</span><span class="n">app</span><span class="o">-</span><span class="n">work</span><span class="o">-</span><span class="nb">dir</span>
+<span class="o">.</span> <span class="o">../.</span><span class="n">venv</span><span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">activate</span>
+<span class="n">uwsgi</span> <span class="o">--</span><span class="n">http</span><span class="o">-</span><span class="n">socket</span> <span class="mf">127.0.0.1</span><span class="p">:</span><span class="mi">8080</span> <span class="o">--</span><span class="n">threads</span> <span class="mi">30</span> \\
+    <span class="o">--</span><span class="n">virtualenv</span> <span class="n">path</span><span class="o">-</span><span class="n">to</span><span class="o">-</span><span class="n">virtual</span><span class="o">-</span><span class="n">env</span> <span class="o">--</span><span class="n">wsgi</span><span class="o">-</span><span class="n">file</span> <span class="n">Scripts</span><span class="o">/</span><span class="n">WSGIScript</span><span class="o">.</span><span class="n">py</span>
+</pre></div>
+</div>
+<p>You can also create a systemd file to run this automatically when the system boots, as explained above.</p>
+<p>Many more <a class="reference external" href="https://uwsgi-docs.readthedocs.io/en/latest/Options.html">uWSGI configuration options</a> are explained in the uWSGI documentation, we will not go into more details here.</p>
+</section>
+<section id="using-gunicorn-as-wsgi-server">
+<h3>Using Gunicorn as WSGI server<a class="headerlink" href="#using-gunicorn-as-wsgi-server" title="Link to this heading">¶</a></h3>
+<p><a class="reference external" href="https://gunicorn.org/">Gunicorn</a> is a fast WSGI server for Unix using a pre-fork worker model.</p>
+<p>You first need to <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">gunicorn</span></code> into the virtual environment where you already installed Webware.</p>
+<p>You can start the Gunicorn WSGI server as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="n">path</span><span class="o">-</span><span class="n">to</span><span class="o">-</span><span class="n">app</span><span class="o">-</span><span class="n">work</span><span class="o">-</span><span class="nb">dir</span>
+<span class="o">.</span> <span class="o">../.</span><span class="n">venv</span><span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">activate</span>
+<span class="n">PYTHONPATH</span><span class="o">=</span><span class="n">Scripts</span> <span class="n">gunicorn</span> <span class="o">-</span><span class="n">b</span> <span class="mf">127.0.0.1</span><span class="p">:</span><span class="mi">8080</span> <span class="n">WSGIScript</span><span class="p">:</span><span class="n">application</span>
+</pre></div>
+</div>
+<p>You can also create a systemd file to run this automatically when the system boots, as explained above.</p>
+<p>Many more <a class="reference external" href="https://docs.gunicorn.org/en/latest/configure.html">Gunicorn configuration options</a> are explained in the Gunicorn documentation, we will not go into more details here.</p>
+</section>
+</section>
+<section id="sourceless-installs">
+<h2>Sourceless Installs<a class="headerlink" href="#sourceless-installs" title="Link to this heading">¶</a></h2>
+<p>When deploying a Webware application, you do not really need to copy the source code to the production system, it suffices to deploy the compiled compiled Python files. Though this is actually not considered a good practice, and it also does not really help to keep the source code secret (as it can be decompiled pretty easily), there may be reasons why you still want to do this, for instance to impede casual users to tinker with your code on the server.</p>
+<p>To do this, you first need to compile all your Python files in the application working directory:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="n">path</span><span class="o">-</span><span class="n">to</span><span class="o">-</span><span class="n">app</span><span class="o">-</span><span class="n">work</span><span class="o">-</span><span class="nb">dir</span>
+<span class="o">.</span> <span class="o">../.</span><span class="n">venv</span><span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">activate</span>
+<span class="n">python</span> <span class="o">-</span><span class="n">OO</span> <span class="o">-</span><span class="n">m</span> <span class="n">compileall</span> <span class="o">-</span><span class="n">b</span> <span class="o">.</span>
+</pre></div>
+</div>
+<p>By activating the virtual environment, you make sure that you compile the source files with the proper Python version. The <code class="docutils literal notranslate"><span class="pre">-b</span></code> option puts the compiled files as siblings to the source files using the <code class="docutils literal notranslate"><span class="pre">.pyc</span></code> extension, which is essential here. The <code class="docutils literal notranslate"><span class="pre">-OO</span></code> option removes all assert statements and docstrings from the code.</p>
+<p>If you want to serve contexts outside the application working directory, like the default Examples or Admin context, you need to compile these as well, in a similar way.</p>
+<p>You can now remove all the source files except the WSGI script and the <code class="docutils literal notranslate"><span class="pre">__pycache__</span></code> directories, they are not needed on the production system anymore:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="n">path</span><span class="o">-</span><span class="n">to</span><span class="o">-</span><span class="n">app</span><span class="o">-</span><span class="n">work</span><span class="o">-</span><span class="nb">dir</span>
+<span class="n">find</span> <span class="o">.</span> <span class="o">-</span><span class="nb">type</span> <span class="n">f</span> <span class="o">-</span><span class="n">name</span> <span class="s1">&#39;*.py&#39;</span> <span class="o">-</span><span class="n">delete</span> <span class="o">-</span><span class="n">o</span> \
+       <span class="o">-</span><span class="nb">type</span> <span class="n">d</span> <span class="o">-</span><span class="n">name</span> <span class="s1">&#39;Scripts&#39;</span> <span class="o">-</span><span class="n">prune</span> <span class="o">-</span><span class="n">o</span> \
+       <span class="o">-</span><span class="nb">type</span> <span class="n">d</span> <span class="o">-</span><span class="n">name</span> <span class="n">__pycache__</span> <span class="o">-</span><span class="n">exec</span> <span class="n">rm</span> <span class="o">-</span><span class="n">rf</span> <span class="p">{}</span> \<span class="o">+</span>
+</pre></div>
+</div>
+<p>In order to make this work, you will also need to modify some settings in <code class="docutils literal notranslate"><span class="pre">Configs/Application.config</span></code>, like this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ExtensionsToIgnore</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;.py&#39;</span><span class="p">,</span> <span class="s1">&#39;.pyo&#39;</span><span class="p">,</span> <span class="s1">&#39;.tmpl&#39;</span><span class="p">,</span> <span class="s1">&#39;.bak&#39;</span><span class="p">,</span> <span class="s1">&#39;.py_bak&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;.py~&#39;</span><span class="p">,</span> <span class="s1">&#39;.psp~&#39;</span><span class="p">,</span> <span class="s1">&#39;.html~&#39;</span><span class="p">,</span> <span class="s1">&#39;.tmpl~&#39;</span>
+<span class="p">}</span>
+<span class="n">ExtensionCascadeOrder</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;.pyc&#39;</span><span class="p">,</span> <span class="s1">&#39;.psp&#39;</span><span class="p">,</span> <span class="s1">&#39;.html&#39;</span><span class="p">]</span>
+<span class="n">FilesToHide</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;.*&#39;</span><span class="p">,</span> <span class="s1">&#39;*~&#39;</span><span class="p">,</span> <span class="s1">&#39;*.bak&#39;</span><span class="p">,</span> <span class="s1">&#39;*.py_bak&#39;</span><span class="p">,</span> <span class="s1">&#39;*.tmpl&#39;</span><span class="p">,</span>
+     <span class="s1">&#39;*.py&#39;</span><span class="p">,</span> <span class="s1">&#39;*.pyo&#39;</span><span class="p">,</span> <span class="s1">&#39;__init__.*&#39;</span><span class="p">,</span> <span class="s1">&#39;*.config&#39;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="caveats-of-multiprocessing-mode">
+<h2>Caveats of Multiprocessing Mode<a class="headerlink" href="#caveats-of-multiprocessing-mode" title="Link to this heading">¶</a></h2>
+<p>As explained above, it is possible to operate mod_wsgi and some other WSGI servers in multiprocessing mode, where several processes serve the same Webware application in parallel, or you can run several multithreaded WSGI servers in parallel, maybe even on different machines, and use a load balancer as a reverse proxy to distribute the load between the different servers.</p>
+<p>This is totally doable, and may make sense in order to better utilize existing hardware. Because of the the <a class="reference external" href="https://realpython.com/python-gil/">GIL</a>, a multithreaded Python application will not be able to get the full performance from a multi-core machine when running a CPU-bound application. However, there are some caveats that you need to be aware of:</p>
+<ul class="simple">
+<li><p>The Webware TaskManager will be started with every Application process. If this is not what you want, you can change the <code class="docutils literal notranslate"><span class="pre">RunTasks</span></code> configuration setting to False, and run the TaskManager in a dedicated process.</p></li>
+<li><p>Some load balancers support “sticky sessions”, identifying clients by their session cookies and dispatching them to the same server processes. But usually, in multiprocessing mode, you cannot guarantee that requests from the same client are served by the same process, and it would also partially defeat the whole purpose of running multiple processes. Therefore, the SessionMemoryStore, SessionFileStore and SessionDynamicStore are not suitable in that mode, since the session data that is created in the local memory of one process will not be available in a different process. Also, accessing session files from different processes simultaneously can be problematic. Instead, we recommend changing the <code class="docutils literal notranslate"><span class="pre">SessionStore</span></code> configuration setting to use the SessionRedisStore or the SessionMemcachedStore. Storing the session data in the database is also possible, but may degrade performance.</p></li>
+<li><p>When caching frequently used data in local memory, this will become less effective and waste memory when running multiple processes. Consider using a distributed caching system such as <a class="reference external" href="https://redis.io/">Redis</a> or <a class="reference external" href="https://memcached.org/">Memcached</a> instead. If you are using the SessionRedisStore or the SessionMemcachedStore, you will need to install one of these systems anyway.</p></li>
+<li><p>Webware applications often store global, application wide state in class attributes of servlet classes or elsewhere in local memory. Again, be aware that this does not work anymore if you are running the same application in multiple processes.</p></li>
+<li><p>Redirecting standard error and output to the same log file is not supported when running multiple processes, so the <code class="docutils literal notranslate"><span class="pre">LogFilename</span></code> setting should be set to None, and a different logging mechanism should be used. When using mod_wsgi you may need to use the <code class="docutils literal notranslate"><span class="pre">WSGIRestrictStdout</span></code> directive and log on that level. Future versions of Webware for Python 3 will address this problem and provide proper logging mechanisms instead of just printing to stdout.</p></li>
+</ul>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">Webware for Python 3</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changes.html">List of Changes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="migrate.html">Migration Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="copyright.html">Copyright and License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial.html">Beginner Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="appdev.html">Application Development</a></li>
+<li class="toctree-l1"><a class="reference internal" href="config.html">Configuration</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Deployment</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#installation-on-the-production-system">Installation on the Production System</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#starting-the-wsgi-server-on-boot">Starting the WSGI Server on Boot</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#logfile-rotation">Logfile Rotation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#running-behind-a-reverse-proxy">Running behind a Reverse Proxy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#using-apache-and-mod-wsgi">Using Apache and mod_wsgi</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#other-wsgi-servers">Other WSGI servers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#sourceless-installs">Sourceless Installs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#caveats-of-multiprocessing-mode">Caveats of Multiprocessing Mode</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="plugins.html">Plug-ins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="style.html">Style Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="psp.html">PSP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="userkit.html">UserKit</a></li>
+<li class="toctree-l1"><a class="reference internal" href="taskkit.html">TaskKit</a></li>
+<li class="toctree-l1"><a class="reference internal" href="webutils.html">WebUtils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="miscutils.html">MiscUtils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="testing.html">Testing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ref/index.html">API Reference</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="config.html" title="previous chapter">Configuration</a></li>
+      <li>Next: <a href="plugins.html" title="next chapter">Plug-ins</a></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;1999-2025, Christoph Zwerschke et al.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.2.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+      |
+      <a href="_sources/deploy.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

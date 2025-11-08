@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>List of Changes &#8212; Webware for Python 3 3.1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=27fed22d" />
+    <script src="_static/documentation_options.js?v=dd1205ac"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="copyright" title="Copyright" href="copyright.html" />
+    <link rel="next" title="Migration Guide" href="migrate.html" />
+    <link rel="prev" title="Installation" href="install.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="list-of-changes">
+<span id="id1"></span><h1>List of Changes<a class="headerlink" href="#list-of-changes" title="Link to this heading">¶</a></h1>
+<section id="what-s-new-in-webware-for-python-3-0">
+<h2>What’s new in Webware for Python 3.0<a class="headerlink" href="#what-s-new-in-webware-for-python-3-0" title="Link to this heading">¶</a></h2>
+<p>This is the full list of changes in Webware for Python 3 (first version 3.0.0) compared with Webware for Python 2 (last version 1.2.3):</p>
+<ul class="simple">
+<li><p>Webware for Python 3.0 now requires Python 3.6 or newer, and makes internal use of newer Python features where applicable. Webware applications must now be migrated to or written for Python 3.</p></li>
+<li><p>The “Application” instance is now callable and usable as a WSGI application.</p></li>
+<li><p>The application server (“AppServer” class and subclasses including the “ThreadedAppServer”) and the various adapters and start scripts and other related scripts for the application server are not supported anymore. Instead, Webware applications are now supposed to be served as WSGI applications using a WSGI server such as waitress, which is now used as the development server.</p></li>
+<li><p>The “ASSStreamOut” class has been replaced by a “WSGIStreamOut” class. The “Message” class has been removed, since it was not really used for anything, simplifying the class hierarchy a bit.</p></li>
+<li><p>The Application now has a development flag that can be checked to modify the application and its configuration depending on whether it is running in development or production mode.</p></li>
+<li><p>The custom “install” script has been replaced by a standard “setup” script, Webware for Python 3 is now distributed as a normal Python package that can be installed in the usual way. The “ReleaseHelper” and “setversion” scripts are not used anymore.</p></li>
+<li><p>The “MakeAppWorkDir” script has been moved to a new “Scripts” directory, which now also contains a “WSGIScript” and a “WaitressServer” script which serve as replacements for the old “AppServer” and “Launch” start scripts. These scripts can now be started as subcommands of a new webware console script, which serves as a new common Webware CLI.</p></li>
+<li><p>Instead of the “AutoReloadingAppServer”, you can use the “reload” option of the WaitressServer script which uses hupper to monitor the application files and reload the waitress server if necessary. The “ImportSpy” has been removed.</p></li>
+<li><p>The classes of the core “WebKit” component are now available at the root level of Webware for Python 3, and the WebKit component ceased to exist as a separate plug-in.</p></li>
+<li><p>Some built-in plug-ins are not supported anymore: “CGIWrapper”, “ComKit” and “KidKit”.</p></li>
+<li><p>“MiddleKit” is not a built-in plug-in anymore, but is provided as a separate project on GitHub now (WebwareForPython/w4py3-middlekit).</p></li>
+<li><p>Webware now uses entry points for discovering plug-ins instead of the old plug-in system, and the plug-in API has slightly changed. Existing plug-ins must be adapted to Python 3 and the new plug-in API.</p></li>
+<li><p>The documentation has been moved to a separate directory and is built using Sphinx, instead providing a “Docs” context for Webware and every plug-in, and using custom documentation builders in the install script. The existing content has been reformatted for Sphinx, adapted and supplemented.</p></li>
+<li><p>The various examples have been slightly improved and updated. Demo servlets showing the use of Dominate and Yattag for creating HTML in a Pythonic way have been added.</p></li>
+<li><p>The side bar page layout now uses divs instead of tables.</p></li>
+<li><p>The test suite has been expanded and fully automated using the unit testing framework in the Python standard library. We also use tox to automate various checks and running the test suite with different Python versions.</p></li>
+<li><p>In particular, end-to-end tests using Twill have been replaced by more efficient unit tests using WebTest.</p></li>
+<li><p>Internal assert statements have been removed or replaced with checks raising real errors.</p></li>
+<li><p>The style guide has been slightly revised. We now rely on flake8 and pylint instead of using the custom “checksrc” script.</p></li>
+</ul>
+<p>See also the list of <a class="reference external" href="https://github.com/WebwareForPython/w4py3/releases">releases</a> on GitHub for all changes in newer releases of Webware for Python 3 since the first alpha release 3.0.0a0.</p>
+</section>
+<section id="what-s-new-in-webware-for-python-3-1">
+<h2>What’s new in Webware for Python 3.1<a class="headerlink" href="#what-s-new-in-webware-for-python-3-1" title="Link to this heading">¶</a></h2>
+<p>Webware for Python 3.1 is a minor update making the following changes:</p>
+<ul class="simple">
+<li><p>Webware for Python 3.1 now requires Python 3.10 and supports versions up to Python 3.14.</p></li>
+</ul>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">Webware for Python 3</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">List of Changes</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#what-s-new-in-webware-for-python-3-0">What’s new in Webware for Python 3.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#what-s-new-in-webware-for-python-3-1">What’s new in Webware for Python 3.1</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="migrate.html">Migration Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="copyright.html">Copyright and License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial.html">Beginner Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="appdev.html">Application Development</a></li>
+<li class="toctree-l1"><a class="reference internal" href="config.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="deploy.html">Deployment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="plugins.html">Plug-ins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="style.html">Style Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="psp.html">PSP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="userkit.html">UserKit</a></li>
+<li class="toctree-l1"><a class="reference internal" href="taskkit.html">TaskKit</a></li>
+<li class="toctree-l1"><a class="reference internal" href="webutils.html">WebUtils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="miscutils.html">MiscUtils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="testing.html">Testing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ref/index.html">API Reference</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="install.html" title="previous chapter">Installation</a></li>
+      <li>Next: <a href="migrate.html" title="next chapter">Migration Guide</a></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;1999-2025, Christoph Zwerschke et al.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.2.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+      |
+      <a href="_sources/changes.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

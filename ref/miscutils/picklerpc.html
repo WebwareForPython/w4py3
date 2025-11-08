@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>PickleRPC &#8212; Webware for Python 3 3.1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="../../_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="../../_static/alabaster.css?v=27fed22d" />
+    <script src="../../_static/documentation_options.js?v=dd1205ac"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="copyright" title="Copyright" href="../../copyright.html" />
+    <link rel="prev" title="PickleCache" href="picklecache.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="module-MiscUtils.PickleRPC">
+<span id="picklerpc"></span><h1>PickleRPC<a class="headerlink" href="#module-MiscUtils.PickleRPC" title="Link to this heading">¶</a></h1>
+<p>PickleRPC.py</p>
+<p>PickleRPC provides a Server object for connection to Pickle-RPC servers
+for the purpose of making requests and receiving the responses.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">MiscUtils.PickleRPC</span><span class="w"> </span><span class="kn">import</span> <span class="n">Server</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">server</span> <span class="o">=</span> <span class="n">Server</span><span class="p">(</span><span class="s1">&#39;http://localhost:8080/Examples/PickleRPCExample&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">server</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">20</span><span class="p">)</span>
+<span class="go">200</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">server</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">20</span><span class="p">)</span>
+<span class="go">30</span>
+</pre></div>
+</div>
+<p>See also: Server, PickleRPCServlet, Examples.PickleRPCExample</p>
+<p>UNDER THE HOOD</p>
+<p>Requests look like this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s1">&#39;version&#39;</span><span class="p">:</span>    <span class="mi">1</span><span class="p">,</span>  <span class="c1"># default</span>
+    <span class="s1">&#39;action&#39;</span><span class="p">:</span>     <span class="s1">&#39;call&#39;</span><span class="p">,</span>  <span class="c1"># default</span>
+    <span class="s1">&#39;methodName&#39;</span><span class="p">:</span> <span class="s1">&#39;NAME&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;args&#39;</span><span class="p">:</span>       <span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">,</span> <span class="o">...</span><span class="p">),</span>  <span class="c1"># default = (,)</span>
+    <span class="s1">&#39;keywords&#39;</span><span class="p">:</span>   <span class="p">{</span><span class="s1">&#39;A&#39;</span><span class="p">:</span> <span class="n">A</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">:</span> <span class="n">B</span><span class="p">,</span> <span class="o">...</span><span class="p">}</span>  <span class="c1"># default = {}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Only ‘methodName’ is required since that is the only key without a
+default value.</p>
+<p>Responses look like this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s1">&#39;timeReceived&#39;</span><span class="p">:</span> <span class="n">N</span><span class="p">,</span>
+    <span class="s1">&#39;timeReponded&#39;</span><span class="p">:</span> <span class="n">M</span><span class="p">,</span>
+    <span class="s1">&#39;value&#39;</span><span class="p">:</span> <span class="n">V</span><span class="p">,</span>
+    <span class="s1">&#39;exception&#39;</span><span class="p">:</span> <span class="n">E</span><span class="p">,</span>
+    <span class="s1">&#39;requestError&#39;</span><span class="p">:</span> <span class="n">E</span><span class="p">,</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>‘timeReceived’ is the time the initial request was received.
+‘timeResponded’ is the time at which the response was finished, as
+close to transmission as possible. The times are expressed as
+number of seconds since the Epoch, e.g., <code class="docutils literal notranslate"><span class="pre">time.time()</span></code>.</p>
+<p>Value is whatever the method happened to return.</p>
+<p>Exception may be ‘occurred’ to indicate that an exception
+occurred, the specific exception, such as “KeyError: foo” or the
+entire traceback (as a string), at the discretion of the server.
+It will always be a non-empty string if it is present.</p>
+<p>RequestError is an exception such as “Missing method
+in request.” (with no traceback) that indicates a problem with the
+actual request received by the Pickle-RPC server.</p>
+<p>Value, exception and requestError are all exclusive to each other.</p>
+<p>SECURITY</p>
+<p>Pickle RPC uses the SafeUnpickler class (in this module) to
+prevent unpickling of unauthorized classes.  By default, it
+doesn’t allow _any_ classes to be unpickled.  You can override
+<cite>allowedGlobals()</cite> or <cite>findGlobal()</cite> in a subclass as needed to
+allow specific class instances to be unpickled.</p>
+<p>Note that both <cite>Transport</cite> in this package and <cite>PickleRPCServlet</cite> in
+the Webware main package are derived from <cite>SafeUnpickler</cite>.</p>
+<p>CREDIT</p>
+<p>The implementation of this module was taken directly from Python’s
+xmlrpclib and then transformed from XML-orientation to Pickle-orientation.</p>
+<p>The zlib compression was adapted from code by Skip Montanaro that I found
+here: <a class="reference external" href="http://manatee.mojam.com/~skip/python/">http://manatee.mojam.com/~skip/python/</a></p>
+<dl class="py exception">
+<dt class="sig sig-object py" id="MiscUtils.PickleRPC.Error">
+<em class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">MiscUtils.PickleRPC.</span></span><span class="sig-name descname"><span class="pre">Error</span></span><a class="headerlink" href="#MiscUtils.PickleRPC.Error" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+<p>The abstract exception/error class for all PickleRPC errors.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="MiscUtils.PickleRPC.Error.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#MiscUtils.PickleRPC.Error.__init__" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="MiscUtils.PickleRPC.Error.add_note">
+<span class="sig-name descname"><span class="pre">add_note</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="positional-only-separator o"><abbr title="Positional-only parameter separator (PEP 570)"><span class="pre">/</span></abbr></span></em><span class="sig-paren">)</span><a class="headerlink" href="#MiscUtils.PickleRPC.Error.add_note" title="Link to this definition">¶</a></dt>
+<dd><p>Exception.add_note(note) –
+add a note to the exception</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="MiscUtils.PickleRPC.Error.args">
+<span class="sig-name descname"><span class="pre">args</span></span><a class="headerlink" href="#MiscUtils.PickleRPC.Error.args" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="MiscUtils.PickleRPC.Error.with_traceback">
+<span class="sig-name descname"><span class="pre">with_traceback</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="positional-only-separator o"><abbr title="Positional-only parameter separator (PEP 570)"><span class="pre">/</span></abbr></span></em><span class="sig-paren">)</span><a class="headerlink" href="#MiscUtils.PickleRPC.Error.with_traceback" title="Link to this definition">¶</a></dt>
+<dd><p>Exception.with_traceback(tb) –
+set self.__traceback__ to tb and return self.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="MiscUtils.PickleRPC.InvalidContentTypeError">
+<em class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">MiscUtils.PickleRPC.</span></span><span class="sig-name descname"><span class="pre">InvalidContentTypeError</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">headers</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">content</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#MiscUtils.PickleRPC.InvalidContentTypeError" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#MiscUtils.PickleRPC.ResponseError" title="MiscUtils.PickleRPC.ResponseError"><code class="xref py py-class docutils literal notranslate"><span class="pre">ResponseError</span></code></a></p>
+<p>Invalid content type error.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="MiscUtils.PickleRPC.InvalidContentTypeError.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">headers</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">content</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#MiscUtils.PickleRPC.InvalidContentTypeError.__init__" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="MiscUtils.PickleRPC.InvalidContentTypeError.add_note">
+<span class="sig-name descname"><span class="pre">add_note</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="positional-only-separator o"><abbr title="Positional-only parameter separator (PEP 570)"><span class="pre">/</span></abbr></span></em><span class="sig-paren">)</span><a class="headerlink" href="#MiscUtils.PickleRPC.InvalidContentTypeError.add_note" title="Link to this definition">¶</a></dt>
+<dd><p>Exception.add_note(note) –
+add a note to the exception</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="MiscUtils.PickleRPC.InvalidContentTypeError.args">
+<span class="sig-name descname"><span class="pre">args</span></span><a class="headerlink" href="#MiscUtils.PickleRPC.InvalidContentTypeError.args" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="MiscUtils.PickleRPC.InvalidContentTypeError.with_traceback">
+<span class="sig-name descname"><span class="pre">with_traceback</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="positional-only-separator o"><abbr title="Positional-only parameter separator (PEP 570)"><span class="pre">/</span></abbr></span></em><span class="sig-paren">)</span><a class="headerlink" href="#MiscUtils.PickleRPC.InvalidContentTypeError.with_traceback" title="Link to this definition">¶</a></dt>
+<dd><p>Exception.with_traceback(tb) –
+set self.__traceback__ to tb and return self.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="MiscUtils.PickleRPC.ProtocolError">
+<em class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">MiscUtils.PickleRPC.</span></span><span class="sig-name descname"><span class="pre">ProtocolError</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">url</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">errcode</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">errmsg</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">headers</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#MiscUtils.PickleRPC.ProtocolError" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#MiscUtils.PickleRPC.ResponseError" title="MiscUtils.PickleRPC.ResponseError"><code class="xref py py-class docutils literal notranslate"><span class="pre">ResponseError</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">ProtocolError</span></code></p>
+<p>RPC protocol error.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="MiscUtils.PickleRPC.ProtocolError.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">url</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">errcode</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">errmsg</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">headers</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#MiscUtils.PickleRPC.ProtocolError.__init__" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="MiscUtils.PickleRPC.ProtocolError.add_note">
+<span class="sig-name descname"><span class="pre">add_note</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="positional-only-separator o"><abbr title="Positional-only parameter separator (PEP 570)"><span class="pre">/</span></abbr></span></em><span class="sig-paren">)</span><a class="headerlink" href="#MiscUtils.PickleRPC.ProtocolError.add_note" title="Link to this definition">¶</a></dt>
+<dd><p>Exception.add_note(note) –
+add a note to the exception</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="MiscUtils.PickleRPC.ProtocolError.args">
+<span class="sig-name descname"><span class="pre">args</span></span><a class="headerlink" href="#MiscUtils.PickleRPC.ProtocolError.args" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="MiscUtils.PickleRPC.ProtocolError.with_traceback">
+<span class="sig-name descname"><span class="pre">with_traceback</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="positional-only-separator o"><abbr title="Positional-only parameter separator (PEP 570)"><span class="pre">/</span></abbr></span></em><span class="sig-paren">)</span><a class="headerlink" href="#MiscUtils.PickleRPC.ProtocolError.with_traceback" title="Link to this definition">¶</a></dt>
+<dd><p>Exception.with_traceback(tb) –
+set self.__traceback__ to tb and return self.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="MiscUtils.PickleRPC.RequestError">
+<em class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">MiscUtils.PickleRPC.</span></span><span class="sig-name descname"><span class="pre">RequestError</span></span><a class="headerlink" href="#MiscUtils.PickleRPC.RequestError" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#MiscUtils.PickleRPC.Error" title="MiscUtils.PickleRPC.Error"><code class="xref py py-class docutils literal notranslate"><span class="pre">Error</span></code></a></p>
+<p>Errors originally raised by the server caused by malformed requests.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="MiscUtils.PickleRPC.RequestError.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#MiscUtils.PickleRPC.RequestError.__init__" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="MiscUtils.PickleRPC.RequestError.add_note">
+<span class="sig-name descname"><span class="pre">add_note</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="positional-only-separator o"><abbr title="Positional-only parameter separator (PEP 570)"><span class="pre">/</span></abbr></span></em><span class="sig-paren">)</span><a class="headerlink" href="#MiscUtils.PickleRPC.RequestError.add_note" title="Link to this definition">¶</a></dt>
+<dd><p>Exception.add_note(note) –
+add a note to the exception</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="MiscUtils.PickleRPC.RequestError.args">
+<span class="sig-name descname"><span class="pre">args</span></span><a class="headerlink" href="#MiscUtils.PickleRPC.RequestError.args" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="MiscUtils.PickleRPC.RequestError.with_traceback">
+<span class="sig-name descname"><span class="pre">with_traceback</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="positional-only-separator o"><abbr title="Positional-only parameter separator (PEP 570)"><span class="pre">/</span></abbr></span></em><span class="sig-paren">)</span><a class="headerlink" href="#MiscUtils.PickleRPC.RequestError.with_traceback" title="Link to this definition">¶</a></dt>
+<dd><p>Exception.with_traceback(tb) –
+set self.__traceback__ to tb and return self.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="MiscUtils.PickleRPC.ResponseError">
+<em class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">MiscUtils.PickleRPC.</span></span><span class="sig-name descname"><span class="pre">ResponseError</span></span><a class="headerlink" href="#MiscUtils.PickleRPC.ResponseError" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#MiscUtils.PickleRPC.Error" title="MiscUtils.PickleRPC.Error"><code class="xref py py-class docutils literal notranslate"><span class="pre">Error</span></code></a></p>
+<p>Unhandled exceptions raised when the server was computing a response.</p>
+<dl class="simple">
+<dt>These will indicate errors such as:</dt><dd><ul class="simple">
+<li><p>exception in the actual target method on the server</p></li>
+<li><p>malformed responses</p></li>
+<li><p>non “200 OK” status code responses</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="MiscUtils.PickleRPC.ResponseError.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#MiscUtils.PickleRPC.ResponseError.__init__" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="MiscUtils.PickleRPC.ResponseError.add_note">
+<span class="sig-name descname"><span class="pre">add_note</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="positional-only-separator o"><abbr title="Positional-only parameter separator (PEP 570)"><span class="pre">/</span></abbr></span></em><span class="sig-paren">)</span><a class="headerlink" href="#MiscUtils.PickleRPC.ResponseError.add_note" title="Link to this definition">¶</a></dt>
+<dd><p>Exception.add_note(note) –
+add a note to the exception</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="MiscUtils.PickleRPC.ResponseError.args">
+<span class="sig-name descname"><span class="pre">args</span></span><a class="headerlink" href="#MiscUtils.PickleRPC.ResponseError.args" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="MiscUtils.PickleRPC.ResponseError.with_traceback">
+<span class="sig-name descname"><span class="pre">with_traceback</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="positional-only-separator o"><abbr title="Positional-only parameter separator (PEP 570)"><span class="pre">/</span></abbr></span></em><span class="sig-paren">)</span><a class="headerlink" href="#MiscUtils.PickleRPC.ResponseError.with_traceback" title="Link to this definition">¶</a></dt>
+<dd><p>Exception.with_traceback(tb) –
+set self.__traceback__ to tb and return self.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="MiscUtils.PickleRPC.SafeTransport">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">MiscUtils.PickleRPC.</span></span><span class="sig-name descname"><span class="pre">SafeTransport</span></span><a class="headerlink" href="#MiscUtils.PickleRPC.SafeTransport" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#MiscUtils.PickleRPC.Transport" title="MiscUtils.PickleRPC.Transport"><code class="xref py py-class docutils literal notranslate"><span class="pre">Transport</span></code></a></p>
+<p>Handle an HTTPS transaction to a Pickle-RPC server.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="MiscUtils.PickleRPC.SafeTransport.allowedGlobals">
+<span class="sig-name descname"><span class="pre">allowedGlobals</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#MiscUtils.PickleRPC.SafeTransport.allowedGlobals" title="Link to this definition">¶</a></dt>
+<dd><p>Allowed class names.</p>
+<p>Must return a list of (moduleName, klassName) tuples for all
+classes that you want to allow to be unpickled.</p>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">return</span> <span class="p">[(</span><span class="s1">&#39;datetime&#39;</span><span class="p">,</span> <span class="s1">&#39;date&#39;</span><span class="p">)]</span>
+</pre></div>
+</div>
+<p>Allows datetime.date instances to be unpickled.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="MiscUtils.PickleRPC.SafeTransport.findGlobal">
+<span class="sig-name descname"><span class="pre">findGlobal</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">module</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">klass</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#MiscUtils.PickleRPC.SafeTransport.findGlobal" title="Link to this definition">¶</a></dt>
+<dd><p>Find class name.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="MiscUtils.PickleRPC.SafeTransport.load">
+<span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#MiscUtils.PickleRPC.SafeTransport.load" title="Link to this definition">¶</a></dt>
+<dd><p>Unpickle a file.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="MiscUtils.PickleRPC.SafeTransport.loads">
+<span class="sig-name descname"><span class="pre">loads</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">s</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#MiscUtils.PickleRPC.SafeTransport.loads" title="Link to this definition">¶</a></dt>
+<dd><p>Unpickle a string.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="MiscUtils.PickleRPC.SafeTransport.make_connection">
+<span class="sig-name descname"><span class="pre">make_connection</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">host</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">port</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#MiscUtils.PickleRPC.SafeTransport.make_connection" title="Link to this definition">¶</a></dt>
+<dd><p>Create an HTTPS connection object from a host descriptor.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="MiscUtils.PickleRPC.SafeTransport.parse_response">
+<span class="sig-name descname"><span class="pre">parse_response</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#MiscUtils.PickleRPC.SafeTransport.parse_response" title="Link to this definition">¶</a></dt>
+<dd><p>Read response from input file and parse it.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="MiscUtils.PickleRPC.SafeTransport.parse_response_gzip">
+<span class="sig-name descname"><span class="pre">parse_response_gzip</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#MiscUtils.PickleRPC.SafeTransport.parse_response_gzip" title="Link to this definition">¶</a></dt>
+<dd><p>Read response from input file, decompress it, and parse it.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="MiscUtils.PickleRPC.SafeTransport.request">
+<span class="sig-name descname"><span class="pre">request</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">host</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">handler</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">request_body</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">binary</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">compressed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">acceptCompressedResponse</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#MiscUtils.PickleRPC.SafeTransport.request" title="Link to this definition">¶</a></dt>
+<dd><p>Issue a Pickle-RPC request.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="MiscUtils.PickleRPC.SafeTransport.send_content">
+<span class="sig-name descname"><span class="pre">send_content</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">connection</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">request_body</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">binary</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">compressed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">acceptCompressedResponse</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#MiscUtils.PickleRPC.SafeTransport.send_content" title="Link to this definition">¶</a></dt>
+<dd><p>Send content.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="MiscUtils.PickleRPC.SafeTransport.send_host">
+<span class="sig-name descname"><span class="pre">send_host</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">connection</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">host</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#MiscUtils.PickleRPC.SafeTransport.send_host" title="Link to this definition">¶</a></dt>
+<dd><p>Send host header.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="MiscUtils.PickleRPC.SafeTransport.send_request">
+<span class="sig-name descname"><span class="pre">send_request</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">connection</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">handler</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">request_body</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#MiscUtils.PickleRPC.SafeTransport.send_request" title="Link to this definition">¶</a></dt>
+<dd><p>Send request.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="MiscUtils.PickleRPC.SafeTransport.send_user_agent">
+<span class="sig-name descname"><span class="pre">send_user_agent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">connection</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#MiscUtils.PickleRPC.SafeTransport.send_user_agent" title="Link to this definition">¶</a></dt>
+<dd><p>Send user-agent header.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="MiscUtils.PickleRPC.SafeTransport.user_agent">
+<span class="sig-name descname"><span class="pre">user_agent</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'PickleRPC/1</span> <span class="pre">(Webware</span> <span class="pre">for</span> <span class="pre">Python)'</span></em><a class="headerlink" href="#MiscUtils.PickleRPC.SafeTransport.user_agent" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="MiscUtils.PickleRPC.SafeUnpickler">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">MiscUtils.PickleRPC.</span></span><span class="sig-name descname"><span class="pre">SafeUnpickler</span></span><a class="headerlink" href="#MiscUtils.PickleRPC.SafeUnpickler" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Safe unpickler.</p>
+<p>For security reasons, we don’t want to allow just anyone to unpickle
+anything.  That can cause arbitrary code to be executed.
+So this SafeUnpickler base class is used to control what can be unpickled.
+By default it doesn’t let you unpickle any class instances at all,
+but you can create subclass that overrides allowedGlobals().</p>
+<p>Note that the PickleRPCServlet class in the Webware package is derived from
+this class and uses its load() and loads() methods to do all unpickling.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="MiscUtils.PickleRPC.SafeUnpickler.allowedGlobals">
+<span class="sig-name descname"><span class="pre">allowedGlobals</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#MiscUtils.PickleRPC.SafeUnpickler.allowedGlobals" title="Link to this definition">¶</a></dt>
+<dd><p>Allowed class names.</p>
+<p>Must return a list of (moduleName, klassName) tuples for all
+classes that you want to allow to be unpickled.</p>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">return</span> <span class="p">[(</span><span class="s1">&#39;datetime&#39;</span><span class="p">,</span> <span class="s1">&#39;date&#39;</span><span class="p">)]</span>
+</pre></div>
+</div>
+<p>Allows datetime.date instances to be unpickled.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="MiscUtils.PickleRPC.SafeUnpickler.findGlobal">
+<span class="sig-name descname"><span class="pre">findGlobal</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">module</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">klass</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#MiscUtils.PickleRPC.SafeUnpickler.findGlobal" title="Link to this definition">¶</a></dt>
+<dd><p>Find class name.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="MiscUtils.PickleRPC.SafeUnpickler.load">
+<span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#MiscUtils.PickleRPC.SafeUnpickler.load" title="Link to this definition">¶</a></dt>
+<dd><p>Unpickle a file.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="MiscUtils.PickleRPC.SafeUnpickler.loads">
+<span class="sig-name descname"><span class="pre">loads</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">s</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#MiscUtils.PickleRPC.SafeUnpickler.loads" title="Link to this definition">¶</a></dt>
+<dd><p>Unpickle a string.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="MiscUtils.PickleRPC.Server">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">MiscUtils.PickleRPC.</span></span><span class="sig-name descname"><span class="pre">Server</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">uri</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transport</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">binary</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">compressRequest</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">acceptCompressedResponse</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#MiscUtils.PickleRPC.Server" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>uri [,options] -&gt; a logical connection to an XML-RPC server</p>
+<p>uri is the connection point on the server, given as
+scheme://host/target.</p>
+<p>The standard implementation always supports the “http” scheme.
+If SSL socket support is available, it also supports “https”.</p>
+<p>If the target part and the slash preceding it are both omitted,
+“/PickleRPC” is assumed.</p>
+<p>See the module doc string for more information.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="MiscUtils.PickleRPC.Server.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">uri</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transport</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">binary</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">compressRequest</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">acceptCompressedResponse</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#MiscUtils.PickleRPC.Server.__init__" title="Link to this definition">¶</a></dt>
+<dd><p>Establish a “logical” server connection.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="MiscUtils.PickleRPC.ServerProxy">
+<span class="sig-prename descclassname"><span class="pre">MiscUtils.PickleRPC.</span></span><span class="sig-name descname"><span class="pre">ServerProxy</span></span><a class="headerlink" href="#MiscUtils.PickleRPC.ServerProxy" title="Link to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#MiscUtils.PickleRPC.Server" title="MiscUtils.PickleRPC.Server"><code class="xref py py-class docutils literal notranslate"><span class="pre">Server</span></code></a></p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="MiscUtils.PickleRPC.Transport">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">MiscUtils.PickleRPC.</span></span><span class="sig-name descname"><span class="pre">Transport</span></span><a class="headerlink" href="#MiscUtils.PickleRPC.Transport" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#MiscUtils.PickleRPC.SafeUnpickler" title="MiscUtils.PickleRPC.SafeUnpickler"><code class="xref py py-class docutils literal notranslate"><span class="pre">SafeUnpickler</span></code></a></p>
+<p>Handle an HTTP transaction to a Pickle-RPC server.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="MiscUtils.PickleRPC.Transport.allowedGlobals">
+<span class="sig-name descname"><span class="pre">allowedGlobals</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#MiscUtils.PickleRPC.Transport.allowedGlobals" title="Link to this definition">¶</a></dt>
+<dd><p>Allowed class names.</p>
+<p>Must return a list of (moduleName, klassName) tuples for all
+classes that you want to allow to be unpickled.</p>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">return</span> <span class="p">[(</span><span class="s1">&#39;datetime&#39;</span><span class="p">,</span> <span class="s1">&#39;date&#39;</span><span class="p">)]</span>
+</pre></div>
+</div>
+<p>Allows datetime.date instances to be unpickled.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="MiscUtils.PickleRPC.Transport.findGlobal">
+<span class="sig-name descname"><span class="pre">findGlobal</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">module</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">klass</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#MiscUtils.PickleRPC.Transport.findGlobal" title="Link to this definition">¶</a></dt>
+<dd><p>Find class name.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="MiscUtils.PickleRPC.Transport.load">
+<span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#MiscUtils.PickleRPC.Transport.load" title="Link to this definition">¶</a></dt>
+<dd><p>Unpickle a file.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="MiscUtils.PickleRPC.Transport.loads">
+<span class="sig-name descname"><span class="pre">loads</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">s</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#MiscUtils.PickleRPC.Transport.loads" title="Link to this definition">¶</a></dt>
+<dd><p>Unpickle a string.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="MiscUtils.PickleRPC.Transport.make_connection">
+<span class="sig-name descname"><span class="pre">make_connection</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">host</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">port</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#MiscUtils.PickleRPC.Transport.make_connection" title="Link to this definition">¶</a></dt>
+<dd><p>Create an HTTP connection object from a host descriptor.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="MiscUtils.PickleRPC.Transport.parse_response">
+<span class="sig-name descname"><span class="pre">parse_response</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#MiscUtils.PickleRPC.Transport.parse_response" title="Link to this definition">¶</a></dt>
+<dd><p>Read response from input file and parse it.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="MiscUtils.PickleRPC.Transport.parse_response_gzip">
+<span class="sig-name descname"><span class="pre">parse_response_gzip</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#MiscUtils.PickleRPC.Transport.parse_response_gzip" title="Link to this definition">¶</a></dt>
+<dd><p>Read response from input file, decompress it, and parse it.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="MiscUtils.PickleRPC.Transport.request">
+<span class="sig-name descname"><span class="pre">request</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">host</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">handler</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">request_body</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">binary</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">compressed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">acceptCompressedResponse</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#MiscUtils.PickleRPC.Transport.request" title="Link to this definition">¶</a></dt>
+<dd><p>Issue a Pickle-RPC request.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="MiscUtils.PickleRPC.Transport.send_content">
+<span class="sig-name descname"><span class="pre">send_content</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">connection</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">request_body</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">binary</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">compressed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">acceptCompressedResponse</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#MiscUtils.PickleRPC.Transport.send_content" title="Link to this definition">¶</a></dt>
+<dd><p>Send content.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="MiscUtils.PickleRPC.Transport.send_host">
+<span class="sig-name descname"><span class="pre">send_host</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">connection</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">host</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#MiscUtils.PickleRPC.Transport.send_host" title="Link to this definition">¶</a></dt>
+<dd><p>Send host header.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="MiscUtils.PickleRPC.Transport.send_request">
+<span class="sig-name descname"><span class="pre">send_request</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">connection</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">handler</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">request_body</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#MiscUtils.PickleRPC.Transport.send_request" title="Link to this definition">¶</a></dt>
+<dd><p>Send request.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="MiscUtils.PickleRPC.Transport.send_user_agent">
+<span class="sig-name descname"><span class="pre">send_user_agent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">connection</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#MiscUtils.PickleRPC.Transport.send_user_agent" title="Link to this definition">¶</a></dt>
+<dd><p>Send user-agent header.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="MiscUtils.PickleRPC.Transport.user_agent">
+<span class="sig-name descname"><span class="pre">user_agent</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'PickleRPC/1</span> <span class="pre">(Webware</span> <span class="pre">for</span> <span class="pre">Python)'</span></em><a class="headerlink" href="#MiscUtils.PickleRPC.Transport.user_agent" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../index.html">Webware for Python 3</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../changes.html">List of Changes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../migrate.html">Migration Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../copyright.html">Copyright and License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorial.html">Beginner Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../appdev.html">Application Development</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../config.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../deploy.html">Deployment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../plugins.html">Plug-ins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../style.html">Style Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../psp.html">PSP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../userkit.html">UserKit</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../taskkit.html">TaskKit</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../webutils.html">WebUtils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../miscutils.html">MiscUtils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../testing.html">Testing</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../core/index.html">Core Classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../psp/index.html">PSP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../userkit/index.html">UserKit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../taskkit/index.html">TaskKit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../webutils/index.html">WebUtils</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">MiscUtils</a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">API Reference</a><ul>
+  <li><a href="index.html">MiscUtils</a><ul>
+      <li>Previous: <a href="picklecache.html" title="previous chapter">PickleCache</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;1999-2025, Christoph Zwerschke et al.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.2.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+      |
+      <a href="../../_sources/ref/miscutils/picklerpc.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

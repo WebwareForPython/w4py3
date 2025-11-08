@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>WSGIStreamOut &#8212; Webware for Python 3 3.1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="../../_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="../../_static/alabaster.css?v=27fed22d" />
+    <script src="../../_static/documentation_options.js?v=dd1205ac"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="copyright" title="Copyright" href="../../copyright.html" />
+    <link rel="next" title="XMLRPCServlet" href="xmlrpcservlet.html" />
+    <link rel="prev" title="URLParser" href="urlparser.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="module-WSGIStreamOut">
+<span id="wsgistreamout"></span><h1>WSGIStreamOut<a class="headerlink" href="#module-WSGIStreamOut" title="Link to this heading">¶</a></h1>
+<p>This module defines a class for writing responses using WSGI.</p>
+<dl class="py exception">
+<dt class="sig sig-object py" id="WSGIStreamOut.InvalidCommandSequence">
+<em class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">WSGIStreamOut.</span></span><span class="sig-name descname"><span class="pre">InvalidCommandSequence</span></span><a class="headerlink" href="#WSGIStreamOut.InvalidCommandSequence" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ConnectionError</span></code></p>
+<p>Invalid command sequence error</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="WSGIStreamOut.InvalidCommandSequence.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#WSGIStreamOut.InvalidCommandSequence.__init__" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="WSGIStreamOut.InvalidCommandSequence.add_note">
+<span class="sig-name descname"><span class="pre">add_note</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="positional-only-separator o"><abbr title="Positional-only parameter separator (PEP 570)"><span class="pre">/</span></abbr></span></em><span class="sig-paren">)</span><a class="headerlink" href="#WSGIStreamOut.InvalidCommandSequence.add_note" title="Link to this definition">¶</a></dt>
+<dd><p>Exception.add_note(note) –
+add a note to the exception</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="WSGIStreamOut.InvalidCommandSequence.args">
+<span class="sig-name descname"><span class="pre">args</span></span><a class="headerlink" href="#WSGIStreamOut.InvalidCommandSequence.args" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="WSGIStreamOut.InvalidCommandSequence.characters_written">
+<span class="sig-name descname"><span class="pre">characters_written</span></span><a class="headerlink" href="#WSGIStreamOut.InvalidCommandSequence.characters_written" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="WSGIStreamOut.InvalidCommandSequence.errno">
+<span class="sig-name descname"><span class="pre">errno</span></span><a class="headerlink" href="#WSGIStreamOut.InvalidCommandSequence.errno" title="Link to this definition">¶</a></dt>
+<dd><p>POSIX exception code</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="WSGIStreamOut.InvalidCommandSequence.filename">
+<span class="sig-name descname"><span class="pre">filename</span></span><a class="headerlink" href="#WSGIStreamOut.InvalidCommandSequence.filename" title="Link to this definition">¶</a></dt>
+<dd><p>exception filename</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="WSGIStreamOut.InvalidCommandSequence.filename2">
+<span class="sig-name descname"><span class="pre">filename2</span></span><a class="headerlink" href="#WSGIStreamOut.InvalidCommandSequence.filename2" title="Link to this definition">¶</a></dt>
+<dd><p>second exception filename</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="WSGIStreamOut.InvalidCommandSequence.strerror">
+<span class="sig-name descname"><span class="pre">strerror</span></span><a class="headerlink" href="#WSGIStreamOut.InvalidCommandSequence.strerror" title="Link to this definition">¶</a></dt>
+<dd><p>exception strerror</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="WSGIStreamOut.InvalidCommandSequence.with_traceback">
+<span class="sig-name descname"><span class="pre">with_traceback</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="positional-only-separator o"><abbr title="Positional-only parameter separator (PEP 570)"><span class="pre">/</span></abbr></span></em><span class="sig-paren">)</span><a class="headerlink" href="#WSGIStreamOut.InvalidCommandSequence.with_traceback" title="Link to this definition">¶</a></dt>
+<dd><p>Exception.with_traceback(tb) –
+set self.__traceback__ to tb and return self.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="WSGIStreamOut.WSGIStreamOut">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">WSGIStreamOut.</span></span><span class="sig-name descname"><span class="pre">WSGIStreamOut</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">startResponse</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">autoCommit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bufferSize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">8192</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">useWrite</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">encoding</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'utf-8'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#WSGIStreamOut.WSGIStreamOut" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>This is a response stream to the client using WSGI.</p>
+<p>The key attributes of this class are:</p>
+<dl class="simple">
+<dt><cite>_startResponse</cite>:</dt><dd><p>The start_response() function that is part of the WSGI protocol.</p>
+</dd>
+<dt><cite>_autoCommit</cite>:</dt><dd><p>If True, the stream will automatically start sending data
+once it has accumulated <cite>_bufferSize</cite> data. This means that
+it will ask the response to commit itself, without developer
+interaction. By default, this is set to False.</p>
+</dd>
+<dt><cite>_bufferSize</cite>:</dt><dd><p>The size of the data buffer. This is only used when autocommit
+is True. If not using autocommit, the whole response is
+buffered and sent in one shot when the servlet is done.</p>
+</dd>
+<dt><cite>_useWrite</cite>:</dt><dd><p>Whether the write callable that is returned by start_response()
+shall be used to deliver the response.</p>
+</dd>
+<dt><cite>flush()</cite>:</dt><dd><p>Send the accumulated response data now. Will ask the <cite>Response</cite>
+to commit if it hasn’t already done so.</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="WSGIStreamOut.WSGIStreamOut.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">startResponse</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">autoCommit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bufferSize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">8192</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">useWrite</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">encoding</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'utf-8'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#WSGIStreamOut.WSGIStreamOut.__init__" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="WSGIStreamOut.WSGIStreamOut.autoCommit">
+<span class="sig-name descname"><span class="pre">autoCommit</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#WSGIStreamOut.WSGIStreamOut.autoCommit" title="Link to this definition">¶</a></dt>
+<dd><p>Get the auto commit mode.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="WSGIStreamOut.WSGIStreamOut.buffer">
+<span class="sig-name descname"><span class="pre">buffer</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#WSGIStreamOut.WSGIStreamOut.buffer" title="Link to this definition">¶</a></dt>
+<dd><p>Return accumulated data which has not yet been flushed.</p>
+<p>We want to be able to get at this data without having to call
+flush() first, so that we can (for example) integrate automatic
+HTML validation.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="WSGIStreamOut.WSGIStreamOut.bufferSize">
+<span class="sig-name descname"><span class="pre">bufferSize</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#WSGIStreamOut.WSGIStreamOut.bufferSize" title="Link to this definition">¶</a></dt>
+<dd><p>Get the buffer size.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="WSGIStreamOut.WSGIStreamOut.clear">
+<span class="sig-name descname"><span class="pre">clear</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#WSGIStreamOut.WSGIStreamOut.clear" title="Link to this definition">¶</a></dt>
+<dd><p>Try to clear any accumulated response data.</p>
+<p>Will fail if the response is already committed.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="WSGIStreamOut.WSGIStreamOut.close">
+<span class="sig-name descname"><span class="pre">close</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#WSGIStreamOut.WSGIStreamOut.close" title="Link to this definition">¶</a></dt>
+<dd><p>Close this buffer. No more data may be sent.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="WSGIStreamOut.WSGIStreamOut.closed">
+<span class="sig-name descname"><span class="pre">closed</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#WSGIStreamOut.WSGIStreamOut.closed" title="Link to this definition">¶</a></dt>
+<dd><p>Check whether we are closed to new data.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="WSGIStreamOut.WSGIStreamOut.commit">
+<span class="sig-name descname"><span class="pre">commit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">autoCommit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#WSGIStreamOut.WSGIStreamOut.commit" title="Link to this definition">¶</a></dt>
+<dd><p>Called by the Response to tell us to go.</p>
+<p>If <cite>_autoCommit</cite> is True, then we will be placed into autoCommit mode.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="WSGIStreamOut.WSGIStreamOut.committed">
+<span class="sig-name descname"><span class="pre">committed</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#WSGIStreamOut.WSGIStreamOut.committed" title="Link to this definition">¶</a></dt>
+<dd><p>Check whether the outptu is already committed</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="WSGIStreamOut.WSGIStreamOut.flush">
+<span class="sig-name descname"><span class="pre">flush</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#WSGIStreamOut.WSGIStreamOut.flush" title="Link to this definition">¶</a></dt>
+<dd><p>Flush stream.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="WSGIStreamOut.WSGIStreamOut.iterable">
+<span class="sig-name descname"><span class="pre">iterable</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#WSGIStreamOut.WSGIStreamOut.iterable" title="Link to this definition">¶</a></dt>
+<dd><p>Return the WSGI iterable.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="WSGIStreamOut.WSGIStreamOut.needCommit">
+<span class="sig-name descname"><span class="pre">needCommit</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#WSGIStreamOut.WSGIStreamOut.needCommit" title="Link to this definition">¶</a></dt>
+<dd><p>Request for commitment.</p>
+<p>Called by the <cite>HTTPResponse</cite> instance that is using this instance
+to ask if the response needs to be prepared to be delivered.
+The response should then commit its headers, etc.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="WSGIStreamOut.WSGIStreamOut.pop">
+<span class="sig-name descname"><span class="pre">pop</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">count</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#WSGIStreamOut.WSGIStreamOut.pop" title="Link to this definition">¶</a></dt>
+<dd><p>Remove count bytes from the front of the buffer.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="WSGIStreamOut.WSGIStreamOut.prepend">
+<span class="sig-name descname"><span class="pre">prepend</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">output</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#WSGIStreamOut.WSGIStreamOut.prepend" title="Link to this definition">¶</a></dt>
+<dd><p>Add the output to the front of the response buffer.</p>
+<p>The output may be a byte string or anything that can be converted
+to a string and encoded to a byte string using the output encoding.</p>
+<p>Invalid if we are already committed.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="WSGIStreamOut.WSGIStreamOut.setAutoCommit">
+<span class="sig-name descname"><span class="pre">setAutoCommit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">autoCommit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#WSGIStreamOut.WSGIStreamOut.setAutoCommit" title="Link to this definition">¶</a></dt>
+<dd><p>Set the auto commit mode.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="WSGIStreamOut.WSGIStreamOut.setBufferSize">
+<span class="sig-name descname"><span class="pre">setBufferSize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bufferSize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">8192</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#WSGIStreamOut.WSGIStreamOut.setBufferSize" title="Link to this definition">¶</a></dt>
+<dd><p>Set the buffer size.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="WSGIStreamOut.WSGIStreamOut.size">
+<span class="sig-name descname"><span class="pre">size</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#WSGIStreamOut.WSGIStreamOut.size" title="Link to this definition">¶</a></dt>
+<dd><p>Return the current size of the data held here.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="WSGIStreamOut.WSGIStreamOut.startResponse">
+<span class="sig-name descname"><span class="pre">startResponse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">status</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">headers</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#WSGIStreamOut.WSGIStreamOut.startResponse" title="Link to this definition">¶</a></dt>
+<dd><p>Start the response with the given status and headers.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="WSGIStreamOut.WSGIStreamOut.write">
+<span class="sig-name descname"><span class="pre">write</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">output</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#WSGIStreamOut.WSGIStreamOut.write" title="Link to this definition">¶</a></dt>
+<dd><p>Write output to the buffer.</p>
+<p>The output may be a byte string or anything that can be converted
+to a string and encoded to a byte string using the output encoding.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../index.html">Webware for Python 3</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../changes.html">List of Changes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../migrate.html">Migration Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../copyright.html">Copyright and License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorial.html">Beginner Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../appdev.html">Application Development</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../config.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../deploy.html">Deployment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../plugins.html">Plug-ins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../style.html">Style Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../psp.html">PSP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../userkit.html">UserKit</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../taskkit.html">TaskKit</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../webutils.html">WebUtils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../miscutils.html">MiscUtils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../testing.html">Testing</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Core Classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../psp/index.html">PSP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../userkit/index.html">UserKit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../taskkit/index.html">TaskKit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../webutils/index.html">WebUtils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../miscutils/index.html">MiscUtils</a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">API Reference</a><ul>
+  <li><a href="index.html">Core Classes</a><ul>
+      <li>Previous: <a href="urlparser.html" title="previous chapter">URLParser</a></li>
+      <li>Next: <a href="xmlrpcservlet.html" title="next chapter">XMLRPCServlet</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;1999-2025, Christoph Zwerschke et al.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.2.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+      |
+      <a href="../../_sources/ref/core/wsgistreamout.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

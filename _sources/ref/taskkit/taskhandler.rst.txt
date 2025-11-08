@@ -1,0 +1,4 @@
+TaskHandler
+-----------
+
+.. automodule:: TaskKit.TaskHandler
