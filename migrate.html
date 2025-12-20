@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Migration Guide &#8212; Webware for Python 3 3.1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=27fed22d" />
+    <script src="_static/documentation_options.js?v=dd1205ac"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="copyright" title="Copyright" href="copyright.html" />
+    <link rel="next" title="Copyright and License" href="copyright.html" />
+    <link rel="prev" title="List of Changes" href="changes.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="migration-guide">
+<span id="id1"></span><h1>Migration Guide<a class="headerlink" href="#migration-guide" title="Link to this heading">¶</a></h1>
+<p>In this chapter we try to give some advice on what needs to be done to migrate an existing Webware for Python application to Webware for Python 3.</p>
+<p>Regarding the API, we tried to stay compatible with Webware for Python 2 as much as possible, even though modern Python uses different naming conventions  and prefers the use of properties over getter and setter methods. So, in this regard, we expect a migration to Webware for Python 3 to be very smooth. The main points in a migration will be the conversion of the application from Python 2 to Python 3. the adaptation to the use of the WSGI standard instead of the custom application server, and maybe the usage of Webware plug-ins that are not supported anymore and may need to be migrated as well.</p>
+<section id="check-which-webware-plug-ins-you-were-using">
+<h2>Check which Webware plug-ins you were using<a class="headerlink" href="#check-which-webware-plug-ins-you-were-using" title="Link to this heading">¶</a></h2>
+<p>First you should check whether the plug-ins your application is using are still available as built-ins plugin of Webware for Python 3 (<a class="reference external" href="https://github.com/WebwareForPython/w4py3">w4py3</a>) or as externally provided plug-ins. PSP is still provided as a built-in plug-in. MiddleKit is now provided as an external plug-in on GitHub (<a class="reference external" href="https://github.com/WebwareForPython/w4py3-middlekit">w4py3-middlekit</a>). The “COMKit”, “CGIWrapper” and “KidKit” built-in plug-ins have been discontinued. Other external plug-ins that have been developed for Webware for Python 2 must first be ported to Webware for Python 3 before you can use them. See the section on <a class="reference internal" href="plugins.html#plug-ins"><span class="std std-ref">Plug-ins</span></a> for details on how to write plug-ins for Webware for Python 3.</p>
+</section>
+<section id="migrate-your-application-to-python-3">
+<h2>Migrate your application to Python 3<a class="headerlink" href="#migrate-your-application-to-python-3" title="Link to this heading">¶</a></h2>
+<p>The main migration effort will be porting your Webware application from Python 2 to Python 3. More precisely, Webware for Python 3.0 requires Python 3.6 to 3.12, while Webware for Python 3.1 requires Python 3.10 to 3.14. This effort is necessary anyway, if you want to keep your Webware application alive for some more years, because the Python foundation declared to end Python 2 support on January 1st 2020, which means that Python 2 will also not be supported by newer operating systems anymore and not even get security updates anymore. The positive aspect of this is that your Webware application will run slightly faster and you can now make use of all the modern Python features and libraries in your application. Particularly, f-strings can be very handy when creating Webware applications.</p>
+<p>We will not go into the details of migrating your application from Python 2 to Python 3 here, since much good advice is already available on the Internet, for instance:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://docs.python.org/3/howto/pyporting.html">Porting Python 2 Code to Python 3</a> (Brett Cannon)</p></li>
+<li><p><a class="reference external" href="http://python3porting.com/">Supporting Python 3: An in-depth guide</a> (Lennart Regebro)</p></li>
+<li><p><a class="reference external" href="https://portingguide.readthedocs.io/en/latest/">The Conservative Python 3 Porting Guide</a> (Peter Viktorin et al)</p></li>
+<li><p><a class="reference external" href="https://www.digitalocean.com/community/tutorials/how-to-port-python-2-code-to-python-3/">How To Port Python 2 Code to Python 3</a> (Lisa Tagliaferri)</p></li>
+<li><p><a class="reference external" href="https://www.techrepublic.com/article/migrating-from-python-2-to-python-3-a-guide-to-preparing-for-the-2020-deadline/">Migrating from Python 2 to Python 3</a> (Nick Heath)</p></li>
+<li><p><a class="reference external" href="https://realpython.com/courses/migrating-applications-python-2-python-3/">Migrating Applications From Python 2 to Python 3</a> (Mahdi Yusuf)</p></li>
+</ul>
+<p>Note that some of the how-tos also explain how to create code that is backward compatible with Python 2, which is much more difficult than just porting to Python 3, as we can do when migrating a Webware application to Python 3. So don’t be frightened by the seeming complexity of the task – it is probably much easier than you may think.</p>
+<p>One of the biggest problems when migrating a Python 2 application to Python 3 is often the fact that in Python 3, strings are now always Unicode, while in Python 2, the native strings were byte strings and you had to add a “u” prefix to indicate that a string should be Unicode. However, this should not be a big issue when converting a Webware for Python application. Code such as <code class="docutils literal notranslate"><span class="pre">self.write('&lt;p&gt;Hello,</span> <span class="pre">World!&lt;/p&gt;')</span></code> does not need to be modified. The fact that the string that is written to the output stream had been a byte string in Python 2 and is a Unicode string now in Python 3 is a detail that you as the application developer do not need to care about. Webware for Python 3 will encode everything properly to UTF-8 for you behind the scenes. If necessary, you can also change the output encoding from UTF-8 to something else with the <code class="docutils literal notranslate"><span class="pre">OutputEncoding</span></code> setting in the application configuration, but nowadays, UTF-8 is the usual and normally best choice.</p>
+<p>Traditionally, Webware applications used simple print statements to output error or debug messages for logging or debugging purposes. You will need to change these print statements with print function calls when migrating from Python 2 to Python 3. In a future version of Webware for Python, we may change this and support a proper logging mechanism instead.</p>
+</section>
+<section id="use-a-wsgi-server-instead-of-the-webkit-application-server">
+<h2>Use a WSGI server instead of the WebKit application server<a class="headerlink" href="#use-a-wsgi-server-instead-of-the-webkit-application-server" title="Link to this heading">¶</a></h2>
+<p>The other big change is that instead of using the custom “WebKit” application server, Webware for Python 3 utilizes the WSGI standard as the only way of serving applications. You will need to adapt your deployment accordingly. See the section on <a class="reference internal" href="deploy.html#deployment"><span class="std std-ref">Deployment</span></a> for instructions on how to get your application into production using WSGI.</p>
+<p>Search your application for direct references to the <code class="docutils literal notranslate"><span class="pre">AppServer</span></code> instance which does not exist anymore in Webware for Python 3. In most cases, you can replace these with references to the <code class="docutils literal notranslate"><span class="pre">Application</span></code> instance which also serves as the WSGI callable.</p>
+<p>Also, search for references to the former <code class="docutils literal notranslate"><span class="pre">WebKit</span></code> package. This package does not exist anymore as separate plug-in in Webware for Python 3, its classes can now be found directly in the top level package of Webware for Python 3. So an import statement like <code class="docutils literal notranslate"><span class="pre">from</span> <span class="pre">WebKit.Page</span> <span class="pre">import</span> <span class="pre">Page</span></code> should be changed to a simple <code class="docutils literal notranslate"><span class="pre">from</span> <span class="pre">Page</span> <span class="pre">import</span> <span class="pre">Page</span></code>.</p>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">Webware for Python 3</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changes.html">List of Changes</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Migration Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#check-which-webware-plug-ins-you-were-using">Check which Webware plug-ins you were using</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#migrate-your-application-to-python-3">Migrate your application to Python 3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#use-a-wsgi-server-instead-of-the-webkit-application-server">Use a WSGI server instead of the WebKit application server</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="copyright.html">Copyright and License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial.html">Beginner Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="appdev.html">Application Development</a></li>
+<li class="toctree-l1"><a class="reference internal" href="config.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="deploy.html">Deployment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="plugins.html">Plug-ins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="style.html">Style Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="psp.html">PSP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="userkit.html">UserKit</a></li>
+<li class="toctree-l1"><a class="reference internal" href="taskkit.html">TaskKit</a></li>
+<li class="toctree-l1"><a class="reference internal" href="webutils.html">WebUtils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="miscutils.html">MiscUtils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="testing.html">Testing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ref/index.html">API Reference</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="changes.html" title="previous chapter">List of Changes</a></li>
+      <li>Next: <a href="copyright.html" title="next chapter">Copyright and License</a></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;1999-2025, Christoph Zwerschke et al.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.2.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+      |
+      <a href="_sources/migrate.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

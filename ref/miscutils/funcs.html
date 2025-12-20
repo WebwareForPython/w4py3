@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Funcs &#8212; Webware for Python 3 3.1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="../../_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="../../_static/alabaster.css?v=27fed22d" />
+    <script src="../../_static/documentation_options.js?v=dd1205ac"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="copyright" title="Copyright" href="../../copyright.html" />
+    <link rel="next" title="MixIn" href="mixin.html" />
+    <link rel="prev" title="Error" href="error.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="module-MiscUtils.Funcs">
+<span id="funcs"></span><h1>Funcs<a class="headerlink" href="#module-MiscUtils.Funcs" title="Link to this heading">¶</a></h1>
+<p>MiscUtils.Funcs</p>
+<p>This module holds functions that don’t fit in anywhere else.</p>
+<p>You can safely import * from MiscUtils.Funcs if you like.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="MiscUtils.Funcs.asclocaltime">
+<span class="sig-prename descclassname"><span class="pre">MiscUtils.Funcs.</span></span><span class="sig-name descname"><span class="pre">asclocaltime</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">t</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#MiscUtils.Funcs.asclocaltime" title="Link to this definition">¶</a></dt>
+<dd><p>Return a readable string of the current, local time.</p>
+<p>Useful for time stamps in log files.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="MiscUtils.Funcs.charWrap">
+<span class="sig-prename descclassname"><span class="pre">MiscUtils.Funcs.</span></span><span class="sig-name descname"><span class="pre">charWrap</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">s</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">width</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hanging</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#MiscUtils.Funcs.charWrap" title="Link to this definition">¶</a></dt>
+<dd><p>Word wrap a string.</p>
+<p>Return a new version of the string word wrapped with the given width
+and hanging indent. The font is assumed to be monospaced.</p>
+<p>This can be useful for including text between <code class="docutils literal notranslate"><span class="pre">&lt;pre&gt;...&lt;/pre&gt;</span></code> tags,
+since <code class="docutils literal notranslate"><span class="pre">&lt;pre&gt;</span></code> will not word wrap, and for lengthy lines, will increase
+the width of a web page.</p>
+<p>It can also be used to help delineate the entries in log-style
+output by passing hanging=4.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="MiscUtils.Funcs.commas">
+<span class="sig-prename descclassname"><span class="pre">MiscUtils.Funcs.</span></span><span class="sig-name descname"><span class="pre">commas</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">number</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#MiscUtils.Funcs.commas" title="Link to this definition">¶</a></dt>
+<dd><p>Insert commas in a number.</p>
+<p>Return the given number as a string with commas to separate
+the thousands positions.</p>
+<p>The number can be a float, int, long or string. Returns None for None.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="MiscUtils.Funcs.excstr">
+<span class="sig-prename descclassname"><span class="pre">MiscUtils.Funcs.</span></span><span class="sig-name descname"><span class="pre">excstr</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">e</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#MiscUtils.Funcs.excstr" title="Link to this definition">¶</a></dt>
+<dd><p>Return a string for the exception.</p>
+<p>The string will be in the format that Python normally outputs
+in interactive shells and such:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">ExceptionName</span><span class="o">&gt;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">message</span><span class="o">&gt;</span>
+<span class="ne">AttributeError</span><span class="p">:</span> <span class="s1">&#39;object&#39;</span> <span class="nb">object</span> <span class="n">has</span> <span class="n">no</span> <span class="n">attribute</span> <span class="s1">&#39;bar&#39;</span>
+</pre></div>
+</div>
+<p>Neither str(e) nor repr(e) do that.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="MiscUtils.Funcs.hostName">
+<span class="sig-prename descclassname"><span class="pre">MiscUtils.Funcs.</span></span><span class="sig-name descname"><span class="pre">hostName</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#MiscUtils.Funcs.hostName" title="Link to this definition">¶</a></dt>
+<dd><p>Return the host name.</p>
+<p>The name is taken first from the os environment and failing that,
+from the ‘hostname’ executable. May return None if neither attempt
+succeeded. The environment keys checked are HOST and HOSTNAME,
+both upper and lower case.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="MiscUtils.Funcs.localIP">
+<span class="sig-prename descclassname"><span class="pre">MiscUtils.Funcs.</span></span><span class="sig-name descname"><span class="pre">localIP</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">remote</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">('www.yahoo.com',</span> <span class="pre">80)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">useCache</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#MiscUtils.Funcs.localIP" title="Link to this definition">¶</a></dt>
+<dd><p>Get the “public” address of the local machine.</p>
+<p>This is the address which is connected to the general Internet.</p>
+<p>This function connects to a remote HTTP server the first time it is
+invoked (or every time it is invoked with useCache=0). If that is
+not acceptable, pass remote=None, but be warned that the result is
+less likely to be externally visible.</p>
+<p>Getting your local ip is actually quite complex. If this function
+is not serving your needs then you probably need to think deeply
+about what you really want and how your network is really set up.
+Search comp.lang.python for “local ip” for more information.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="MiscUtils.Funcs.localTimeDelta">
+<span class="sig-prename descclassname"><span class="pre">MiscUtils.Funcs.</span></span><span class="sig-name descname"><span class="pre">localTimeDelta</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">t</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#MiscUtils.Funcs.localTimeDelta" title="Link to this definition">¶</a></dt>
+<dd><p>Return timedelta of local zone from GMT.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="MiscUtils.Funcs.positiveId">
+<span class="sig-prename descclassname"><span class="pre">MiscUtils.Funcs.</span></span><span class="sig-name descname"><span class="pre">positiveId</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#MiscUtils.Funcs.positiveId" title="Link to this definition">¶</a></dt>
+<dd><p>Return id(obj) as a non-negative integer.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="MiscUtils.Funcs.safeDescription">
+<span class="sig-prename descclassname"><span class="pre">MiscUtils.Funcs.</span></span><span class="sig-name descname"><span class="pre">safeDescription</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">what</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'what'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#MiscUtils.Funcs.safeDescription" title="Link to this definition">¶</a></dt>
+<dd><p>Return the repr() of obj and its class (or type) for help in debugging.</p>
+<p>A major benefit here is that exceptions from repr() are consumed.
+This is important in places like “assert” where you don’t want
+to lose the assertion exception in your attempt to get more information.</p>
+<p>Example use:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">foo</span><span class="p">,</span> <span class="n">Foo</span><span class="p">),</span> <span class="n">safeDescription</span><span class="p">(</span><span class="n">foo</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;foo:&quot;</span><span class="p">,</span> <span class="n">safeDescription</span><span class="p">(</span><span class="n">foo</span><span class="p">))</span>  <span class="c1"># won&#39;t raise exceptions</span>
+
+<span class="c1"># better output format:</span>
+<span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">foo</span><span class="p">,</span> <span class="n">Foo</span><span class="p">),</span> <span class="n">safeDescription</span><span class="p">(</span><span class="n">foo</span><span class="p">,</span> <span class="s1">&#39;foo&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">safeDescription</span><span class="p">(</span><span class="n">foo</span><span class="p">,</span> <span class="s1">&#39;foo&#39;</span><span class="p">))</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="MiscUtils.Funcs.timestamp">
+<span class="sig-prename descclassname"><span class="pre">MiscUtils.Funcs.</span></span><span class="sig-name descname"><span class="pre">timestamp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">t</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#MiscUtils.Funcs.timestamp" title="Link to this definition">¶</a></dt>
+<dd><p>Return a dictionary whose keys give different versions of the timestamp.</p>
+<p>The dictionary will contain the following timestamp versions:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s1">&#39;tuple&#39;</span><span class="p">:</span> <span class="p">(</span><span class="n">year</span><span class="p">,</span> <span class="n">month</span><span class="p">,</span> <span class="n">day</span><span class="p">,</span> <span class="n">hour</span><span class="p">,</span> <span class="nb">min</span><span class="p">,</span> <span class="n">sec</span><span class="p">)</span>
+<span class="s1">&#39;pretty&#39;</span><span class="p">:</span> <span class="s1">&#39;YYYY-MM-DD HH:MM:SS&#39;</span>
+<span class="s1">&#39;condensed&#39;</span><span class="p">:</span> <span class="s1">&#39;YYYYMMDDHHMMSS&#39;</span>
+<span class="s1">&#39;dashed&#39;</span><span class="p">:</span> <span class="s1">&#39;YYYY-MM-DD-HH-MM-SS&#39;</span>
+</pre></div>
+</div>
+<p>The focus is on the year, month, day, hour and second, with no additional
+information such as timezone or day of year. This form of timestamp is
+often ideal for print statements, logs and filenames. If the current number
+of seconds is not passed, then the current time is taken. The ‘pretty’
+format is ideal for print statements, while the ‘condensed’ and ‘dashed’
+formats are generally more appropriate for filenames.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="MiscUtils.Funcs.uniqueId">
+<span class="sig-prename descclassname"><span class="pre">MiscUtils.Funcs.</span></span><span class="sig-name descname"><span class="pre">uniqueId</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">forObject</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#MiscUtils.Funcs.uniqueId" title="Link to this definition">¶</a></dt>
+<dd><p>Generate an opaque identifier string made of 32 hex digits.</p>
+<p>The string is practically guaranteed to be unique for each call.</p>
+<p>If a randomness source is not found in the operating system, this function
+will use SHA-256 hashing with a combination of pseudo-random numbers and
+time values to generate additional randomness. In this case, if an object
+is passed, then its id() will be incorporated into the generation as well.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="MiscUtils.Funcs.valueForString">
+<span class="sig-prename descclassname"><span class="pre">MiscUtils.Funcs.</span></span><span class="sig-name descname"><span class="pre">valueForString</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">s</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#MiscUtils.Funcs.valueForString" title="Link to this definition">¶</a></dt>
+<dd><p>Return value for a string.</p>
+<p>For a given string, returns the most appropriate Pythonic value
+such as None, a long, an int, a list, etc. If none of those
+make sense, then returns the string as-is.</p>
+<p>“None”, “True” and “False” are case-insensitive because there is
+already too much case sensitivity in computing, damn it!</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="MiscUtils.Funcs.wordWrap">
+<span class="sig-prename descclassname"><span class="pre">MiscUtils.Funcs.</span></span><span class="sig-name descname"><span class="pre">wordWrap</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">s</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">width</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">78</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#MiscUtils.Funcs.wordWrap" title="Link to this definition">¶</a></dt>
+<dd><p>Return a version of the string word wrapped to the given width.</p>
+</dd></dl>
+
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../index.html">Webware for Python 3</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../changes.html">List of Changes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../migrate.html">Migration Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../copyright.html">Copyright and License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorial.html">Beginner Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../appdev.html">Application Development</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../config.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../deploy.html">Deployment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../plugins.html">Plug-ins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../style.html">Style Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../psp.html">PSP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../userkit.html">UserKit</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../taskkit.html">TaskKit</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../webutils.html">WebUtils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../miscutils.html">MiscUtils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../testing.html">Testing</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../core/index.html">Core Classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../psp/index.html">PSP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../userkit/index.html">UserKit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../taskkit/index.html">TaskKit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../webutils/index.html">WebUtils</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">MiscUtils</a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">API Reference</a><ul>
+  <li><a href="index.html">MiscUtils</a><ul>
+      <li>Previous: <a href="error.html" title="previous chapter">Error</a></li>
+      <li>Next: <a href="mixin.html" title="next chapter">MixIn</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;1999-2025, Christoph Zwerschke et al.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.2.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+      |
+      <a href="../../_sources/ref/miscutils/funcs.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

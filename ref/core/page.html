@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Page &#8212; Webware for Python 3 3.1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="../../_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="../../_static/alabaster.css?v=27fed22d" />
+    <script src="../../_static/documentation_options.js?v=dd1205ac"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="copyright" title="Copyright" href="../../copyright.html" />
+    <link rel="next" title="PickleRPCServlet" href="picklerpcservlet.html" />
+    <link rel="prev" title="JSONRPCServlet" href="jsonrpcservlet.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="module-Page">
+<span id="page"></span><h1>Page<a class="headerlink" href="#module-Page" title="Link to this heading">¶</a></h1>
+<p>The standard web page template.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="Page.Page">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">Page.</span></span><span class="sig-name descname"><span class="pre">Page</span></span><a class="headerlink" href="#Page.Page" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="httpcontent.html#HTTPContent.HTTPContent" title="HTTPContent.HTTPContent"><code class="xref py py-class docutils literal notranslate"><span class="pre">HTTPContent</span></code></a></p>
+<p>The standard web page template.</p>
+<p>Page is a type of HTTPContent that is more convenient for servlets
+which represent HTML pages generated in response to GET and POST requests.
+In fact, this is the most common type of Servlet.</p>
+<p>Subclasses typically override <code class="docutils literal notranslate"><span class="pre">writeHeader</span></code>, <code class="docutils literal notranslate"><span class="pre">writeBody</span></code> and
+<code class="docutils literal notranslate"><span class="pre">writeFooter</span></code>.</p>
+<p>They might also choose to override <code class="docutils literal notranslate"><span class="pre">writeHTML</span></code> entirely.</p>
+<p>When developing a full-blown website, it’s common to create a subclass of
+<code class="docutils literal notranslate"><span class="pre">Page</span></code> called <code class="docutils literal notranslate"><span class="pre">SitePage</span></code> which defines the common look and feel of the
+website and provides site-specific convenience methods. Then all other
+pages in your application then inherit from <code class="docutils literal notranslate"><span class="pre">SitePage</span></code>.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="Page.Page.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Page.Page.__init__" title="Link to this definition">¶</a></dt>
+<dd><p>Subclasses must invoke super.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Page.Page.actions">
+<span class="sig-name descname"><span class="pre">actions</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Page.Page.actions" title="Link to this definition">¶</a></dt>
+<dd><p>The allowed actions.</p>
+<p>Returns a list or a set of method names that are allowable
+actions from HTML forms. The default implementation returns [].
+See <cite>_respond</cite> for more about actions.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Page.Page.application">
+<span class="sig-name descname"><span class="pre">application</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Page.Page.application" title="Link to this definition">¶</a></dt>
+<dd><p>The <cite>Application</cite> instance we’re using.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Page.Page.awake">
+<span class="sig-name descname"><span class="pre">awake</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">transaction</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Page.Page.awake" title="Link to this definition">¶</a></dt>
+<dd><p>Let servlet awake.</p>
+<p>Makes instance variables from the transaction. This is where Page
+becomes unthreadsafe, as the page is tied to the transaction.
+This is also what allows us to implement functions like <cite>write</cite>,
+where you don’t need to pass in the transaction or response.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Page.Page.callMethodOfServlet">
+<span class="sig-name descname"><span class="pre">callMethodOfServlet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">url</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Page.Page.callMethodOfServlet" title="Link to this definition">¶</a></dt>
+<dd><p>Call a method of another servlet.</p>
+<p>See <cite>Application.callMethodOfServlet</cite> for details.
+The main difference is that here you don’t have
+to pass in the transaction as the first argument.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Page.Page.canBeReused">
+<span class="sig-name descname"><span class="pre">canBeReused</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Page.Page.canBeReused" title="Link to this definition">¶</a></dt>
+<dd><p>Returns whether a single servlet instance can be reused.</p>
+<p>The default is True, but subclasses con override to return False.
+Keep in mind that performance may seriously be degraded if instances
+can’t be reused. Also, there’s no known good reasons not to reuse
+an instance. Remember the awake() and sleep() methods are invoked
+for every transaction. But just in case, your servlet can refuse
+to be reused.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Page.Page.canBeThreaded">
+<span class="sig-name descname"><span class="pre">canBeThreaded</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Page.Page.canBeThreaded" title="Link to this definition">¶</a></dt>
+<dd><p>Declares whether servlet can be threaded.</p>
+<p>Returns False because of the instance variables we set up in <cite>awake</cite>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Page.Page.close">
+<span class="sig-name descname"><span class="pre">close</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Page.Page.close" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Page.Page.defaultAction">
+<span class="sig-name descname"><span class="pre">defaultAction</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Page.Page.defaultAction" title="Link to this definition">¶</a></dt>
+<dd><p>The default action in a Page is to writeHTML().</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Page.Page.endResponse">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">endResponse</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Page.Page.endResponse" title="Link to this definition">¶</a></dt>
+<dd><p>End response.</p>
+<p>When this method is called during <cite>awake</cite> or <cite>respond</cite>,
+servlet processing will end immediately,
+and the accumulated response will be sent.</p>
+<p>Note that <cite>sleep</cite> will still be called, providing a
+chance to clean up or free any resources.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Page.Page.forward">
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">url</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Page.Page.forward" title="Link to this definition">¶</a></dt>
+<dd><p>Forward request.</p>
+<p>Forwards this request to another servlet.
+See <cite>Application.forward</cite> for details.
+The main difference is that here you don’t have
+to pass in the transaction as the first argument.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Page.Page.handleAction">
+<span class="sig-name descname"><span class="pre">handleAction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">action</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Page.Page.handleAction" title="Link to this definition">¶</a></dt>
+<dd><p>Handle action.</p>
+<p>Invoked by <cite>_respond</cite> when a legitimate action has
+been found in a form. Invokes <cite>preAction</cite>, the actual
+action method and <cite>postAction</cite>.</p>
+<p>Subclasses rarely override this method.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Page.Page.htBodyArgs">
+<span class="sig-name descname"><span class="pre">htBodyArgs</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Page.Page.htBodyArgs" title="Link to this definition">¶</a></dt>
+<dd><p>The attributes for the &lt;body&gt; element.</p>
+<p>Returns the arguments used for the HTML <code class="docutils literal notranslate"><span class="pre">&lt;body&gt;</span></code> tag.
+Invoked by writeBody().</p>
+<p>With the prevalence of stylesheets (CSS), you can probably skip
+this particular HTML feature, but for historical reasons this sets
+the page to black text on white.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Page.Page.htRootArgs">
+<span class="sig-name descname"><span class="pre">htRootArgs</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Page.Page.htRootArgs" title="Link to this definition">¶</a></dt>
+<dd><p>The attributes for the &lt;html&gt; element.</p>
+<p>Returns the arguments used for the root HTML tag.
+Invoked by writeHTML() and preAction().</p>
+<p>Authors are encouraged to specify a lang attribute,
+giving the document’s language.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Page.Page.htTitle">
+<span class="sig-name descname"><span class="pre">htTitle</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Page.Page.htTitle" title="Link to this definition">¶</a></dt>
+<dd><p>The page title as HTML.</p>
+<p>Return self.title(). Subclasses sometimes override this to provide
+an HTML enhanced version of the title. This is the method that should
+be used when including the page title in the actual page contents.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Page.Page.htmlDecode">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">htmlDecode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">s</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Page.Page.htmlDecode" title="Link to this definition">¶</a></dt>
+<dd><p>HTML decode special characters.</p>
+<p>Alias for <code class="docutils literal notranslate"><span class="pre">WebUtils.Funcs.htmlDecode</span></code>. Decodes HTML entities.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Page.Page.htmlEncode">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">htmlEncode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">s</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Page.Page.htmlEncode" title="Link to this definition">¶</a></dt>
+<dd><p>HTML encode special characters.
+Alias for <code class="docutils literal notranslate"><span class="pre">WebUtils.Funcs.htmlEncode</span></code>, quotes the special characters
+&amp;, &lt;, &gt;, and “</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Page.Page.includeURL">
+<span class="sig-name descname"><span class="pre">includeURL</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">url</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Page.Page.includeURL" title="Link to this definition">¶</a></dt>
+<dd><p>Include output from other servlet.</p>
+<p>Includes the response of another servlet
+in the current servlet’s response.
+See <cite>Application.includeURL</cite> for details.
+The main difference is that here you don’t have
+to pass in the transaction as the first argument.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Page.Page.lastModified">
+<span class="sig-name descname"><span class="pre">lastModified</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">_trans</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Page.Page.lastModified" title="Link to this definition">¶</a></dt>
+<dd><p>Get time of last modification.</p>
+<p>Return this object’s Last-Modified time (as a float),
+or None (meaning don’t know or not applicable).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Page.Page.log">
+<span class="sig-name descname"><span class="pre">log</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Page.Page.log" title="Link to this definition">¶</a></dt>
+<dd><p>Log a message.</p>
+<p>This can be invoked to print messages concerning the servlet.
+This is often used by self to relay important information back
+to developers.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Page.Page.methodNameForAction">
+<span class="sig-name descname"><span class="pre">methodNameForAction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Page.Page.methodNameForAction" title="Link to this definition">¶</a></dt>
+<dd><p>Return method name for an action name.</p>
+<p>Invoked by _respond() to determine the method name for a given action
+name which has been derived as the value of an <code class="docutils literal notranslate"><span class="pre">_action_</span></code> field.
+Since this is usually the label of an HTML submit button in a form,
+it is often needed to transform it in order to get a valid method name
+(for instance, blanks could be replaced by underscores and the like).
+This default implementation of the name transformation is the identity,
+it simply returns the name. Subclasses should override this method
+when action names don’t match their method names; they could “mangle”
+the action names or look the method names up in a dictionary.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Page.Page.name">
+<span class="sig-name descname"><span class="pre">name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Page.Page.name" title="Link to this definition">¶</a></dt>
+<dd><p>Return the name which is simple the name of the class.</p>
+<p>Subclasses should <em>not</em> override this method.
+It is used for logging and debugging.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Page.Page.notImplemented">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">notImplemented</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">trans</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Page.Page.notImplemented" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Page.Page.open">
+<span class="sig-name descname"><span class="pre">open</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Page.Page.open" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Page.Page.outputEncoding">
+<span class="sig-name descname"><span class="pre">outputEncoding</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Page.Page.outputEncoding" title="Link to this definition">¶</a></dt>
+<dd><p>Get the default output encoding of the application.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Page.Page.postAction">
+<span class="sig-name descname"><span class="pre">postAction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">actionName</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Page.Page.postAction" title="Link to this definition">¶</a></dt>
+<dd><p>Things to do after actions.</p>
+<p>Simply close the html tag (&lt;/html&gt;).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Page.Page.preAction">
+<span class="sig-name descname"><span class="pre">preAction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">actionName</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Page.Page.preAction" title="Link to this definition">¶</a></dt>
+<dd><p>Things to do before actions.</p>
+<p>For a page, we first writeDocType(), &lt;html&gt;, and then writeHead().</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Page.Page.request">
+<span class="sig-name descname"><span class="pre">request</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Page.Page.request" title="Link to this definition">¶</a></dt>
+<dd><p>The request (<cite>HTTPRequest</cite>) we’re handling.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Page.Page.respond">
+<span class="sig-name descname"><span class="pre">respond</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">transaction</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Page.Page.respond" title="Link to this definition">¶</a></dt>
+<dd><p>Respond to a request.</p>
+<p>Invokes the appropriate respondToSomething() method depending on the
+type of request (e.g., GET, POST, PUT, …).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Page.Page.respondToGet">
+<span class="sig-name descname"><span class="pre">respondToGet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">transaction</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Page.Page.respondToGet" title="Link to this definition">¶</a></dt>
+<dd><p>Respond to GET.</p>
+<p>Invoked in response to a GET request method. All methods
+are passed to <cite>_respond</cite>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Page.Page.respondToHead">
+<span class="sig-name descname"><span class="pre">respondToHead</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">trans</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Page.Page.respondToHead" title="Link to this definition">¶</a></dt>
+<dd><p>Respond to a HEAD request.</p>
+<p>A correct but inefficient implementation.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Page.Page.respondToPost">
+<span class="sig-name descname"><span class="pre">respondToPost</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">transaction</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Page.Page.respondToPost" title="Link to this definition">¶</a></dt>
+<dd><p>Respond to POST.</p>
+<p>Invoked in response to a POST request method. All methods
+are passed to <cite>_respond</cite>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Page.Page.response">
+<span class="sig-name descname"><span class="pre">response</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Page.Page.response" title="Link to this definition">¶</a></dt>
+<dd><p>The response (<cite>HTTPResponse</cite>) we’re handling.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Page.Page.runMethodForTransaction">
+<span class="sig-name descname"><span class="pre">runMethodForTransaction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">transaction</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kw</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Page.Page.runMethodForTransaction" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Page.Page.runTransaction">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">runTransaction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">transaction</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Page.Page.runTransaction" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Page.Page.sendRedirectAndEnd">
+<span class="sig-name descname"><span class="pre">sendRedirectAndEnd</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">url</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">status</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Page.Page.sendRedirectAndEnd" title="Link to this definition">¶</a></dt>
+<dd><p>Send redirect and end.</p>
+<p>Sends a redirect back to the client and ends the response.
+This is a very popular pattern.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Page.Page.sendRedirectPermanentAndEnd">
+<span class="sig-name descname"><span class="pre">sendRedirectPermanentAndEnd</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">url</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Page.Page.sendRedirectPermanentAndEnd" title="Link to this definition">¶</a></dt>
+<dd><p>Send permanent redirect and end.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Page.Page.sendRedirectSeeOtherAndEnd">
+<span class="sig-name descname"><span class="pre">sendRedirectSeeOtherAndEnd</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">url</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Page.Page.sendRedirectSeeOtherAndEnd" title="Link to this definition">¶</a></dt>
+<dd><p>Send redirect to a URL to be retrieved with GET and end.</p>
+<p>This is the proper method for the Post/Redirect/Get pattern.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Page.Page.sendRedirectTemporaryAndEnd">
+<span class="sig-name descname"><span class="pre">sendRedirectTemporaryAndEnd</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">url</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Page.Page.sendRedirectTemporaryAndEnd" title="Link to this definition">¶</a></dt>
+<dd><p>Send temporary redirect and end.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Page.Page.serverSidePath">
+<span class="sig-name descname"><span class="pre">serverSidePath</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Page.Page.serverSidePath" title="Link to this definition">¶</a></dt>
+<dd><p>Return the filesystem path of the page on the server.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Page.Page.session">
+<span class="sig-name descname"><span class="pre">session</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Page.Page.session" title="Link to this definition">¶</a></dt>
+<dd><p>The session object.</p>
+<p>This provides a state for the current user
+(associated with a browser instance, really).
+If no session exists, then a session will be created.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Page.Page.sessionEncode">
+<span class="sig-name descname"><span class="pre">sessionEncode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">url</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Page.Page.sessionEncode" title="Link to this definition">¶</a></dt>
+<dd><p>Utility function to access <cite>Session.sessionEncode</cite>.</p>
+<p>Takes a url and adds the session ID as a parameter.
+This is for cases where you don’t know if the client
+will accepts cookies.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Page.Page.setFactory">
+<span class="sig-name descname"><span class="pre">setFactory</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">factory</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Page.Page.setFactory" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Page.Page.sleep">
+<span class="sig-name descname"><span class="pre">sleep</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">transaction</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Page.Page.sleep" title="Link to this definition">¶</a></dt>
+<dd><p>Let servlet sleep again.</p>
+<p>We unset some variables. Very boring.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Page.Page.title">
+<span class="sig-name descname"><span class="pre">title</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Page.Page.title" title="Link to this definition">¶</a></dt>
+<dd><p>The page title.</p>
+<p>Subclasses often override this method to provide a custom title.
+This title should be absent of HTML tags. This implementation
+returns the name of the class, which is sometimes appropriate
+and at least informative.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Page.Page.transaction">
+<span class="sig-name descname"><span class="pre">transaction</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Page.Page.transaction" title="Link to this definition">¶</a></dt>
+<dd><p>The <cite>Transaction</cite> we’re currently handling.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Page.Page.urlDecode">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">urlDecode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">s</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Page.Page.urlDecode" title="Link to this definition">¶</a></dt>
+<dd><p>Turn special % characters into actual characters.</p>
+<p>This method does the same as the <cite>urllib.unquote_plus()</cite> function.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Page.Page.urlEncode">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">urlEncode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">s</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Page.Page.urlEncode" title="Link to this definition">¶</a></dt>
+<dd><p>Quotes special characters using the % substitutions.</p>
+<p>This method does the same as the <cite>urllib.quote_plus()</cite> function.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Page.Page.write">
+<span class="sig-name descname"><span class="pre">write</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Page.Page.write" title="Link to this definition">¶</a></dt>
+<dd><p>Write to output.</p>
+<p>Writes the arguments, which are turned to strings (with <cite>str</cite>)
+and concatenated before being written to the response.
+Unicode strings must be encoded before they can be written.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Page.Page.writeBody">
+<span class="sig-name descname"><span class="pre">writeBody</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Page.Page.writeBody" title="Link to this definition">¶</a></dt>
+<dd><p>Write the &lt;body&gt; element of the page.</p>
+<p>Writes the <code class="docutils literal notranslate"><span class="pre">&lt;body&gt;</span></code> portion of the page by writing the
+<code class="docutils literal notranslate"><span class="pre">&lt;body&gt;...&lt;/body&gt;</span></code> (making use of <code class="docutils literal notranslate"><span class="pre">htBodyArgs</span></code>) and
+invoking <code class="docutils literal notranslate"><span class="pre">writeBodyParts</span></code> in between.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Page.Page.writeBodyParts">
+<span class="sig-name descname"><span class="pre">writeBodyParts</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Page.Page.writeBodyParts" title="Link to this definition">¶</a></dt>
+<dd><p>Write the parts included in the &lt;body&gt; element.</p>
+<p>Invokes <code class="docutils literal notranslate"><span class="pre">writeContent</span></code>. Subclasses should only override this method
+to provide additional page parts such as a header, sidebar and footer,
+that a subclass doesn’t normally have to worry about writing.</p>
+<p>For writing page-specific content, subclasses should override
+<code class="docutils literal notranslate"><span class="pre">writeContent</span></code> instead. This method is intended to be overridden
+by your SitePage.</p>
+<p>See <code class="docutils literal notranslate"><span class="pre">SidebarPage</span></code> for an example override of this method.</p>
+<p>Invoked by <code class="docutils literal notranslate"><span class="pre">writeBody</span></code>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Page.Page.writeContent">
+<span class="sig-name descname"><span class="pre">writeContent</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Page.Page.writeContent" title="Link to this definition">¶</a></dt>
+<dd><p>Write the unique, central content for the page.</p>
+<p>Subclasses should override this method (not invoking super) to write
+their unique page content.</p>
+<p>Invoked by <code class="docutils literal notranslate"><span class="pre">writeBodyParts</span></code>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Page.Page.writeDocType">
+<span class="sig-name descname"><span class="pre">writeDocType</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Page.Page.writeDocType" title="Link to this definition">¶</a></dt>
+<dd><p>Write the DOCTYPE tag.</p>
+<p>Invoked by <code class="docutils literal notranslate"><span class="pre">writeHTML</span></code> to write the <code class="docutils literal notranslate"><span class="pre">&lt;!DOCTYPE</span> <span class="pre">...&gt;</span></code> tag.</p>
+<p>By default this gives the HTML 5 DOCTYPE.</p>
+<p>Subclasses may override to specify something else.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Page.Page.writeExceptionReport">
+<span class="sig-name descname"><span class="pre">writeExceptionReport</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">handler</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Page.Page.writeExceptionReport" title="Link to this definition">¶</a></dt>
+<dd><p>Write extra information to the exception report.</p>
+<p>The <cite>handler</cite> argument is the exception handler, and information
+is written there (using <cite>writeTitle</cite>, <cite>write</cite>, and <cite>writeln</cite>).
+This information is added to the exception report.</p>
+<p>See <cite>ExceptionHandler</cite> for more information.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Page.Page.writeHTML">
+<span class="sig-name descname"><span class="pre">writeHTML</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Page.Page.writeHTML" title="Link to this definition">¶</a></dt>
+<dd><p>Write all the HTML for the page.</p>
+<p>Subclasses may override this method (which is invoked by <code class="docutils literal notranslate"><span class="pre">_respond</span></code>)
+or more commonly its constituent methods, <code class="docutils literal notranslate"><span class="pre">writeDocType</span></code>,
+<code class="docutils literal notranslate"><span class="pre">writeHead</span></code> and <code class="docutils literal notranslate"><span class="pre">writeBody</span></code>.</p>
+<dl class="simple">
+<dt>You will want to override this method if:</dt><dd><ul class="simple">
+<li><p>you want to format the entire HTML page yourself</p></li>
+<li><p>if you want to send an HTML page that has already been generated</p></li>
+<li><p>if you want to use a template that generates the entire page</p></li>
+<li><p>if you want to send non-HTML content; in this case, be sure to call
+self.response().setHeader(‘Content-Type’, ‘mime/type’).</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Page.Page.writeHead">
+<span class="sig-name descname"><span class="pre">writeHead</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Page.Page.writeHead" title="Link to this definition">¶</a></dt>
+<dd><p>Write the &lt;head&gt; element of the page.</p>
+<p>Writes the <code class="docutils literal notranslate"><span class="pre">&lt;head&gt;</span></code> portion of the page by writing the
+<code class="docutils literal notranslate"><span class="pre">&lt;head&gt;...&lt;/head&gt;</span></code> tags and invoking <code class="docutils literal notranslate"><span class="pre">writeHeadParts</span></code> in between.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Page.Page.writeHeadParts">
+<span class="sig-name descname"><span class="pre">writeHeadParts</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Page.Page.writeHeadParts" title="Link to this definition">¶</a></dt>
+<dd><p>Write the parts included in the &lt;head&gt; element.</p>
+<p>Writes the parts inside the <code class="docutils literal notranslate"><span class="pre">&lt;head&gt;...&lt;/head&gt;</span></code> tags.
+Invokes <code class="docutils literal notranslate"><span class="pre">writeTitle</span></code> and then <code class="docutils literal notranslate"><span class="pre">writeMetaData</span></code>, <code class="docutils literal notranslate"><span class="pre">writeStyleSheet</span></code>
+and <code class="docutils literal notranslate"><span class="pre">writeJavaScript</span></code>. Subclasses should override the <code class="docutils literal notranslate"><span class="pre">title</span></code>
+method and the three latter methods only.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Page.Page.writeJavaScript">
+<span class="sig-name descname"><span class="pre">writeJavaScript</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Page.Page.writeJavaScript" title="Link to this definition">¶</a></dt>
+<dd><p>Write the JavaScript for the page.</p>
+<p>This default implementation does nothing.
+Subclasses should override if necessary.</p>
+<p>A typical implementation is:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="bp">self</span><span class="o">.</span><span class="n">writeln</span><span class="p">(</span><span class="s1">&#39;&lt;script src=&quot;ajax.js&quot;&gt;&lt;/script&gt;&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Page.Page.writeMetaData">
+<span class="sig-name descname"><span class="pre">writeMetaData</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Page.Page.writeMetaData" title="Link to this definition">¶</a></dt>
+<dd><p>Write the meta data for the page.</p>
+<p>This default implementation only specifies the output encoding.
+Subclasses should override if necessary.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Page.Page.writeStyleSheet">
+<span class="sig-name descname"><span class="pre">writeStyleSheet</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Page.Page.writeStyleSheet" title="Link to this definition">¶</a></dt>
+<dd><p>Write the CSS for the page.</p>
+<p>This default implementation does nothing.
+Subclasses should override if necessary.</p>
+<p>A typical implementation is:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="bp">self</span><span class="o">.</span><span class="n">writeln</span><span class="p">(</span><span class="s1">&#39;&lt;link rel=&quot;stylesheet&quot; href=&quot;StyleSheet.css&quot;&gt;&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Page.Page.writeTitle">
+<span class="sig-name descname"><span class="pre">writeTitle</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Page.Page.writeTitle" title="Link to this definition">¶</a></dt>
+<dd><p>Write the &lt;title&gt; element of the page.</p>
+<p>Writes the <code class="docutils literal notranslate"><span class="pre">&lt;title&gt;</span></code> portion of the page.
+Uses <code class="docutils literal notranslate"><span class="pre">title</span></code>, which is where you should override.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Page.Page.writeln">
+<span class="sig-name descname"><span class="pre">writeln</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Page.Page.writeln" title="Link to this definition">¶</a></dt>
+<dd><p>Write to output with newline.</p>
+<p>Writes the arguments (like <cite>write</cite>), adding a newline after.
+Unicode strings must be encoded before they can be written.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../index.html">Webware for Python 3</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../changes.html">List of Changes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../migrate.html">Migration Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../copyright.html">Copyright and License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorial.html">Beginner Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../appdev.html">Application Development</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../config.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../deploy.html">Deployment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../plugins.html">Plug-ins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../style.html">Style Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../psp.html">PSP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../userkit.html">UserKit</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../taskkit.html">TaskKit</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../webutils.html">WebUtils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../miscutils.html">MiscUtils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../testing.html">Testing</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Core Classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../psp/index.html">PSP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../userkit/index.html">UserKit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../taskkit/index.html">TaskKit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../webutils/index.html">WebUtils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../miscutils/index.html">MiscUtils</a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">API Reference</a><ul>
+  <li><a href="index.html">Core Classes</a><ul>
+      <li>Previous: <a href="jsonrpcservlet.html" title="previous chapter">JSONRPCServlet</a></li>
+      <li>Next: <a href="picklerpcservlet.html" title="next chapter">PickleRPCServlet</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;1999-2025, Christoph Zwerschke et al.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.2.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+      |
+      <a href="../../_sources/ref/core/page.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

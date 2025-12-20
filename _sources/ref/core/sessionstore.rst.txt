@@ -1,0 +1,4 @@
+SessionStore
+------------
+
+.. automodule:: SessionStore

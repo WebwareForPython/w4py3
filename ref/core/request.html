@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Request &#8212; Webware for Python 3 3.1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="../../_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="../../_static/alabaster.css?v=27fed22d" />
+    <script src="../../_static/documentation_options.js?v=dd1205ac"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="copyright" title="Copyright" href="../../copyright.html" />
+    <link rel="next" title="Response" href="response.html" />
+    <link rel="prev" title="Properties" href="properties.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="module-Request">
+<span id="request"></span><h1>Request<a class="headerlink" href="#module-Request" title="Link to this heading">¶</a></h1>
+<p>An abstract request</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="Request.Request">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">Request.</span></span><span class="sig-name descname"><span class="pre">Request</span></span><a class="headerlink" href="#Request.Request" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>The abstract request class.</p>
+<p>Request is a base class that offers the following:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>A time stamp (indicating when the request was made)</p></li>
+<li><p>An input stream</p></li>
+<li><p>Remote request information (address, name)</p></li>
+<li><p>Local host information (address, name, port)</p></li>
+<li><p>A security indicator</p></li>
+</ul>
+</div></blockquote>
+<p>Request is an abstract class; developers typically use HTTPRequest.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="Request.Request.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Request.Request.__init__" title="Link to this definition">¶</a></dt>
+<dd><p>Initialize the request.</p>
+<p>Subclasses are responsible for invoking super
+and initializing self._time.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Request.Request.clearTransaction">
+<span class="sig-name descname"><span class="pre">clearTransaction</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Request.Request.clearTransaction" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Request.Request.input">
+<span class="sig-name descname"><span class="pre">input</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Request.Request.input" title="Link to this definition">¶</a></dt>
+<dd><p>Return a file-style object that the contents can be read from.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Request.Request.isSecure">
+<span class="sig-name descname"><span class="pre">isSecure</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Request.Request.isSecure" title="Link to this definition">¶</a></dt>
+<dd><p>Check whether this is a secure channel.</p>
+<p>Returns true if request was made using a secure channel,
+such as HTTPS. This currently always returns false,
+since secure channels are not yet supported.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Request.Request.localAddress">
+<span class="sig-name descname"><span class="pre">localAddress</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Request.Request.localAddress" title="Link to this definition">¶</a></dt>
+<dd><p>Get local address.</p>
+<p>Returns a string containing the Internet Protocol (IP) address
+of the local host (e.g., the server) that received the request.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Request.Request.localName">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">localName</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Request.Request.localName" title="Link to this definition">¶</a></dt>
+<dd><p>Get local name.</p>
+<p>Returns the fully qualified name of the local host (e.g., the server)
+that received the request.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Request.Request.localPort">
+<span class="sig-name descname"><span class="pre">localPort</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Request.Request.localPort" title="Link to this definition">¶</a></dt>
+<dd><p>Get local port.</p>
+<p>Returns the port of the local host (e.g., the server)
+that received the request.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Request.Request.remoteAddress">
+<span class="sig-name descname"><span class="pre">remoteAddress</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Request.Request.remoteAddress" title="Link to this definition">¶</a></dt>
+<dd><p>Get the remote address.</p>
+<p>Returns a string containing the Internet Protocol (IP) address
+of the client that sent the request.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Request.Request.remoteName">
+<span class="sig-name descname"><span class="pre">remoteName</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Request.Request.remoteName" title="Link to this definition">¶</a></dt>
+<dd><p>Get the remote name.</p>
+<p>Returns the fully qualified name of the client that sent the request,
+or the IP address of the client if the name cannot be determined.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Request.Request.responseClass">
+<span class="sig-name descname"><span class="pre">responseClass</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Request.Request.responseClass" title="Link to this definition">¶</a></dt>
+<dd><p>Get the corresponding response class.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Request.Request.setTransaction">
+<span class="sig-name descname"><span class="pre">setTransaction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">trans</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Request.Request.setTransaction" title="Link to this definition">¶</a></dt>
+<dd><p>Set a transaction container.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Request.Request.time">
+<span class="sig-name descname"><span class="pre">time</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Request.Request.time" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Request.Request.timeStamp">
+<span class="sig-name descname"><span class="pre">timeStamp</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Request.Request.timeStamp" title="Link to this definition">¶</a></dt>
+<dd><p>Return time() as human readable string for logging and debugging.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Request.Request.transaction">
+<span class="sig-name descname"><span class="pre">transaction</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Request.Request.transaction" title="Link to this definition">¶</a></dt>
+<dd><p>Get the transaction container.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Request.Request.writeExceptionReport">
+<span class="sig-name descname"><span class="pre">writeExceptionReport</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">handler</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Request.Request.writeExceptionReport" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../index.html">Webware for Python 3</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../changes.html">List of Changes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../migrate.html">Migration Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../copyright.html">Copyright and License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorial.html">Beginner Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../appdev.html">Application Development</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../config.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../deploy.html">Deployment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../plugins.html">Plug-ins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../style.html">Style Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../psp.html">PSP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../userkit.html">UserKit</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../taskkit.html">TaskKit</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../webutils.html">WebUtils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../miscutils.html">MiscUtils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../testing.html">Testing</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Core Classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../psp/index.html">PSP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../userkit/index.html">UserKit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../taskkit/index.html">TaskKit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../webutils/index.html">WebUtils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../miscutils/index.html">MiscUtils</a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">API Reference</a><ul>
+  <li><a href="index.html">Core Classes</a><ul>
+      <li>Previous: <a href="properties.html" title="previous chapter">Properties</a></li>
+      <li>Next: <a href="response.html" title="next chapter">Response</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;1999-2025, Christoph Zwerschke et al.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.2.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+      |
+      <a href="../../_sources/ref/core/request.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

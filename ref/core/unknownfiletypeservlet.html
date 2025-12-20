@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>UnknownFileTypeServlet &#8212; Webware for Python 3 3.1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="../../_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="../../_static/alabaster.css?v=27fed22d" />
+    <script src="../../_static/documentation_options.js?v=dd1205ac"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="copyright" title="Copyright" href="../../copyright.html" />
+    <link rel="next" title="URLParser" href="urlparser.html" />
+    <link rel="prev" title="Transaction" href="transaction.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="module-UnknownFileTypeServlet">
+<span id="unknownfiletypeservlet"></span><h1>UnknownFileTypeServlet<a class="headerlink" href="#module-UnknownFileTypeServlet" title="Link to this heading">¶</a></h1>
+<p>Servlet factory for unknown file types.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="UnknownFileTypeServlet.UnknownFileTypeServlet">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">UnknownFileTypeServlet.</span></span><span class="sig-name descname"><span class="pre">UnknownFileTypeServlet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">application</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#UnknownFileTypeServlet.UnknownFileTypeServlet" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="httpservlet.html#HTTPServlet.HTTPServlet" title="HTTPServlet.HTTPServlet"><code class="xref py py-class docutils literal notranslate"><span class="pre">HTTPServlet</span></code></a>, <a class="reference internal" href="../miscutils/configurable.html#MiscUtils.Configurable.Configurable" title="MiscUtils.Configurable.Configurable"><code class="xref py py-class docutils literal notranslate"><span class="pre">Configurable</span></code></a></p>
+<p>Servlet for unknown file types.</p>
+<p>Normally this class is just a “private” utility class for Webware’s
+purposes. However, you may find it useful to subclass on occasion,
+such as when the server side file path is determined by something
+other than a direct correlation to the URL. Here is such an example:</p>
+<p>from UnknownFileTypeServlet import UnknownFileTypeServlet
+import os</p>
+<p>class Image(UnknownFileTypeServlet):</p>
+<blockquote>
+<div><p>imageDir = ‘/var/images’</p>
+<dl class="simple">
+<dt>def filename(self, trans):</dt><dd><p>filename = trans.request().field(‘i’)
+filename = os.path.join(self.imageDir, filename)
+return filename</p>
+</dd>
+</dl>
+</div></blockquote>
+<dl class="py method">
+<dt class="sig sig-object py" id="UnknownFileTypeServlet.UnknownFileTypeServlet.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">application</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#UnknownFileTypeServlet.UnknownFileTypeServlet.__init__" title="Link to this definition">¶</a></dt>
+<dd><p>Subclasses must invoke super.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="UnknownFileTypeServlet.UnknownFileTypeServlet.awake">
+<span class="sig-name descname"><span class="pre">awake</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">transaction</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#UnknownFileTypeServlet.UnknownFileTypeServlet.awake" title="Link to this definition">¶</a></dt>
+<dd><p>Send the awake message.</p>
+<p>This message is sent to all objects that participate in the
+request-response cycle in a top-down fashion, prior to respond().
+Subclasses must invoke super.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="UnknownFileTypeServlet.UnknownFileTypeServlet.canBeReused">
+<span class="sig-name descname"><span class="pre">canBeReused</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#UnknownFileTypeServlet.UnknownFileTypeServlet.canBeReused" title="Link to this definition">¶</a></dt>
+<dd><p>Returns whether a single servlet instance can be reused.</p>
+<p>The default is True, but subclasses con override to return False.
+Keep in mind that performance may seriously be degraded if instances
+can’t be reused. Also, there’s no known good reasons not to reuse
+an instance. Remember the awake() and sleep() methods are invoked
+for every transaction. But just in case, your servlet can refuse
+to be reused.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="UnknownFileTypeServlet.UnknownFileTypeServlet.canBeThreaded">
+<span class="sig-name descname"><span class="pre">canBeThreaded</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#UnknownFileTypeServlet.UnknownFileTypeServlet.canBeThreaded" title="Link to this definition">¶</a></dt>
+<dd><p>Return whether the servlet can be multithreaded.</p>
+<p>This value should not change during the lifetime of the object.
+The default implementation returns False.
+Note: This is not currently used.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="UnknownFileTypeServlet.UnknownFileTypeServlet.close">
+<span class="sig-name descname"><span class="pre">close</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#UnknownFileTypeServlet.UnknownFileTypeServlet.close" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="UnknownFileTypeServlet.UnknownFileTypeServlet.commandLineConfig">
+<span class="sig-name descname"><span class="pre">commandLineConfig</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#UnknownFileTypeServlet.UnknownFileTypeServlet.commandLineConfig" title="Link to this definition">¶</a></dt>
+<dd><p>Return the settings that came from the command-line.</p>
+<p>These settings come via addCommandLineSetting().</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="UnknownFileTypeServlet.UnknownFileTypeServlet.config">
+<span class="sig-name descname"><span class="pre">config</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#UnknownFileTypeServlet.UnknownFileTypeServlet.config" title="Link to this definition">¶</a></dt>
+<dd><p>Return the configuration of the object as a dictionary.</p>
+<p>This is a combination of defaultConfig() and userConfig().
+This method caches the config.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="UnknownFileTypeServlet.UnknownFileTypeServlet.configFilename">
+<span class="sig-name descname"><span class="pre">configFilename</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#UnknownFileTypeServlet.UnknownFileTypeServlet.configFilename" title="Link to this definition">¶</a></dt>
+<dd><p>Return the full name of the user config file.</p>
+<p>Users can override the configuration by this config file.
+Subclasses must override to specify a name.
+Returning None is valid, in which case no user config file
+will be loaded.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="UnknownFileTypeServlet.UnknownFileTypeServlet.configName">
+<span class="sig-name descname"><span class="pre">configName</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#UnknownFileTypeServlet.UnknownFileTypeServlet.configName" title="Link to this definition">¶</a></dt>
+<dd><p>Return the name of the configuration file without the extension.</p>
+<p>This is the portion of the config file name before the ‘.config’.
+This is used on the command-line.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="UnknownFileTypeServlet.UnknownFileTypeServlet.configReplacementValues">
+<span class="sig-name descname"><span class="pre">configReplacementValues</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#UnknownFileTypeServlet.UnknownFileTypeServlet.configReplacementValues" title="Link to this definition">¶</a></dt>
+<dd><p>Return a dictionary for substitutions in the config file.</p>
+<p>This must be a dictionary suitable for use with “string % dict”
+that should be used on the text in the config file.
+If an empty dictionary (or None) is returned, then no substitution
+will be attempted.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="UnknownFileTypeServlet.UnknownFileTypeServlet.defaultConfig">
+<span class="sig-name descname"><span class="pre">defaultConfig</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#UnknownFileTypeServlet.UnknownFileTypeServlet.defaultConfig" title="Link to this definition">¶</a></dt>
+<dd><p>Get the default config.</p>
+<p>Taken from Application’s ‘UnknownFileTypes’ default setting.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="UnknownFileTypeServlet.UnknownFileTypeServlet.filename">
+<span class="sig-name descname"><span class="pre">filename</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">trans</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#UnknownFileTypeServlet.UnknownFileTypeServlet.filename" title="Link to this definition">¶</a></dt>
+<dd><p>Return the filename to be served.</p>
+<p>A subclass could override this in order to serve files from other
+disk locations based on some logic.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="UnknownFileTypeServlet.UnknownFileTypeServlet.hasSetting">
+<span class="sig-name descname"><span class="pre">hasSetting</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#UnknownFileTypeServlet.UnknownFileTypeServlet.hasSetting" title="Link to this definition">¶</a></dt>
+<dd><p>Check whether a configuration setting has been changed.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="UnknownFileTypeServlet.UnknownFileTypeServlet.lastModified">
+<span class="sig-name descname"><span class="pre">lastModified</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">trans</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#UnknownFileTypeServlet.UnknownFileTypeServlet.lastModified" title="Link to this definition">¶</a></dt>
+<dd><p>Get time of last modification.</p>
+<p>Return this object’s Last-Modified time (as a float),
+or None (meaning don’t know or not applicable).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="UnknownFileTypeServlet.UnknownFileTypeServlet.log">
+<span class="sig-name descname"><span class="pre">log</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#UnknownFileTypeServlet.UnknownFileTypeServlet.log" title="Link to this definition">¶</a></dt>
+<dd><p>Log a message.</p>
+<p>This can be invoked to print messages concerning the servlet.
+This is often used by self to relay important information back
+to developers.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="UnknownFileTypeServlet.UnknownFileTypeServlet.name">
+<span class="sig-name descname"><span class="pre">name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#UnknownFileTypeServlet.UnknownFileTypeServlet.name" title="Link to this definition">¶</a></dt>
+<dd><p>Return the name which is simple the name of the class.</p>
+<p>Subclasses should <em>not</em> override this method.
+It is used for logging and debugging.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="UnknownFileTypeServlet.UnknownFileTypeServlet.notImplemented">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">notImplemented</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">trans</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#UnknownFileTypeServlet.UnknownFileTypeServlet.notImplemented" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="UnknownFileTypeServlet.UnknownFileTypeServlet.open">
+<span class="sig-name descname"><span class="pre">open</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#UnknownFileTypeServlet.UnknownFileTypeServlet.open" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="UnknownFileTypeServlet.UnknownFileTypeServlet.printConfig">
+<span class="sig-name descname"><span class="pre">printConfig</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dest</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#UnknownFileTypeServlet.UnknownFileTypeServlet.printConfig" title="Link to this definition">¶</a></dt>
+<dd><p>Print the configuration to the given destination.</p>
+<p>The default destination is stdout. A fixed with font is assumed
+for aligning the values to start at the same column.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="UnknownFileTypeServlet.UnknownFileTypeServlet.readConfig">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">readConfig</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#UnknownFileTypeServlet.UnknownFileTypeServlet.readConfig" title="Link to this definition">¶</a></dt>
+<dd><p>Read the configuration from the file with the given name.</p>
+<p>Raises an UIError if the configuration cannot be read.</p>
+<p>This implementation assumes the file is stored in utf-8 encoding with
+possible BOM at the start, but also tries to read as latin-1 if it
+cannot be decoded as utf-8. Subclasses can override this behavior.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="UnknownFileTypeServlet.UnknownFileTypeServlet.redirectSansScript">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">redirectSansScript</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">trans</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#UnknownFileTypeServlet.UnknownFileTypeServlet.redirectSansScript" title="Link to this definition">¶</a></dt>
+<dd><p>Redirect to web server.</p>
+<p>Sends a redirect to a URL that doesn’t contain the script name.
+Under the right configuration, this will cause the web server to
+then be responsible for the URL rather than the WSGI server.
+Keep in mind that links off the target page will <em>not</em> include
+the script name in the URL.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="UnknownFileTypeServlet.UnknownFileTypeServlet.respond">
+<span class="sig-name descname"><span class="pre">respond</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">transaction</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#UnknownFileTypeServlet.UnknownFileTypeServlet.respond" title="Link to this definition">¶</a></dt>
+<dd><p>Respond to a request.</p>
+<p>Invokes the appropriate respondToSomething() method depending on the
+type of request (e.g., GET, POST, PUT, …).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="UnknownFileTypeServlet.UnknownFileTypeServlet.respondToGet">
+<span class="sig-name descname"><span class="pre">respondToGet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">trans</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#UnknownFileTypeServlet.UnknownFileTypeServlet.respondToGet" title="Link to this definition">¶</a></dt>
+<dd><p>Respond to GET request.</p>
+<p>Responds to the transaction by invoking self.foo() for foo is
+specified by the ‘Technique’ setting.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="UnknownFileTypeServlet.UnknownFileTypeServlet.respondToHead">
+<span class="sig-name descname"><span class="pre">respondToHead</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">trans</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#UnknownFileTypeServlet.UnknownFileTypeServlet.respondToHead" title="Link to this definition">¶</a></dt>
+<dd><p>Respond to GET request.</p>
+<p>Responds to the transaction by invoking self.foo() for foo is
+specified by the ‘Technique’ setting.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="UnknownFileTypeServlet.UnknownFileTypeServlet.respondToPost">
+<span class="sig-name descname"><span class="pre">respondToPost</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">trans</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#UnknownFileTypeServlet.UnknownFileTypeServlet.respondToPost" title="Link to this definition">¶</a></dt>
+<dd><p>Respond to POST request.</p>
+<p>Invoke self.respondToGet().</p>
+<p>Since posts are usually accompanied by data, this might not be the
+best policy. However, a POST would most likely be for a CGI, which
+currently no one is mixing in with their Webware-based web sites.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="UnknownFileTypeServlet.UnknownFileTypeServlet.runMethodForTransaction">
+<span class="sig-name descname"><span class="pre">runMethodForTransaction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">transaction</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kw</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#UnknownFileTypeServlet.UnknownFileTypeServlet.runMethodForTransaction" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="UnknownFileTypeServlet.UnknownFileTypeServlet.runTransaction">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">runTransaction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">transaction</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#UnknownFileTypeServlet.UnknownFileTypeServlet.runTransaction" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="UnknownFileTypeServlet.UnknownFileTypeServlet.serveContent">
+<span class="sig-name descname"><span class="pre">serveContent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">trans</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#UnknownFileTypeServlet.UnknownFileTypeServlet.serveContent" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="UnknownFileTypeServlet.UnknownFileTypeServlet.serverSidePath">
+<span class="sig-name descname"><span class="pre">serverSidePath</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#UnknownFileTypeServlet.UnknownFileTypeServlet.serverSidePath" title="Link to this definition">¶</a></dt>
+<dd><p>Return the filesystem path of the page on the server.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="UnknownFileTypeServlet.UnknownFileTypeServlet.setFactory">
+<span class="sig-name descname"><span class="pre">setFactory</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">factory</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#UnknownFileTypeServlet.UnknownFileTypeServlet.setFactory" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="UnknownFileTypeServlet.UnknownFileTypeServlet.setSetting">
+<span class="sig-name descname"><span class="pre">setSetting</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#UnknownFileTypeServlet.UnknownFileTypeServlet.setSetting" title="Link to this definition">¶</a></dt>
+<dd><p>Set a particular configuration setting.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="UnknownFileTypeServlet.UnknownFileTypeServlet.setting">
+<span class="sig-name descname"><span class="pre">setting</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default=&lt;class</span> <span class="pre">'MiscUtils.NoDefault'&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#UnknownFileTypeServlet.UnknownFileTypeServlet.setting" title="Link to this definition">¶</a></dt>
+<dd><p>Return the value of a particular setting in the configuration.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="UnknownFileTypeServlet.UnknownFileTypeServlet.shouldCacheContent">
+<span class="sig-name descname"><span class="pre">shouldCacheContent</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#UnknownFileTypeServlet.UnknownFileTypeServlet.shouldCacheContent" title="Link to this definition">¶</a></dt>
+<dd><p>Return whether the content should be cached or not.</p>
+<p>Returns a boolean that controls whether or not the content served
+through this servlet is cached. The default behavior is to return
+the CacheContent setting. Subclasses may override to always True
+or False, or incorporate some other logic.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="UnknownFileTypeServlet.UnknownFileTypeServlet.sleep">
+<span class="sig-name descname"><span class="pre">sleep</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">transaction</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#UnknownFileTypeServlet.UnknownFileTypeServlet.sleep" title="Link to this definition">¶</a></dt>
+<dd><p>Send the sleep message.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="UnknownFileTypeServlet.UnknownFileTypeServlet.userConfig">
+<span class="sig-name descname"><span class="pre">userConfig</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#UnknownFileTypeServlet.UnknownFileTypeServlet.userConfig" title="Link to this definition">¶</a></dt>
+<dd><p>Get the user config.</p>
+<p>Taken from Application’s ‘UnknownFileTypes’ user setting.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="UnknownFileTypeServlet.UnknownFileTypeServlet.validTechniques">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">validTechniques</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#UnknownFileTypeServlet.UnknownFileTypeServlet.validTechniques" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="UnknownFileTypeServlet.UnknownFileTypeServletFactory">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">UnknownFileTypeServlet.</span></span><span class="sig-name descname"><span class="pre">UnknownFileTypeServletFactory</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">application</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#UnknownFileTypeServlet.UnknownFileTypeServletFactory" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="servletfactory.html#ServletFactory.ServletFactory" title="ServletFactory.ServletFactory"><code class="xref py py-class docutils literal notranslate"><span class="pre">ServletFactory</span></code></a></p>
+<p>The servlet factory for unknown file types.</p>
+<p>I.e. all files other than .py, .psp and the other types we support.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="UnknownFileTypeServlet.UnknownFileTypeServletFactory.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">application</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#UnknownFileTypeServlet.UnknownFileTypeServletFactory.__init__" title="Link to this definition">¶</a></dt>
+<dd><p>Create servlet factory.</p>
+<p>Stores a reference to the application in self._app, because
+subclasses may or may not need to talk back to the application
+to do their work.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="UnknownFileTypeServlet.UnknownFileTypeServletFactory.extensions">
+<span class="sig-name descname"><span class="pre">extensions</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#UnknownFileTypeServlet.UnknownFileTypeServletFactory.extensions" title="Link to this definition">¶</a></dt>
+<dd><p>Return a list of extensions that match this handler.</p>
+<p>Extensions should include the dot. An empty string indicates a file
+with no extension and is a valid value. The extension ‘.*’ is a special
+case that is looked for a URL’s extension doesn’t match anything.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="UnknownFileTypeServlet.UnknownFileTypeServletFactory.flushCache">
+<span class="sig-name descname"><span class="pre">flushCache</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#UnknownFileTypeServlet.UnknownFileTypeServletFactory.flushCache" title="Link to this definition">¶</a></dt>
+<dd><p>Flush the servlet cache and start fresh.</p>
+<p>Servlets that are currently in the wild may find their way back
+into the cache (this may be a problem).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="UnknownFileTypeServlet.UnknownFileTypeServletFactory.importAsPackage">
+<span class="sig-name descname"><span class="pre">importAsPackage</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">transaction</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">serverSidePathToImport</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#UnknownFileTypeServlet.UnknownFileTypeServletFactory.importAsPackage" title="Link to this definition">¶</a></dt>
+<dd><p>Import requested module.</p>
+<p>Imports the module at the given path in the proper package/subpackage
+for the current request. For example, if the transaction has the URL
+<a class="reference external" href="http://localhost/Webware/MyContextDirectory/MySubdirectory/MyPage">http://localhost/Webware/MyContextDirectory/MySubdirectory/MyPage</a>
+and path = ‘some/random/path/MyModule.py’ and the context is configured
+to have the name ‘MyContext’ then this function imports the module at
+that path as MyContext.MySubdirectory.MyModule . Note that the context
+name may differ from the name of the directory containing the context,
+even though they are usually the same by convention.</p>
+<p>Note that the module imported may have a different name from the
+servlet name specified in the URL. This is used in PSP.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="UnknownFileTypeServlet.UnknownFileTypeServletFactory.loadClass">
+<span class="sig-name descname"><span class="pre">loadClass</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">transaction</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#UnknownFileTypeServlet.UnknownFileTypeServletFactory.loadClass" title="Link to this definition">¶</a></dt>
+<dd><p>Load the appropriate class.</p>
+<p>Given a transaction and a path, load the class for creating these
+servlets. Caching, pooling, and threadsafeness are all handled by
+servletForTransaction. This method is not expected to be threadsafe.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="UnknownFileTypeServlet.UnknownFileTypeServletFactory.name">
+<span class="sig-name descname"><span class="pre">name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#UnknownFileTypeServlet.UnknownFileTypeServletFactory.name" title="Link to this definition">¶</a></dt>
+<dd><p>Return the name of the factory.</p>
+<p>This is a convenience for the class name.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="UnknownFileTypeServlet.UnknownFileTypeServletFactory.returnServlet">
+<span class="sig-name descname"><span class="pre">returnServlet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">servlet</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#UnknownFileTypeServlet.UnknownFileTypeServletFactory.returnServlet" title="Link to this definition">¶</a></dt>
+<dd><p>Return servlet to the pool.</p>
+<p>Called by Servlet.close(), which returns the servlet
+to the servlet pool if necessary.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="UnknownFileTypeServlet.UnknownFileTypeServletFactory.servletForTransaction">
+<span class="sig-name descname"><span class="pre">servletForTransaction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">transaction</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#UnknownFileTypeServlet.UnknownFileTypeServletFactory.servletForTransaction" title="Link to this definition">¶</a></dt>
+<dd><p>Return a new servlet that will handle the transaction.</p>
+<p>This method handles caching, and will call loadClass(trans, filepath)
+if no cache is found. Caching is generally controlled by servlets
+with the canBeReused() and canBeThreaded() methods.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="UnknownFileTypeServlet.UnknownFileTypeServletFactory.uniqueness">
+<span class="sig-name descname"><span class="pre">uniqueness</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#UnknownFileTypeServlet.UnknownFileTypeServletFactory.uniqueness" title="Link to this definition">¶</a></dt>
+<dd><p>Return uniqueness type.</p>
+<p>Returns a string to indicate the uniqueness of the ServletFactory’s
+servlets. The Application needs to know if the servlets are unique
+per file, per extension or per application.</p>
+<p>Return values are ‘file’, ‘extension’ and ‘application’.</p>
+<p>NOTE: Application so far only supports ‘file’ uniqueness.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../index.html">Webware for Python 3</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../changes.html">List of Changes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../migrate.html">Migration Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../copyright.html">Copyright and License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorial.html">Beginner Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../appdev.html">Application Development</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../config.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../deploy.html">Deployment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../plugins.html">Plug-ins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../style.html">Style Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../psp.html">PSP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../userkit.html">UserKit</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../taskkit.html">TaskKit</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../webutils.html">WebUtils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../miscutils.html">MiscUtils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../testing.html">Testing</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Core Classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../psp/index.html">PSP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../userkit/index.html">UserKit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../taskkit/index.html">TaskKit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../webutils/index.html">WebUtils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../miscutils/index.html">MiscUtils</a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">API Reference</a><ul>
+  <li><a href="index.html">Core Classes</a><ul>
+      <li>Previous: <a href="transaction.html" title="previous chapter">Transaction</a></li>
+      <li>Next: <a href="urlparser.html" title="next chapter">URLParser</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;1999-2025, Christoph Zwerschke et al.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.2.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+      |
+      <a href="../../_sources/ref/core/unknownfiletypeservlet.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

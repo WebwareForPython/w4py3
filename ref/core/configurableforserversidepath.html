@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>ConfigurableForServerSidePath &#8212; Webware for Python 3 3.1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="../../_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="../../_static/alabaster.css?v=27fed22d" />
+    <script src="../../_static/documentation_options.js?v=dd1205ac"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="copyright" title="Copyright" href="../../copyright.html" />
+    <link rel="next" title="Cookie" href="cookie.html" />
+    <link rel="prev" title="Application" href="application.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="module-ConfigurableForServerSidePath">
+<span id="configurableforserversidepath"></span><h1>ConfigurableForServerSidePath<a class="headerlink" href="#module-ConfigurableForServerSidePath" title="Link to this heading">¶</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="ConfigurableForServerSidePath.ConfigurableForServerSidePath">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ConfigurableForServerSidePath.</span></span><span class="sig-name descname"><span class="pre">ConfigurableForServerSidePath</span></span><a class="headerlink" href="#ConfigurableForServerSidePath.ConfigurableForServerSidePath" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="../miscutils/configurable.html#MiscUtils.Configurable.Configurable" title="MiscUtils.Configurable.Configurable"><code class="xref py py-class docutils literal notranslate"><span class="pre">Configurable</span></code></a></p>
+<p>Configuration file functionality incorporating a server side path.</p>
+<p>This is a version of <cite>MiscUtils.Configurable.Configurable</cite> that provides
+a customized <cite>setting</cite> method for classes which have a <cite>serverSidePath</cite>
+method. If a setting’s name ends with <code class="docutils literal notranslate"><span class="pre">Filename</span></code> or <code class="docutils literal notranslate"><span class="pre">Dir</span></code>, its value
+is passed through <cite>serverSidePath</cite> before being returned.</p>
+<p>In other words, relative filenames and directory names are expanded with
+the location of the object, <em>not</em> the current directory.</p>
+<p>Application is a prominent class that uses this mix-in. Any class that
+has a <cite>serverSidePath</cite> method and a <cite>Configurable</cite> base class, should
+inherit this class instead.</p>
+<p>This is used for <cite>MakeAppWorkDir</cite>, which changes the <cite>serverSidePath</cite>.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="ConfigurableForServerSidePath.ConfigurableForServerSidePath.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ConfigurableForServerSidePath.ConfigurableForServerSidePath.__init__" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ConfigurableForServerSidePath.ConfigurableForServerSidePath.commandLineConfig">
+<span class="sig-name descname"><span class="pre">commandLineConfig</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ConfigurableForServerSidePath.ConfigurableForServerSidePath.commandLineConfig" title="Link to this definition">¶</a></dt>
+<dd><p>Return the settings that came from the command-line.</p>
+<p>These settings come via addCommandLineSetting().</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ConfigurableForServerSidePath.ConfigurableForServerSidePath.config">
+<span class="sig-name descname"><span class="pre">config</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ConfigurableForServerSidePath.ConfigurableForServerSidePath.config" title="Link to this definition">¶</a></dt>
+<dd><p>Return the configuration of the object as a dictionary.</p>
+<p>This is a combination of defaultConfig() and userConfig().
+This method caches the config.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ConfigurableForServerSidePath.ConfigurableForServerSidePath.configFilename">
+<span class="sig-name descname"><span class="pre">configFilename</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ConfigurableForServerSidePath.ConfigurableForServerSidePath.configFilename" title="Link to this definition">¶</a></dt>
+<dd><p>Return the full name of the user config file.</p>
+<p>Users can override the configuration by this config file.
+Subclasses must override to specify a name.
+Returning None is valid, in which case no user config file
+will be loaded.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ConfigurableForServerSidePath.ConfigurableForServerSidePath.configName">
+<span class="sig-name descname"><span class="pre">configName</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ConfigurableForServerSidePath.ConfigurableForServerSidePath.configName" title="Link to this definition">¶</a></dt>
+<dd><p>Return the name of the configuration file without the extension.</p>
+<p>This is the portion of the config file name before the ‘.config’.
+This is used on the command-line.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ConfigurableForServerSidePath.ConfigurableForServerSidePath.configReplacementValues">
+<span class="sig-name descname"><span class="pre">configReplacementValues</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ConfigurableForServerSidePath.ConfigurableForServerSidePath.configReplacementValues" title="Link to this definition">¶</a></dt>
+<dd><p>Return a dictionary for substitutions in the config file.</p>
+<p>This must be a dictionary suitable for use with “string % dict”
+that should be used on the text in the config file.
+If an empty dictionary (or None) is returned, then no substitution
+will be attempted.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ConfigurableForServerSidePath.ConfigurableForServerSidePath.defaultConfig">
+<span class="sig-name descname"><span class="pre">defaultConfig</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ConfigurableForServerSidePath.ConfigurableForServerSidePath.defaultConfig" title="Link to this definition">¶</a></dt>
+<dd><p>Return a dictionary with all the default values for the settings.</p>
+<p>This implementation returns {}. Subclasses should override.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ConfigurableForServerSidePath.ConfigurableForServerSidePath.hasSetting">
+<span class="sig-name descname"><span class="pre">hasSetting</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ConfigurableForServerSidePath.ConfigurableForServerSidePath.hasSetting" title="Link to this definition">¶</a></dt>
+<dd><p>Check whether a configuration setting has been changed.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ConfigurableForServerSidePath.ConfigurableForServerSidePath.printConfig">
+<span class="sig-name descname"><span class="pre">printConfig</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dest</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ConfigurableForServerSidePath.ConfigurableForServerSidePath.printConfig" title="Link to this definition">¶</a></dt>
+<dd><p>Print the configuration to the given destination.</p>
+<p>The default destination is stdout. A fixed with font is assumed
+for aligning the values to start at the same column.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ConfigurableForServerSidePath.ConfigurableForServerSidePath.readConfig">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">readConfig</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ConfigurableForServerSidePath.ConfigurableForServerSidePath.readConfig" title="Link to this definition">¶</a></dt>
+<dd><p>Read the configuration from the file with the given name.</p>
+<p>Raises an UIError if the configuration cannot be read.</p>
+<p>This implementation assumes the file is stored in utf-8 encoding with
+possible BOM at the start, but also tries to read as latin-1 if it
+cannot be decoded as utf-8. Subclasses can override this behavior.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ConfigurableForServerSidePath.ConfigurableForServerSidePath.setSetting">
+<span class="sig-name descname"><span class="pre">setSetting</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ConfigurableForServerSidePath.ConfigurableForServerSidePath.setSetting" title="Link to this definition">¶</a></dt>
+<dd><p>Set a particular configuration setting.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ConfigurableForServerSidePath.ConfigurableForServerSidePath.setting">
+<span class="sig-name descname"><span class="pre">setting</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default=&lt;class</span> <span class="pre">'MiscUtils.NoDefault'&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ConfigurableForServerSidePath.ConfigurableForServerSidePath.setting" title="Link to this definition">¶</a></dt>
+<dd><p>Return setting, using the server side path when indicated.</p>
+<p>Returns the setting, filtered by <cite>self.serverSidePath()</cite>,
+if the name ends with <code class="docutils literal notranslate"><span class="pre">Filename</span></code> or <code class="docutils literal notranslate"><span class="pre">Dir</span></code>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ConfigurableForServerSidePath.ConfigurableForServerSidePath.userConfig">
+<span class="sig-name descname"><span class="pre">userConfig</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ConfigurableForServerSidePath.ConfigurableForServerSidePath.userConfig" title="Link to this definition">¶</a></dt>
+<dd><p>Return the user config overrides.</p>
+<p>These settings can be found in the optional config file.
+Returns {} if there is no such file.</p>
+<p>The config filename is taken from configFilename().</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../index.html">Webware for Python 3</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../changes.html">List of Changes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../migrate.html">Migration Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../copyright.html">Copyright and License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorial.html">Beginner Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../appdev.html">Application Development</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../config.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../deploy.html">Deployment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../plugins.html">Plug-ins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../style.html">Style Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../psp.html">PSP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../userkit.html">UserKit</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../taskkit.html">TaskKit</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../webutils.html">WebUtils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../miscutils.html">MiscUtils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../testing.html">Testing</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Core Classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../psp/index.html">PSP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../userkit/index.html">UserKit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../taskkit/index.html">TaskKit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../webutils/index.html">WebUtils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../miscutils/index.html">MiscUtils</a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">API Reference</a><ul>
+  <li><a href="index.html">Core Classes</a><ul>
+      <li>Previous: <a href="application.html" title="previous chapter">Application</a></li>
+      <li>Next: <a href="cookie.html" title="next chapter">Cookie</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;1999-2025, Christoph Zwerschke et al.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.2.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+      |
+      <a href="../../_sources/ref/core/configurableforserversidepath.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

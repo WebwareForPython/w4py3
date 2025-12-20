@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>PSPServletFactory &#8212; Webware for Python 3 3.1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="../../_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="../../_static/alabaster.css?v=27fed22d" />
+    <script src="../../_static/documentation_options.js?v=dd1205ac"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="copyright" title="Copyright" href="../../copyright.html" />
+    <link rel="next" title="PSPUtils" href="psputils.html" />
+    <link rel="prev" title="PSPParser" href="pspparser.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="module-PSP.PSPServletFactory">
+<span id="pspservletfactory"></span><h1>PSPServletFactory<a class="headerlink" href="#module-PSP.PSPServletFactory" title="Link to this heading">¶</a></h1>
+<p>This module handles requests from the application for PSP pages.</p>
+<p>Copyright (c) by Jay Love, 2000 (<a class="reference external" href="mailto:jsliv&#37;&#52;&#48;jslove&#46;org">mailto:jsliv<span>&#64;</span>jslove<span>&#46;</span>org</a>)</p>
+<p>Permission to use, copy, modify, and distribute this software and its
+documentation for any purpose and without fee or royalty is hereby granted,
+provided that the above copyright notice appear in all copies and that
+both that copyright notice and this permission notice appear in
+supporting documentation or portions thereof, including modifications,
+that you make.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="PSP.PSPServletFactory.PSPServletFactory">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PSP.PSPServletFactory.</span></span><span class="sig-name descname"><span class="pre">PSPServletFactory</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">application</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PSP.PSPServletFactory.PSPServletFactory" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="../core/servletfactory.html#ServletFactory.ServletFactory" title="ServletFactory.ServletFactory"><code class="xref py py-class docutils literal notranslate"><span class="pre">ServletFactory</span></code></a></p>
+<p>Servlet Factory for PSP files.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="PSP.PSPServletFactory.PSPServletFactory.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">application</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PSP.PSPServletFactory.PSPServletFactory.__init__" title="Link to this definition">¶</a></dt>
+<dd><p>Create servlet factory.</p>
+<p>Stores a reference to the application in self._app, because
+subclasses may or may not need to talk back to the application
+to do their work.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PSP.PSPServletFactory.PSPServletFactory.clearFileCache">
+<span class="sig-name descname"><span class="pre">clearFileCache</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PSP.PSPServletFactory.PSPServletFactory.clearFileCache" title="Link to this definition">¶</a></dt>
+<dd><p>Clear class files stored on disk.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PSP.PSPServletFactory.PSPServletFactory.computeClassName">
+<span class="sig-name descname"><span class="pre">computeClassName</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pageName</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PSP.PSPServletFactory.PSPServletFactory.computeClassName" title="Link to this definition">¶</a></dt>
+<dd><p>Generates a (hopefully) unique class/file name for each PSP file.</p>
+<p>Argument: pageName: the path to the PSP source file
+Returns: a unique name for the class generated fom this PSP source file</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PSP.PSPServletFactory.PSPServletFactory.extensions">
+<span class="sig-name descname"><span class="pre">extensions</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PSP.PSPServletFactory.PSPServletFactory.extensions" title="Link to this definition">¶</a></dt>
+<dd><p>Return a list of extensions that match this handler.</p>
+<p>Extensions should include the dot. An empty string indicates a file
+with no extension and is a valid value. The extension ‘.*’ is a special
+case that is looked for a URL’s extension doesn’t match anything.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PSP.PSPServletFactory.PSPServletFactory.fileEncoding">
+<span class="sig-name descname"><span class="pre">fileEncoding</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PSP.PSPServletFactory.PSPServletFactory.fileEncoding" title="Link to this definition">¶</a></dt>
+<dd><p>Return the file encoding used in PSP files.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PSP.PSPServletFactory.PSPServletFactory.flushCache">
+<span class="sig-name descname"><span class="pre">flushCache</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PSP.PSPServletFactory.PSPServletFactory.flushCache" title="Link to this definition">¶</a></dt>
+<dd><p>Clean out the cache of classes in memory and on disk.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PSP.PSPServletFactory.PSPServletFactory.importAsPackage">
+<span class="sig-name descname"><span class="pre">importAsPackage</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">transaction</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">serverSidePathToImport</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PSP.PSPServletFactory.PSPServletFactory.importAsPackage" title="Link to this definition">¶</a></dt>
+<dd><p>Import requested module.</p>
+<p>Imports the module at the given path in the proper package/subpackage
+for the current request. For example, if the transaction has the URL
+<a class="reference external" href="http://localhost/Webware/MyContextDirectory/MySubdirectory/MyPage">http://localhost/Webware/MyContextDirectory/MySubdirectory/MyPage</a>
+and path = ‘some/random/path/MyModule.py’ and the context is configured
+to have the name ‘MyContext’ then this function imports the module at
+that path as MyContext.MySubdirectory.MyModule . Note that the context
+name may differ from the name of the directory containing the context,
+even though they are usually the same by convention.</p>
+<p>Note that the module imported may have a different name from the
+servlet name specified in the URL. This is used in PSP.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PSP.PSPServletFactory.PSPServletFactory.loadClass">
+<span class="sig-name descname"><span class="pre">loadClass</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">transaction</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PSP.PSPServletFactory.PSPServletFactory.loadClass" title="Link to this definition">¶</a></dt>
+<dd><p>Load the appropriate class.</p>
+<p>Given a transaction and a path, load the class for creating these
+servlets. Caching, pooling, and threadsafeness are all handled by
+servletForTransaction. This method is not expected to be threadsafe.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PSP.PSPServletFactory.PSPServletFactory.loadClassFromFile">
+<span class="sig-name descname"><span class="pre">loadClassFromFile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">transaction</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fileName</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">className</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PSP.PSPServletFactory.PSPServletFactory.loadClassFromFile" title="Link to this definition">¶</a></dt>
+<dd><p>Create an actual class instance.</p>
+<p>The module containing the class is imported as though it were a
+module within the context’s package (and appropriate subpackages).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PSP.PSPServletFactory.PSPServletFactory.name">
+<span class="sig-name descname"><span class="pre">name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PSP.PSPServletFactory.PSPServletFactory.name" title="Link to this definition">¶</a></dt>
+<dd><p>Return the name of the factory.</p>
+<p>This is a convenience for the class name.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PSP.PSPServletFactory.PSPServletFactory.returnServlet">
+<span class="sig-name descname"><span class="pre">returnServlet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">servlet</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PSP.PSPServletFactory.PSPServletFactory.returnServlet" title="Link to this definition">¶</a></dt>
+<dd><p>Return servlet to the pool.</p>
+<p>Called by Servlet.close(), which returns the servlet
+to the servlet pool if necessary.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PSP.PSPServletFactory.PSPServletFactory.servletForTransaction">
+<span class="sig-name descname"><span class="pre">servletForTransaction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">transaction</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PSP.PSPServletFactory.PSPServletFactory.servletForTransaction" title="Link to this definition">¶</a></dt>
+<dd><p>Return a new servlet that will handle the transaction.</p>
+<p>This method handles caching, and will call loadClass(trans, filepath)
+if no cache is found. Caching is generally controlled by servlets
+with the canBeReused() and canBeThreaded() methods.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PSP.PSPServletFactory.PSPServletFactory.uniqueness">
+<span class="sig-name descname"><span class="pre">uniqueness</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PSP.PSPServletFactory.PSPServletFactory.uniqueness" title="Link to this definition">¶</a></dt>
+<dd><p>Return uniqueness type.</p>
+<p>Returns a string to indicate the uniqueness of the ServletFactory’s
+servlets. The Application needs to know if the servlets are unique
+per file, per extension or per application.</p>
+<p>Return values are ‘file’, ‘extension’ and ‘application’.</p>
+<p>NOTE: Application so far only supports ‘file’ uniqueness.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../index.html">Webware for Python 3</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../changes.html">List of Changes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../migrate.html">Migration Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../copyright.html">Copyright and License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorial.html">Beginner Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../appdev.html">Application Development</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../config.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../deploy.html">Deployment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../plugins.html">Plug-ins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../style.html">Style Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../psp.html">PSP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../userkit.html">UserKit</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../taskkit.html">TaskKit</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../webutils.html">WebUtils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../miscutils.html">MiscUtils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../testing.html">Testing</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../core/index.html">Core Classes</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">PSP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../userkit/index.html">UserKit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../taskkit/index.html">TaskKit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../webutils/index.html">WebUtils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../miscutils/index.html">MiscUtils</a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">API Reference</a><ul>
+  <li><a href="index.html">PSP</a><ul>
+      <li>Previous: <a href="pspparser.html" title="previous chapter">PSPParser</a></li>
+      <li>Next: <a href="psputils.html" title="next chapter">PSPUtils</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;1999-2025, Christoph Zwerschke et al.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.2.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+      |
+      <a href="../../_sources/ref/psp/pspservletfactory.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

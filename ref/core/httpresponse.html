@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>HTTPResponse &#8212; Webware for Python 3 3.1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="../../_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="../../_static/alabaster.css?v=27fed22d" />
+    <script src="../../_static/documentation_options.js?v=dd1205ac"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="copyright" title="Copyright" href="../../copyright.html" />
+    <link rel="next" title="HTTPServlet" href="httpservlet.html" />
+    <link rel="prev" title="HTTPRequest" href="httprequest.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="module-HTTPResponse">
+<span id="httpresponse"></span><h1>HTTPResponse<a class="headerlink" href="#module-HTTPResponse" title="Link to this heading">¶</a></h1>
+<p>HTTP responses</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="HTTPResponse.HTTPResponse">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">HTTPResponse.</span></span><span class="sig-name descname"><span class="pre">HTTPResponse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">transaction</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">strmOut</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">headers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#HTTPResponse.HTTPResponse" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="response.html#Response.Response" title="Response.Response"><code class="xref py py-class docutils literal notranslate"><span class="pre">Response</span></code></a></p>
+<p>The base class for HTTP responses.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPResponse.HTTPResponse.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">transaction</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">strmOut</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">headers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#HTTPResponse.HTTPResponse.__init__" title="Link to this definition">¶</a></dt>
+<dd><p>Initialize the request.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPResponse.HTTPResponse.addCookie">
+<span class="sig-name descname"><span class="pre">addCookie</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cookie</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#HTTPResponse.HTTPResponse.addCookie" title="Link to this definition">¶</a></dt>
+<dd><p>Add a cookie that will be sent with this response.</p>
+<p>cookie is a Cookie object instance. See the Cookie class docs.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPResponse.HTTPResponse.assertNotCommitted">
+<span class="sig-name descname"><span class="pre">assertNotCommitted</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPResponse.HTTPResponse.assertNotCommitted" title="Link to this definition">¶</a></dt>
+<dd><p>Assert the the response is not already committed.</p>
+<p>This raises a ConnectionError if the connection is already committed.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPResponse.HTTPResponse.clearCookies">
+<span class="sig-name descname"><span class="pre">clearCookies</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPResponse.HTTPResponse.clearCookies" title="Link to this definition">¶</a></dt>
+<dd><p>Clear all the cookies.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPResponse.HTTPResponse.clearHeaders">
+<span class="sig-name descname"><span class="pre">clearHeaders</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPResponse.HTTPResponse.clearHeaders" title="Link to this definition">¶</a></dt>
+<dd><p>Clear all the headers.</p>
+<p>You might consider a setHeader(‘Content-Type’, ‘text/html’)
+or something similar after this.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPResponse.HTTPResponse.clearTransaction">
+<span class="sig-name descname"><span class="pre">clearTransaction</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPResponse.HTTPResponse.clearTransaction" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPResponse.HTTPResponse.commit">
+<span class="sig-name descname"><span class="pre">commit</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPResponse.HTTPResponse.commit" title="Link to this definition">¶</a></dt>
+<dd><p>Commit response.</p>
+<p>Write out all headers to the response stream, and tell the underlying
+response stream it can start sending data.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPResponse.HTTPResponse.cookie">
+<span class="sig-name descname"><span class="pre">cookie</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#HTTPResponse.HTTPResponse.cookie" title="Link to this definition">¶</a></dt>
+<dd><p>Return the value of the specified cookie.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPResponse.HTTPResponse.cookies">
+<span class="sig-name descname"><span class="pre">cookies</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPResponse.HTTPResponse.cookies" title="Link to this definition">¶</a></dt>
+<dd><p>Get all the cookies.</p>
+<p>Returns a dictionary-style object of all Cookie objects that will
+be sent with this response.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPResponse.HTTPResponse.delCookie">
+<span class="sig-name descname"><span class="pre">delCookie</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'/'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">secure</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#HTTPResponse.HTTPResponse.delCookie" title="Link to this definition">¶</a></dt>
+<dd><p>Delete a cookie at the browser.</p>
+<p>To do so, one has to create and send to the browser a cookie with
+parameters that will cause the browser to delete it.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPResponse.HTTPResponse.delHeader">
+<span class="sig-name descname"><span class="pre">delHeader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#HTTPResponse.HTTPResponse.delHeader" title="Link to this definition">¶</a></dt>
+<dd><p>Delete a specific header by name.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPResponse.HTTPResponse.deliver">
+<span class="sig-name descname"><span class="pre">deliver</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPResponse.HTTPResponse.deliver" title="Link to this definition">¶</a></dt>
+<dd><p>Deliver response.</p>
+<p>The final step in the processing cycle.
+Not used for much with responseStreams added.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPResponse.HTTPResponse.displayError">
+<span class="sig-name descname"><span class="pre">displayError</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">err</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#HTTPResponse.HTTPResponse.displayError" title="Link to this definition">¶</a></dt>
+<dd><p>Display HTTPException errors, with status codes.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPResponse.HTTPResponse.endTime">
+<span class="sig-name descname"><span class="pre">endTime</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPResponse.HTTPResponse.endTime" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPResponse.HTTPResponse.flush">
+<span class="sig-name descname"><span class="pre">flush</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">autoFlush</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#HTTPResponse.HTTPResponse.flush" title="Link to this definition">¶</a></dt>
+<dd><p>Send all accumulated response data now.</p>
+<p>Commits the response headers and tells the underlying stream to flush.
+if autoFlush is true, the responseStream will flush itself
+automatically from now on.</p>
+<p>Caveat: Some web servers, especially IIS, will still buffer the output
+from your servlet until it terminates before transmitting the results
+to the browser. Also, server modules for Apache like mod_deflate or
+mod_gzip may do buffering of their own that will cause flush() to not
+result in data being sent immediately to the client. You can prevent
+this by setting a no-gzip note in the Apache configuration, e.g.</p>
+<blockquote>
+<div><p>SetEnvIf Request_URI ^/Webware/MyServlet no-gzip=1</p>
+</div></blockquote>
+<p>Even the browser may buffer its input before displaying it.
+For example, Netscape buffered text until it received an end-of-line
+or the beginning of a tag, and it didn’t render tables until the end
+tag of the outermost table was seen. Some Firefox add-ons also buffer
+response data before it gets rendered. Some versions of MSIE will only
+start to display the page after they have received 256 bytes of output,
+so you may need to send extra whitespace before flushing to get MSIE
+to display the page.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPResponse.HTTPResponse.hasCookie">
+<span class="sig-name descname"><span class="pre">hasCookie</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#HTTPResponse.HTTPResponse.hasCookie" title="Link to this definition">¶</a></dt>
+<dd><p>Return True if the specified cookie is present.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPResponse.HTTPResponse.hasHeader">
+<span class="sig-name descname"><span class="pre">hasHeader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#HTTPResponse.HTTPResponse.hasHeader" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPResponse.HTTPResponse.header">
+<span class="sig-name descname"><span class="pre">header</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default=&lt;class</span> <span class="pre">'MiscUtils.NoDefault'&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#HTTPResponse.HTTPResponse.header" title="Link to this definition">¶</a></dt>
+<dd><p>Return the value of the specified header.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPResponse.HTTPResponse.headers">
+<span class="sig-name descname"><span class="pre">headers</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPResponse.HTTPResponse.headers" title="Link to this definition">¶</a></dt>
+<dd><p>Return all the headers.</p>
+<p>Returns a dictionary-style object of all header objects contained by
+this request.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPResponse.HTTPResponse.isCommitted">
+<span class="sig-name descname"><span class="pre">isCommitted</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPResponse.HTTPResponse.isCommitted" title="Link to this definition">¶</a></dt>
+<dd><p>Check whether response is already committed.</p>
+<p>Checks whether the response has already been partially or completely
+sent. If this method returns True, then no new headers/cookies can be
+added to the response anymore.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPResponse.HTTPResponse.mergeTextHeaders">
+<span class="sig-name descname"><span class="pre">mergeTextHeaders</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">headerStr</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#HTTPResponse.HTTPResponse.mergeTextHeaders" title="Link to this definition">¶</a></dt>
+<dd><p>Merge text into our headers.</p>
+<p>Given a string of headers (separated by newlines),
+merge them into our headers.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPResponse.HTTPResponse.protocol">
+<span class="sig-name descname"><span class="pre">protocol</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPResponse.HTTPResponse.protocol" title="Link to this definition">¶</a></dt>
+<dd><p>Return the name and version of the protocol.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPResponse.HTTPResponse.rawResponse">
+<span class="sig-name descname"><span class="pre">rawResponse</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPResponse.HTTPResponse.rawResponse" title="Link to this definition">¶</a></dt>
+<dd><p>Return the final contents of the response.</p>
+<p>Don’t invoke this method until after deliver().</p>
+<p>Returns a dictionary representing the response containing only
+strings, numbers, lists, tuples, etc. with no backreferences.
+That means you don’t need any special imports to examine the contents
+and you can marshal it. Currently there are two keys. ‘headers’ is
+list of tuples each of which contains two strings: the header and
+it’s value. ‘contents’ is a string (that may be binary, for example,
+if an image were being returned).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPResponse.HTTPResponse.recordEndTime">
+<span class="sig-name descname"><span class="pre">recordEndTime</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPResponse.HTTPResponse.recordEndTime" title="Link to this definition">¶</a></dt>
+<dd><p>Record the end time of the response.</p>
+<p>Stores the current time as the end time of the response. This should
+be invoked at the end of deliver(). It may also be invoked by the
+application for those responses that never deliver due to an error.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPResponse.HTTPResponse.recordSession">
+<span class="sig-name descname"><span class="pre">recordSession</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPResponse.HTTPResponse.recordSession" title="Link to this definition">¶</a></dt>
+<dd><p>Record session ID.</p>
+<p>Invoked by commit() to record the session ID in the response
+(if a session exists). This implementation sets a cookie for
+that purpose. For people who don’t like sweets, a future version
+could check a setting and instead of using cookies, could parse
+the HTML and update all the relevant URLs to include the session ID
+(which implies a big performance hit). Or we could require site
+developers to always pass their URLs through a function which adds
+the session ID (which implies pain). Personally, I’d rather just
+use cookies. You can experiment with different techniques by
+subclassing Session and overriding this method. Just make sure
+Application knows which “session” class to use.</p>
+<p>It should be also considered to automatically add the server port
+to the cookie name in order to distinguish application instances
+running on different ports on the same server, or to use the port
+cookie-attribute introduced with RFC 2965 for that purpose.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPResponse.HTTPResponse.reset">
+<span class="sig-name descname"><span class="pre">reset</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPResponse.HTTPResponse.reset" title="Link to this definition">¶</a></dt>
+<dd><p>Reset the response (such as headers, cookies and contents).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPResponse.HTTPResponse.sendError">
+<span class="sig-name descname"><span class="pre">sendError</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">code</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">msg</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#HTTPResponse.HTTPResponse.sendError" title="Link to this definition">¶</a></dt>
+<dd><p>Set the status code to the specified code and message.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPResponse.HTTPResponse.sendRedirect">
+<span class="sig-name descname"><span class="pre">sendRedirect</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">url</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">status</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#HTTPResponse.HTTPResponse.sendRedirect" title="Link to this definition">¶</a></dt>
+<dd><p>Redirect to another url.</p>
+<p>This method sets the headers and content for the redirect,
+but does not change the cookies and other headers.
+Use clearCookies() or clearHeaders() as appropriate.</p>
+<p>See <a class="reference external" href="https://www.ietf.org/rfc/rfc2616">https://www.ietf.org/rfc/rfc2616</a> (section 10.3.3)
+and <a class="reference external" href="https://www.ietf.org/rfc/rfc3875">https://www.ietf.org/rfc/rfc3875</a> (section 6.2.3).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPResponse.HTTPResponse.sendRedirectPermanent">
+<span class="sig-name descname"><span class="pre">sendRedirectPermanent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">url</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#HTTPResponse.HTTPResponse.sendRedirectPermanent" title="Link to this definition">¶</a></dt>
+<dd><p>Redirect permanently to another URL.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPResponse.HTTPResponse.sendRedirectSeeOther">
+<span class="sig-name descname"><span class="pre">sendRedirectSeeOther</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">url</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#HTTPResponse.HTTPResponse.sendRedirectSeeOther" title="Link to this definition">¶</a></dt>
+<dd><p>Redirect to a URL that shall be retrieved with GET.</p>
+<p>This method exists primarily to allow for the PRG pattern.</p>
+<p>See <a class="reference external" href="https://en.wikipedia.org/wiki/Post/Redirect/Get">https://en.wikipedia.org/wiki/Post/Redirect/Get</a></p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPResponse.HTTPResponse.sendRedirectTemporary">
+<span class="sig-name descname"><span class="pre">sendRedirectTemporary</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">url</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#HTTPResponse.HTTPResponse.sendRedirectTemporary" title="Link to this definition">¶</a></dt>
+<dd><p>Redirect temporarily to another URL.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPResponse.HTTPResponse.setCookie">
+<span class="sig-name descname"><span class="pre">setCookie</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'/'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expires</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'ONCLOSE'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">secure</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#HTTPResponse.HTTPResponse.setCookie" title="Link to this definition">¶</a></dt>
+<dd><p>Set a cookie.</p>
+<p>You can also set the path (which defaults to /).</p>
+<p>You can also set when it expires. It can expire:</p>
+<ul class="simple">
+<li><p>‘NOW’: this is the same as trying to delete it, but it
+doesn’t really seem to work in IE</p></li>
+<li><p>‘ONCLOSE’: the default behavior for cookies (expires when
+the browser closes)</p></li>
+<li><p>‘NEVER’: some time in the far, far future.</p></li>
+<li><p>integer: a timestamp value</p></li>
+<li><p>tuple or struct_time: a tuple, as created by the time module</p></li>
+<li><p>datetime: a datetime.datetime object for the time (if without
+time zone, assumed to be <em>local</em>, not GMT time)</p></li>
+<li><p>timedelta: a duration counted from the present, e.g.,
+datetime.timedelta(days=14) (2 weeks in the future)</p></li>
+<li><p>‘+…’: a time in the future, ‘…’ should be something like
+1w (1 week), 3h46m (3:45), etc.  You can use y (year),
+b (month), w (week), d (day), h (hour), m (minute),
+s (second). This is done by the MiscUtils.DateInterval.</p></li>
+</ul>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPResponse.HTTPResponse.setErrorHeaders">
+<span class="sig-name descname"><span class="pre">setErrorHeaders</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">err</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#HTTPResponse.HTTPResponse.setErrorHeaders" title="Link to this definition">¶</a></dt>
+<dd><p>Set error headers for an HTTPException.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPResponse.HTTPResponse.setHeader">
+<span class="sig-name descname"><span class="pre">setHeader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#HTTPResponse.HTTPResponse.setHeader" title="Link to this definition">¶</a></dt>
+<dd><p>Set a specific header by name.</p>
+<dl class="simple">
+<dt>Parameters:</dt><dd><p>name: the header name
+value: the header value</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPResponse.HTTPResponse.setStatus">
+<span class="sig-name descname"><span class="pre">setStatus</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">code</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">msg</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#HTTPResponse.HTTPResponse.setStatus" title="Link to this definition">¶</a></dt>
+<dd><p>Set the status code of the response, such as 200, ‘OK’.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPResponse.HTTPResponse.size">
+<span class="sig-name descname"><span class="pre">size</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPResponse.HTTPResponse.size" title="Link to this definition">¶</a></dt>
+<dd><p>Return the size of the final contents of the response.</p>
+<p>Don’t invoke this method until after deliver().</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPResponse.HTTPResponse.streamOut">
+<span class="sig-name descname"><span class="pre">streamOut</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPResponse.HTTPResponse.streamOut" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPResponse.HTTPResponse.write">
+<span class="sig-name descname"><span class="pre">write</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#HTTPResponse.HTTPResponse.write" title="Link to this definition">¶</a></dt>
+<dd><p>Write output to the response stream.</p>
+<p>The output will be converted to a string, and then converted to bytes
+using the application output encoding, unless it is already bytes.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPResponse.HTTPResponse.writeExceptionReport">
+<span class="sig-name descname"><span class="pre">writeExceptionReport</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">handler</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#HTTPResponse.HTTPResponse.writeExceptionReport" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HTTPResponse.HTTPResponse.writeHeaders">
+<span class="sig-name descname"><span class="pre">writeHeaders</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#HTTPResponse.HTTPResponse.writeHeaders" title="Link to this definition">¶</a></dt>
+<dd><p>Write headers to the response stream. Used internally.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../index.html">Webware for Python 3</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../changes.html">List of Changes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../migrate.html">Migration Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../copyright.html">Copyright and License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorial.html">Beginner Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../appdev.html">Application Development</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../config.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../deploy.html">Deployment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../plugins.html">Plug-ins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../style.html">Style Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../psp.html">PSP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../userkit.html">UserKit</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../taskkit.html">TaskKit</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../webutils.html">WebUtils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../miscutils.html">MiscUtils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../testing.html">Testing</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Core Classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../psp/index.html">PSP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../userkit/index.html">UserKit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../taskkit/index.html">TaskKit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../webutils/index.html">WebUtils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../miscutils/index.html">MiscUtils</a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">API Reference</a><ul>
+  <li><a href="index.html">Core Classes</a><ul>
+      <li>Previous: <a href="httprequest.html" title="previous chapter">HTTPRequest</a></li>
+      <li>Next: <a href="httpservlet.html" title="next chapter">HTTPServlet</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;1999-2025, Christoph Zwerschke et al.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.2.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+      |
+      <a href="../../_sources/ref/core/httpresponse.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

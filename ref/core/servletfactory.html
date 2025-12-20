@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>ServletFactory &#8212; Webware for Python 3 3.1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="../../_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="../../_static/alabaster.css?v=27fed22d" />
+    <script src="../../_static/documentation_options.js?v=dd1205ac"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="copyright" title="Copyright" href="../../copyright.html" />
+    <link rel="next" title="Session" href="session.html" />
+    <link rel="prev" title="Servlet" href="servlet.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="module-ServletFactory">
+<span id="servletfactory"></span><h1>ServletFactory<a class="headerlink" href="#module-ServletFactory" title="Link to this heading">¶</a></h1>
+<p>Servlet factory template.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="ServletFactory.PythonServletFactory">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ServletFactory.</span></span><span class="sig-name descname"><span class="pre">PythonServletFactory</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">application</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ServletFactory.PythonServletFactory" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#ServletFactory.ServletFactory" title="ServletFactory.ServletFactory"><code class="xref py py-class docutils literal notranslate"><span class="pre">ServletFactory</span></code></a></p>
+<p>The factory for Python servlets.</p>
+<p>This is the factory for ordinary Python servlets whose extensions
+are empty or .py. The servlets are unique per file since the file
+itself defines the servlet.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="ServletFactory.PythonServletFactory.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">application</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ServletFactory.PythonServletFactory.__init__" title="Link to this definition">¶</a></dt>
+<dd><p>Create servlet factory.</p>
+<p>Stores a reference to the application in self._app, because
+subclasses may or may not need to talk back to the application
+to do their work.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ServletFactory.PythonServletFactory.extensions">
+<span class="sig-name descname"><span class="pre">extensions</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ServletFactory.PythonServletFactory.extensions" title="Link to this definition">¶</a></dt>
+<dd><p>Return a list of extensions that match this handler.</p>
+<p>Extensions should include the dot. An empty string indicates a file
+with no extension and is a valid value. The extension ‘.*’ is a special
+case that is looked for a URL’s extension doesn’t match anything.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ServletFactory.PythonServletFactory.flushCache">
+<span class="sig-name descname"><span class="pre">flushCache</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ServletFactory.PythonServletFactory.flushCache" title="Link to this definition">¶</a></dt>
+<dd><p>Flush the servlet cache and start fresh.</p>
+<p>Servlets that are currently in the wild may find their way back
+into the cache (this may be a problem).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ServletFactory.PythonServletFactory.importAsPackage">
+<span class="sig-name descname"><span class="pre">importAsPackage</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">transaction</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">serverSidePathToImport</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ServletFactory.PythonServletFactory.importAsPackage" title="Link to this definition">¶</a></dt>
+<dd><p>Import requested module.</p>
+<p>Imports the module at the given path in the proper package/subpackage
+for the current request. For example, if the transaction has the URL
+<a class="reference external" href="http://localhost/Webware/MyContextDirectory/MySubdirectory/MyPage">http://localhost/Webware/MyContextDirectory/MySubdirectory/MyPage</a>
+and path = ‘some/random/path/MyModule.py’ and the context is configured
+to have the name ‘MyContext’ then this function imports the module at
+that path as MyContext.MySubdirectory.MyModule . Note that the context
+name may differ from the name of the directory containing the context,
+even though they are usually the same by convention.</p>
+<p>Note that the module imported may have a different name from the
+servlet name specified in the URL. This is used in PSP.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ServletFactory.PythonServletFactory.loadClass">
+<span class="sig-name descname"><span class="pre">loadClass</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">transaction</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ServletFactory.PythonServletFactory.loadClass" title="Link to this definition">¶</a></dt>
+<dd><p>Load the appropriate class.</p>
+<p>Given a transaction and a path, load the class for creating these
+servlets. Caching, pooling, and threadsafeness are all handled by
+servletForTransaction. This method is not expected to be threadsafe.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ServletFactory.PythonServletFactory.name">
+<span class="sig-name descname"><span class="pre">name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ServletFactory.PythonServletFactory.name" title="Link to this definition">¶</a></dt>
+<dd><p>Return the name of the factory.</p>
+<p>This is a convenience for the class name.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ServletFactory.PythonServletFactory.returnServlet">
+<span class="sig-name descname"><span class="pre">returnServlet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">servlet</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ServletFactory.PythonServletFactory.returnServlet" title="Link to this definition">¶</a></dt>
+<dd><p>Return servlet to the pool.</p>
+<p>Called by Servlet.close(), which returns the servlet
+to the servlet pool if necessary.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ServletFactory.PythonServletFactory.servletForTransaction">
+<span class="sig-name descname"><span class="pre">servletForTransaction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">transaction</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ServletFactory.PythonServletFactory.servletForTransaction" title="Link to this definition">¶</a></dt>
+<dd><p>Return a new servlet that will handle the transaction.</p>
+<p>This method handles caching, and will call loadClass(trans, filepath)
+if no cache is found. Caching is generally controlled by servlets
+with the canBeReused() and canBeThreaded() methods.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ServletFactory.PythonServletFactory.uniqueness">
+<span class="sig-name descname"><span class="pre">uniqueness</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ServletFactory.PythonServletFactory.uniqueness" title="Link to this definition">¶</a></dt>
+<dd><p>Return uniqueness type.</p>
+<p>Returns a string to indicate the uniqueness of the ServletFactory’s
+servlets. The Application needs to know if the servlets are unique
+per file, per extension or per application.</p>
+<p>Return values are ‘file’, ‘extension’ and ‘application’.</p>
+<p>NOTE: Application so far only supports ‘file’ uniqueness.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="ServletFactory.ServletFactory">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ServletFactory.</span></span><span class="sig-name descname"><span class="pre">ServletFactory</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">application</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ServletFactory.ServletFactory" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Servlet factory template.</p>
+<p>ServletFactory is an abstract class that defines the protocol for
+all servlet factories.</p>
+<p>Servlet factories are used by the Application to create servlets
+for transactions.</p>
+<p>A factory must inherit from this class and override uniqueness(),
+extensions() and either loadClass() or servletForTransaction().
+Do not invoke the base class methods as they all raise AbstractErrors.</p>
+<p>Each method is documented below.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="ServletFactory.ServletFactory.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">application</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ServletFactory.ServletFactory.__init__" title="Link to this definition">¶</a></dt>
+<dd><p>Create servlet factory.</p>
+<p>Stores a reference to the application in self._app, because
+subclasses may or may not need to talk back to the application
+to do their work.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ServletFactory.ServletFactory.extensions">
+<span class="sig-name descname"><span class="pre">extensions</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ServletFactory.ServletFactory.extensions" title="Link to this definition">¶</a></dt>
+<dd><p>Return a list of extensions that match this handler.</p>
+<p>Extensions should include the dot. An empty string indicates a file
+with no extension and is a valid value. The extension ‘.*’ is a special
+case that is looked for a URL’s extension doesn’t match anything.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ServletFactory.ServletFactory.flushCache">
+<span class="sig-name descname"><span class="pre">flushCache</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ServletFactory.ServletFactory.flushCache" title="Link to this definition">¶</a></dt>
+<dd><p>Flush the servlet cache and start fresh.</p>
+<p>Servlets that are currently in the wild may find their way back
+into the cache (this may be a problem).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ServletFactory.ServletFactory.importAsPackage">
+<span class="sig-name descname"><span class="pre">importAsPackage</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">transaction</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">serverSidePathToImport</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ServletFactory.ServletFactory.importAsPackage" title="Link to this definition">¶</a></dt>
+<dd><p>Import requested module.</p>
+<p>Imports the module at the given path in the proper package/subpackage
+for the current request. For example, if the transaction has the URL
+<a class="reference external" href="http://localhost/Webware/MyContextDirectory/MySubdirectory/MyPage">http://localhost/Webware/MyContextDirectory/MySubdirectory/MyPage</a>
+and path = ‘some/random/path/MyModule.py’ and the context is configured
+to have the name ‘MyContext’ then this function imports the module at
+that path as MyContext.MySubdirectory.MyModule . Note that the context
+name may differ from the name of the directory containing the context,
+even though they are usually the same by convention.</p>
+<p>Note that the module imported may have a different name from the
+servlet name specified in the URL. This is used in PSP.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ServletFactory.ServletFactory.loadClass">
+<span class="sig-name descname"><span class="pre">loadClass</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">transaction</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ServletFactory.ServletFactory.loadClass" title="Link to this definition">¶</a></dt>
+<dd><p>Load the appropriate class.</p>
+<p>Given a transaction and a path, load the class for creating these
+servlets. Caching, pooling, and threadsafeness are all handled by
+servletForTransaction. This method is not expected to be threadsafe.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ServletFactory.ServletFactory.name">
+<span class="sig-name descname"><span class="pre">name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ServletFactory.ServletFactory.name" title="Link to this definition">¶</a></dt>
+<dd><p>Return the name of the factory.</p>
+<p>This is a convenience for the class name.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ServletFactory.ServletFactory.returnServlet">
+<span class="sig-name descname"><span class="pre">returnServlet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">servlet</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ServletFactory.ServletFactory.returnServlet" title="Link to this definition">¶</a></dt>
+<dd><p>Return servlet to the pool.</p>
+<p>Called by Servlet.close(), which returns the servlet
+to the servlet pool if necessary.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ServletFactory.ServletFactory.servletForTransaction">
+<span class="sig-name descname"><span class="pre">servletForTransaction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">transaction</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ServletFactory.ServletFactory.servletForTransaction" title="Link to this definition">¶</a></dt>
+<dd><p>Return a new servlet that will handle the transaction.</p>
+<p>This method handles caching, and will call loadClass(trans, filepath)
+if no cache is found. Caching is generally controlled by servlets
+with the canBeReused() and canBeThreaded() methods.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ServletFactory.ServletFactory.uniqueness">
+<span class="sig-name descname"><span class="pre">uniqueness</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ServletFactory.ServletFactory.uniqueness" title="Link to this definition">¶</a></dt>
+<dd><p>Return uniqueness type.</p>
+<p>Returns a string to indicate the uniqueness of the ServletFactory’s
+servlets. The Application needs to know if the servlets are unique
+per file, per extension or per application.</p>
+<p>Return values are ‘file’, ‘extension’ and ‘application’.</p>
+<p>NOTE: Application so far only supports ‘file’ uniqueness.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ServletFactory.iskeyword">
+<span class="sig-prename descclassname"><span class="pre">ServletFactory.</span></span><span class="sig-name descname"><span class="pre">iskeyword</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="positional-only-separator o"><abbr title="Positional-only parameter separator (PEP 570)"><span class="pre">/</span></abbr></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ServletFactory.iskeyword" title="Link to this definition">¶</a></dt>
+<dd><p>x.__contains__(y) &lt;==&gt; y in x.</p>
+</dd></dl>
+
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../index.html">Webware for Python 3</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../changes.html">List of Changes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../migrate.html">Migration Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../copyright.html">Copyright and License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorial.html">Beginner Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../appdev.html">Application Development</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../config.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../deploy.html">Deployment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../plugins.html">Plug-ins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../style.html">Style Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../psp.html">PSP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../userkit.html">UserKit</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../taskkit.html">TaskKit</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../webutils.html">WebUtils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../miscutils.html">MiscUtils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../testing.html">Testing</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Core Classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../psp/index.html">PSP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../userkit/index.html">UserKit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../taskkit/index.html">TaskKit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../webutils/index.html">WebUtils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../miscutils/index.html">MiscUtils</a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">API Reference</a><ul>
+  <li><a href="index.html">Core Classes</a><ul>
+      <li>Previous: <a href="servlet.html" title="previous chapter">Servlet</a></li>
+      <li>Next: <a href="session.html" title="next chapter">Session</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;1999-2025, Christoph Zwerschke et al.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.2.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+      |
+      <a href="../../_sources/ref/core/servletfactory.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

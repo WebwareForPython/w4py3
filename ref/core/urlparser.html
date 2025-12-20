@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>URLParser &#8212; Webware for Python 3 3.1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="../../_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="../../_static/alabaster.css?v=27fed22d" />
+    <script src="../../_static/documentation_options.js?v=dd1205ac"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="copyright" title="Copyright" href="../../copyright.html" />
+    <link rel="next" title="WSGIStreamOut" href="wsgistreamout.html" />
+    <link rel="prev" title="UnknownFileTypeServlet" href="unknownfiletypeservlet.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="module-URLParser">
+<span id="urlparser"></span><h1>URLParser<a class="headerlink" href="#module-URLParser" title="Link to this heading">¶</a></h1>
+<p>URLParser</p>
+<p>URL parsing is done through objects which are subclasses of the <cite>URLParser</cite>
+class. <cite>Application</cite> delegates most of the URL parsing to these objects.</p>
+<p>Application has a single “root” URL parser, which is used to parse all URLs.
+This parser then can pass the request on to other parsers, usually taking off
+parts of the URL with each step.</p>
+<p>This root parser is generally <cite>ContextParser</cite>, which is instantiated and set
+up by <cite>Application</cite> (accessible through <cite>Application.rootURLParser</cite>).</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="URLParser.ContextParser">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">URLParser.</span></span><span class="sig-name descname"><span class="pre">ContextParser</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">app</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#URLParser.ContextParser" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#URLParser.URLParser" title="URLParser.URLParser"><code class="xref py py-class docutils literal notranslate"><span class="pre">URLParser</span></code></a></p>
+<p>Find the context of a request.</p>
+<p>ContextParser uses the <code class="docutils literal notranslate"><span class="pre">Application.config</span></code> context settings to find
+the context of the request.  It then passes the request to a FileParser
+rooted in the context path.</p>
+<p>The context is the first element of the URL, or if no context matches
+that then it is the <code class="docutils literal notranslate"><span class="pre">default</span></code> context (and the entire URL is passed
+to the default context’s FileParser).</p>
+<p>There is generally only one ContextParser, which can be found as
+<code class="docutils literal notranslate"><span class="pre">application.rootURLParser()</span></code>.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="URLParser.ContextParser.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">app</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#URLParser.ContextParser.__init__" title="Link to this definition">¶</a></dt>
+<dd><p>Create ContextParser.</p>
+<p>ContextParser is usually created by Application, which
+passes all requests to it.</p>
+<p>In __init__ we take the <code class="docutils literal notranslate"><span class="pre">Contexts</span></code> setting from
+Application.config and parse it slightly.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="URLParser.ContextParser.absContextPath">
+<span class="sig-name descname"><span class="pre">absContextPath</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#URLParser.ContextParser.absContextPath" title="Link to this definition">¶</a></dt>
+<dd><p>Get absolute context path.</p>
+<p>Resolves relative paths, which are assumed to be relative to the
+Application’s serverSidePath (the working directory).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="URLParser.ContextParser.addContext">
+<span class="sig-name descname"><span class="pre">addContext</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#URLParser.ContextParser.addContext" title="Link to this definition">¶</a></dt>
+<dd><p>Add a context to the system.</p>
+<p>The context will be imported as a package, going by <cite>name</cite>,
+from the given directory path. The directory doesn’t have to match
+the context name.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="URLParser.ContextParser.findServletForTransaction">
+<span class="sig-name descname"><span class="pre">findServletForTransaction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">trans</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#URLParser.ContextParser.findServletForTransaction" title="Link to this definition">¶</a></dt>
+<dd><p>Returns a servlet for the transaction.</p>
+<p>This is the top-level entry point, below it <cite>parse</cite> is used.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="URLParser.ContextParser.parse">
+<span class="sig-name descname"><span class="pre">parse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">trans</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">requestPath</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#URLParser.ContextParser.parse" title="Link to this definition">¶</a></dt>
+<dd><p>Parse request.</p>
+<p>Get the context name, and dispatch to a FileParser rooted
+in the context’s path.</p>
+<p>The context name and file path are stored in the request (accessible
+through <cite>Request.serverSidePath</cite> and <cite>Request.contextName</cite>).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="URLParser.ContextParser.resolveDefaultContext">
+<span class="sig-name descname"><span class="pre">resolveDefaultContext</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dest</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#URLParser.ContextParser.resolveDefaultContext" title="Link to this definition">¶</a></dt>
+<dd><p>Find default context.</p>
+<p>Figure out if the default context refers to an existing context,
+the same directory as an existing context, or a unique directory.</p>
+<p>Returns the name of the context that the default context refers to,
+or ‘default’ if the default context is unique.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="URLParser.ServletFactoryManagerClass">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">URLParser.</span></span><span class="sig-name descname"><span class="pre">ServletFactoryManagerClass</span></span><a class="headerlink" href="#URLParser.ServletFactoryManagerClass" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Manage servlet factories.</p>
+<p>This singleton (called <cite>ServletFactoryManager</cite>) collects and manages
+all the servlet factories that are installed.</p>
+<p>See <cite>addServletFactory</cite> for adding new factories, and <cite>servletForFile</cite>
+for getting the factories back.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="URLParser.ServletFactoryManagerClass.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#URLParser.ServletFactoryManagerClass.__init__" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="URLParser.ServletFactoryManagerClass.addServletFactory">
+<span class="sig-name descname"><span class="pre">addServletFactory</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">factory</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#URLParser.ServletFactoryManagerClass.addServletFactory" title="Link to this definition">¶</a></dt>
+<dd><p>Add a new servlet factory.</p>
+<p>Servlet factories can add themselves with:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ServletFactoryManager</span><span class="o">.</span><span class="n">addServletFactory</span><span class="p">(</span><span class="n">factory</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The factory must have an <cite>extensions</cite> method, which should
+return a list of extensions that the factory handles (like
+<code class="docutils literal notranslate"><span class="pre">['.ht']</span></code>).  The special extension <code class="docutils literal notranslate"><span class="pre">.*</span></code> will match any
+file if no other factory is found.  See <cite>ServletFactory</cite>
+for more information.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="URLParser.ServletFactoryManagerClass.factoryForFile">
+<span class="sig-name descname"><span class="pre">factoryForFile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#URLParser.ServletFactoryManagerClass.factoryForFile" title="Link to this definition">¶</a></dt>
+<dd><p>Get a factory for a filename.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="URLParser.ServletFactoryManagerClass.reset">
+<span class="sig-name descname"><span class="pre">reset</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#URLParser.ServletFactoryManagerClass.reset" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="URLParser.ServletFactoryManagerClass.servletForFile">
+<span class="sig-name descname"><span class="pre">servletForFile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">trans</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#URLParser.ServletFactoryManagerClass.servletForFile" title="Link to this definition">¶</a></dt>
+<dd><p>Get a servlet for a filename and transaction.</p>
+<p>Uses <cite>factoryForFile</cite> to find the factory, which
+creates the servlet.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="URLParser.URLParameterParser">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">URLParser.</span></span><span class="sig-name descname"><span class="pre">URLParameterParser</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fileParser</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#URLParser.URLParameterParser" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#URLParser.URLParser" title="URLParser.URLParser"><code class="xref py py-class docutils literal notranslate"><span class="pre">URLParser</span></code></a></p>
+<p>Strips named parameters out of the URL.</p>
+<p>E.g. in <code class="docutils literal notranslate"><span class="pre">/path/SID=123/etc</span></code> the <code class="docutils literal notranslate"><span class="pre">SID=123</span></code> will be removed from the URL,
+and a field will be set in the request (so long as no field by that name
+already exists – if a field does exist the variable is thrown away).
+These are put in the place of GET or POST variables.</p>
+<p>It should be put in an __init__, like:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">URLParser</span><span class="w"> </span><span class="kn">import</span> <span class="n">URLParameterParser</span>
+<span class="n">urlParserHook</span> <span class="o">=</span> <span class="n">URLParameterParser</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Or (slightly less efficient):</p>
+<blockquote>
+<div><p>from URLParser import URLParameterParser as SubParser</p>
+</div></blockquote>
+<dl class="py method">
+<dt class="sig sig-object py" id="URLParser.URLParameterParser.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fileParser</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#URLParser.URLParameterParser.__init__" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="URLParser.URLParameterParser.findServletForTransaction">
+<span class="sig-name descname"><span class="pre">findServletForTransaction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">trans</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#URLParser.URLParameterParser.findServletForTransaction" title="Link to this definition">¶</a></dt>
+<dd><p>Returns a servlet for the transaction.</p>
+<p>This is the top-level entry point, below it <cite>parse</cite> is used.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="URLParser.URLParameterParser.parse">
+<span class="sig-name descname"><span class="pre">parse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">trans</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">requestPath</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#URLParser.URLParameterParser.parse" title="Link to this definition">¶</a></dt>
+<dd><p>Delegates to <cite>parseHook</cite>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="URLParser.URLParameterParser.parseHook">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">parseHook</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">trans</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">requestPath</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hook</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#URLParser.URLParameterParser.parseHook" title="Link to this definition">¶</a></dt>
+<dd><p>Munges the path.</p>
+<p>The <cite>hook</cite> is the FileParser object that originally called this –
+we just want to strip stuff out of the URL and then give it back to
+the FileParser instance, which can actually find the servlet.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="URLParser.URLParser">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">URLParser.</span></span><span class="sig-name descname"><span class="pre">URLParser</span></span><a class="headerlink" href="#URLParser.URLParser" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>URLParser is the base class for all URL parsers.</p>
+<p>Though its functionality is sparse, it may be expanded in the future.
+Subclasses should implement a <cite>parse</cite> method, and may also want to
+implement an <cite>__init__</cite> method with arguments that control how the
+parser works (for instance, passing a starting path for the parser)</p>
+<p>The <cite>parse</cite> method is where most of the work is done. It takes two
+arguments – the transaction and the portion of the URL that is still to
+be parsed. The transaction may (and usually is) modified along the way.
+The URL is passed through so that you can take pieces off the front,
+and then pass the reduced URL to another parser. The method should return
+a servlet (never None).</p>
+<p>If you cannot find a servlet, or some other (somewhat) expected error
+occurs, you should raise an exception. HTTPNotFound probably being the
+most interesting.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="URLParser.URLParser.findServletForTransaction">
+<span class="sig-name descname"><span class="pre">findServletForTransaction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">trans</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#URLParser.URLParser.findServletForTransaction" title="Link to this definition">¶</a></dt>
+<dd><p>Returns a servlet for the transaction.</p>
+<p>This is the top-level entry point, below it <cite>parse</cite> is used.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="URLParser.application">
+<span class="sig-prename descclassname"><span class="pre">URLParser.</span></span><span class="sig-name descname"><span class="pre">application</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#URLParser.application" title="Link to this definition">¶</a></dt>
+<dd><p>Returns the global Application.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="URLParser.initApp">
+<span class="sig-prename descclassname"><span class="pre">URLParser.</span></span><span class="sig-name descname"><span class="pre">initApp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">app</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#URLParser.initApp" title="Link to this definition">¶</a></dt>
+<dd><p>Initialize the application.</p>
+<p>Installs the proper servlet factories, and gets some settings from
+Application.config. Also saves the application in _globalApplication
+for future calls to the application() function.</p>
+<p>This needs to be called before any of the URLParser-derived classes
+are instantiated.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="URLParser.initParser">
+<span class="sig-prename descclassname"><span class="pre">URLParser.</span></span><span class="sig-name descname"><span class="pre">initParser</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">app</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#URLParser.initParser" title="Link to this definition">¶</a></dt>
+<dd><p>Initialize the FileParser Class.</p>
+</dd></dl>
+
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../index.html">Webware for Python 3</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../changes.html">List of Changes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../migrate.html">Migration Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../copyright.html">Copyright and License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorial.html">Beginner Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../appdev.html">Application Development</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../config.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../deploy.html">Deployment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../plugins.html">Plug-ins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../style.html">Style Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../psp.html">PSP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../userkit.html">UserKit</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../taskkit.html">TaskKit</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../webutils.html">WebUtils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../miscutils.html">MiscUtils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../testing.html">Testing</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Core Classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../psp/index.html">PSP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../userkit/index.html">UserKit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../taskkit/index.html">TaskKit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../webutils/index.html">WebUtils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../miscutils/index.html">MiscUtils</a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">API Reference</a><ul>
+  <li><a href="index.html">Core Classes</a><ul>
+      <li>Previous: <a href="unknownfiletypeservlet.html" title="previous chapter">UnknownFileTypeServlet</a></li>
+      <li>Next: <a href="wsgistreamout.html" title="next chapter">WSGIStreamOut</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;1999-2025, Christoph Zwerschke et al.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.2.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+      |
+      <a href="../../_sources/ref/core/urlparser.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

@@ -1,0 +1,4 @@
+SessionRedisStore
+-----------------
+
+.. automodule:: SessionRedisStore

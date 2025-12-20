@@ -1,0 +1,4 @@
+RoleUserManagerToFile
+---------------------
+
+.. automodule:: UserKit.RoleUserManagerToFile

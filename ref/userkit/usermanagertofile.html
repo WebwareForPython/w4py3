@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>UserManagerToFile &#8212; Webware for Python 3 3.1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="../../_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="../../_static/alabaster.css?v=27fed22d" />
+    <script src="../../_static/documentation_options.js?v=dd1205ac"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="copyright" title="Copyright" href="../../copyright.html" />
+    <link rel="next" title="TaskKit" href="../taskkit/index.html" />
+    <link rel="prev" title="UserManager" href="usermanager.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="module-UserKit.UserManagerToFile">
+<span id="usermanagertofile"></span><h1>UserManagerToFile<a class="headerlink" href="#module-UserKit.UserManagerToFile" title="Link to this heading">¶</a></h1>
+<p>The UserManagerToFile class.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="UserKit.UserManagerToFile.UserManagerToFile">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">UserKit.UserManagerToFile.</span></span><span class="sig-name descname"><span class="pre">UserManagerToFile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">userClass</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#UserKit.UserManagerToFile.UserManagerToFile" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="usermanager.html#UserKit.UserManager.UserManager" title="UserKit.UserManager.UserManager"><code class="xref py py-class docutils literal notranslate"><span class="pre">UserManager</span></code></a></p>
+<p>User manager storing user data in the file system.</p>
+<p>When using this user manager, make sure you invoke setUserDir()
+and that this directory is writeable by your application.
+It will contain one file per user with the user’s serial number
+as the main filename and an extension of ‘.user’.</p>
+<p>The default user directory is the current working directory,
+but relying on the current directory is often a bad practice.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="UserKit.UserManagerToFile.UserManagerToFile.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">userClass</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#UserKit.UserManagerToFile.UserManagerToFile.__init__" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="UserKit.UserManagerToFile.UserManagerToFile.activeUserTimeout">
+<span class="sig-name descname"><span class="pre">activeUserTimeout</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#UserKit.UserManagerToFile.UserManagerToFile.activeUserTimeout" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="UserKit.UserManagerToFile.UserManagerToFile.activeUsers">
+<span class="sig-name descname"><span class="pre">activeUsers</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#UserKit.UserManagerToFile.UserManagerToFile.activeUsers" title="Link to this definition">¶</a></dt>
+<dd><p>Return a list of all active users.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="UserKit.UserManagerToFile.UserManagerToFile.addUser">
+<span class="sig-name descname"><span class="pre">addUser</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">user</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#UserKit.UserManagerToFile.UserManagerToFile.addUser" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="UserKit.UserManagerToFile.UserManagerToFile.cachedUserTimeout">
+<span class="sig-name descname"><span class="pre">cachedUserTimeout</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#UserKit.UserManagerToFile.UserManagerToFile.cachedUserTimeout" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="UserKit.UserManagerToFile.UserManagerToFile.clearCache">
+<span class="sig-name descname"><span class="pre">clearCache</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#UserKit.UserManagerToFile.UserManagerToFile.clearCache" title="Link to this definition">¶</a></dt>
+<dd><p>Clear the cache of the manager.</p>
+<p>Use with extreme caution. If your program maintains a reference
+to a user object, but the manager loads in a new copy later on,
+then consistency problems could occur.</p>
+<p>The most popular use of this method is in the regression test suite.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="UserKit.UserManagerToFile.UserManagerToFile.createUser">
+<span class="sig-name descname"><span class="pre">createUser</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">password</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">userClass</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#UserKit.UserManagerToFile.UserManagerToFile.createUser" title="Link to this definition">¶</a></dt>
+<dd><p>Return a newly created user that is added to the manager.</p>
+<p>If userClass is not specified, the manager’s default user class
+is instantiated. This not imply that the user is logged in.
+This method invokes self.addUser().</p>
+<p>See also: userClass(), setUserClass()</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="UserKit.UserManagerToFile.UserManagerToFile.decoder">
+<span class="sig-name descname"><span class="pre">decoder</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#UserKit.UserManagerToFile.UserManagerToFile.decoder" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="UserKit.UserManagerToFile.UserManagerToFile.encoder">
+<span class="sig-name descname"><span class="pre">encoder</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#UserKit.UserManagerToFile.UserManagerToFile.encoder" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="UserKit.UserManagerToFile.UserManagerToFile.inactiveUsers">
+<span class="sig-name descname"><span class="pre">inactiveUsers</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#UserKit.UserManagerToFile.UserManagerToFile.inactiveUsers" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="UserKit.UserManagerToFile.UserManagerToFile.initNextSerialNum">
+<span class="sig-name descname"><span class="pre">initNextSerialNum</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#UserKit.UserManagerToFile.UserManagerToFile.initNextSerialNum" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="UserKit.UserManagerToFile.UserManagerToFile.loadUser">
+<span class="sig-name descname"><span class="pre">loadUser</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">serialNum</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default=&lt;class</span> <span class="pre">'MiscUtils.NoDefault'&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#UserKit.UserManagerToFile.UserManagerToFile.loadUser" title="Link to this definition">¶</a></dt>
+<dd><p>Load the user with the given serial number from disk.</p>
+<p>If there is no such user, a KeyError will be raised unless
+a default value was passed, in which case that value is returned.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="UserKit.UserManagerToFile.UserManagerToFile.login">
+<span class="sig-name descname"><span class="pre">login</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">user</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">password</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#UserKit.UserManagerToFile.UserManagerToFile.login" title="Link to this definition">¶</a></dt>
+<dd><p>Return the user if login is successful, otherwise return None.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="UserKit.UserManagerToFile.UserManagerToFile.loginExternalId">
+<span class="sig-name descname"><span class="pre">loginExternalId</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">externalId</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">password</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#UserKit.UserManagerToFile.UserManagerToFile.loginExternalId" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="UserKit.UserManagerToFile.UserManagerToFile.loginName">
+<span class="sig-name descname"><span class="pre">loginName</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">userName</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">password</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#UserKit.UserManagerToFile.UserManagerToFile.loginName" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="UserKit.UserManagerToFile.UserManagerToFile.loginSerialNum">
+<span class="sig-name descname"><span class="pre">loginSerialNum</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">serialNum</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">password</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#UserKit.UserManagerToFile.UserManagerToFile.loginSerialNum" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="UserKit.UserManagerToFile.UserManagerToFile.logout">
+<span class="sig-name descname"><span class="pre">logout</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">user</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#UserKit.UserManagerToFile.UserManagerToFile.logout" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="UserKit.UserManagerToFile.UserManagerToFile.modifiedUserTimeout">
+<span class="sig-name descname"><span class="pre">modifiedUserTimeout</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#UserKit.UserManagerToFile.UserManagerToFile.modifiedUserTimeout" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="UserKit.UserManagerToFile.UserManagerToFile.nextSerialNum">
+<span class="sig-name descname"><span class="pre">nextSerialNum</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#UserKit.UserManagerToFile.UserManagerToFile.nextSerialNum" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="UserKit.UserManagerToFile.UserManagerToFile.numActiveUsers">
+<span class="sig-name descname"><span class="pre">numActiveUsers</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#UserKit.UserManagerToFile.UserManagerToFile.numActiveUsers" title="Link to this definition">¶</a></dt>
+<dd><p>Return the number of active users (e.g. the logged in users).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="UserKit.UserManagerToFile.UserManagerToFile.scanSerialNums">
+<span class="sig-name descname"><span class="pre">scanSerialNums</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#UserKit.UserManagerToFile.UserManagerToFile.scanSerialNums" title="Link to this definition">¶</a></dt>
+<dd><p>Return a list of all the serial numbers of users found on disk.</p>
+<p>Serial numbers are always integers.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="UserKit.UserManagerToFile.UserManagerToFile.setActiveUserTimeout">
+<span class="sig-name descname"><span class="pre">setActiveUserTimeout</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#UserKit.UserManagerToFile.UserManagerToFile.setActiveUserTimeout" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="UserKit.UserManagerToFile.UserManagerToFile.setCachedUserTimeout">
+<span class="sig-name descname"><span class="pre">setCachedUserTimeout</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#UserKit.UserManagerToFile.UserManagerToFile.setCachedUserTimeout" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="UserKit.UserManagerToFile.UserManagerToFile.setEncoderDecoder">
+<span class="sig-name descname"><span class="pre">setEncoderDecoder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">encoder</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">decoder</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#UserKit.UserManagerToFile.UserManagerToFile.setEncoderDecoder" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="UserKit.UserManagerToFile.UserManagerToFile.setModifiedUserTimeout">
+<span class="sig-name descname"><span class="pre">setModifiedUserTimeout</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#UserKit.UserManagerToFile.UserManagerToFile.setModifiedUserTimeout" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="UserKit.UserManagerToFile.UserManagerToFile.setUserClass">
+<span class="sig-name descname"><span class="pre">setUserClass</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">userClass</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#UserKit.UserManagerToFile.UserManagerToFile.setUserClass" title="Link to this definition">¶</a></dt>
+<dd><p>Overridden to mix in UserMixIn to the class that is passed in.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="UserKit.UserManagerToFile.UserManagerToFile.setUserDir">
+<span class="sig-name descname"><span class="pre">setUserDir</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">userDir</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#UserKit.UserManagerToFile.UserManagerToFile.setUserDir" title="Link to this definition">¶</a></dt>
+<dd><p>Set the directory where user information is stored.</p>
+<p>You should strongly consider invoking initNextSerialNum() afterwards.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="UserKit.UserManagerToFile.UserManagerToFile.shutDown">
+<span class="sig-name descname"><span class="pre">shutDown</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#UserKit.UserManagerToFile.UserManagerToFile.shutDown" title="Link to this definition">¶</a></dt>
+<dd><p>Perform any tasks necessary to shut down the user manager.</p>
+<p>Subclasses may override and must invoke super as their <em>last</em> step.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="UserKit.UserManagerToFile.UserManagerToFile.userClass">
+<span class="sig-name descname"><span class="pre">userClass</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#UserKit.UserManagerToFile.UserManagerToFile.userClass" title="Link to this definition">¶</a></dt>
+<dd><p>Return the userClass, which is used by createUser.</p>
+<p>The default value is UserKit.User.User.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="UserKit.UserManagerToFile.UserManagerToFile.userDir">
+<span class="sig-name descname"><span class="pre">userDir</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#UserKit.UserManagerToFile.UserManagerToFile.userDir" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="UserKit.UserManagerToFile.UserManagerToFile.userForExternalId">
+<span class="sig-name descname"><span class="pre">userForExternalId</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">externalId</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default=&lt;class</span> <span class="pre">'MiscUtils.NoDefault'&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#UserKit.UserManagerToFile.UserManagerToFile.userForExternalId" title="Link to this definition">¶</a></dt>
+<dd><p>Return the user with the given external id.</p>
+<p>The user record is pulled into memory if needed.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="UserKit.UserManagerToFile.UserManagerToFile.userForName">
+<span class="sig-name descname"><span class="pre">userForName</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default=&lt;class</span> <span class="pre">'MiscUtils.NoDefault'&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#UserKit.UserManagerToFile.UserManagerToFile.userForName" title="Link to this definition">¶</a></dt>
+<dd><p>Return the user with the given name.</p>
+<p>The user record is pulled into memory if needed.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="UserKit.UserManagerToFile.UserManagerToFile.userForSerialNum">
+<span class="sig-name descname"><span class="pre">userForSerialNum</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">serialNum</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default=&lt;class</span> <span class="pre">'MiscUtils.NoDefault'&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#UserKit.UserManagerToFile.UserManagerToFile.userForSerialNum" title="Link to this definition">¶</a></dt>
+<dd><p>Return the user with the given serialNum.</p>
+<p>The user record is pulled into memory if needed.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="UserKit.UserManagerToFile.UserManagerToFile.users">
+<span class="sig-name descname"><span class="pre">users</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#UserKit.UserManagerToFile.UserManagerToFile.users" title="Link to this definition">¶</a></dt>
+<dd><p>Return a list of all users (regardless of login status).</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="UserKit.UserManagerToFile.UserMixIn">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">UserKit.UserManagerToFile.</span></span><span class="sig-name descname"><span class="pre">UserMixIn</span></span><a class="headerlink" href="#UserKit.UserManagerToFile.UserMixIn" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="UserKit.UserManagerToFile.UserMixIn.filename">
+<span class="sig-name descname"><span class="pre">filename</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#UserKit.UserManagerToFile.UserMixIn.filename" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="UserKit.UserManagerToFile.UserMixIn.save">
+<span class="sig-name descname"><span class="pre">save</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#UserKit.UserManagerToFile.UserMixIn.save" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../index.html">Webware for Python 3</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../changes.html">List of Changes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../migrate.html">Migration Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../copyright.html">Copyright and License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorial.html">Beginner Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../appdev.html">Application Development</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../config.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../deploy.html">Deployment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../plugins.html">Plug-ins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../style.html">Style Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../psp.html">PSP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../userkit.html">UserKit</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../taskkit.html">TaskKit</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../webutils.html">WebUtils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../miscutils.html">MiscUtils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../testing.html">Testing</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../core/index.html">Core Classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../psp/index.html">PSP</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">UserKit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../taskkit/index.html">TaskKit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../webutils/index.html">WebUtils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../miscutils/index.html">MiscUtils</a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">API Reference</a><ul>
+  <li><a href="index.html">UserKit</a><ul>
+      <li>Previous: <a href="usermanager.html" title="previous chapter">UserManager</a></li>
+      <li>Next: <a href="../taskkit/index.html" title="next chapter">TaskKit</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;1999-2025, Christoph Zwerschke et al.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.2.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+      |
+      <a href="../../_sources/ref/userkit/usermanagertofile.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

@@ -1,0 +1,4 @@
+DictForArgs
+-----------
+
+.. automodule:: MiscUtils.DictForArgs

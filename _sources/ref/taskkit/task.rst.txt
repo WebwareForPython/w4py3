@@ -1,0 +1,4 @@
+Task
+----
+
+.. automodule:: TaskKit.Task

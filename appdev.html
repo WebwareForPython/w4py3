@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Application Development &#8212; Webware for Python 3 3.1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=27fed22d" />
+    <script src="_static/documentation_options.js?v=dd1205ac"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="copyright" title="Copyright" href="copyright.html" />
+    <link rel="next" title="Configuration" href="config.html" />
+    <link rel="prev" title="Beginner Tutorial" href="tutorial.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="application-development">
+<span id="id1"></span><h1>Application Development<a class="headerlink" href="#application-development" title="Link to this heading">¶</a></h1>
+<p>Webware provides Python classes for generating dynamic content from a web-based, server-side application. It is a significantly more
+powerful alternative to CGI scripts for application-oriented development.</p>
+<p>In this chapter we explain some more fundamental concepts of Webware for Python and describe best practices for developing a web application using Webware.</p>
+<section id="core-concepts">
+<h2>Core Concepts<a class="headerlink" href="#core-concepts" title="Link to this heading">¶</a></h2>
+<p>The core concepts of Webware for Python are the Application, Servlet, Request, Response and Transaction, for which there are one or more Python classes.</p>
+<p>The application resides on the server-side and manages incoming requests in order to deliver them to servlets which then produce responses that get sent back to the client. A transaction is a simple
+container object that holds references to all of these objects and is accessible to all of them.</p>
+<p>Content is normally served in HTML format over an HTTP connection. However, applications can provide other forms of content and the framework is designed to allow new classes for supporting
+protocols other than HTTP.</p>
+<p>In order to connect the web server and the application, Webware for Python 3 uses the Web Server Gateway Interface (WSGI). The Webware Application instance serves as the WSGI callable. The web server calls the Application, passing a dictionary containing CGI-style environment variables for every request. The Application then then processes the request and sends the response back to the web server, for which WSGI provides to different mechanisms. By default, Webware applications use the <code class="docutils literal notranslate"><span class="pre">write()</span></code> callable mechanism, because this is more suitable for the way Webware for Python applications create responses, by writing to an output stream. However, since not all WSGI servers support this mechanism, it is also possible to use the more usual WSGI mechanism of passing the response as an iterable. You will need to switch the <code class="docutils literal notranslate"><span class="pre">Application.config</span></code> setting <code class="docutils literal notranslate"><span class="pre">WSGIWrite</span></code> to <code class="docutils literal notranslate"><span class="pre">False</span></code> in order to use this mechanism.</p>
+<p>Many different WSGI servers are available that can be used with Webware for Python 3. By default, Webware uses the <a class="reference external" href="https://docs.pylonsproject.org/projects/waitress/">waitress</a> WSGI server as its development server. If you have installed Webware with the “development” or “test” extra, as recommended in the chapter on <a class="reference internal" href="install.html#installation"><span class="std std-ref">Installation</span></a>, the waitress server should already be installed together with Webware for Python and will be used when running the <code class="docutils literal notranslate"><span class="pre">webware</span> <span class="pre">serve</span></code> command.</p>
+<p>In production, you may want to use a web server with better performance. In the chapter on <a class="reference internal" href="deploy.html#deployment"><span class="std std-ref">Deployment</span></a> we describe how you can configure a web server like Apache to serve static files directly, while passing dynamic contents to the Webware application via WSGI, using the <a class="reference external" href="https://modwsgi.readthedocs.io/">mod_wsgi</a> module.</p>
+<p>The whole process of serving a page with Webware for Python then looks like this:</p>
+<ul class="simple">
+<li><p>A user requests a web page by typing a URL or submitting a form.</p></li>
+<li><p>The user’s browser sends the request to the remote Apache web server.</p></li>
+<li><p>The Apache web server passes the request to a mod_wsgi daemon process.</p></li>
+<li><p>The mod_wsgi daemon process collects information about the request and sends it to the Webware Application using the WSGI protocol.</p></li>
+<li><p>The Webware Application dispatch the raw request.</p></li>
+<li><p>The application instantiates an HTTPRequest object and asks the appropriate Servlet (as determined by examining the URL) to process it.</p></li>
+<li><p>The servlet generates content into a given HTTPResponse object, whose content is then sent back via WSGI to the mod_wsgi daemon process.</p></li>
+<li><p>The mod_wsgi daemon process sends the content through the web server and ultimately to the user’s web browser.</p></li>
+</ul>
+</section>
+<section id="setting-up-your-application">
+<h2>Setting up your application<a class="headerlink" href="#setting-up-your-application" title="Link to this heading">¶</a></h2>
+<p>The first task in developing an application is to set up the file structure in which you will be working.</p>
+<p>It is possible to put your application in a subdirectory at the path where the <code class="docutils literal notranslate"><span class="pre">webware</span></code> package is installed and change <code class="docutils literal notranslate"><span class="pre">Configs/Application.config</span></code> to add another context. But <em>do not do this</em>. Your application will be entwined with the Webware installation, making it difficult to upgrade Webware, and difficult to identify your own files from Webware files.</p>
+<section id="creating-a-working-directory">
+<h3>Creating a working directory<a class="headerlink" href="#creating-a-working-directory" title="Link to this heading">¶</a></h3>
+<p>Instead you should use the <code class="docutils literal notranslate"><span class="pre">webware</span> <span class="pre">make</span></code> command to create an application working directory. You should run it like:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">webware</span> <span class="n">make</span> <span class="o">-</span><span class="n">c</span> <span class="n">Context</span> <span class="o">-</span><span class="n">l</span> <span class="n">Lib</span> <span class="n">WorkDir</span>
+</pre></div>
+</div>
+<p>This will create a directory <code class="docutils literal notranslate"><span class="pre">WorkDir</span></code> that will contain a directory structure for your application. The options are:</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">-c</span> <span class="pre">Context</span></code>:</dt><dd><p>Use <code class="docutils literal notranslate"><span class="pre">Context</span></code> as the name for the application default context. A subdirectory with the same name will be created in the work dir (you can change that with the <code class="docutils literal notranslate"><span class="pre">-d</span></code> option). If you do not use the <code class="docutils literal notranslate"><span class="pre">-c</span></code> option, the context name will be <code class="docutils literal notranslate"><span class="pre">MyContext</span></code>. You may simply want to call it <code class="docutils literal notranslate"><span class="pre">App</span></code> or <code class="docutils literal notranslate"><span class="pre">Context</span></code>, particularly if you are using only one context. If you want to add more than one context, you need to create a subdirectory and a corresponding <code class="docutils literal notranslate"><span class="pre">Contexts</span></code> dictionary entry in the <code class="docutils literal notranslate"><span class="pre">Application.config</span></code> file manually.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">-l</span> <span class="pre">Lib</span></code>:</dt><dd><p>Create a <code class="docutils literal notranslate"><span class="pre">Lib</span></code> directory in the work dir which will be added to the Python module search path. You can use the <code class="docutils literal notranslate"><span class="pre">-l</span></code> option multiple times; and you can also add already existent library directories outside of the work dir. If you want to add the work dir itself to the Python path, pass <code class="docutils literal notranslate"><span class="pre">-l</span> <span class="pre">.</span></code>. In that case, you can import from any Python package placed directly in the working, including the Webware contexts. Note that the webware package will always be added to the Python module search path, so that you can and should import any Webware modules and sub packages directly from the top level.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">WorkDir</span></code>:</dt><dd><p>The files will be put here. Name if after your application, place it where it is convenient for you. It makes sense to put the working directory together with the virtual environment where you installed Webware for Python inside the same distinct base directory. Install any other requirements either into the virtual environment or provide them in one of the directories specified with the <code class="docutils literal notranslate"><span class="pre">-l</span></code> option.</p>
+</dd>
+</dl>
+<p>You can see all available options if you run <code class="docutils literal notranslate"><span class="pre">webware</span> <span class="pre">make</span> <span class="pre">--help</span></code>.</p>
+<p>When you run the <code class="docutils literal notranslate"><span class="pre">webware</span> <span class="pre">make</span></code> command with the options describe above, the following directory structure will be created inside the <code class="docutils literal notranslate"><span class="pre">WorkDir</span></code> directory:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Cache</span><span class="o">/</span>          <span class="n">Context</span><span class="o">/</span>        <span class="n">ErrorMsgs</span><span class="o">/</span>      <span class="n">Logs</span><span class="o">/</span>           <span class="n">Sessions</span><span class="o">/</span>
+<span class="n">Configs</span><span class="o">/</span>        <span class="n">error404</span><span class="o">.</span><span class="n">html</span>   <span class="n">Lib</span><span class="o">/</span>            <span class="n">Scripts</span><span class="o">/</span>        <span class="n">Static</span><span class="o">/</span>
+</pre></div>
+</div>
+<p>Here’s what the files and directories are for:</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">Cache</span></code>:</dt><dd><p>A directory containing cache files. You won’t need to look in here.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Configs</span></code>:</dt><dd><p>Configuration files for the application. These files are copied from the <code class="docutils literal notranslate"><span class="pre">Configs</span></code> subdirectory in the <code class="docutils literal notranslate"><span class="pre">webware</span></code> package, but are specific to this application.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Context</span></code>:</dt><dd><p>The directory for your default context. This is where you put your servlets. You can change its name and location with the <code class="docutils literal notranslate"><span class="pre">-c</span></code> and <code class="docutils literal notranslate"><span class="pre">-d</span></code> options. You can also change this subsequently in the <code class="docutils literal notranslate"><span class="pre">Application.config</span></code> file in the <code class="docutils literal notranslate"><span class="pre">Configs</span></code> directory, where you can also configure more than one context. You may also want to remove the other standard contexts that come with Webware from the config file.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">error404.html</span></code>:</dt><dd><p>The static HTML page to be displayed when a page is not found. You can remove this to display a standard error message, modify the page according to your preferences, or use a custom error servlet instead by setting <code class="docutils literal notranslate"><span class="pre">ErrorPage</span></code> in the <code class="docutils literal notranslate"><span class="pre">Application.config</span></code> file appropriately.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">ErrorMsgs</span></code>:</dt><dd><p>HTML pages for any errors that occur. These can pile up and take up considerable size (even just during development), so you’ll want to purge these every so often.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Lib</span></code>:</dt><dd><p>An example for an application-specific library package that can be created <code class="docutils literal notranslate"><span class="pre">-l</span></code> option (in this case, <code class="docutils literal notranslate"><span class="pre">-l</span> <span class="pre">Lib</span></code>).</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Logs</span></code>:</dt><dd><p>Logs of accesses.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Scripts</span></code>:</dt><dd><p>This directory contains a default WSGI script named <code class="docutils literal notranslate"><span class="pre">WSGIScript.py</span></code> that can be used to start the development server or connect the Webware application with another WSGI server.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Sessions</span></code>:</dt><dd><p>Users sessions. These should be cleaned out automatically, you won’t have to look in this directory.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Static</span></code>:</dt><dd><p>This directory can be used as a container for all your static files that are used by your application, but should be served directly via the web server.</p>
+</dd>
+</dl>
+</section>
+<section id="using-a-version-control-system-for-your-application">
+<h3>Using a Version Control system for Your Application<a class="headerlink" href="#using-a-version-control-system-for-your-application" title="Link to this heading">¶</a></h3>
+<p>A version control system is a useful tool for managing your application. Currently, <a class="reference external" href="https://git-scm.com/">Git</a> is the most popular one. These systems handle versioning, but they also make it possible for other people to see snapshots of your progress, for multiple developers to collaborate and work on an application simultaneously, and they create a sort of implicit file share for your project. Even if you are the only developer on an application, a version control system can be very helpful.</p>
+<p>The working directory is a good place to start for creating a versioned project. Assuming you’re using Git, you can get started by creating a repository and importing your project into the repository simply by running:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="n">WorkDir</span>
+<span class="n">git</span> <span class="n">init</span>
+<span class="n">git</span> <span class="n">add</span> <span class="o">.</span>
+<span class="n">git</span> <span class="n">commit</span> <span class="o">-</span><span class="n">m</span> <span class="s2">&quot;initial import&quot;</span>
+</pre></div>
+</div>
+<p>Note that a hidden <code class="docutils literal notranslate"><span class="pre">.gitignore</span></code> file with reasonable defaults has already been created for you in the working directory. It tells Git to ignore files with certain extensions (such as <code class="docutils literal notranslate"><span class="pre">.log</span></code> or <code class="docutils literal notranslate"><span class="pre">.pyc</span></code> files), and all the files in certain directories (<code class="docutils literal notranslate"><span class="pre">Cache</span></code>, <code class="docutils literal notranslate"><span class="pre">ErrorMsgs</span></code>, <code class="docutils literal notranslate"><span class="pre">Logs</span></code>, and <code class="docutils literal notranslate"><span class="pre">Sessions</span></code>).</p>
+</section>
+</section>
+<section id="structuring-your-code">
+<h2>Structuring your Code<a class="headerlink" href="#structuring-your-code" title="Link to this heading">¶</a></h2>
+<p>Once you’ve got the basic files and directories in place, you’re ready to go in and write some code. Don’t let this document get in the way of developing the application how you choose, but here are some common patterns that have proven useful for Webware applications.</p>
+<section id="sitepage">
+<h3>SitePage<a class="headerlink" href="#sitepage" title="Link to this heading">¶</a></h3>
+<p>Subclass a <code class="docutils literal notranslate"><span class="pre">SitePage</span></code> from <code class="docutils literal notranslate"><span class="pre">Page</span></code> for your application. This subclass will change some methods and add some new methods. It serves as the basis and as a template for all the pages that follow. If you have added a <code class="docutils literal notranslate"><span class="pre">Lib</span></code> subdirectory to your working directory as explained above, place the <code class="docutils literal notranslate"><span class="pre">SitePage.py</span></code> file containing the <code class="docutils literal notranslate"><span class="pre">SitePage</span></code> class into that directory.</p>
+<p>Some code you may wish to include in your <code class="docutils literal notranslate"><span class="pre">SitePage</span></code>:</p>
+<ul class="simple">
+<li><p>Authentication and security</p></li>
+<li><p>Accessing common objects (e.g., a user object, or a document object)</p></li>
+<li><p>Page header and footer</p></li>
+<li><p>Common layout commands, like <code class="docutils literal notranslate"><span class="pre">writeHeader</span></code></p></li>
+<li><p>Database access</p></li>
+</ul>
+<p>You may also want to add other frequently used functions into the <code class="docutils literal notranslate"><span class="pre">SitePage</span></code> module and then do <code class="docutils literal notranslate"><span class="pre">from</span> <span class="pre">SitePage</span> <span class="pre">import</span> <span class="pre">*</span></code> in each servlet. You can also put these functions in a dedicated <code class="docutils literal notranslate"><span class="pre">SiteFuncs</span></code> module, or distribute them in different modules, and import them explicitly, for better code readability and to avoid cluttering your namespace.</p>
+<p>Whether you want to use functions or methods is up to you – in many cases methods can be more easily extended or customized later, but sometimes method use can become excessive and create unnecessary dependencies
+in your code.</p>
+<p>A basic framework for your SitePage might be:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">Page</span><span class="w"> </span><span class="kn">import</span> <span class="n">Page</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">SitePage</span><span class="p">(</span><span class="n">Page</span><span class="p">):</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">respond</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">trans</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">securePage</span><span class="p">():</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="p">()</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="s1">&#39;username&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">respondLogIn</span><span class="p">()</span>
+                <span class="k">return</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">securePage</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Override this method in your servlets to return True if the</span>
+<span class="sd">        page should only be accessible to logged-in users -- by default</span>
+<span class="sd">        pages are publicly viewable&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">respondLogin</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># Here we should deal with logging in...</span>
+        <span class="k">pass</span>
+</pre></div>
+</div>
+<p>Obviously there are a lot of details to add in on your own which are specific to your application and the security and user model you are using.</p>
+</section>
+</section>
+<section id="configuration">
+<h2>Configuration<a class="headerlink" href="#configuration" title="Link to this heading">¶</a></h2>
+<p>There are several configuration parameters through which you can alter how Webware behaves. They are described below, including their default values. Note that you can override the defaults by placing config files in the <code class="docutils literal notranslate"><span class="pre">Configs/</span></code> directory. A config file simply contains Python code assigning the settings you wish to override. For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">SessionStore</span> <span class="o">=</span> <span class="s1">&#39;Memory&#39;</span>
+<span class="n">ShowDebugInfoOnErrors</span> <span class="o">=</span>  <span class="kc">True</span>
+</pre></div>
+</div>
+<p>See the chapter on <a class="reference internal" href="config.html#configuration"><span class="std std-ref">Configuration</span></a> for more information on settings.</p>
+</section>
+<section id="contexts">
+<h2>Contexts<a class="headerlink" href="#contexts" title="Link to this heading">¶</a></h2>
+<p>Webware divides the world into <em>contexts</em>, each of which is a directory with its own files and servlets. Webware will only serve files out of its list of known contexts.</p>
+<p>Some of the contexts you will find out of the box are <code class="docutils literal notranslate"><span class="pre">Examples</span></code>, <code class="docutils literal notranslate"><span class="pre">Documentation</span></code> and <code class="docutils literal notranslate"><span class="pre">Admin</span></code>. When viewing either an example or admin page, you will see a sidebar that links to all the contexts.</p>
+<p>Another way to look at contexts is a means for “directory partitioning”. If you have two distinct web applications (for example, <code class="docutils literal notranslate"><span class="pre">PythonTutor</span></code> and <code class="docutils literal notranslate"><span class="pre">DayTrader</span></code>), you will likely put each of these in their own context. In this configuration, both web applications would be served by the same Application instance. Note that there may be also reasons to run multiple Application instances for serving your web applications. For instance, this would allow you to start and stop them independently, run them under different users to give them different permissions, or partition resources like number of threads individually among the web applications.</p>
+<p>Instead of adding your own contexts you may wish to use the <code class="docutils literal notranslate"><span class="pre">webware</span> <span class="pre">make</span></code> command, which will partition your application from the Webware installation.</p>
+<p>To add a new context, add to the <code class="docutils literal notranslate"><span class="pre">Contexts</span></code> dictionary of <code class="docutils literal notranslate"><span class="pre">Application.config</span></code>. The key is the name of the context as it appears in the URL and the value is the path (absolute or relative to the application working directory). Often the name of the context and the name of the directory will be the same:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s1">&#39;DayTrader&#39;</span><span class="p">:</span> <span class="s1">&#39;/All/Web/Apps/DayTrader&#39;</span><span class="p">,</span>
+</pre></div>
+</div>
+<p>The URL to access DayTrader would then be something like: <code class="docutils literal notranslate"><span class="pre">http://localhost:8080/DayTrader/</span></code></p>
+<p>The special name <code class="docutils literal notranslate"><span class="pre">default</span></code> is reserved to specify what context is served when none is specified (as in <code class="docutils literal notranslate"><span class="pre">http://localhost:8080/</span></code>). Upon installation, this is the <code class="docutils literal notranslate"><span class="pre">Examples</span></code> context, which is convenient during development since it provides links to all the other contexts.</p>
+<p>Note that a context can contain an <code class="docutils literal notranslate"><span class="pre">__init__.py</span></code> which will be executed when the context is loaded at Application startup. You can put any kind of initialization code you deem appropriate there.</p>
+</section>
+<section id="plug-ins">
+<h2>Plug-ins<a class="headerlink" href="#plug-ins" title="Link to this heading">¶</a></h2>
+<p>A plug-in is a software component that is loaded by Webware in order to provide additional functionality without necessarily having to modify Webware’s source.</p>
+<p>The most infamous plug-in is PSP (Python Server Pages) which ships with Webware.</p>
+<p>Plug-ins often provide additional servlet factories, servlet subclasses, examples and documentation. Ultimately, it is the plug-in author’s choice as to what to provide and in what manner.</p>
+<p>Technically, plug-ins are Python packages that follow a few simple conventions in order to work with Webware. See the chapter on <a class="reference internal" href="plugins.html#plug-ins"><span class="std std-ref">Plug-ins</span></a> for information about writing your own.</p>
+</section>
+<section id="sessions">
+<h2>Sessions<a class="headerlink" href="#sessions" title="Link to this heading">¶</a></h2>
+<p>Webware provides a Session utility class for storing data on the server side that relates to an individual user’s session with your site. The <code class="docutils literal notranslate"><span class="pre">SessionStore</span></code> setting determines where the data is stored and can currently be set to <code class="docutils literal notranslate"><span class="pre">Dynamic</span></code>, <code class="docutils literal notranslate"><span class="pre">File</span></code>, <code class="docutils literal notranslate"><span class="pre">Memcached</span></code>, <code class="docutils literal notranslate"><span class="pre">Memory</span></code>, <code class="docutils literal notranslate"><span class="pre">Redis</span></code> or <code class="docutils literal notranslate"><span class="pre">Shelve</span></code>.</p>
+<p>Storing to the Dynamic session store is the fastest solution and is the default. This session storage method keeps the most recently used sessions in memory, and moves older sessions to disk periodically. All sessions will be moved to disk when the server is stopped. Note that this storage mechanism cannot be used in a multi-process environment, i.e. when you’re running multiple Applications instances in different processes in production.</p>
+<p>There are two settings in <code class="docutils literal notranslate"><span class="pre">Application.config</span></code> relating to this Dynamic session store. <code class="docutils literal notranslate"><span class="pre">MaxDynamicMemorySessions</span></code> specifies the maximum number of sessions that can be in memory at any one time. <code class="docutils literal notranslate"><span class="pre">DynamicSessionTimeout</span></code> specifies after what period of time sessions will be moved from memory to file. (Note: this setting is unrelated to the <code class="docutils literal notranslate"><span class="pre">SessionTimeout</span></code> setting below. Sessions which are moved to disk by the Dynamic Session store are not deleted). Alternatively to the Dynamic store, you can try out the Shelve session store which stores the sessions in a database file using the Python shelve module.</p>
+<p>If you are using more than one Application instance for load-balancing, the Memcached store will be interesting for you. Using the python-memcached interface, it is able to connect to a Memcached system and store all the session data there. This allows user requests to be freely moved from one server to another while keeping their sessions, because they are all connected to the same memcache. Alternatively, using the redis-py client, the application can also store sessions in a Redis database.</p>
+<p>All on-disk session information is located in the <code class="docutils literal notranslate"><span class="pre">Sessions</span></code> subdirectory of the application working directory.</p>
+<p>Also, the <code class="docutils literal notranslate"><span class="pre">SessionTimeout</span></code> setting lets you set the number of minutes of inactivity before a user’s session becomes invalid and is deleted. The default is 60. The Session Timeout value can also be changed dynamically on a per session basis.</p>
+</section>
+<section id="actions">
+<h2>Actions<a class="headerlink" href="#actions" title="Link to this heading">¶</a></h2>
+<p>Suppose you have a web page with a form and one or more buttons. Normally, when the form is submitted, a method such as Servlet’s <code class="docutils literal notranslate"><span class="pre">respondToPost()</span></code> or Page’s <code class="docutils literal notranslate"><span class="pre">writeBody()</span></code>, will be
+invoked. However, you may find it more useful to bind the button to a specific method of your servlet such as <code class="docutils literal notranslate"><span class="pre">new()</span></code>, <code class="docutils literal notranslate"><span class="pre">remove()</span></code> etc. to implement the command, and reserve <code class="docutils literal notranslate"><span class="pre">writeBody()</span></code> for displaying the page and the form that invokes these methods. Note that your “command methods” can then invoke <code class="docutils literal notranslate"><span class="pre">writeBody()</span></code> after performing their task.</p>
+<p>The <em>action</em> feature of <code class="docutils literal notranslate"><span class="pre">Page</span></code> let’s you do this. The process goes like this:</p>
+<ol class="arabic">
+<li><p>Add buttons to your HTML form of type <code class="docutils literal notranslate"><span class="pre">submit</span></code> and name <code class="docutils literal notranslate"><span class="pre">_action_</span></code>. For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="nb">input</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;_action_&quot;</span> <span class="nb">type</span><span class="o">=</span><span class="s2">&quot;submit&quot;</span> <span class="n">value</span><span class="o">=</span><span class="s2">&quot;New&quot;</span><span class="o">&gt;</span>
+<span class="o">&lt;</span><span class="nb">input</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;_action_&quot;</span> <span class="nb">type</span><span class="o">=</span><span class="s2">&quot;submit&quot;</span> <span class="n">value</span><span class="o">=</span><span class="s2">&quot;Delete&quot;</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+</li>
+<li><p>Alternately, name the submit button <code class="docutils literal notranslate"><span class="pre">_action_methodName</span></code>. For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="nb">input</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;_action_New&quot;</span> <span class="nb">type</span><span class="o">=</span><span class="s2">&quot;submit&quot;</span> <span class="n">value</span><span class="o">=</span><span class="s2">&quot;Create New Item&quot;</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+</li>
+<li><p>Add an <code class="docutils literal notranslate"><span class="pre">actions()</span></code> method to your class to state which actions are valid. (If Webware didn’t force you to do this, someone could potentially submit data that would cause any method of your servlet to be run). For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">actions</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">SuperClass</span><span class="o">.</span><span class="n">actions</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">+</span> <span class="p">[</span><span class="s1">&#39;New&#39;</span><span class="p">,</span> <span class="s1">&#39;Delete&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</li>
+<li><p>Now you implement your action methods.</p></li>
+</ol>
+<p>The <code class="docutils literal notranslate"><span class="pre">ListBox</span></code> example shows the use of actions (in <code class="docutils literal notranslate"><span class="pre">Examples/ListBox.py</span></code>).</p>
+<p>Note that if you proceed as in 1., you can add a <code class="docutils literal notranslate"><span class="pre">methodNameForAction()</span></code> method to your class transforming the value from the submit button (its label) to a valid method name. This will be needed, for instance, if there is a blank in the label on the button. However, usually it’s simpler to proceed as in 2. in such cases.</p>
+</section>
+<section id="naming-conventions">
+<h2>Naming Conventions<a class="headerlink" href="#naming-conventions" title="Link to this heading">¶</a></h2>
+<p>Cookies and form values that are named with surrounding underscores (such as <code class="docutils literal notranslate"><span class="pre">_sid_</span></code> and <code class="docutils literal notranslate"><span class="pre">_action_</span></code>) are generally reserved by Webware and various plugins and extensions for their own internal purposes. If you refrain from using surrounding underscores in your own names, then (a) you won’t accidentally clobber an already existing internal name and (b) when new names are introduced by future versions of Webware, they won’t break your application.</p>
+</section>
+<section id="errors-and-uncaught-exceptions">
+<h2>Errors and Uncaught Exceptions<a class="headerlink" href="#errors-and-uncaught-exceptions" title="Link to this heading">¶</a></h2>
+<p>One of the conveniences provided by Webware is the handling of uncaught exceptions. The response to an uncaught exception is:</p>
+<ul class="simple">
+<li><p>Log the time, error, script name and traceback to standard output.</p></li>
+<li><p>Display a web page containing an apologetic message to the user.</p></li>
+<li><p>Save a technical web page with debugging information so that developers can look at it after-the-fact. These HTML-based error messages are stored one-per-file, if the <code class="docutils literal notranslate"><span class="pre">SaveErrorMessages</span></code> setting is true (the default). They are stored in the directory named by the <code class="docutils literal notranslate"><span class="pre">ErrorMessagesDir</span></code> (defaults to <code class="docutils literal notranslate"><span class="pre">&quot;ErrorMsgs&quot;</span></code>).</p></li>
+<li><p>Add an entry to the error log, found by default in <code class="docutils literal notranslate"><span class="pre">Logs/Errors.csv</span></code>.</p></li>
+<li><p>E-mail the error message if the <code class="docutils literal notranslate"><span class="pre">EmailErrors</span></code> setting is true, using the settings <code class="docutils literal notranslate"><span class="pre">ErrorEmailServer</span></code> and <code class="docutils literal notranslate"><span class="pre">ErrorEmailHeaders</span></code>. See <a class="reference internal" href="config.html#configuration"><span class="std std-ref">Configuration</span></a> for more information. You should definitely set these options when deploying a web site.</p></li>
+</ul>
+<p>Archived error messages can be browsed through the <a class="reference internal" href="#administration">administration</a> page.</p>
+<p>Error handling behavior can be configured as described in <a class="reference internal" href="config.html#configuration"><span class="std std-ref">Configuration</span></a>.</p>
+</section>
+<section id="activity-log">
+<h2>Activity Log<a class="headerlink" href="#activity-log" title="Link to this heading">¶</a></h2>
+<p>Three options let you control:</p>
+<ul class="simple">
+<li><p>Whether or not to log activity (<code class="docutils literal notranslate"><span class="pre">LogActivity</span></code>, defaults to 0, i.e. off)</p></li>
+<li><p>The name of the file to store the log (<code class="docutils literal notranslate"><span class="pre">ActivityLogFilename</span></code>, defaults to <code class="docutils literal notranslate"><span class="pre">Activity.csv</span></code>)</p></li>
+<li><p>The fields to store in the log (<code class="docutils literal notranslate"><span class="pre">ActivityLogColumns</span></code>) &lt;/ul&gt;</p></li>
+</ul>
+<p>See the chapter on <a class="reference internal" href="config.html#configuration"><span class="std std-ref">Configuration</span></a> for more information.</p>
+</section>
+<section id="administration">
+<h2>Administration<a class="headerlink" href="#administration" title="Link to this heading">¶</a></h2>
+<p>Webware has a built-in administration page that you can access via the <code class="docutils literal notranslate"><span class="pre">Admin</span></code> context. You can see a list of all contexts in the sidebar of any <code class="docutils literal notranslate"><span class="pre">Example</span></code> or <code class="docutils literal notranslate"><span class="pre">Admin</span></code> page.</p>
+<p>The admin pages allows you to view Webware’s configuration, logs, and servlet cache, and perform actions such as clearing the cache or reloading selected modules.</p>
+<p>More sensitive pages that give control over the application require a user name and password, the username is <code class="docutils literal notranslate"><span class="pre">admin</span></code>, and you can set the password with the <code class="docutils literal notranslate"><span class="pre">AdminPassword</span></code> setting in the <code class="docutils literal notranslate"><span class="pre">Application.config</span></code> file.</p>
+<p>The administration scripts provide further examples of writing pages with Webware, so you may wish to examine their source in the <code class="docutils literal notranslate"><span class="pre">Admin</span></code> context.</p>
+</section>
+<section id="debugging">
+<h2>Debugging<a class="headerlink" href="#debugging" title="Link to this heading">¶</a></h2>
+<section id="development-mode">
+<h3>Development Mode<a class="headerlink" href="#development-mode" title="Link to this heading">¶</a></h3>
+<p>When creating the Application instance, it takes a <code class="docutils literal notranslate"><span class="pre">development</span></code> flag as argument that defines whether it should run in “development mode” or “production mode”. By default, if no such flag is passed, Webware checks whether the environment varibale <code class="docutils literal notranslate"><span class="pre">WEBWARE_DEVELOPMENT</span></code> is set and not empty. When you run the development server using the <code class="docutils literal notranslate"><span class="pre">webware</span> <span class="pre">serve</span></code> command, the flag is automatically set, so you are running in “development mode”, unless you add the <code class="docutils literal notranslate"><span class="pre">--prod</span></code> option on the command line. The development flag is also available with the name <code class="docutils literal notranslate"><span class="pre">Development</span></code> in the <code class="docutils literal notranslate"><span class="pre">Application.config</span></code> file and used to make some reasonable case distinctions depending on whether the application is running in development mode. For instance, debugging information is only shown in development mode.</p>
+</section>
+<section id="print">
+<h3>print<a class="headerlink" href="#print" title="Link to this heading">¶</a></h3>
+<p>The most common technique is the infamous <code class="docutils literal notranslate"><span class="pre">print</span></code> statement which has been replaced with a <code class="docutils literal notranslate"><span class="pre">print()</span></code> function in Python 3. The results of <code class="docutils literal notranslate"><span class="pre">print()</span></code> calls go to the console where the WSGI server was started (not to the HTML page as would happen with CGI). If you specify <code class="docutils literal notranslate"><span class="pre">AppLogFilename</span></code> in <code class="docutils literal notranslate"><span class="pre">Application.config</span></code>, this will cause the standard output and error to be redirected to this file.</p>
+<p>For convenient debugging, the default <code class="docutils literal notranslate"><span class="pre">Application.config</span></code> file already uses the following conditional setting:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">AppLogFilename</span> <span class="o">=</span> <span class="kc">None</span> <span class="k">if</span> <span class="n">Development</span> <span class="k">else</span> <span class="s1">&#39;Application.log&#39;</span>
+</pre></div>
+</div>
+<p>This will prevent standard output and error from being redirected to the log file in development mode, which makes it easier to find debugging output, and also makes it possible to use <code class="docutils literal notranslate"><span class="pre">pdb</span></code> (see below).</p>
+<p>Prefixing the debugging output with a special tag (such as <code class="docutils literal notranslate"><span class="pre">&gt;&gt;</span></code>) is useful because it stands out on the console and you can search for the tag in source code to remove the print statements after they are no longer useful. For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;&gt;&gt; fields =&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">request</span><span class="p">()</span><span class="o">.</span><span class="n">fields</span><span class="p">())</span>
+</pre></div>
+</div>
+</section>
+<section id="raising-exceptions">
+<h3>Raising Exceptions<a class="headerlink" href="#raising-exceptions" title="Link to this heading">¶</a></h3>
+<p>Uncaught exceptions are trapped at the application level where a useful error page is saved with information such as the traceback, environment, fields, etc. In development mode, you will see this error page directly. In production, you can examine the saved page, and you can also configure the application to automatically e-mail you this information.</p>
+<p>When an application isn’t behaving correctly, raising an exception can be useful because of the additional information that comes with it. Exceptions can be coupled with messages, thereby turning them into
+more powerful versions of the <code class="docutils literal notranslate"><span class="pre">print()</span></code> call. For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;self = </span><span class="si">{</span><span class="bp">self</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>While this is totally useful during development, giving away too much internal information is also a security risk, so you should make sure that the application is configured properly and no such debugging output is ever shown in production.</p>
+</section>
+<section id="reloading-the-development-server">
+<h3>Reloading the Development Server<a class="headerlink" href="#reloading-the-development-server" title="Link to this heading">¶</a></h3>
+<p>When a servlet’s source code changes, it is reloaded. However, ancestor classes of servlets, library modules and configuration files are not. You may wish to enable the auto-reloading feature when running the development server, by adding the <code class="docutils literal notranslate"><span class="pre">-r</span></code> or <code class="docutils literal notranslate"><span class="pre">--reload</span></code> option to the <code class="docutils literal notranslate"><span class="pre">webware</span> <span class="pre">serve</span> <span class="pre">command</span></code> in order to mitigate this problem.</p>
+<p>In any case, when having problems, consider restarting the development server (or the WSGI server you are running in production).</p>
+<p>Another option is to use the AppControl page of the <code class="docutils literal notranslate"><span class="pre">Admin</span></code> context to clear the servlet instance and class cache (see <a class="reference internal" href="#administration">Administration</a>).</p>
+</section>
+<section id="assertions">
+<h3>Assertions<a class="headerlink" href="#assertions" title="Link to this heading">¶</a></h3>
+<p>Assertions are used to ensure that the internal conditions of the application are as expected. An assertion is equivalent to an <code class="docutils literal notranslate"><span class="pre">if</span></code> statement coupled with an exception. For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">assert</span> <span class="n">shoppingCart</span><span class="o">.</span><span class="n">total</span><span class="p">()</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">,</span> \
+    <span class="sa">f</span><span class="s1">&#39;shopping cart total is </span><span class="si">{</span><span class="n">shoppingCart</span><span class="o">.</span><span class="n">total</span><span class="p">()</span><span class="si">}</span><span class="s1">&#39;</span>
+</pre></div>
+</div>
+</section>
+<section id="debugging-using-pdb">
+<h3>Debugging using PDB<a class="headerlink" href="#debugging-using-pdb" title="Link to this heading">¶</a></h3>
+<p>To use Python’s built-in debugger <code class="docutils literal notranslate"><span class="pre">pdb</span></code>, see the tip above about setting <code class="docutils literal notranslate"><span class="pre">AppLogFilename</span></code> for convenient debugging.</p>
+<p>To have Webware automatically put you into pdb when an exception occurs, set this in your <code class="docutils literal notranslate"><span class="pre">Application.config</span></code> file:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">EnterDebuggerOnException</span> <span class="o">=</span> <span class="n">Development</span>
+</pre></div>
+</div>
+<p>A quick and easy way to debug a particular section of code is to add these lines at that point in the code:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pdb</span>
+<span class="n">pdb</span><span class="o">.</span><span class="n">set_trace</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+<section id="debugging-in-an-ide">
+<h3>Debugging in an IDE<a class="headerlink" href="#debugging-in-an-ide" title="Link to this heading">¶</a></h3>
+<p>You can also use PyCharm or other Python IDEs to debug a Webware application. To do this, first configure the IDE to use the virtual environment where you installed Webware for Python.</p>
+<p>Then, create the following script <code class="docutils literal notranslate"><span class="pre">serve.py</span></code> on the top level of your application working directory:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/python3</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">webware.Scripts.WebwareCLI</span><span class="w"> </span><span class="kn">import</span> <span class="n">main</span>
+
+<span class="n">main</span><span class="p">([</span><span class="s1">&#39;serve&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>Now run this file in your IDE in debug mode. For instance, in PyCharm, right-click on <code class="docutils literal notranslate"><span class="pre">serve.py</span></code> and select “Debug ‘serve’”.</p>
+<p>Some IDEs like PyCharm can also debug remote processes. This could be useful to debug a test or production server.</p>
+</section>
+</section>
+<section id="bootstrap-webware-from-command-line">
+<h2>Bootstrap Webware from Command line<a class="headerlink" href="#bootstrap-webware-from-command-line" title="Link to this heading">¶</a></h2>
+<p>You may be in a situation where you want to execute some part of your Webware applicaton from the command line, for example to implement a cron job or maintenance script. In these situations you probably don’t want to instantiate a full-fledged <cite>Application</cite> – some of the downsides are that doing so would cause standard output and standard error to be redirected to the log file, and that it sets up the session sweeper, task manager, etc. But you may still need access to plugins such as MiscUtils, MiddleKit, which you may not be able to import directly.</p>
+<p>Here is a lightweight approach which allows you to bootstrap Webware and plugins:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">webware</span>
+<span class="n">app</span> <span class="o">=</span> <span class="n">webware</span><span class="o">.</span><span class="n">mockAppWithPlugins</span><span class="p">()</span>
+
+<span class="c1"># now plugins are available...</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">MiscUtils</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">MiddleKit</span>
+</pre></div>
+</div>
+</section>
+<section id="how-do-i-develop-an-app">
+<h2>How do I Develop an App?<a class="headerlink" href="#how-do-i-develop-an-app" title="Link to this heading">¶</a></h2>
+<p>The answer to that question might not seem clear after being deluged with all the details. Here’s a summary:</p>
+<ul class="simple">
+<li><p>Make sure you can run the development server. See the <a class="reference internal" href="quickstart.html#quickstart"><span class="std std-ref">Quickstart</span></a> for more information.</p></li>
+<li><p>Go through the <a class="reference internal" href="tutorial.html#beginner-tutorial"><span class="std std-ref">Beginner Tutorial</span></a>.</p></li>
+<li><p>Read the source to the examples (in the <code class="docutils literal notranslate"><span class="pre">Examples</span></code> subdirectory), then modify one of them to get your toes wet.</p></li>
+<li><p>Create your own new example from scratch. Ninety-nine percent of the time you will be subclassing the <code class="docutils literal notranslate"><span class="pre">Page</span></code> class.</p></li>
+<li><p>Familiarize yourself with the class docs in order to take advantage of classes like Page, HTTPRequest, HTTPResponse and Session.</p></li>
+<li><p>With this additional knowledge, create more sophisticated pages.</p></li>
+<li><p>If you need to secure your pages using a login screen, you’ll want to look at the SecurePage, LoginPage, and SecureCountVisits examples in <code class="docutils literal notranslate"><span class="pre">Examples</span></code>. You’ll need to modify them to suit your particular needs.</p></li>
+</ul>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">Webware for Python 3</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changes.html">List of Changes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="migrate.html">Migration Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="copyright.html">Copyright and License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial.html">Beginner Tutorial</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Application Development</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#core-concepts">Core Concepts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#setting-up-your-application">Setting up your application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#structuring-your-code">Structuring your Code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#configuration">Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#contexts">Contexts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#plug-ins">Plug-ins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#sessions">Sessions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#actions">Actions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#naming-conventions">Naming Conventions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#errors-and-uncaught-exceptions">Errors and Uncaught Exceptions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#activity-log">Activity Log</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#administration">Administration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#debugging">Debugging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#bootstrap-webware-from-command-line">Bootstrap Webware from Command line</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#how-do-i-develop-an-app">How do I Develop an App?</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="config.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="deploy.html">Deployment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="plugins.html">Plug-ins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="style.html">Style Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="psp.html">PSP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="userkit.html">UserKit</a></li>
+<li class="toctree-l1"><a class="reference internal" href="taskkit.html">TaskKit</a></li>
+<li class="toctree-l1"><a class="reference internal" href="webutils.html">WebUtils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="miscutils.html">MiscUtils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="testing.html">Testing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ref/index.html">API Reference</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="tutorial.html" title="previous chapter">Beginner Tutorial</a></li>
+      <li>Next: <a href="config.html" title="next chapter">Configuration</a></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;1999-2025, Christoph Zwerschke et al.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.2.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+      |
+      <a href="_sources/appdev.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Webware for Python 3 &#8212; Webware for Python 3 3.1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=27fed22d" />
+    <script src="_static/documentation_options.js?v=dd1205ac"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="copyright" title="Copyright" href="copyright.html" />
+    <link rel="next" title="Overview" href="overview.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="webware-for-python-3">
+<h1>Webware for Python 3<a class="headerlink" href="#webware-for-python-3" title="Link to this heading">¶</a></h1>
+<div class="toctree-wrapper compound">
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="overview.html">Overview</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="overview.html#synopsis">Synopsis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="overview.html#design-points-and-changes">Design Points and Changes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="overview.html#download-and-installation">Download and Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="overview.html#documentation">Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="overview.html#feedback-contributing-and-support">Feedback, Contributing and Support</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="install.html#python-version">Python Version</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#create-a-virtual-environment">Create a Virtual Environment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#activate-the-virtual-environment">Activate the Virtual Environment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#installation-with-pip">Installation with Pip</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#installing-extras">Installing “Extras”</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#installation-from-source">Installation from Source</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#check-the-installed-version">Check the Installed Version</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="changes.html">List of Changes</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="changes.html#what-s-new-in-webware-for-python-3-0">What’s new in Webware for Python 3.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changes.html#what-s-new-in-webware-for-python-3-1">What’s new in Webware for Python 3.1</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="migrate.html">Migration Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="migrate.html#check-which-webware-plug-ins-you-were-using">Check which Webware plug-ins you were using</a></li>
+<li class="toctree-l2"><a class="reference internal" href="migrate.html#migrate-your-application-to-python-3">Migrate your application to Python 3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="migrate.html#use-a-wsgi-server-instead-of-the-webkit-application-server">Use a WSGI server instead of the WebKit application server</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="copyright.html">Copyright and License</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="copyright.html#the-gist">The Gist</a></li>
+<li class="toctree-l2"><a class="reference internal" href="copyright.html#id1">Copyright</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#the-webware-cli">The Webware CLI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#creating-a-working-directory">Creating a Working Directory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#running-the-webware-examples">Running the Webware Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#using-the-admin-context">Using the Admin Context</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#a-hello-world-example">A “Hello World” Example</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial.html">Beginner Tutorial</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="tutorial.html#creating-a-working-directory">Creating a Working Directory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial.html#changing-the-webware-configuration">Changing the Webware Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial.html#creating-and-understanding-the-servlet">Creating and Understanding the Servlet</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial.html#a-brief-introduction-to-the-servlet">A Brief Introduction to the Servlet</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial.html#a-photo-album">A Photo Album</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="appdev.html">Application Development</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="appdev.html#core-concepts">Core Concepts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="appdev.html#setting-up-your-application">Setting up your application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="appdev.html#structuring-your-code">Structuring your Code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="appdev.html#configuration">Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="appdev.html#contexts">Contexts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="appdev.html#plug-ins">Plug-ins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="appdev.html#sessions">Sessions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="appdev.html#actions">Actions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="appdev.html#naming-conventions">Naming Conventions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="appdev.html#errors-and-uncaught-exceptions">Errors and Uncaught Exceptions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="appdev.html#activity-log">Activity Log</a></li>
+<li class="toctree-l2"><a class="reference internal" href="appdev.html#administration">Administration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="appdev.html#debugging">Debugging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="appdev.html#bootstrap-webware-from-command-line">Bootstrap Webware from Command line</a></li>
+<li class="toctree-l2"><a class="reference internal" href="appdev.html#how-do-i-develop-an-app">How do I Develop an App?</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="config.html">Configuration</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="config.html#application-config">Application.config</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="deploy.html">Deployment</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="deploy.html#installation-on-the-production-system">Installation on the Production System</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deploy.html#starting-the-wsgi-server-on-boot">Starting the WSGI Server on Boot</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deploy.html#logfile-rotation">Logfile Rotation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deploy.html#running-behind-a-reverse-proxy">Running behind a Reverse Proxy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deploy.html#using-apache-and-mod-wsgi">Using Apache and mod_wsgi</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deploy.html#other-wsgi-servers">Other WSGI servers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deploy.html#sourceless-installs">Sourceless Installs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deploy.html#caveats-of-multiprocessing-mode">Caveats of Multiprocessing Mode</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="plugins.html">Plug-ins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="style.html">Style Guidelines</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="style.html#introduction">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="style.html#syntax-and-naming">Syntax and Naming</a></li>
+<li class="toctree-l2"><a class="reference internal" href="style.html#structure-and-patterns">Structure and Patterns</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="psp.html">PSP</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="psp.html#summary">Summary</a></li>
+<li class="toctree-l2"><a class="reference internal" href="psp.html#feedback">Feedback</a></li>
+<li class="toctree-l2"><a class="reference internal" href="psp.html#general-overview">General Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="psp.html#psp-tags">PSP Tags</a></li>
+<li class="toctree-l2"><a class="reference internal" href="psp.html#directives">Directives</a></li>
+<li class="toctree-l2"><a class="reference internal" href="psp.html#other-tags">Other Tags</a></li>
+<li class="toctree-l2"><a class="reference internal" href="psp.html#developers">Developers</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="userkit.html">UserKit</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="userkit.html#introduction">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="userkit.html#examples-and-more-details">Examples and More Details</a></li>
+<li class="toctree-l2"><a class="reference internal" href="userkit.html#encryption-of-passwords">Encryption of Passwords</a></li>
+<li class="toctree-l2"><a class="reference internal" href="userkit.html#credit">Credit</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="taskkit.html">TaskKit</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="taskkit.html#scheduling-with-python-and-webware">Scheduling with Python and Webware</a></li>
+<li class="toctree-l2"><a class="reference internal" href="taskkit.html#tasks">Tasks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="taskkit.html#generating-static-pages">Generating static pages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="taskkit.html#generating-static-pages-again">Generating static pages again</a></li>
+<li class="toctree-l2"><a class="reference internal" href="taskkit.html#the-scheduler">The Scheduler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="taskkit.html#credit">Credit</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="webutils.html">WebUtils</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="webutils.html#htmlforexception">HTMLForException</a></li>
+<li class="toctree-l2"><a class="reference internal" href="webutils.html#httpstatuscodes">HTTPStatusCodes</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="miscutils.html">MiscUtils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="testing.html">Testing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="testing.html#testing-webware-itself">Testing Webware itself</a></li>
+<li class="toctree-l2"><a class="reference internal" href="testing.html#testing-webware-applications">Testing Webware applications</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="ref/index.html">API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="ref/core/index.html">Core Classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ref/psp/index.html">PSP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ref/userkit/index.html">UserKit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ref/taskkit/index.html">TaskKit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ref/webutils/index.html">WebUtils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ref/miscutils/index.html">MiscUtils</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+<section id="indices-and-tables">
+<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Link to this heading">¶</a></h1>
+<ul class="simple">
+<li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></p></li>
+<li><p><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></p></li>
+<li><p><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></p></li>
+</ul>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="#">Webware for Python 3</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changes.html">List of Changes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="migrate.html">Migration Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="copyright.html">Copyright and License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial.html">Beginner Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="appdev.html">Application Development</a></li>
+<li class="toctree-l1"><a class="reference internal" href="config.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="deploy.html">Deployment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="plugins.html">Plug-ins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="style.html">Style Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="psp.html">PSP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="userkit.html">UserKit</a></li>
+<li class="toctree-l1"><a class="reference internal" href="taskkit.html">TaskKit</a></li>
+<li class="toctree-l1"><a class="reference internal" href="webutils.html">WebUtils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="miscutils.html">MiscUtils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="testing.html">Testing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ref/index.html">API Reference</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="#">Documentation overview</a><ul>
+      <li>Next: <a href="overview.html" title="next chapter">Overview</a></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;1999-2025, Christoph Zwerschke et al.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.2.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+      |
+      <a href="_sources/index.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

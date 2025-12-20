@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>JSONRPCServlet &#8212; Webware for Python 3 3.1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="../../_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="../../_static/alabaster.css?v=27fed22d" />
+    <script src="../../_static/documentation_options.js?v=dd1205ac"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="copyright" title="Copyright" href="../../copyright.html" />
+    <link rel="next" title="Page" href="page.html" />
+    <link rel="prev" title="ImportManager" href="importmanager.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="module-JSONRPCServlet">
+<span id="jsonrpcservlet"></span><h1>JSONRPCServlet<a class="headerlink" href="#module-JSONRPCServlet" title="Link to this heading">¶</a></h1>
+<p>JSON-RPC servlet base class</p>
+<p>Written by Jean-Francois Pieronne</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="JSONRPCServlet.JSONRPCServlet">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">JSONRPCServlet.</span></span><span class="sig-name descname"><span class="pre">JSONRPCServlet</span></span><a class="headerlink" href="#JSONRPCServlet.JSONRPCServlet" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="httpcontent.html#HTTPContent.HTTPContent" title="HTTPContent.HTTPContent"><code class="xref py py-class docutils literal notranslate"><span class="pre">HTTPContent</span></code></a></p>
+<p>A superclass for Webware servlets using JSON-RPC techniques.</p>
+<p>JSONRPCServlet can be used to make coding JSON-RPC applications easier.</p>
+<p>Subclasses should override the method json_methods() which returns a list
+of method names. These method names refer to Webware Servlet methods that
+are able to be called by an JSON-RPC-enabled web page. This is very similar
+in functionality to Webware’s actions.</p>
+<p>Some basic security measures against JavaScript hijacking are taken by
+default which can be deactivated if you’re not dealing with sensitive data.
+You can further increase security by adding shared secret mechanisms.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="JSONRPCServlet.JSONRPCServlet.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#JSONRPCServlet.JSONRPCServlet.__init__" title="Link to this definition">¶</a></dt>
+<dd><p>Subclasses must invoke super.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="JSONRPCServlet.JSONRPCServlet.actions">
+<span class="sig-name descname"><span class="pre">actions</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#JSONRPCServlet.JSONRPCServlet.actions" title="Link to this definition">¶</a></dt>
+<dd><p>The allowed actions.</p>
+<p>Returns a list or a set of method names that are allowable
+actions from HTML forms. The default implementation returns [].
+See <cite>_respond</cite> for more about actions.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="JSONRPCServlet.JSONRPCServlet.application">
+<span class="sig-name descname"><span class="pre">application</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#JSONRPCServlet.JSONRPCServlet.application" title="Link to this definition">¶</a></dt>
+<dd><p>The <cite>Application</cite> instance we’re using.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="JSONRPCServlet.JSONRPCServlet.awake">
+<span class="sig-name descname"><span class="pre">awake</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">transaction</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#JSONRPCServlet.JSONRPCServlet.awake" title="Link to this definition">¶</a></dt>
+<dd><p>Let servlet awake.</p>
+<p>Makes instance variables from the transaction. This is where Page
+becomes unthreadsafe, as the page is tied to the transaction.
+This is also what allows us to implement functions like <cite>write</cite>,
+where you don’t need to pass in the transaction or response.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="JSONRPCServlet.JSONRPCServlet.callMethodOfServlet">
+<span class="sig-name descname"><span class="pre">callMethodOfServlet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">url</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#JSONRPCServlet.JSONRPCServlet.callMethodOfServlet" title="Link to this definition">¶</a></dt>
+<dd><p>Call a method of another servlet.</p>
+<p>See <cite>Application.callMethodOfServlet</cite> for details.
+The main difference is that here you don’t have
+to pass in the transaction as the first argument.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="JSONRPCServlet.JSONRPCServlet.canBeReused">
+<span class="sig-name descname"><span class="pre">canBeReused</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#JSONRPCServlet.JSONRPCServlet.canBeReused" title="Link to this definition">¶</a></dt>
+<dd><p>Returns whether a single servlet instance can be reused.</p>
+<p>The default is True, but subclasses con override to return False.
+Keep in mind that performance may seriously be degraded if instances
+can’t be reused. Also, there’s no known good reasons not to reuse
+an instance. Remember the awake() and sleep() methods are invoked
+for every transaction. But just in case, your servlet can refuse
+to be reused.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="JSONRPCServlet.JSONRPCServlet.canBeThreaded">
+<span class="sig-name descname"><span class="pre">canBeThreaded</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#JSONRPCServlet.JSONRPCServlet.canBeThreaded" title="Link to this definition">¶</a></dt>
+<dd><p>Declares whether servlet can be threaded.</p>
+<p>Returns False because of the instance variables we set up in <cite>awake</cite>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="JSONRPCServlet.JSONRPCServlet.close">
+<span class="sig-name descname"><span class="pre">close</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#JSONRPCServlet.JSONRPCServlet.close" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="JSONRPCServlet.JSONRPCServlet.defaultAction">
+<span class="sig-name descname"><span class="pre">defaultAction</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#JSONRPCServlet.JSONRPCServlet.defaultAction" title="Link to this definition">¶</a></dt>
+<dd><p>Default action.</p>
+<p>The core method that gets called as a result of requests.
+Subclasses should override this.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="JSONRPCServlet.JSONRPCServlet.endResponse">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">endResponse</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#JSONRPCServlet.JSONRPCServlet.endResponse" title="Link to this definition">¶</a></dt>
+<dd><p>End response.</p>
+<p>When this method is called during <cite>awake</cite> or <cite>respond</cite>,
+servlet processing will end immediately,
+and the accumulated response will be sent.</p>
+<p>Note that <cite>sleep</cite> will still be called, providing a
+chance to clean up or free any resources.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="JSONRPCServlet.JSONRPCServlet.exposedMethods">
+<span class="sig-name descname"><span class="pre">exposedMethods</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#JSONRPCServlet.JSONRPCServlet.exposedMethods" title="Link to this definition">¶</a></dt>
+<dd><p>Return a list or a set of all exposed RPC methods.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="JSONRPCServlet.JSONRPCServlet.forward">
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">url</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#JSONRPCServlet.JSONRPCServlet.forward" title="Link to this definition">¶</a></dt>
+<dd><p>Forward request.</p>
+<p>Forwards this request to another servlet.
+See <cite>Application.forward</cite> for details.
+The main difference is that here you don’t have
+to pass in the transaction as the first argument.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="JSONRPCServlet.JSONRPCServlet.handleAction">
+<span class="sig-name descname"><span class="pre">handleAction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">action</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#JSONRPCServlet.JSONRPCServlet.handleAction" title="Link to this definition">¶</a></dt>
+<dd><p>Handle action.</p>
+<p>Invoked by <cite>_respond</cite> when a legitimate action has
+been found in a form. Invokes <cite>preAction</cite>, the actual
+action method and <cite>postAction</cite>.</p>
+<p>Subclasses rarely override this method.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="JSONRPCServlet.JSONRPCServlet.includeURL">
+<span class="sig-name descname"><span class="pre">includeURL</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">url</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#JSONRPCServlet.JSONRPCServlet.includeURL" title="Link to this definition">¶</a></dt>
+<dd><p>Include output from other servlet.</p>
+<p>Includes the response of another servlet
+in the current servlet’s response.
+See <cite>Application.includeURL</cite> for details.
+The main difference is that here you don’t have
+to pass in the transaction as the first argument.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="JSONRPCServlet.JSONRPCServlet.jsonCall">
+<span class="sig-name descname"><span class="pre">jsonCall</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#JSONRPCServlet.JSONRPCServlet.jsonCall" title="Link to this definition">¶</a></dt>
+<dd><p>Execute method with arguments on the server side.</p>
+<p>Returns JavaScript function to be executed by the client immediately.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="JSONRPCServlet.JSONRPCServlet.lastModified">
+<span class="sig-name descname"><span class="pre">lastModified</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">_trans</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#JSONRPCServlet.JSONRPCServlet.lastModified" title="Link to this definition">¶</a></dt>
+<dd><p>Get time of last modification.</p>
+<p>Return this object’s Last-Modified time (as a float),
+or None (meaning don’t know or not applicable).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="JSONRPCServlet.JSONRPCServlet.log">
+<span class="sig-name descname"><span class="pre">log</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#JSONRPCServlet.JSONRPCServlet.log" title="Link to this definition">¶</a></dt>
+<dd><p>Log a message.</p>
+<p>This can be invoked to print messages concerning the servlet.
+This is often used by self to relay important information back
+to developers.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="JSONRPCServlet.JSONRPCServlet.methodNameForAction">
+<span class="sig-name descname"><span class="pre">methodNameForAction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#JSONRPCServlet.JSONRPCServlet.methodNameForAction" title="Link to this definition">¶</a></dt>
+<dd><p>Return method name for an action name.</p>
+<p>Invoked by _respond() to determine the method name for a given action
+name which has been derived as the value of an <code class="docutils literal notranslate"><span class="pre">_action_</span></code> field.
+Since this is usually the label of an HTML submit button in a form,
+it is often needed to transform it in order to get a valid method name
+(for instance, blanks could be replaced by underscores and the like).
+This default implementation of the name transformation is the identity,
+it simply returns the name. Subclasses should override this method
+when action names don’t match their method names; they could “mangle”
+the action names or look the method names up in a dictionary.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="JSONRPCServlet.JSONRPCServlet.name">
+<span class="sig-name descname"><span class="pre">name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#JSONRPCServlet.JSONRPCServlet.name" title="Link to this definition">¶</a></dt>
+<dd><p>Return the name which is simple the name of the class.</p>
+<p>Subclasses should <em>not</em> override this method.
+It is used for logging and debugging.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="JSONRPCServlet.JSONRPCServlet.notImplemented">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">notImplemented</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">trans</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#JSONRPCServlet.JSONRPCServlet.notImplemented" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="JSONRPCServlet.JSONRPCServlet.open">
+<span class="sig-name descname"><span class="pre">open</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#JSONRPCServlet.JSONRPCServlet.open" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="JSONRPCServlet.JSONRPCServlet.outputEncoding">
+<span class="sig-name descname"><span class="pre">outputEncoding</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#JSONRPCServlet.JSONRPCServlet.outputEncoding" title="Link to this definition">¶</a></dt>
+<dd><p>Get the default output encoding of the application.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="JSONRPCServlet.JSONRPCServlet.postAction">
+<span class="sig-name descname"><span class="pre">postAction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">actionName</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#JSONRPCServlet.JSONRPCServlet.postAction" title="Link to this definition">¶</a></dt>
+<dd><p>Things to do after action.</p>
+<p>Invoked by self after invoking an action method.
+Subclasses may override to customize and may or may not
+invoke super as they see fit.
+The <cite>actionName</cite> is passed to this method,
+although it seems a generally bad idea to rely on this.
+However, it’s still provided just in case you need that hook.</p>
+<p>By default, this does nothing.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="JSONRPCServlet.JSONRPCServlet.preAction">
+<span class="sig-name descname"><span class="pre">preAction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">actionName</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#JSONRPCServlet.JSONRPCServlet.preAction" title="Link to this definition">¶</a></dt>
+<dd><p>Things to do before action.</p>
+<p>Invoked by self prior to invoking an action method.
+The <cite>actionName</cite> is passed to this method,
+although it seems a generally bad idea to rely on this.
+However, it’s still provided just in case you need that hook.</p>
+<p>By default, this does nothing.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="JSONRPCServlet.JSONRPCServlet.request">
+<span class="sig-name descname"><span class="pre">request</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#JSONRPCServlet.JSONRPCServlet.request" title="Link to this definition">¶</a></dt>
+<dd><p>The request (<cite>HTTPRequest</cite>) we’re handling.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="JSONRPCServlet.JSONRPCServlet.respond">
+<span class="sig-name descname"><span class="pre">respond</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">transaction</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#JSONRPCServlet.JSONRPCServlet.respond" title="Link to this definition">¶</a></dt>
+<dd><p>Respond to a request.</p>
+<p>Invokes the appropriate respondToSomething() method depending on the
+type of request (e.g., GET, POST, PUT, …).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="JSONRPCServlet.JSONRPCServlet.respondToGet">
+<span class="sig-name descname"><span class="pre">respondToGet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">transaction</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#JSONRPCServlet.JSONRPCServlet.respondToGet" title="Link to this definition">¶</a></dt>
+<dd><p>Respond to GET.</p>
+<p>Invoked in response to a GET request method. All methods
+are passed to <cite>_respond</cite>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="JSONRPCServlet.JSONRPCServlet.respondToHead">
+<span class="sig-name descname"><span class="pre">respondToHead</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">trans</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#JSONRPCServlet.JSONRPCServlet.respondToHead" title="Link to this definition">¶</a></dt>
+<dd><p>Respond to a HEAD request.</p>
+<p>A correct but inefficient implementation.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="JSONRPCServlet.JSONRPCServlet.respondToPost">
+<span class="sig-name descname"><span class="pre">respondToPost</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">transaction</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#JSONRPCServlet.JSONRPCServlet.respondToPost" title="Link to this definition">¶</a></dt>
+<dd><p>Respond to POST.</p>
+<p>Invoked in response to a POST request method. All methods
+are passed to <cite>_respond</cite>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="JSONRPCServlet.JSONRPCServlet.response">
+<span class="sig-name descname"><span class="pre">response</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#JSONRPCServlet.JSONRPCServlet.response" title="Link to this definition">¶</a></dt>
+<dd><p>The response (<cite>HTTPResponse</cite>) we’re handling.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="JSONRPCServlet.JSONRPCServlet.runMethodForTransaction">
+<span class="sig-name descname"><span class="pre">runMethodForTransaction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">transaction</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kw</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#JSONRPCServlet.JSONRPCServlet.runMethodForTransaction" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="JSONRPCServlet.JSONRPCServlet.runTransaction">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">runTransaction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">transaction</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#JSONRPCServlet.JSONRPCServlet.runTransaction" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="JSONRPCServlet.JSONRPCServlet.sendRedirectAndEnd">
+<span class="sig-name descname"><span class="pre">sendRedirectAndEnd</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">url</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">status</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#JSONRPCServlet.JSONRPCServlet.sendRedirectAndEnd" title="Link to this definition">¶</a></dt>
+<dd><p>Send redirect and end.</p>
+<p>Sends a redirect back to the client and ends the response.
+This is a very popular pattern.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="JSONRPCServlet.JSONRPCServlet.sendRedirectPermanentAndEnd">
+<span class="sig-name descname"><span class="pre">sendRedirectPermanentAndEnd</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">url</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#JSONRPCServlet.JSONRPCServlet.sendRedirectPermanentAndEnd" title="Link to this definition">¶</a></dt>
+<dd><p>Send permanent redirect and end.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="JSONRPCServlet.JSONRPCServlet.sendRedirectSeeOtherAndEnd">
+<span class="sig-name descname"><span class="pre">sendRedirectSeeOtherAndEnd</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">url</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#JSONRPCServlet.JSONRPCServlet.sendRedirectSeeOtherAndEnd" title="Link to this definition">¶</a></dt>
+<dd><p>Send redirect to a URL to be retrieved with GET and end.</p>
+<p>This is the proper method for the Post/Redirect/Get pattern.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="JSONRPCServlet.JSONRPCServlet.sendRedirectTemporaryAndEnd">
+<span class="sig-name descname"><span class="pre">sendRedirectTemporaryAndEnd</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">url</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#JSONRPCServlet.JSONRPCServlet.sendRedirectTemporaryAndEnd" title="Link to this definition">¶</a></dt>
+<dd><p>Send temporary redirect and end.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="JSONRPCServlet.JSONRPCServlet.serverSidePath">
+<span class="sig-name descname"><span class="pre">serverSidePath</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#JSONRPCServlet.JSONRPCServlet.serverSidePath" title="Link to this definition">¶</a></dt>
+<dd><p>Return the filesystem path of the page on the server.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="JSONRPCServlet.JSONRPCServlet.session">
+<span class="sig-name descname"><span class="pre">session</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#JSONRPCServlet.JSONRPCServlet.session" title="Link to this definition">¶</a></dt>
+<dd><p>The session object.</p>
+<p>This provides a state for the current user
+(associated with a browser instance, really).
+If no session exists, then a session will be created.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="JSONRPCServlet.JSONRPCServlet.sessionEncode">
+<span class="sig-name descname"><span class="pre">sessionEncode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">url</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#JSONRPCServlet.JSONRPCServlet.sessionEncode" title="Link to this definition">¶</a></dt>
+<dd><p>Utility function to access <cite>Session.sessionEncode</cite>.</p>
+<p>Takes a url and adds the session ID as a parameter.
+This is for cases where you don’t know if the client
+will accepts cookies.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="JSONRPCServlet.JSONRPCServlet.setFactory">
+<span class="sig-name descname"><span class="pre">setFactory</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">factory</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#JSONRPCServlet.JSONRPCServlet.setFactory" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="JSONRPCServlet.JSONRPCServlet.sleep">
+<span class="sig-name descname"><span class="pre">sleep</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">transaction</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#JSONRPCServlet.JSONRPCServlet.sleep" title="Link to this definition">¶</a></dt>
+<dd><p>Let servlet sleep again.</p>
+<p>We unset some variables. Very boring.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="JSONRPCServlet.JSONRPCServlet.transaction">
+<span class="sig-name descname"><span class="pre">transaction</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#JSONRPCServlet.JSONRPCServlet.transaction" title="Link to this definition">¶</a></dt>
+<dd><p>The <cite>Transaction</cite> we’re currently handling.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="JSONRPCServlet.JSONRPCServlet.urlDecode">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">urlDecode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">s</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#JSONRPCServlet.JSONRPCServlet.urlDecode" title="Link to this definition">¶</a></dt>
+<dd><p>Turn special % characters into actual characters.</p>
+<p>This method does the same as the <cite>urllib.unquote_plus()</cite> function.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="JSONRPCServlet.JSONRPCServlet.urlEncode">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">urlEncode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">s</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#JSONRPCServlet.JSONRPCServlet.urlEncode" title="Link to this definition">¶</a></dt>
+<dd><p>Quotes special characters using the % substitutions.</p>
+<p>This method does the same as the <cite>urllib.quote_plus()</cite> function.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="JSONRPCServlet.JSONRPCServlet.write">
+<span class="sig-name descname"><span class="pre">write</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#JSONRPCServlet.JSONRPCServlet.write" title="Link to this definition">¶</a></dt>
+<dd><p>Write to output.</p>
+<p>Writes the arguments, which are turned to strings (with <cite>str</cite>)
+and concatenated before being written to the response.
+Unicode strings must be encoded before they can be written.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="JSONRPCServlet.JSONRPCServlet.writeError">
+<span class="sig-name descname"><span class="pre">writeError</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">msg</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#JSONRPCServlet.JSONRPCServlet.writeError" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="JSONRPCServlet.JSONRPCServlet.writeExceptionReport">
+<span class="sig-name descname"><span class="pre">writeExceptionReport</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">handler</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#JSONRPCServlet.JSONRPCServlet.writeExceptionReport" title="Link to this definition">¶</a></dt>
+<dd><p>Write extra information to the exception report.</p>
+<p>The <cite>handler</cite> argument is the exception handler, and information
+is written there (using <cite>writeTitle</cite>, <cite>write</cite>, and <cite>writeln</cite>).
+This information is added to the exception report.</p>
+<p>See <cite>ExceptionHandler</cite> for more information.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="JSONRPCServlet.JSONRPCServlet.writeResult">
+<span class="sig-name descname"><span class="pre">writeResult</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#JSONRPCServlet.JSONRPCServlet.writeResult" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="JSONRPCServlet.JSONRPCServlet.writeln">
+<span class="sig-name descname"><span class="pre">writeln</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#JSONRPCServlet.JSONRPCServlet.writeln" title="Link to this definition">¶</a></dt>
+<dd><p>Write to output with newline.</p>
+<p>Writes the arguments (like <cite>write</cite>), adding a newline after.
+Unicode strings must be encoded before they can be written.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../index.html">Webware for Python 3</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../changes.html">List of Changes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../migrate.html">Migration Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../copyright.html">Copyright and License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorial.html">Beginner Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../appdev.html">Application Development</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../config.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../deploy.html">Deployment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../plugins.html">Plug-ins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../style.html">Style Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../psp.html">PSP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../userkit.html">UserKit</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../taskkit.html">TaskKit</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../webutils.html">WebUtils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../miscutils.html">MiscUtils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../testing.html">Testing</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Core Classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../psp/index.html">PSP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../userkit/index.html">UserKit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../taskkit/index.html">TaskKit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../webutils/index.html">WebUtils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../miscutils/index.html">MiscUtils</a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">API Reference</a><ul>
+  <li><a href="index.html">Core Classes</a><ul>
+      <li>Previous: <a href="importmanager.html" title="previous chapter">ImportManager</a></li>
+      <li>Next: <a href="page.html" title="next chapter">Page</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;1999-2025, Christoph Zwerschke et al.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.2.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+      |
+      <a href="../../_sources/ref/core/jsonrpcservlet.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

@@ -1,0 +1,4 @@
+MixIn
+-----
+
+.. automodule:: MiscUtils.MixIn

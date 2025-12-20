@@ -1,0 +1,4 @@
+DataTable
+---------
+
+.. automodule:: MiscUtils.DataTable
